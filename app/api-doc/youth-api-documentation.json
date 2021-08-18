@@ -200,8 +200,7 @@
                 "name": "name_en",
                 "in": "query",
                 "schema": {
-                    "type": "string",
-                    "required": true
+                    "type": "string"
                 }
             },
             "name_bn": {
@@ -209,8 +208,7 @@
                 "name": "name_bn",
                 "in": "query",
                 "schema": {
-                    "type": "string",
-                    "required": true
+                    "type": "string"
                 }
             },
             "name_bn_optional": {
@@ -218,8 +216,7 @@
                 "name": "name_bn",
                 "in": "query",
                 "schema": {
-                    "type": "string",
-                    "required": false
+                    "type": "string"
                 }
             },
             "name_en_optional": {
@@ -227,17 +224,16 @@
                 "name": "name_en",
                 "in": "query",
                 "schema": {
-                    "type": "string",
-                    "required": false
+                    "type": "string"
                 }
             },
             "mobile": {
                 "in": "query",
                 "name": "mobile",
                 "style": "form",
+                "required": true,
                 "schema": {
-                    "type": "string",
-                    "required": true
+                    "type": "string"
                 }
             },
             "mobile_optional": {
@@ -245,18 +241,17 @@
                 "name": "mobile",
                 "style": "form",
                 "schema": {
-                    "type": "string",
-                    "required": false
+                    "type": "string"
                 }
             },
             "email": {
                 "in": "query",
                 "name": "email",
                 "style": "form",
+                "required": true,
                 "schema": {
                     "type": "string",
-                    "format": "email",
-                    "required": true
+                    "format": "email"
                 }
             },
             "email_optional": {
@@ -265,8 +260,7 @@
                 "style": "form",
                 "schema": {
                     "type": "string",
-                    "format": "email",
-                    "required": false
+                    "format": "email"
                 }
             },
             "father_name_bn": {
@@ -363,9 +357,9 @@
                 "in": "query",
                 "name": "nationality",
                 "style": "form",
+                "required": true,
                 "schema": {
-                    "type": "string",
-                    "required": true
+                    "type": "string"
                 }
             },
             "religion": {
@@ -555,9 +549,6 @@
                 }
 
             }
-
-
-
         }
     }
 }
