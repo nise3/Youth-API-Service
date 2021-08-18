@@ -4,9 +4,9 @@ namespace App\Models;
 
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Date;
 
+use Illuminate\Support\Facades\Date;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Youth
@@ -56,6 +56,7 @@ use Illuminate\Support\Facades\Date;
  */
 class Youth extends BaseModel
 {
+    use SoftDeletes;
     /**
      * @var string
      */
