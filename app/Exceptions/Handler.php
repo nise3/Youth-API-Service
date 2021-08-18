@@ -82,13 +82,13 @@ class Handler extends ExceptionHandler
             ];
             return \response()->json($errors);
         }
-        /*elseif ($e instanceof BindingResolutionException) {
+        elseif ($e instanceof BindingResolutionException) {
             $errors = [
                 "code" => JsonResponse::HTTP_INTERNAL_SERVER_ERROR,
                 "message" => "Unable to resolve dependency",
             ];
             return \response()->json($errors);
-        }*/
+        }
 
         return parent::render($request, $e);
     }
