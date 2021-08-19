@@ -52,7 +52,7 @@ class YouthFactory extends Factory
             "permanent_address_district_id"=>$this->faker->randomDigit(),
             "permanent_address_upazila_id"=>$this->faker->randomDigit(),
             "permanent_house_address"=>$this->faker->address(),
-            "is_ethnic_group"=>$this->faker->sentence('2'),
+            "is_ethnic_group"=>$this->faker->boolean(),
             "photo"=>$this->faker->sentence(),
             "signature"=>$this->faker->name()
 

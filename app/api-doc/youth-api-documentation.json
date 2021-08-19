@@ -14,6 +14,31 @@
         }
     ],
     "paths": {
+        "/": {
+            "get": {
+                "summary": "Youth Service Information",
+                "responses": {
+                   "200": {
+                       "description": "Success",
+                       "content": {
+                           "application/json": {
+                               "example": {
+                                   "service_name": "NISE-3 Youth Management API Service",
+                                   "service_version": "V1",
+                                   "lumen_version": "Lumen (8.2.4) (Laravel Components ^8.0)",
+                                   "module_list": [
+                                       "Youth"
+                                   ],
+                                   "description": [
+                                       "It is a youth management api service that manages the youths"
+                                   ]
+                               }
+                           }
+                       }
+                   }
+                }
+            }
+        },
         "/youths": {
             "get": {
                 "summary": "get_list",

@@ -14,6 +14,6 @@ class YouthSeeder extends Seeder
      */
     public function run()
     {
-        Youth::factory()->count(10)->create();
+        Youth::factory()->count(20)->create();
     }
 }
