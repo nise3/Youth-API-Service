@@ -54,7 +54,7 @@ class YouthFactory extends Factory
             "permanent_house_address"=>$this->faker->address(),
             "is_ethnic_group"=>$this->faker->sentence('2'),
             "photo"=>$this->faker->sentence(),
-            "signature"=>$this->faker->sentence()
+            "signature"=>$this->faker->name()
 
         ];
     }
