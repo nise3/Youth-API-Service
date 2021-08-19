@@ -7,7 +7,7 @@ use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Date;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Youth
  * @package App\Models
@@ -56,7 +56,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Youth extends BaseModel
 {
-    use SoftDeletes;
+    use SoftDeletes,HasFactory;
     /**
      * @var string
      */

@@ -2,19 +2,18 @@
 
 namespace Database\Seeders;
 
+use App\Models\Youth;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class YouthSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
-        $this->call([
-            YouthSeeder::class
-        ]);
+        Youth::factory()->count(10)->create();
     }
 }
