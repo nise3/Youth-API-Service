@@ -10,3 +10,8 @@ $customRouter = function (string $as = '') use ($router) {
     return $custom->as($as);
 };
 
+
+$router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($router, $customRouter) {
+    $customRouter()->resourceRoute('youths', 'YouthController')->render();
+});
+

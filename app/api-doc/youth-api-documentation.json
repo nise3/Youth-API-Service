@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8080/api/v1"
+            "url": "http://localhost:8000/api/v1"
         },
         {
             "url": "https://bus.softbd.xyz/devportal/apis"
@@ -15,28 +15,312 @@
     ],
     "paths": {
         "/youths": {
-            "post": {
-                "summary": "Store Youth Profile",
+            "get": {
+                "summary": "get_list",
+                "description": " API endpoint to get the list of Youth profile.A successful request response will show 200 HTTP status code",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/name_en"
+                        "$ref": "#/components/parameters/page"
                     },
                     {
-                        "$ref": "#/components/parameters/name_bn"
+                        "$ref": "#/components/parameters/order"
+                    },
+                    {
+                        "$ref": "#/components/parameters/name_en_optional"
+                    },
+                    {
+                        "$ref": "#/components/parameters/name_bn_optional"
                     }
                 ],
                 "responses": {
                     "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youth"
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "name_en": "aaaaaaaa",
+                                            "name_bn": "aaaaaaa",
+                                            "mobile": "aaaaaaaaa",
+                                            "email": "aaaaaa",
+                                            "father_name_en": null,
+                                            "father_name_bn": null,
+                                            "mother_name_en": null,
+                                            "mother_name_bn": null,
+                                            "guardian_name_en": null,
+                                            "guardian_name_bn": null,
+                                            "relation_with_guardian": null,
+                                            "number_of_siblings": null,
+                                            "gender": null,
+                                            "date_of_birth": null,
+                                            "birth_certificate_no": null,
+                                            "nid": null,
+                                            "passport_number": null,
+                                            "nationality": "",
+                                            "religion": null,
+                                            "marital_status": 0,
+                                            "current_employment_status": 0,
+                                            "main_occupation": null,
+                                            "other_occupation": null,
+                                            "personal_monthly_income": null,
+                                            "year_of_experience": null,
+                                            "physical_disabilities_status": 0,
+                                            "freedom_fighter_status": 0,
+                                            "present_address_division_id": null,
+                                            "present_address_district_id": null,
+                                            "present_address_upazila_id": null,
+                                            "present_house_address": null,
+                                            "permanent_address_division_id": null,
+                                            "permanent_address_district_id": null,
+                                            "permanent_address_upazila_id": null,
+                                            "permanent_house_address": null,
+                                            "is_ethnic_group": 0,
+                                            "photo": null,
+                                            "signature": null,
+                                            "created_at": null,
+                                            "updated_at": null
+                                        },
+                                        {
+                                            "id": 2,
+                                            "name_en": "fffffffff",
+                                            "name_bn": "ffffffffff",
+                                            "mobile": "018188181",
+                                            "email": "p@gmail.com",
+                                            "father_name_en": "",
+                                            "father_name_bn": "",
+                                            "mother_name_en": "",
+                                            "mother_name_bn": "",
+                                            "guardian_name_en": "",
+                                            "guardian_name_bn": "",
+                                            "relation_with_guardian": "",
+                                            "number_of_siblings": null,
+                                            "gender": 0,
+                                            "date_of_birth": "0000-00-00",
+                                            "birth_certificate_no": null,
+                                            "nid": "",
+                                            "passport_number": "",
+                                            "nationality": "vvvvvvvvv",
+                                            "religion": 0,
+                                            "marital_status": 0,
+                                            "current_employment_status": 0,
+                                            "main_occupation": "",
+                                            "other_occupation": "",
+                                            "personal_monthly_income": 0,
+                                            "year_of_experience": 0,
+                                            "physical_disabilities_status": 0,
+                                            "freedom_fighter_status": 0,
+                                            "present_address_division_id": 0,
+                                            "present_address_district_id": 0,
+                                            "present_address_upazila_id": 0,
+                                            "present_house_address": "",
+                                            "permanent_address_division_id": 0,
+                                            "permanent_address_district_id": 0,
+                                            "permanent_address_upazila_id": 0,
+                                            "permanent_house_address": "",
+                                            "is_ethnic_group": 0,
+                                            "photo": "",
+                                            "signature": "",
+                                            "created_at": "2021-08-18T12:05:57.000000Z",
+                                            "updated_at": "2021-08-18T12:05:57.000000Z"
+                                        }
+                                    ],
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "started": "12 26 59",
+                                        "finished": "12 26 59"
+                                    },
+                                    "_links": {
+                                        "paginate": []
+                                    },
+                                    "_page": [],
+                                    "_order": "asc"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "youth"
+                ]
+            },
+            "post": {
+                "summary": "Store",
+                "description": "API endpoint to store a Youth profile.A successful request response will show 200 HTTP status code",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/youth"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/youth"
                                 }
                             }
-                        },
-                        "description": "Success"
+                        }
                     }
-                }
+                },
+                "tags": [
+                    "youth"
+                ]
+            }
+        },
+        "/youths/{youthId}": {
+            "get": {
+                "summary": "get one",
+                "description": "API endpoint to get the specified Youth profile.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/youthId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get one",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youth"
+                                },
+                                "example": {
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "youth"
+                ]
+            },
+            "put": {
+                "summary": "update",
+                "description": "API endpoint to update the specified Youth profile.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/youthId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/youth"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youth"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 1,
+                                        "name_en": "abc",
+                                        "name_bn": "abc",
+                                        "mobile": "abc",
+                                        "email": "01711111111",
+                                        "father_name_en": "",
+                                        "father_name_bn": "",
+                                        "mother_name_en": "",
+                                        "mother_name_bn": "",
+                                        "guardian_name_en": "",
+                                        "guardian_name_bn": "",
+                                        "relation_with_guardian": "",
+                                        "number_of_siblings": null,
+                                        "gender": 0,
+                                        "date_of_birth": "0000-00-00",
+                                        "birth_certificate_no": null,
+                                        "nid": "",
+                                        "passport_number": "",
+                                        "nationality": "abc",
+                                        "religion": 0,
+                                        "marital_status": 0,
+                                        "current_employment_status": 0,
+                                        "main_occupation": "",
+                                        "other_occupation": "",
+                                        "personal_monthly_income": 0,
+                                        "year_of_experience": 0,
+                                        "physical_disabilities_status": 0,
+                                        "freedom_fighter_status": 0,
+                                        "present_address_division_id": 0,
+                                        "present_address_district_id": 0,
+                                        "present_address_upazila_id": 0,
+                                        "present_house_address": "",
+                                        "permanent_address_division_id": 0,
+                                        "permanent_address_district_id": 0,
+                                        "permanent_address_upazila_id": 0,
+                                        "permanent_house_address": "",
+                                        "is_ethnic_group": 0,
+                                        "photo": "",
+                                        "signature": "",
+                                        "created_at": null,
+                                        "updated_at": "2021-08-18T12:33:02.000000Z"
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "started": "12 37 07",
+                                        "finished": "12 37 07"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "youth"
+                ]
+            },
+            "delete": {
+                "summary": "delete",
+                "description": "API endpoint to delete the Youth profile.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/youthId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youth"
+                                },
+                                "example": {
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Skill deleted successfully",
+                                        "started": "12 40 05",
+                                        "finished": "12 40 05"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "youth"
+                ]
             }
         }
     },
@@ -183,7 +467,6 @@
                         "type": "string",
                         "format": "date-time"
                     }
-
                 },
                 "required": [
                     "name_en",
@@ -195,6 +478,15 @@
             }
         },
         "parameters": {
+            "youthId": {
+                "name": "youthId",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
             "name_en": {
                 "style": "form",
                 "name": "name_en",
@@ -225,6 +517,29 @@
                 "in": "query",
                 "schema": {
                     "type": "string"
+                }
+            },
+            "page": {
+                "name": "page",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            "order": {
+                "in": "query",
+                "name": "order",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "asc",
+                        "desc"
+                    ]
                 }
             },
             "mobile": {
@@ -325,7 +640,11 @@
                 "style": "form",
                 "schema": {
                     "type": "integer",
-                    "enum": [1,2,3]
+                    "enum": [
+                        1,
+                        2,
+                        3
+                    ]
                 }
             },
             "date_of_birth": {
@@ -368,7 +687,13 @@
                 "style": "form",
                 "schema": {
                     "type": "integer",
-                    "enum": [1,2,3,4,5]
+                    "enum": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                    ]
                 }
             },
             "marital_status": {
@@ -377,7 +702,10 @@
                 "style": "form",
                 "schema": {
                     "type": "integer",
-                    "enum": [0,1],
+                    "enum": [
+                        0,
+                        1
+                    ],
                     "example": 0
                 }
             },
@@ -387,7 +715,10 @@
                 "style": "form",
                 "schema": {
                     "type": "integer",
-                    "enum": [0,1],
+                    "enum": [
+                        0,
+                        1
+                    ],
                     "example": 0
                 }
             },
@@ -431,7 +762,10 @@
                 "style": "form",
                 "schema": {
                     "type": "integer",
-                    "enum": [0,1],
+                    "enum": [
+                        0,
+                        1
+                    ],
                     "example": 0
                 }
             },
@@ -441,7 +775,10 @@
                 "style": "form",
                 "schema": {
                     "type": "integer",
-                    "enum": [0,1],
+                    "enum": [
+                        0,
+                        1
+                    ],
                     "example": 0
                 }
             },
@@ -515,7 +852,10 @@
                 "style": "form",
                 "schema": {
                     "type": "integer",
-                    "enum": [0,1],
+                    "enum": [
+                        0,
+                        1
+                    ],
                     "example": 0
                 }
             },
@@ -528,11 +868,9 @@
                         "schema": {
                             "type": "string",
                             "format": "binary"
-
                         }
                     }
                 }
-
             },
             "signature": {
                 "in": "query",
@@ -543,11 +881,9 @@
                         "schema": {
                             "type": "string",
                             "format": "binary"
-
                         }
                     }
                 }
-
             }
         }
     }
