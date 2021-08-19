@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -90,7 +91,7 @@ class YouthProfileService
 
         /** @var Collection $youthProfiles */
 
-        if ($paginate) {
+        if (!empty($paginate)) {
             $youthProfiles = $youthProfileBuilder->paginate(10);
             $paginateData = (object)$youthProfiles->toArray();
             $page = [
@@ -107,10 +108,10 @@ class YouthProfileService
         $data = $youthProfiles->toArray();
 
         return [
-            "data" => $data ?: null,
+            "data" => $data['data']??$data,
             "_response_status" => [
                 "success" => true,
-                "code" => JsonResponse::HTTP_OK,
+                "code" => Response::HTTP_OK,
                 "started" => $startTime->format('H i s'),
                 "finished" => Carbon::now()->format('H i s'),
             ],
@@ -181,10 +182,10 @@ class YouthProfileService
         $youthProfile = $youthProfileBuilder->first();
 
         return [
-            "data" => $youthProfile ?: null,
+            "data" => $youthProfile ?: [],
             "_response_status" => [
                 "success" => true,
-                "code" => JsonResponse::HTTP_OK,
+                "code" => Response::HTTP_OK,
                 "started" => $startTime->format('H i s'),
                 "finished" => Carbon::now()->format('H i s'),
             ]
@@ -196,9 +197,8 @@ class YouthProfileService
      * @param array $data
      * @return Youth
      */
-    public function store(array $data): Youth
+    public function store(Youth $youth,array $data): Youth
     {
-        $youth = new Youth();
         $youth->fill($data);
         $youth->save();
         return $youth;
@@ -238,8 +238,8 @@ class YouthProfileService
         $rules = [
             "name_en" => "required|string|min:2|max:191",
             "name_bn" => "required|string|min:2|max:191",
-            "mobile" => "required|string|min:1|max:20|unique:youths,mobile",
-            "email" => "required|email|min:1|max:20|unique:youths,email",
+            "mobile" => "required|string|min:1|max:20|unique:youths,mobile,".$id,
+            "email" => "required|email|min:1|max:20|unique:youths,email,".$id,
             "father_name_en" => "nullable|string|min:2|max:191",
             "father_name_bn" => "nullable|string|min:2|max:191",
             "mother_name_en" => "nullable|string|min:2|max:191",
@@ -275,10 +275,6 @@ class YouthProfileService
             "photo" => "nullable|string",
             "signature" => "nullable|string"
         ];
-        if ($id) {
-            $rules["mobile"] = "required|string|min:1|max:20|unique:youths,mobile," . $id;
-            $rules["email"] = "required|string|min:1|max:20|unique:youths,email," . $id;
-        }
         return \Illuminate\Support\Facades\Validator::make($request->all(), $rules);
     }
 }

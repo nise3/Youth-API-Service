@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 use App\Services\YouthManagementServices\YouthProfileService;
 
@@ -65,14 +66,15 @@ class YouthController extends Controller
      */
     function store(Request $request): JsonResponse
     {
+        $youth = new Youth();
         $validated = $this->youthProfileService->validation($request)->validate();
         try {
-            $data = $this->youthProfileService->store($validated);
+            $data = $this->youthProfileService->store($youth,$validated);
             $response = [
-                'data' => $data ?: null,
+                'data' => $data ?: [],
                 '_response_status' => [
                     "success" => true,
-                    "code" => JsonResponse::HTTP_CREATED,
+                    "code" => ResponseAlias::HTTP_CREATED,
                     "message" => "Skill added successfully",
                     "started" => $this->startTime->format('H i s'),
                     "finished" => Carbon::now()->format('H i s'),
@@ -81,7 +83,7 @@ class YouthController extends Controller
         } catch (Throwable $e) {
             return $e;
         }
-        return Response::json($response, JsonResponse::HTTP_CREATED);
+        return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
     /**
@@ -93,16 +95,17 @@ class YouthController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
+        /** @var Youth $youth */
         $youth = Youth::findOrFail($id);
         $validated = $this->youthProfileService->validation($request, $id)->validate();
 
         try {
             $data = $this->youthProfileService->update($youth, $validated);
             $response = [
-                'data' => $data ?: null,
+                'data' => $data ?: [],
                 '_response_status' => [
                     "success" => true,
-                    "code" => JsonResponse::HTTP_OK,
+                    "code" => ResponseAlias::HTTP_OK,
                     "message" => "Skill updated successfully",
                     "started" => $this->startTime->format('H i s'),
                     "finished" => Carbon::now()->format('H i s'),
@@ -111,7 +114,7 @@ class YouthController extends Controller
         } catch (Throwable $e) {
             return $e;
         }
-        return Response::json($response, JsonResponse::HTTP_CREATED);
+        return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
     /**
@@ -121,14 +124,15 @@ class YouthController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $skill = Youth::findOrFail($id);
+        /** @var Youth $youth */
+        $youth = Youth::findOrFail($id);
 
         try {
-            $this->youthProfileService->destroy($skill);
+            $this->youthProfileService->destroy($youth);
             $response = [
                 '_response_status' => [
                     "success" => true,
-                    "code" => JsonResponse::HTTP_OK,
+                    "code" => ResponseAlias::HTTP_OK,
                     "message" => "Skill deleted successfully",
                     "started" => $this->startTime->format('H i s'),
                     "finished" => Carbon::now()->format('H i s'),
@@ -137,7 +141,7 @@ class YouthController extends Controller
         } catch (Throwable $e) {
             return $e;
         }
-        return Response::json($response, JsonResponse::HTTP_OK);
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
 }
