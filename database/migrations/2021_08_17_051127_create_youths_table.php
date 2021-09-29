@@ -15,8 +15,8 @@ class CreateYouthsTable extends Migration
     {
         Schema::create('youths', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name_en',191);
-            $table->string('name_bn',500);
+            $table->string('first_name_en',191);
+            $table->string('last_name_en',500);
             $table->string('mobile',20)->unique();
             $table->string('email',191)->unique();
             $table->string('father_name_en',191)->nullable();
