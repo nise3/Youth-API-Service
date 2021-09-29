@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             BoardSeeder::class,
             ExaminationSeeder::class,
             GroupSeeder::class,
-            LanguageInfoSeeder::class
+            LanguageInfoSeeder::class,
+            SkillSeeder::class
         ]);
     }
 }
