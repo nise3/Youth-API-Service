@@ -52,7 +52,11 @@ return [
             'level' => 'debug',
             'days' => 14,
         ],
-
+        'idp_user' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/idp_user.log'),
+            'level' => 'info'
+        ],
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),

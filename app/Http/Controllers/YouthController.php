@@ -7,8 +7,11 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
+use Ramsey\Uuid\Uuid;
+use stdClass;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 use App\Services\YouthManagementServices\YouthProfileService;
@@ -67,19 +70,40 @@ class YouthController extends Controller
     function store(Request $request): JsonResponse
     {
         $youth = new Youth();
-        $validated = $this->youthProfileService->validation($request)->validate();
+        $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
+
+        DB::beginTransaction();
+
         try {
-            $data = $this->youthProfileService->store($youth,$validated);
-            $response = [
-                'data' => $data ?: [],
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "Skill added successfully",
-                    "started" => $this->startTime->format('H i s'),
-                    "finished" => Carbon::now()->format('H i s'),
-                ]
-            ];
+            $httpClient = Uuid::uuid2();//$this->youthProfileService->idpUserCreate($validated);
+
+            if ($httpClient) {
+                $validated['idp_user_id'] = $httpClient;
+
+                $youth = $this->youthProfileService->store($youth, $validated);
+
+                $response = [
+                    'data' => $youth ?? new stdClass(),
+                    '_response_status' => [
+                        "success" => true,
+                        "code" => ResponseAlias::HTTP_CREATED,
+                        "message" => "Youth registration successfully done!",
+                        "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                    ]
+                ];
+                DB::commit();
+            } else {
+                DB::rollBack();
+                $response = [
+                    '_response_status' => [
+                        "success" => false,
+                        "code" => ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
+                        "message" => "Youth registration is not done",
+                        "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                    ]
+                ];
+            }
+
         } catch (Throwable $e) {
             return $e;
         }
@@ -97,7 +121,7 @@ class YouthController extends Controller
     {
         /** @var Youth $youth */
         $youth = Youth::findOrFail($id);
-        $validated = $this->youthProfileService->validation($request, $id)->validate();
+        $validated = $this->youthProfileService->youthProfileUpdateValidation($request, $id)->validate();
 
         try {
             $data = $this->youthProfileService->update($youth, $validated);

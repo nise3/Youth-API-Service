@@ -15,6 +15,7 @@ class CreateYouthsTable extends Migration
     {
         Schema::create('youths', function (Blueprint $table) {
             $table->increments('id');
+            $table->string("idp_user_id")->nullable();
             $table->string("username")->unique()->comment("username is either email or mobile");
             $table->string('first_name',191);
             $table->string('last_name',500);
@@ -31,6 +32,11 @@ class CreateYouthsTable extends Migration
             $table->string("password")->comment("Alpha-numeric character = 1LookUpTheWordAlphanumeric");
             $table->string('photo',255)->nullable();
             $table->string('cv_path',255)->nullable();
+            $table->string("email_verification_code")->nullable();
+            $table->dateTime("email_verified_at")->nullable();
+            $table->string("sms_verification_code")->nullable();
+            $table->dateTime("sms_verified_at")->nullable();
+            $table->unsignedTinyInteger("row_status")->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

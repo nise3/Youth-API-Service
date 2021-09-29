@@ -3,13 +3,18 @@
 
 namespace App\Services\YouthManagementServices;
 
+use App\Models\BaseModel;
 use App\Models\Youth;
 use Carbon\Carbon;
+use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -108,7 +113,7 @@ class YouthProfileService
         $data = $youthProfiles->toArray();
 
         return [
-            "data" => $data['data']??$data,
+            "data" => $data['data'] ?? $data,
             "_response_status" => [
                 "success" => true,
                 "code" => Response::HTTP_OK,
@@ -197,7 +202,7 @@ class YouthProfileService
      * @param array $data
      * @return Youth
      */
-    public function store(Youth $youth,array $data): Youth
+    public function store(Youth $youth, array $data): Youth
     {
         $youth->fill($data);
         $youth->save();
@@ -229,52 +234,126 @@ class YouthProfileService
 
 
     /**
+     * @param array $data
+     * @return PromiseInterface|\Illuminate\Http\Client\Response
+     */
+    public function idpUserCreate(array $data)
+    {
+        $client = Http::withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
+            ->withHeaders([
+                'Content-Type' => 'application/json'
+            ])->withOptions([
+                'verify' => false
+            ])->post(BaseModel::IDP_USER_CREATE_ENDPOINT, [
+                'schemas' => [
+                ],
+                'name' => [
+                    'familyName' => $data['name'],
+                    'givenName' => $data['name']
+                ],
+                'userName' => $data['username'],
+                'password' => $data['password'],
+                'emails' => [
+                    0 => [
+                        'primary' => true,
+                        'value' => $data['email'],
+                        'type' => 'work',
+                    ]
+                ],
+            ]);
+
+        Log::channel('idp_user')->info('idp_user_payload', $data);
+        Log::channel('idp_user')->info('idp_user_info', $client->json());
+
+        return $client;
+
+    }
+
+
+    /**
      * @param Request $request
-     * @param int|null $id
      * @return Validator
      */
-    public function validation(Request $request, int $id = null): Validator
+    public function youthProfileUpdateValidation(Request $request, int $id): Validator
     {
         $rules = [
-            "name_en" => "required|string|min:2|max:191",
-            "name_bn" => "required|string|min:2|max:191",
-            "mobile" => "required|string|min:1|max:20|unique:youths,mobile,".$id,
-            "email" => "required|email|min:1|max:20|unique:youths,email,".$id,
-            "father_name_en" => "nullable|string|min:2|max:191",
-            "father_name_bn" => "nullable|string|min:2|max:191",
-            "mother_name_en" => "nullable|string|min:2|max:191",
-            "mother_name_bn" => "nullable|string|min:2|max:191",
-            "guardian_name_en" => "nullable|string|min:2|max:191",
-            "guardian_name_bn" => "nullable|string|min:2|max:191",
-            "relation_with_guardian" => "nullable|string|min:2|max:191",
-            "number_of_siblings" => "nullable|int",
-            "gender" => "nullable|int",
-            "date_of_birth" => "nullable|date",
-            "birth_certificate_no" => "nullable|string",
-            "nid" => "nullable|string",
-            "passport_number" => "nullable|string",
-            "nationality" => "nullable|string",
-            "religion" => "nullable|int",
-            "marital_status" => "nullable|int",
-            "current_employment_status" => "nullable|int",
-            "main_occupation" => "nullable|string",
-            "other_occupation" => "nullable|string",
-            "personal_monthly_income" => "nullable|numeric",
-            "year_of_experience" => "nullable|int",
-            "physical_disabilities_status" => "nullable|int",
-            "freedom_fighter_status" => "nullable|int",
-            "present_address_division_id" => "nullable|int",
-            "present_address_district_id" => "nullable|int",
-            "present_address_upazila_id" => "nullable|int",
-            "present_house_address" => "nullable|string",
-            "permanent_address_division_id" => "nullable|int",
-            "permanent_address_district_id" => "nullable|int",
-            "permanent_address_upazila_id" => "nullable|int",
-            "permanent_house_address" => "nullable|string",
-            "is_ethnic_group" => "nullable|int",
-            "photo" => "nullable|string",
-            "signature" => "nullable|string"
+            "first_name" => "required|string|min:2|max:191",
+            "last_name" => "required|string|min:2|max:191",
+            "gender" => [
+                "required",
+                "int",
+                Rule::in(BaseModel::GENDER)
+            ],
+            "email" => "required|email|unique:youths,email," . $id,
+            "mobile" => [
+                "required",
+                "max:11",
+                BaseModel::MOBILE_REGEX,
+                "unique:youths,mobile," . $id
+            ],
+            "city" => "required|string",
+            "zip_or_postal_code" => [
+                "required",
+                "string"
+            ],
+            "bio" => [
+                "nullable"
+            ],
+            "photo" => [
+                "nullable"
+            ],
+            "cv_path" => [
+                "nullable"
+            ]
         ];
+
         return \Illuminate\Support\Facades\Validator::make($request->all(), $rules);
+    }
+
+    public function youthRegisterValidation(Request $request): Validator
+    {
+        $data = $request->all();
+
+        if (!empty($data["physical_disabilities"])) {
+            $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
+        }
+
+        $rules = [
+            "username" => "required|unique:youths,username",
+            "first_name" => "required|string|min:2|max:191",
+            "last_name" => "required|string|min:2|max:191",
+            "gender" => [
+                "required",
+                "int",
+                Rule::in(BaseModel::GENDER)
+            ],
+            "email" => "required|email|unique:youths,email",
+            "mobile" => [
+                "required",
+                "max:11",
+                BaseModel::MOBILE_REGEX,
+                "unique:youths,mobile"
+            ],
+            "date_of_birth" => "required|date|date_format:Y-m-d",
+            "physical_disability_status" => [
+                "required",
+                "int",
+                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUS)
+            ],
+            "physical_disabilities" => [
+                "required_if:physical_disability_status:" . BaseModel::TRUE,
+                "array",
+                "min:1"
+            ],
+            "physical_disabilities.*" => [
+                'required|numeric|distinct|min:1',
+                BaseModel::PASSWORD_COMMON_RULES
+            ],
+            "password" => [
+                "required_with:password_confirmation",
+                BaseModel::PASSWORD_COMMON_RULES
+            ]
+        ];
+        return \Illuminate\Support\Facades\Validator::make($data, $rules);
     }
 }
