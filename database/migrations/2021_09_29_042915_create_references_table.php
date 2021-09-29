@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCertificationsTable extends Migration
+class CreateReferencesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,18 @@ class CreateCertificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('certification', function (Blueprint $table) {
+        Schema::create('references', function (Blueprint $table) {
             $table->increments("id");
             $table->unsignedInteger("youth_id");
-            $table->string("certification_name");
-            $table->string("institute_name");
-            $table->string("location")->nullable();
-            $table->date("start_date");
-            $table->date("end_date");
-            $table->string("certificate_file_path");
-            $table->unsignedTinyInteger('row_status')->default(1);
+            $table->string("referrer_first_name",191);
+            $table->string("referrer_last_name",191);
+            $table->string("referrer_organization_name",191);
+            $table->string("referrer_designation",191);
+            $table->string("referrer_address",191);
+            $table->string("referrer_email",191);
+            $table->string("referrer_mobile",15);
+            $table->string("referrer_relation",191);
+            $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();
             $table->softDeletes();
 
@@ -31,7 +33,6 @@ class CreateCertificationsTable extends Migration
                 ->on('youths')
                 ->onDelete("CASCADE")
                 ->onUpdate("CASCADE");
-
         });
     }
 
@@ -42,6 +43,6 @@ class CreateCertificationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('certifications');
+        Schema::dropIfExists('references');
     }
 }

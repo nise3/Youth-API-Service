@@ -19,7 +19,6 @@ class CreatePortfoliosTable extends Migration
             $table->string('title_en',191);
             $table->string('title_bn',500);
             $table->text("description_en");
-            $table->text("description_en");
             $table->string("file_path");
             $table->timestamps();
             $table->softDeletes();

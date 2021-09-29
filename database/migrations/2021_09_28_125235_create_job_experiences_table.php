@@ -19,7 +19,7 @@ class CreateJobExperiencesTable extends Migration
             $table->string("company_name_en");
             $table->string("company_name_bn");
             $table->string("position");
-            $table->tinyInteger("employment_type")->comment("1=>Full Time,2=Part Time,3=>Casual,4=>Apprentice or Trainee");
+            $table->unsignedInteger("employment_type_id")->comment("1=>Full Time,2=Part Time,3=>Casual,4=>Apprentice or Trainee");
             $table->string("location");
             $table->text("job_description")->nullable();
             $table->date("start_date");
@@ -32,6 +32,12 @@ class CreateJobExperiencesTable extends Migration
             $table->foreign('youth_id')
                 ->references('id')
                 ->on('youths')
+                ->onDelete("CASCADE")
+                ->onUpdate("CASCADE");
+
+            $table->foreign('employment_type_id')
+                ->references('id')
+                ->on('employment_types')
                 ->onDelete("CASCADE")
                 ->onUpdate("CASCADE");
         });
