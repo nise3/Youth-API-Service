@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             GroupSeeder::class,
             LanguageInfoSeeder::class,
             LocDivisionsTableSeeder::class,
-            LocDistrictsTableSeeder::class
+            LocDistrictsTableSeeder::class,
             LanguageInfoSeeder::class,
             PortfolioSeeder::class
         ]);
