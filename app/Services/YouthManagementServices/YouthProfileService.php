@@ -364,7 +364,7 @@ class YouthProfileService
     }
 
 
-    public function getAuthUser(string $id): User
+    public function getAuthYouth(string $id): Youth
     {
         $youth = Youth::where('idp_user_id', $id)->first();
 

@@ -38,7 +38,7 @@ return [
     'guards' => [
         'api' => [
             'driver' => 'token',
-            'provider' => 'youths',
+            'provider' => 'users',
         ],
     ],
 
@@ -60,7 +60,7 @@ return [
     */
 
     'providers' => [
-        'youths' => [
+        'users' => [
             'driver' => 'eloquent',
             'model' => \App\Models\Youth::class
         ]

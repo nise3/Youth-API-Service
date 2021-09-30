@@ -4,7 +4,6 @@ namespace App\Traits\Scopes;
 
 
 use App\Models\BaseModel;
-use App\Models\RowStatus;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -12,7 +11,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @package App\Traits\ModelTraits
  * @method static Builder active()
  * @method static Builder inactive()
- * @property-read RowStatus rowStatus
  * @property int row_status
  */
 trait ScopeRowStatusTrait

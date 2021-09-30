@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 abstract class BaseModel extends Model
 {
+
+    use HasFactory;
 
     public const COMMON_GUARDED_FIELDS_SIMPLE = ['id', 'created_at', 'updated_at'];
     public const COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE = ['id', 'created_at', 'updated_at', 'deleted_at'];
@@ -23,6 +26,9 @@ abstract class BaseModel extends Model
 
     public const ROW_STATUS_ACTIVE = '1';
     public const ROW_STATUS_INACTIVE = '0';
+
+    public const ROW_ORDER_ASC = 'ASC';
+    public const ROW_ORDER_DESC = 'DESC';
 
     public const TRUE = 1;
     public const FALSE = 0;
