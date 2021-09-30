@@ -175,7 +175,7 @@ class PortfolioService
             'youth_id' => [
                 'required',
                 'int',
-                'exists:youths,youth_id'
+                'exists:youths,id'
             ],
             'file_path' => [
                 'nullable',
