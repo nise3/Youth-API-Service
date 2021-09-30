@@ -19,10 +19,16 @@ abstract class BaseModel extends Model
     public const COMMON_GUARDED_FIELDS_SOFT_DELETE = ['id', 'created_by', 'updated_by', 'created_at', 'updated_at', 'deleted_at'];
     public const COMMON_GUARDED_FIELDS_NON_SOFT_DELETE = ['id', 'created_by', 'updated_by', 'created_at', 'updated_at'];
 
+
     /** Idp User */
     public const IDP_USERNAME = 'admin';
     public const IDP_USER_PASSWORD = 'admin';
-    public const IDP_USER_CREATE_ENDPOINT = 'https://identity.bus.softbd.xyz/scim2/Users';
+
+    /** Client Url End Point Type*/
+    public const ORGANIZATION_CLIENT_URL_TYPE = "ORGANIZATION";
+    public const INSTITUTE_URL_CLIENT_TYPE = "INSTITUTE";
+    public const CORE_CLIENT_URL_TYPE = "CORE";
+    public const IDP_SERVER_CLIENT_URL_TYPE = "IDP_SERVER";
 
     public const ROW_STATUS_ACTIVE = '1';
     public const ROW_STATUS_INACTIVE = '0';
@@ -79,6 +85,13 @@ abstract class BaseModel extends Model
         self::PASSWORD_MIN_LENGTH,
         self::PASSWORD_MAX_LENGTH,
         self::PASSWORD_REGEX
+    ];
+
+    public const USER_TYPE_EMAIL=1;
+    public const USER_TYPE_MOBILE_NUMBER=2;
+    public const USER_TYPE=[
+        self::USER_TYPE_EMAIL,
+        self::USER_TYPE_MOBILE_NUMBER
     ];
 
 }
