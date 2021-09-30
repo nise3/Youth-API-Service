@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -90,7 +91,21 @@ class Handler extends ExceptionHandler
             ];
             return \response()->json($errors);
         }
+        else if ($e instanceof ConnectException) {
+            $errors = [
+                "code" => Response::HTTP_INTERNAL_SERVER_ERROR,
+                "message" => "Internal Server Error!",
+            ];
+            return \response()->json($errors);
+        }
         else if ($e instanceof Exception) {
+            $errors = [
+                "code" => Response::HTTP_INTERNAL_SERVER_ERROR,
+                "message" => "Internal Server Error!",
+            ];
+            return \response()->json($errors);
+        }
+        else{
             $errors = [
                 "code" => Response::HTTP_INTERNAL_SERVER_ERROR,
                 "message" => "Internal Server Error!",

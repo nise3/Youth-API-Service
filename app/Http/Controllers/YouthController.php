@@ -74,10 +74,22 @@ class YouthController extends Controller
         $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
         DB::beginTransaction();
         try {
-            $httpClient =Uuid::uuid();  //$this->youthProfileService->idpUserCreate($validated);
-
-            if ($httpClient) {
-                $validated['idp_user_id'] = $httpClient;
+            $idpUserPayLoad = [
+                'name' => $validated['first_name'] . " " . $validated["last_name"],
+                'email' => $validated['email'],
+                'username' => $validated['username'],
+                'password' => $validated['password']
+            ];
+            $httpClient = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
+            if ($httpClient->json("id")) {
+                $validated['idp_user_id'] = $httpClient->json("id");
+                if ($validated['user_name_type'] == 1) {
+                    $validated["email_verification_code"] = "1234";
+                    $validated['send_verification_code_at'] = Carbon::now();
+                } elseif ($validated['user_name_type'] == 2) {
+                    $validated["sms_verification_code"] = "1234";
+                    $validated['send_verification_code_at'] = Carbon::now();
+                }
                 $youth = $this->youthProfileService->store($youth, $validated);
                 $response = [
                     'data' => $youth ?? new stdClass(),
@@ -118,8 +130,8 @@ class YouthController extends Controller
     {
         /** @var Youth $youth */
         $youth = Youth::findOrFail($id);
-        $validated = $this->youthProfileService->youthProfileUpdateValidation($request, $id)->validate();
-
+        $validated = $this->youthProfileService->youthRegisterValidation($request, $id)->validate();
+        Log::info(json_encode($validated));
         try {
             $data = $this->youthProfileService->update($youth, $validated);
             $response = [
@@ -127,9 +139,8 @@ class YouthController extends Controller
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Skill updated successfully",
-                    "started" => $this->startTime->format('H i s'),
-                    "finished" => Carbon::now()->format('H i s'),
+                    "message" => "Youth Profile Successfully updated",
+                    "query_time" => $this->startTime->diffForHumans(Carbon::now())
                 ]
             ];
         } catch (Throwable $e) {

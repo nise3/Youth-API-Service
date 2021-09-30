@@ -19,7 +19,8 @@ abstract class BaseModel extends Model
     /** Idp User */
     public const IDP_USERNAME = 'admin';
     public const IDP_USER_PASSWORD = 'admin';
-    public const IDP_USER_CREATE_ENDPOINT = 'https://identity.bus.softbd.xyz/scim2/Users';
+    public const IDP_USER_CREATE_ENDPOINT ='https://identity.bus.softbd.xyz/scim2/Users';
+    public const IDP_USER_CREATE_ENDPOINT_ENV = 'https://is.local:3443/scim2/Users';
 
     public const ROW_STATUS_ACTIVE = '1';
     public const ROW_STATUS_INACTIVE = '0';
@@ -73,6 +74,13 @@ abstract class BaseModel extends Model
         self::PASSWORD_MIN_LENGTH,
         self::PASSWORD_MAX_LENGTH,
         self::PASSWORD_REGEX
+    ];
+
+    public const USER_TYPE_EMAIL=1;
+    public const USER_TYPE_MOBILE_NUMBER=2;
+    public const USER_TYPE=[
+        self::USER_TYPE_EMAIL,
+        self::USER_TYPE_MOBILE_NUMBER
     ];
 
 }

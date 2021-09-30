@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Youth;
 use Carbon\Carbon;
+use Faker\Provider\Base;
 use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
@@ -185,15 +186,6 @@ class YouthProfileService
      */
     public function store(Youth $youth, array $data): Youth
     {
-        if (!empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        }
-        if(!empty( $data['skills'])){
-            $data['skills']=json_encode( $data['skills']);
-        }
-        if(!empty( $data['physical_disabilities'])){
-            $data['physical_disabilities']=json_encode($data['physical_disabilities']);
-        }
         $youth->fill($data);
         $youth->save();
         return $youth;
@@ -229,12 +221,16 @@ class YouthProfileService
      */
     public function idpUserCreate(array $data)
     {
-        $client = Http::withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
+        $url = BaseModel::IDP_USER_CREATE_ENDPOINT_ENV;
+        if (!in_array(request()->getHost(), ['localhost', '127.0.0.1'])) {
+            $url = BaseModel::IDP_USER_CREATE_ENDPOINT;
+        }
+        $client = Http::retry(3)->withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
             ->withHeaders([
                 'Content-Type' => 'application/json'
             ])->withOptions([
                 'verify' => false
-            ])->post(BaseModel::IDP_USER_CREATE_ENDPOINT, [
+            ])->post($url, [
                 'schemas' => [
                 ],
                 'name' => [
@@ -259,18 +255,31 @@ class YouthProfileService
 
     }
 
-
-    /**
-     * @param Request $request
-     * @return Validator
-     */
-    public function youthProfileUpdateValidation(Request $request, int $id): Validator
+    public function youthRegisterValidation(Request $request, int $id = null): Validator
     {
+        $data = $request->all();
+        if(!empty($data["skills"])){
+            $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
+        }
+        if (!empty($data["physical_disabilities"])) {
+            $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
+        } else {
+            unset($data["physical_disabilities"]);
+        }
+
         $rules = [
+            "username" => [
+                'required_if:' . $id . ',==,null',
+                "unique:youths,username"
+            ],
+            "user_name_type" => [
+                'required_if:' . $id . ',==,null',
+                Rule::in(BaseModel::USER_TYPE)
+            ],
             "first_name" => "required|string|min:2|max:191",
             "last_name" => "required|string|min:2|max:191",
             "gender" => [
-                "required",
+                'required_if:' . $id . ',==,null',
                 "int",
                 Rule::in(BaseModel::GENDER)
             ],
@@ -281,9 +290,61 @@ class YouthProfileService
                 BaseModel::MOBILE_REGEX,
                 "unique:youths,mobile," . $id
             ],
-            "city" => "required|string",
+            "date_of_birth" => [
+                'required_if:' . $id . ',==,null',
+                'date',
+                'date_format:Y-m-d'
+            ],
+            "skills" => [
+                'required_if:' . $id . ',==,null',
+                "array"
+            ],
+            "skills.*" => [
+                'required_if:' . $id . ',==,null',
+                'numeric',
+                "distinct",
+                "min:1"
+            ],
+            "physical_disability_status" => [
+                'required_if:' . $id . ',==,null',
+                "int",
+                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUS)
+            ],
+            "physical_disabilities" => [
+                "required_if:" . $id . ",==,null",
+                "required_if:physical_disability_status,==," . BaseModel::TRUE,
+                "array",
+                "min:1"
+            ],
+            "physical_disabilities.*" => [
+                "required_if:" . $id . ",==,null",
+                "numeric",
+                "distinct",
+                "min:1"
+            ],
+            "password" => [
+                "required_if:" . $id . ",==,null",
+                "required_with:password_confirmation",
+                BaseModel::PASSWORD_REGEX,
+                BaseModel::PASSWORD_TYPE,
+                BaseModel::PASSWORD_MIN_LENGTH,
+                BaseModel::PASSWORD_MAX_LENGTH,
+                "confirmed"
+            ],
+            "password_confirmation" => [
+                "required_if:" . $id . ",==,null",
+                "required_with:password",
+                BaseModel::PASSWORD_REGEX,
+                BaseModel::PASSWORD_TYPE,
+                BaseModel::PASSWORD_MIN_LENGTH,
+                BaseModel::PASSWORD_MAX_LENGTH,
+            ],
+            "city" => [
+                "required_if:" . $id . ",!=,null",
+                "string"
+            ],
             "zip_or_postal_code" => [
-                "required",
+                "required_if:" . $id . ",!=,null",
                 "string"
             ],
             "bio" => [
@@ -294,70 +355,6 @@ class YouthProfileService
             ],
             "cv_path" => [
                 "nullable"
-            ]
-        ];
-
-        return \Illuminate\Support\Facades\Validator::make($request->all(), $rules);
-    }
-
-    public function youthRegisterValidation(Request $request): Validator
-    {
-        $data = $request->all();
-        $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
-
-        if (!empty($data["physical_disabilities"])) {
-            $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
-        } else {
-            unset($data["physical_disabilities"]);
-        }
-
-        $rules = [
-            "username" => "required|unique:youths,username",
-            "first_name" => "required|string|min:2|max:191",
-            "last_name" => "required|string|min:2|max:191",
-            "gender" => [
-                "required",
-                "int",
-                Rule::in(BaseModel::GENDER)
-            ],
-            "email" => "required|email|unique:youths,email",
-            "mobile" => [
-                "required",
-                "max:11",
-                BaseModel::MOBILE_REGEX,
-                "unique:youths,mobile"
-            ],
-            "date_of_birth" => "required|date|date_format:Y-m-d",
-            "skills" => [
-                "required",
-                "array"
-            ],
-            "skills.*" => 'required|numeric|distinct|min:1',
-            "physical_disability_status" => [
-                "required",
-                "int",
-                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUS)
-            ],
-            "physical_disabilities" => [
-                "required_if:physical_disability_status,==," . BaseModel::TRUE,
-                "array",
-                "min:1"
-            ],
-            "physical_disabilities.*" => 'required|numeric|distinct|min:1',
-            "password" => [
-                "required_with:password_confirmation",
-                BaseModel::PASSWORD_REGEX,
-                BaseModel::PASSWORD_TYPE,
-                BaseModel::PASSWORD_MIN_LENGTH,
-                BaseModel::PASSWORD_MAX_LENGTH,
-                "confirmed"
-            ],
-            "password_confirmation"=>[
-                "required_with:password",
-                BaseModel::PASSWORD_REGEX,
-                BaseModel::PASSWORD_TYPE,
-                BaseModel::PASSWORD_MIN_LENGTH,
-                BaseModel::PASSWORD_MAX_LENGTH,
             ]
         ];
         return \Illuminate\Support\Facades\Validator::make($data, $rules);
