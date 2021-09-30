@@ -221,10 +221,8 @@ class YouthProfileService
      */
     public function idpUserCreate(array $data)
     {
-        $url = BaseModel::IDP_USER_CREATE_ENDPOINT_ENV;
-        if (!in_array(request()->getHost(), ['localhost', '127.0.0.1'])) {
-            $url = BaseModel::IDP_USER_CREATE_ENDPOINT;
-        }
+        $url =config(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
+
         $client = Http::retry(3)->withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
             ->withHeaders([
                 'Content-Type' => 'application/json'
@@ -338,6 +336,16 @@ class YouthProfileService
                 BaseModel::PASSWORD_TYPE,
                 BaseModel::PASSWORD_MIN_LENGTH,
                 BaseModel::PASSWORD_MAX_LENGTH,
+            ],
+            "loc_division_id"=>[
+                "required_if:" . $id . ",!=,null",
+                "exists:loc_divisions,id",
+                "int"
+            ],
+            "loc_district_id"=>[
+                "required_if:" . $id . ",!=,null",
+                "exists:loc_districts,id",
+                "int"
             ],
             "city" => [
                 "required_if:" . $id . ",!=,null",

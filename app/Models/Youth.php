@@ -28,6 +28,8 @@ use PHPUnit\Util\Json;
  * @property Date date_of_birth
  * @property int physical_disability_status
  * @property json physical_disabilities
+ * @property int loc_division_id
+ * @property int loc_district_id
  * @property string | null city
  * @property string | null zip_or_postal_code
  * @property string | null bio
