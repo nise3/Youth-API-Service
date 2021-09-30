@@ -37,8 +37,8 @@ return [
 
     'guards' => [
         'api' => [
-            'driver' => 'passport',
-            'provider' => 'users',
+            'driver' => 'token',
+            'provider' => 'youths',
         ],
     ],
 
@@ -60,9 +60,9 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'youths' => [
             'driver' => 'eloquent',
-            'model' => \App\Models\User::class
+            'model' => \App\Models\Youth::class
         ]
     ],
 

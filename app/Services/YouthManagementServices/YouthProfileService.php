@@ -4,6 +4,8 @@
 namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
+use App\Models\Role;
+use App\Models\User;
 use App\Models\Youth;
 use Carbon\Carbon;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -34,54 +36,32 @@ class YouthProfileService
     {
         $paginateLink = [];
         $page = [];
-        $nameEn = $request->query('name_en');
+        $firstName = $request->query('first_name');
 
-        $nameBn = $request->query('name_bn');
+        $lastName = $request->query('last_name');
         $paginate = $request->query('page');
         $order = !empty($request->query('order')) ? $request->query('order') : 'ASC';
 
         /** @var Builder $youthProfileBuilder */
+
         $youthProfileBuilder = Youth::select(
             [
                 'youths.id as id',
-                'youths.name_en',
-                'youths.name_bn',
-                'youths.mobile',
-                'youths.email',
-                'youths.father_name_en',
-                'youths.father_name_bn',
-                'youths.mother_name_en',
-                'youths.mother_name_bn',
-                'youths.guardian_name_en',
-                'youths.guardian_name_bn',
-                'youths.relation_with_guardian',
-                'youths.number_of_siblings',
+                'youths.first_name',
+                'youths.last_name',
                 'youths.gender',
+                'youths.skills',
+                'youths.email',
+                'youths.mobile',
                 'youths.date_of_birth',
-                'youths.birth_certificate_no',
-                'youths.nid',
-                'youths.passport_number',
-                'youths.nationality',
-                'youths.religion',
-                'youths.marital_status',
-                'youths.current_employment_status',
-                'youths.main_occupation',
-                'youths.other_occupation',
-                'youths.personal_monthly_income',
-                'youths.year_of_experience',
-                'youths.physical_disabilities_status',
-                'youths.freedom_fighter_status',
-                'youths.present_address_division_id',
-                'youths.present_address_district_id',
-                'youths.present_address_upazila_id',
-                'youths.present_house_address',
-                'youths.permanent_address_division_id',
-                'youths.permanent_address_district_id',
-                'youths.permanent_address_upazila_id',
-                'youths.permanent_house_address',
-                'youths.is_ethnic_group',
+                'youths.physical_disability_status',
+                'youths.physical_disabilities',
+                'youths.city',
+                'youths.zip_or_postal_code',
+                'youths.bio',
                 'youths.photo',
-                'youths.signature',
+                'youths.cv_path',
+                'youths.date_of_birth',
                 'youths.created_at',
                 'youths.updated_at',
             ]
@@ -89,10 +69,10 @@ class YouthProfileService
 
         $youthProfileBuilder->orderBy('youths.id', $order);
 
-        if (!empty($nameEn)) {
-            $youthProfileBuilder->where('youths.name_en', 'like', '%' . $nameEn . '%');
-        } elseif (!empty($nameBn)) {
-            $youthProfileBuilder->where('youths.name_bn', 'like', '%' . $nameBn . '%');
+        if (!empty($firstName)) {
+            $youthProfileBuilder->where('youths.first_name', 'like', '%' . $firstName . '%');
+        } elseif (!empty($lastName)) {
+            $youthProfileBuilder->where('youths.last_name', 'like', '%' . $lastName . '%');
         }
 
         /** @var Collection $youthProfiles */
@@ -381,5 +361,16 @@ class YouthProfileService
             ]
         ];
         return \Illuminate\Support\Facades\Validator::make($data, $rules);
+    }
+
+
+    public function getAuthUser(string $id): User
+    {
+        $youth = Youth::where('idp_user_id', $id)->first();
+
+        if ($youth == null)
+            return new \stdClass();
+
+        return $youth;
     }
 }
