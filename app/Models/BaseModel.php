@@ -37,7 +37,7 @@ abstract class BaseModel extends Model
     public const ROW_ORDER_DESC = 'DESC';
 
     public const TRUE = 1;
-    public const FALSE = 0;
+    public const FALSE = 1;
 
     public const PHYSICAL_DISABILITIES_STATUS = [
         self::TRUE,

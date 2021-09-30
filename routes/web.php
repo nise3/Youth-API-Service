@@ -15,5 +15,6 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     $router->get('/', ['as' => 'api-info', 'uses' => 'ApiInfoController@apiInfo']);
     $customRouter()->resourceRoute('youths', 'YouthController')->render();
     $customRouter()->resourceRoute('portfolios', 'PortfolioController')->render();
+    $customRouter()->resourceRoute('skills', 'SkillController')->render();
 });
 
