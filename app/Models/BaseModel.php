@@ -25,7 +25,7 @@ abstract class BaseModel extends Model
     public const ROW_STATUS_INACTIVE = '0';
 
     public const TRUE = 1;
-    public const FALSE = 1;
+    public const FALSE = 0;
 
     public const PHYSICAL_DISABILITIES_STATUS = [
         self::TRUE,
@@ -65,8 +65,8 @@ abstract class BaseModel extends Model
 
     public const PASSWORD_REGEX = "regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/";
     public const PASSWORD_TYPE = "string";
-    public const PASSWORD_MIN_LENGTH = 8;
-    public const PASSWORD_MAX_LENGTH = 50;
+    public const PASSWORD_MIN_LENGTH = "min:8";
+    public const PASSWORD_MAX_LENGTH = "max:50";
 
     public const PASSWORD_COMMON_RULES=[
         self::PASSWORD_TYPE,

@@ -17,6 +17,7 @@ class CreateYouthsTable extends Migration
             $table->increments('id');
             $table->string("idp_user_id")->nullable();
             $table->string("username")->unique()->comment("username is either email or mobile");
+            $table->unsignedTinyInteger("user_name_type")->comment("1=>Email Type,2=>Mobile Number");
             $table->string('first_name',191);
             $table->string('last_name',500);
             $table->tinyInteger('gender')->comment('1=>male,2=>female,3=>others');

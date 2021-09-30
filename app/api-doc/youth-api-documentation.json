@@ -49,7 +49,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/youth"
+                                    "$ref": "#/components/schemas/youthRegistration"
                                 },
                                 "example": {
 
@@ -69,7 +69,7 @@
                     "content": {
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "$ref": "#/components/schemas/youth"
+                                "$ref": "#/components/schemas/youthRegistration"
                             }
                         }
                     }
@@ -80,7 +80,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/youth"
+                                    "$ref": "#/components/schemas/youthRegistration"
                                 }
                             }
                         }
@@ -101,7 +101,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/youth"
+                                    "$ref": "#/components/schemas/youthRegistration"
                                 },
                                 "example":{
                                     "data": {
@@ -169,7 +169,7 @@
                     "content": {
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "$ref": "#/components/schemas/youth"
+                                "$ref": "#/components/schemas/youthRegistration"
                             }
                         }
                     }
@@ -180,7 +180,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/youth"
+                                    "$ref": "#/components/schemas/youthRegistration"
                                 },
                                 "example": {
                                     "data": {
@@ -248,7 +248,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/youth"
+                                    "$ref": "#/components/schemas/youthRegistration"
                                 },
                                 "example": {
                                     "_response_status": {
@@ -271,7 +271,7 @@
     },
     "components": {
         "schemas": {
-            "youth": {
+            "youthRegistration": {
                 "type": "object",
                 "description": "Youth Profile",
                 "properties": {
@@ -296,7 +296,7 @@
                         "default": 1
                     },
                     "skills": {
-                        "type": "object",
+                        "type": "array",
                         "items": {
                             "type": "integer",
                             "uniqueItems": true,
@@ -323,7 +323,7 @@
                         "default": 0
                     },
                     "physical_disabilities": {
-                        "type": "object",
+                        "type": "array",
                         "items": {
                             "type": "integer",
                             "uniqueItems": true,
@@ -331,21 +331,6 @@
                                 1,2,3
                             ]
                         }
-                    },
-                    "city": {
-                        "type": "string"
-                    },
-                    "zip_or_postal_code": {
-                        "type": "string"
-                    },
-                    "bio": {
-                        "type": "string"
-                    },
-                    "photo": {
-                        "type": "string"
-                    },
-                    "cv_path": {
-                        "type": "string"
                     },
                     "password": {
                         "type": "string",

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
@@ -204,6 +205,15 @@ class YouthProfileService
      */
     public function store(Youth $youth, array $data): Youth
     {
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
+        if(!empty( $data['skills'])){
+            $data['skills']=json_encode( $data['skills']);
+        }
+        if(!empty( $data['physical_disabilities'])){
+            $data['physical_disabilities']=json_encode($data['physical_disabilities']);
+        }
         $youth->fill($data);
         $youth->save();
         return $youth;
@@ -313,9 +323,12 @@ class YouthProfileService
     public function youthRegisterValidation(Request $request): Validator
     {
         $data = $request->all();
+        $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
 
         if (!empty($data["physical_disabilities"])) {
             $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
+        } else {
+            unset($data["physical_disabilities"]);
         }
 
         $rules = [
@@ -335,23 +348,36 @@ class YouthProfileService
                 "unique:youths,mobile"
             ],
             "date_of_birth" => "required|date|date_format:Y-m-d",
+            "skills" => [
+                "required",
+                "array"
+            ],
+            "skills.*" => 'required|numeric|distinct|min:1',
             "physical_disability_status" => [
                 "required",
                 "int",
                 Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUS)
             ],
             "physical_disabilities" => [
-                "required_if:physical_disability_status:" . BaseModel::TRUE,
+                "required_if:physical_disability_status,==," . BaseModel::TRUE,
                 "array",
                 "min:1"
             ],
-            "physical_disabilities.*" => [
-                'required|numeric|distinct|min:1',
-                BaseModel::PASSWORD_COMMON_RULES
-            ],
+            "physical_disabilities.*" => 'required|numeric|distinct|min:1',
             "password" => [
                 "required_with:password_confirmation",
-                BaseModel::PASSWORD_COMMON_RULES
+                BaseModel::PASSWORD_REGEX,
+                BaseModel::PASSWORD_TYPE,
+                BaseModel::PASSWORD_MIN_LENGTH,
+                BaseModel::PASSWORD_MAX_LENGTH,
+                "confirmed"
+            ],
+            "password_confirmation"=>[
+                "required_with:password",
+                BaseModel::PASSWORD_REGEX,
+                BaseModel::PASSWORD_TYPE,
+                BaseModel::PASSWORD_MIN_LENGTH,
+                BaseModel::PASSWORD_MAX_LENGTH,
             ]
         ];
         return \Illuminate\Support\Facades\Validator::make($data, $rules);

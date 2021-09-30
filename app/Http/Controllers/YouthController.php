@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Youth;
+use Faker\Provider\Uuid;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
-use Ramsey\Uuid\Uuid;
 use stdClass;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
@@ -67,21 +68,17 @@ class YouthController extends Controller
      * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
-    function store(Request $request): JsonResponse
+    function store(Request $request)
     {
         $youth = new Youth();
         $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
-
         DB::beginTransaction();
-
         try {
-            $httpClient = Uuid::uuid2();//$this->youthProfileService->idpUserCreate($validated);
+            $httpClient =Uuid::uuid();  //$this->youthProfileService->idpUserCreate($validated);
 
             if ($httpClient) {
                 $validated['idp_user_id'] = $httpClient;
-
                 $youth = $this->youthProfileService->store($youth, $validated);
-
                 $response = [
                     'data' => $youth ?? new stdClass(),
                     '_response_status' => [
