@@ -25,5 +25,8 @@ class DatabaseSeeder extends Seeder
             PortfolioSeeder::class,
             SkillSeeder::class
         ]);
+        $this->call([
+            GeoLocationDatabaseSeeder::class
+        ]);
     }
 }

@@ -17,13 +17,11 @@ class CreateLocDistrictsTable extends Migration {
 		{
 			$table->mediumIncrements('id');
 			$table->unsignedMediumInteger('loc_division_id');
-			$table->char('division_bbs_code', 4)->nullable();
-			$table->string('title_en',191);
+			$table->string('title_en');
 			$table->string('title_bn', 500);
+			$table->unsignedTinyInteger('is_sadar_district')->default(0);
 			$table->char('bbs_code', 5)->nullable();
 			$table->unsignedTinyInteger('row_status')->default(1);
-			$table->unsignedInteger('created_by')->nullable();
-			$table->unsignedInteger('updated_by')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
 
