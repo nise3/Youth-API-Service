@@ -29,8 +29,9 @@ use PHPUnit\Util\Json;
  * @property json physical_disabilities
  * @property int loc_division_id
  * @property int loc_district_id
- * @property string | null city
+ * @property string | null city_or_town
  * @property string | null zip_or_postal_code
+ * @property string | null address
  * @property string | null bio
  * @property string | null photo
  * @property string | null cv_path

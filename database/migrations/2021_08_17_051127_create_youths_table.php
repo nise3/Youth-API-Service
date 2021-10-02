@@ -15,27 +15,28 @@ class CreateYouthsTable extends Migration
     {
         Schema::create('youths', function (Blueprint $table) {
             $table->increments('id');
-            $table->string("idp_user_id")->nullable();
-            $table->string("username")->unique()->comment("username is either email or mobile");
+            $table->string("idp_user_id", 100)->nullable();
+            $table->string("username", 100)->unique()->comment("username is either email or mobile");
             $table->unsignedTinyInteger("user_name_type")->comment("1=>Email Type,2=>Mobile Number");
             $table->string('first_name', 191);
             $table->string('last_name', 500);
-            $table->tinyInteger('gender')->comment('1=>male,2=>female,3=>others');
+            $table->unsignedTinyInteger('gender')->comment('1=>male,2=>female,3=>others');
             $table->json("skills")->comment('[skill1,skill2........upto 10 skills]');
             $table->string('email', 191)->unique();
             $table->string('mobile', 20)->unique();
             $table->date('date_of_birth');
-            $table->tinyInteger('physical_disability_status')->comment('0=>No,1=>Yes')->default(0);
-            $table->json('physical_disabilities')->comment("[disability1,disability2.......disabilityn]")->nullable();
+            $table->unsignedTinyInteger('physical_disability_status')->comment('0=>No,1=>Yes')->default(0);
+            $table->json('physical_disabilities')->comment("[disability1,disability2.......disability]")->nullable();
             $table->unsignedMediumInteger("loc_division_id");
             $table->unsignedMediumInteger("loc_district_id");
             $table->unsignedMediumInteger("loc_upazila_id")->nullable();
-            $table->string("city")->nullable();
-            $table->string("zip_or_postal_code")->nullable();
+            $table->string("city_or_town", 400)->nullable();
+            $table->string("zip_or_postal_code", 10)->nullable();
+            $table->string("address", 1000)->nullable();
             $table->text("bio")->nullable();
             $table->string("password")->comment("Alpha-numeric character = 1LookUpTheWordAlphanumeric");
-            $table->string('photo', 255)->nullable();
-            $table->string('cv_path', 255)->nullable();
+            $table->string('photo', 300)->nullable();
+            $table->string('cv_path', 300)->nullable();
             $table->string("email_verification_code")->nullable();
             $table->dateTime("email_verified_at")->nullable();
             $table->string("sms_verification_code")->nullable();

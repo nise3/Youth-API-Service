@@ -4,21 +4,16 @@
 namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
-use App\Models\Role;
-use App\Models\User;
 use App\Models\Youth;
 use Carbon\Carbon;
-use Faker\Provider\Base;
-use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+use Prophecy\Promise\PromiseInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -57,7 +52,8 @@ class YouthProfileService
                 'youths.date_of_birth',
                 'youths.physical_disability_status',
                 'youths.physical_disabilities',
-                'youths.city',
+                'youths.city_or_town',
+                'youths.address',
                 'youths.zip_or_postal_code',
                 'youths.bio',
                 'youths.photo',
@@ -130,9 +126,10 @@ class YouthProfileService
                 'youths.date_of_birth',
                 'youths.physical_disability_status',
                 'youths.physical_disabilities',
-                'youths.city',
+                'youths.city_or_town',
                 'youths.zip_or_postal_code',
                 'youths.bio',
+                'youths.address',
                 'youths.photo',
                 'youths.cv_path',
                 'youths.date_of_birth',
@@ -324,7 +321,7 @@ class YouthProfileService
                 "exists:loc_districts,id",
                 "int"
             ],
-            "city" => [
+            "city_or_town" => [
                 "required_if:" . $id . ",!=,null",
                 "string"
             ],
@@ -333,6 +330,9 @@ class YouthProfileService
                 "string"
             ],
             "bio" => [
+                "nullable"
+            ],
+            "address" => [
                 "nullable"
             ],
             "photo" => [
@@ -346,12 +346,13 @@ class YouthProfileService
     }
 
 
-    public function getAuthYouth(string $id): Youth
+    public function getAuthYouth(string $id): \stdClass
     {
         $youth = Youth::where('idp_user_id', $id)->first();
 
-        if ($youth == null)
+        if (!$youth){
             return new \stdClass();
+        }
 
         return $youth;
     }
