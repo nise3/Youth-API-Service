@@ -19,14 +19,10 @@ class DatabaseSeeder extends Seeder
             BoardSeeder::class,
             ExaminationSeeder::class,
             GroupSeeder::class,
-            LocDivisionsTableSeeder::class,
-            LocDistrictsTableSeeder::class,
+            GeoLocationDatabaseSeeder::class,
             LanguageInfoSeeder::class,
             PortfolioSeeder::class,
             SkillSeeder::class
-        ]);
-        $this->call([
-            GeoLocationDatabaseSeeder::class
         ]);
     }
 }
