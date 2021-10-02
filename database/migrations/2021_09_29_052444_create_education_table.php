@@ -17,7 +17,7 @@ class CreateEducationTable extends Migration
             $table->increments("id");
             $table->unsignedInteger("youth_id");
             $table->unsignedInteger("examination_id");
-            $table->string("institute_name");
+            $table->string("institute_name", 400);
             $table->unsignedInteger('board_id')->nullable();
             $table->unsignedInteger('group_id');
             $table->unsignedInteger('result');

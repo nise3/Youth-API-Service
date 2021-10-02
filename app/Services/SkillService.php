@@ -257,7 +257,7 @@ class SkillService
             'title_bn' => [
                 'required',
                 'string',
-                'max: 600',
+                'max: 400',
                 'min:2'
             ],
             'description' => [

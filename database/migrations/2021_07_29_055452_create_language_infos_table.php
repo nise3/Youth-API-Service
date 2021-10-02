@@ -16,8 +16,8 @@ class CreateLanguageInfosTable extends Migration
         Schema::create('language_infos', function (Blueprint $table) {
             $table->increments("id");
             $table->string("code");
-            $table->string("title_en");
-            $table->string("title_bn");
+            $table->string("title_en", 200);
+            $table->string("title_bn", 350);
             $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();
             $table->softDeletes();

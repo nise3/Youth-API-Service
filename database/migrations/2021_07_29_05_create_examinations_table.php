@@ -15,8 +15,8 @@ class CreateExaminationsTable extends Migration
     {
         Schema::create('examinations', function (Blueprint $table) {
             $table->increments("id");
-            $table->string("title_en");
-            $table->string("title_bn");
+            $table->string("title_en" , 255);
+            $table->string("title_bn", 400);
             $table->text("description")->nullable();
             $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();

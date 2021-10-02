@@ -16,14 +16,14 @@ class CreateReferencesTable extends Migration
         Schema::create('references', function (Blueprint $table) {
             $table->increments("id");
             $table->unsignedInteger("youth_id");
-            $table->string("referrer_first_name",191);
-            $table->string("referrer_last_name",191);
-            $table->string("referrer_organization_name",191);
-            $table->string("referrer_designation",191);
-            $table->string("referrer_address",191);
+            $table->string("referrer_first_name",150);
+            $table->string("referrer_last_name",150);
+            $table->string("referrer_organization_name",300);
+            $table->string("referrer_designation",200);
+            $table->string("referrer_address",600);
             $table->string("referrer_email",191);
             $table->string("referrer_mobile",15);
-            $table->string("referrer_relation",191);
+            $table->string("referrer_relation",300);
             $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();
             $table->softDeletes();
