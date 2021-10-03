@@ -188,6 +188,26 @@ class YouthProfileService
         return $youth->delete();
     }
 
+    public function verifyYouth(array $data): bool
+    {
+        $email = $data['email'] ?? null;
+        $mobile = $data['mobile'] ?? null;
+        $code = $data['verification_code'] ?? null;
+
+        $conditionalAttribute = "email";
+        $conditionalValue = $email;
+        if ($mobile) {
+            $conditionalAttribute = "mobile";
+            $conditionalValue = $mobile;
+        }
+        $youth = Youth::where([
+                $conditionalAttribute, "=", $conditionalValue,
+                "verification_code", "=", $code
+            ]
+        )->first();
+
+
+    }
 
     /**
      * @param array $data
@@ -195,7 +215,7 @@ class YouthProfileService
      */
     public function idpUserCreate(array $data)
     {
-        $url =config(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
+        $url = config(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
 
         $client = Http::retry(3)->withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
             ->withHeaders([
@@ -227,10 +247,47 @@ class YouthProfileService
 
     }
 
+    /**
+     * @param Request $request
+     * @return Validator
+     */
+    public function verifyYouthValidator(Request $request): Validator
+    {
+        $customMessage = [
+            "email.exists" => [
+                "code" => 24000,
+                "message" => "The email is not exists in the system"
+            ],
+            "mobile.exists" => [
+                "code" => 24000,
+                "message" => "The mobile is not exists in the system"
+            ],
+        ];
+
+        $rules = [
+            "email" => [
+                "nullable",
+                "exists:youths,email"
+            ],
+            "mobile" => [
+                "nullable",
+                "max:11",
+                BaseModel::MOBILE_REGEX,
+                "exists:youths,mobile"
+            ],
+            "verification_code" => [
+                "required",
+                "digits:4",
+            ]
+        ];
+
+        return \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $customMessage);
+    }
+
     public function youthRegisterValidation(Request $request, int $id = null): Validator
     {
         $data = $request->all();
-        if(!empty($data["skills"])){
+        if (!empty($data["skills"])) {
             $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
         }
         if (!empty($data["physical_disabilities"])) {
@@ -311,12 +368,12 @@ class YouthProfileService
                 BaseModel::PASSWORD_MIN_LENGTH,
                 BaseModel::PASSWORD_MAX_LENGTH,
             ],
-            "loc_division_id"=>[
+            "loc_division_id" => [
                 "required_if:" . $id . ",!=,null",
                 "exists:loc_divisions,id",
                 "int"
             ],
-            "loc_district_id"=>[
+            "loc_district_id" => [
                 "required_if:" . $id . ",!=,null",
                 "exists:loc_districts,id",
                 "int"
@@ -350,7 +407,7 @@ class YouthProfileService
     {
         $youth = Youth::where('idp_user_id', $id)->first();
 
-        if (!$youth){
+        if (!$youth) {
             return new \stdClass();
         }
 

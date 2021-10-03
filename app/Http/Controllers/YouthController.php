@@ -167,8 +167,31 @@ class YouthController extends Controller
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
                     "message" => "Skill deleted successfully",
-                    "started" => $this->startTime->format('H i s'),
-                    "finished" => Carbon::now()->format('H i s'),
+                    "query_time" => $this->startTime->diffForHumans(Carbon::now())
+                ]
+            ];
+        } catch (Throwable $e) {
+            return $e;
+        }
+        return Response::json($response, ResponseAlias::HTTP_OK);
+    }
+
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return Exception|JsonResponse|Throwable
+     */
+    public function youthVerification(Request $request):JsonResponse
+    {
+        $validated=$this->youthProfileService->verifyYouthValidator($request)->validate();
+        try {
+            $this->youthProfileService->verifyYouth($validated);
+            $response = [
+                '_response_status' => [
+                    "success" => true,
+                    "code" => ResponseAlias::HTTP_OK,
+                    "message" => "Skill deleted successfully",
+                    "query_time" => $this->startTime->diffForHumans(Carbon::now())
                 ]
             ];
         } catch (Throwable $e) {

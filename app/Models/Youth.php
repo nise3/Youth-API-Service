@@ -41,7 +41,7 @@ use PHPUnit\Util\Json;
  * @property Carbon sms_verification_code
  * @property Carbon sms_verified_at
  * @property Carbon send_verification_code_at
- * @property Carbon row_status
+ * @property int row_status
  * @property Carbon deleted_at
  * @property Carbon created_at
  * @property Carbon updated_at
