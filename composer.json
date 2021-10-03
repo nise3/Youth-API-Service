@@ -7,10 +7,13 @@
     "require": {
         "php": "^7.4|^8.0",
         "ext-json": "*",
-        "flipbox/lumen-generator": "^8.2",
-        "guzzlehttp/guzzle": "7.3",
+        "ext-pdo": "*",
         "laravel/lumen-framework": "^8.0",
         "laravel/tinker": "^2.6",
+        "guzzlehttp/guzzle": "^7.3",
+        "felixkiss/uniquewith-validator": "^3.4",
+        "flipbox/lumen-generator": "^8.2",
+        "irazasyed/larasupport": "^1.7",
         "phabloraylan/lumen-middleware-trim-or-convert-strings": "^1.0"
     },
     "require-dev": {
@@ -23,10 +26,7 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        },
-        "files": [
-            "app/Helpers/functions/helpers.php"
-        ]
+        }
     },
     "autoload-dev": {
         "classmap": [
