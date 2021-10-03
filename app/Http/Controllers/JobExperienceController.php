@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Portfolio;
+use App\Models\JobExperience;
 use App\Services\YouthManagementServices\JobExperienceService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -25,7 +25,7 @@ class JobExperienceController extends Controller
 
 
     /**
-     * PortfolioController constructor.
+     * JobExperienceController constructor.
      * @param JobExperienceService $jobExperienceService
      */
     public function __construct(JobExperienceService $jobExperienceService)
@@ -73,13 +73,13 @@ class JobExperienceController extends Controller
     {
         $validated = $this->jobExperienceService->validator($request)->validate();
         try {
-            $portfolio = $this->jobExperienceService->store($validated);
+            $jobExperience = $this->jobExperienceService->store($validated);
             $response = [
-                'data' => $portfolio,
+                'data' => $jobExperience,
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "Portfolio added successfully",
+                    "message" => "Job Experience added successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
@@ -99,16 +99,16 @@ class JobExperienceController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $portfolio = Portfolio::findOrFail($id);
-        $validated = $this->portfolioService->validator($request, $id)->validate();
+        $jobExperience = JobExperience::findOrFail($id);
+        $validated = $this->jobExperienceService->validator($request, $id)->validate();
         try {
-            $portfolio = $this->portfolioService->update($portfolio, $validated);
+            $jobExperience = $this->jobExperienceService->update($jobExperience, $validated);
             $response = [
-                'data' => $portfolio,
+                'data' => $jobExperience,
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Portfolio updated successfully",
+                    "message" => "Job Experience updated successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];
@@ -125,14 +125,14 @@ class JobExperienceController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $portfolio = Portfolio::findOrFail($id);
+        $jobExperience = JobExperience::findOrFail($id);
         try {
-            $this->portfolioService->destroy($portfolio);
+            $this->jobExperienceService->destroy($jobExperience);
             $response = [
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Portfolio deleted successfully",
+                    "message" => "Job Experience deleted successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];
