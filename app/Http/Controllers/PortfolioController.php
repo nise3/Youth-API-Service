@@ -41,7 +41,7 @@ class PortfolioController extends Controller
     /**
      * @param Request $request
      * @return \Exception|JsonResponse|Throwable
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function getList(Request $request)
     {

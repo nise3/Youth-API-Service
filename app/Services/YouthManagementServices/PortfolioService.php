@@ -26,7 +26,7 @@ class PortfolioService
     {
 
         $title = $request['title'] ?? "";
-        $youthId = $request['youth_id'] ?? "";
+        $youthId = $request['youth_id'];
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
@@ -213,7 +213,7 @@ class PortfolioService
         return Validator::make($request->all(), [
             'page' => 'numeric|gt:0',
             'title' => 'nullable|max:500|min:2',
-            'youth_id' => 'min:1',
+            'youth_id' => 'required|min:1',
             'pageSize' => 'numeric|gt:0',
             'order' => [
                 'string',
