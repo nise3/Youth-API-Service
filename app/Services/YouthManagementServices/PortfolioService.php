@@ -9,7 +9,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +25,7 @@ class PortfolioService
     {
 
         $title = $request['title'] ?? "";
+        $titleEn = $request['title_en'] ?? "";
         $youthId = $request['youth_id'];
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
@@ -36,7 +36,9 @@ class PortfolioService
         $portfoliosBuilder = Portfolio::select([
             'portfolios.id',
             'portfolios.title',
+            'portfolios.title_en',
             'portfolios.description',
+            'portfolios.description_en',
             'portfolios.file_path',
             'portfolios.youth_id',
             'portfolios.row_status',
@@ -55,6 +57,10 @@ class PortfolioService
         }
         if (!empty($title)) {
             $portfoliosBuilder->where('portfolios.title', 'like', '%' . $title . '%');
+        }
+
+        if (!empty($titleEn)) {
+            $portfoliosBuilder->where('portfolios.title_en', 'like', '%' . $titleEn . '%');
         }
 
         /** @var Collection $portfolios */
@@ -93,7 +99,9 @@ class PortfolioService
         $portfolioBuilder = Portfolio::select([
             'portfolios.id',
             'portfolios.title',
+            'portfolios.title_en',
             'portfolios.description',
+            'portfolios.description_en',
             'portfolios.file_path',
             'portfolios.youth_id',
             'portfolios.row_status',
@@ -167,7 +175,16 @@ class PortfolioService
                 'required',
                 'string'
             ],
+            'title_en' => [
+                'required',
+                'string'
+            ],
             'description' => [
+                'nullable',
+                'string',
+                'min:2'
+            ],
+            'description_en' => [
                 'nullable',
                 'string',
                 'min:2'
@@ -212,9 +229,10 @@ class PortfolioService
 
         return Validator::make($request->all(), [
             'page' => 'numeric|gt:0',
-            'title' => 'nullable|max:500|min:2',
+            'title' => 'nullable|max:300|min:2',
+            'title_en' => 'nullable|max:300|min:2',
             'youth_id' => 'required|min:1',
-            'pageSize' => 'numeric|gt:0',
+            'page_size' => 'numeric|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])

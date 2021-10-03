@@ -19,7 +19,9 @@ class PortfolioFactory extends Factory
 
     	return [
             'title' => ucfirst($title),
+            'title_en' => ucfirst($title),
             'description' => $description,
+            'description_en' => $description,
             'file_path' => $filePath,
             'youth_id' => $youthId,
     	];

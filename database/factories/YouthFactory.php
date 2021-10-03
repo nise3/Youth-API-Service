@@ -22,7 +22,6 @@ class YouthFactory extends Factory
             'gender' => $this->faker->randomElement([1,2]),
             'mobile' => $this->faker->phoneNumber(),
             'email' => $email,
-            'skills' => [],
             'loc_division_id' => 1,
             'loc_district_id' => 1,
         ];
