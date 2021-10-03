@@ -18,30 +18,43 @@ class CreateYouthsTable extends Migration
             $table->string("idp_user_id", 100)->nullable();
             $table->string("username", 100)->unique()->comment("username is either email or mobile");
             $table->unsignedTinyInteger("user_name_type")->comment("1=>Email Type,2=>Mobile Number");
-            $table->string('first_name', 191);
+
+            $table->string('first_name', 500);
+            $table->string('first_name_en', 500);
             $table->string('last_name', 500);
+            $table->string('last_name_en', 500);
+
             $table->unsignedTinyInteger('gender')->comment('1=>male,2=>female,3=>others');
-            $table->json("skills")->comment('[skill1,skill2........upto 10 skills]');
+
             $table->string('email', 191)->unique();
             $table->string('mobile', 20)->unique();
+
             $table->date('date_of_birth');
+
             $table->unsignedTinyInteger('physical_disability_status')->comment('0=>No,1=>Yes')->default(0);
+
             $table->json('physical_disabilities')->comment("[disability1,disability2.......disability]")->nullable();
+
             $table->unsignedMediumInteger("loc_division_id");
             $table->unsignedMediumInteger("loc_district_id");
             $table->unsignedMediumInteger("loc_upazila_id")->nullable();
-            $table->string("city_or_town", 400)->nullable();
+
+            $table->string("village_or_area", 500)->nullable();
+            $table->string("village_or_area_en", 500)->nullable();
+            $table->string("house_n_road", 500)->nullable();
+            $table->string("house_n_road_en", 500)->nullable();
             $table->string("zip_or_postal_code", 10)->nullable();
-            $table->string("address", 1000)->nullable();
+
             $table->text("bio")->nullable();
-            $table->string("password")->comment("Alpha-numeric character = 1LookUpTheWordAlphanumeric");
+            $table->text("bio_en")->nullable();
+
             $table->string('photo', 300)->nullable();
             $table->string('cv_path', 300)->nullable();
-            $table->string("email_verification_code")->nullable();
-            $table->dateTime("email_verified_at")->nullable();
-            $table->string("sms_verification_code")->nullable();
-            $table->dateTime("sms_verified_at")->nullable();
-            $table->dateTime("send_verification_code_at")->nullable();
+
+            $table->string("verification_code", 10)->nullable()->comment('Email Or SMS verification code');
+            $table->dateTime("verification_code_sent_at")->nullable()->comment('Email Or SMS verification code sent at');
+            $table->dateTime("verification_code_verified_at")->nullable()->comment('Email Or SMS verification code verified at');
+
             $table->unsignedTinyInteger("row_status")->default(0);
             $table->timestamps();
             $table->softDeletes();
