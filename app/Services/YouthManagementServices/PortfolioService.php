@@ -33,7 +33,7 @@ class PortfolioService
         $order = $request['order'] ?? "ASC";
 
         /** @var Builder $portfolioBuilder */
-        $portfoliosBuilder = Portfolio::select([
+        $portfolioBuilder = Portfolio::select([
             'portfolios.id',
             'portfolios.title',
             'portfolios.title_en',
@@ -45,36 +45,35 @@ class PortfolioService
             'portfolios.created_at',
             'portfolios.updated_at'
         ]);
+        $portfolioBuilder->orderBy('portfolios.id', $order);
 
-        if ($youthId) {
-            $portfoliosBuilder->where('portfolios.youth_id', $youthId);
+        if (is_numeric($youthId)) {
+            $portfolioBuilder->where('portfolios.youth_id', $youthId);
         }
-
-        $portfoliosBuilder->orderBy('portfolios.id', $order);
 
         if (is_numeric($rowStatus)) {
-            $portfoliosBuilder->where('portfolios.row_status', $rowStatus);
+            $portfolioBuilder->where('portfolios.row_status', $rowStatus);
         }
         if (!empty($title)) {
-            $portfoliosBuilder->where('portfolios.title', 'like', '%' . $title . '%');
+            $portfolioBuilder->where('portfolios.title', 'like', '%' . $title . '%');
         }
 
         if (!empty($titleEn)) {
-            $portfoliosBuilder->where('portfolios.title_en', 'like', '%' . $titleEn . '%');
+            $portfolioBuilder->where('portfolios.title_en', 'like', '%' . $titleEn . '%');
         }
 
         /** @var Collection $portfolios */
 
         if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
-            $portfolios = $portfoliosBuilder->paginate($pageSize);
+            $portfolios = $portfolioBuilder->paginate($pageSize);
             $paginateData = (object)$portfolios->toArray();
             $response['current_page'] = $paginateData->current_page;
             $response['total_page'] = $paginateData->last_page;
             $response['page_size'] = $paginateData->per_page;
             $response['total'] = $paginateData->total;
         } else {
-            $portfolios = $portfoliosBuilder->get();
+            $portfolios = $portfolioBuilder->get();
         }
 
         $response['order'] = $order;
@@ -173,11 +172,15 @@ class PortfolioService
         $rules = [
             'title' => [
                 'required',
-                'string'
+                'string',
+                'max:400',
+                'min:2'
             ],
             'title_en' => [
                 'nullable',
-                'string'
+                'string',
+                'max:300',
+                'min:2'
             ],
             'description' => [
                 'nullable',
@@ -229,7 +232,7 @@ class PortfolioService
 
         return Validator::make($request->all(), [
             'page' => 'numeric|gt:0',
-            'title' => 'nullable|max:300|min:2',
+            'title' => 'nullable|max:400|min:2',
             'title_en' => 'nullable|max:300|min:2',
             'youth_id' => 'required|min:1',
             'page_size' => 'numeric|gt:0',

@@ -37,8 +37,8 @@ class SkillService
         $skillBuilder = Skill::select(
             [
                 'skills.id',
+                'skills.title',
                 'skills.title_en',
-                'skills.title_bn',
                 'skills.description',
                 'skills.row_status',
                 'skills.created_at',
@@ -95,8 +95,8 @@ class SkillService
         $skillBuilder = Skill::select(
             [
                 'skills.id',
+                'skills.title',
                 'skills.title_en',
-                'skills.title_bn',
                 'skills.description',
                 'skills.row_status',
                 'skills.created_at',
@@ -249,13 +249,12 @@ class SkillService
         ];
         $rules = [
             'title_en' => [
-                'required',
+                'nullable',
                 'string',
                 'max:191',
                 'min:2',
             ],
-            'title_bn' => [
-                'required',
+            'title' => [
                 'string',
                 'max: 400',
                 'min:2'
@@ -295,7 +294,7 @@ class SkillService
 
         return Validator::make($request->all(), [
             'title_en' => 'nullable|max:191|min:2',
-            'title_bn' => 'nullable|min:600|min:2',
+            'title' => 'nullable|max:400|min:2',
             'page' => 'numeric|gt:0',
             '$pageSize' => 'numeric|gt:0',
             'order' => [
