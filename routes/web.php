@@ -16,5 +16,8 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     $customRouter()->resourceRoute('youths', 'YouthController')->render();
     $customRouter()->resourceRoute('portfolios', 'PortfolioController')->render();
     $customRouter()->resourceRoute('skills', 'SkillController')->render();
+
+    /** youth verification */
+   $router->post('youths/{id}/verify', ["as"=>"youths.verify","uses"=>"YouthController@youthVerification"]);
 });
 

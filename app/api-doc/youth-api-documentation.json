@@ -143,8 +143,7 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/youthRegistration"
                                 },
-                                "example":{
-
+                                "example": {
                                 }
                             }
                         }
@@ -166,7 +165,8 @@
                             "type": "integer",
                             "example": 1
                         }
-                    },{
+                    },
+                    {
                         "name": "first_name",
                         "in": "query",
                         "required": true,
@@ -190,7 +190,7 @@
                         "required": true,
                         "schema": {
                             "type": "integer",
-                            "example":1
+                            "example": 1
                         }
                     },
                     {
@@ -227,7 +227,6 @@
                         "schema": {
                             "type": "string",
                             "example": "A required Microsoft Windows system directory, the System32 directory is located in either C:\\Windows\\System32 or C:\\Winnt\\system32 directory. The system32 directory contains Windows system files and software program files, vital to the operation of the Windows operating system and software programs running in Windows. The most common types of files found in the system32 directory are DLL (Dynamic Link Library) and EXE (executable) files."
-
                         }
                     },
                     {
@@ -258,7 +257,6 @@
                                     "$ref": "#/components/schemas/youthRegistration"
                                 },
                                 "example": {
-
                                 }
                             }
                         }
@@ -312,7 +310,6 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Youth"
                                     "$ref": "#/components/schemas/portfolio"
                                 },
                                 "example": {
@@ -668,379 +665,6 @@
     },
     "components": {
         "schemas": {
-            "youthRegistration": {
-                "type": "object",
-                "description": "Youth Profile",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
-                    "username": {
-                        "type": "string"
-                    },
-                    "first_name": {
-                        "type": "string"
-                    },
-                    "last_name": {
-                        "type": "string",
-                        "maxLength": 20
-                    },
-                    "gender": {
-                        "type": "integer",
-                        "enum": [1,2,3],
-                        "description": "1=>Male,2=>Female,3=>Others",
-                        "default": 1
-                    },
-                    "skills": {
-                        "type": "array",
-                        "items": {
-                            "type": "integer",
-                            "uniqueItems": true,
-                            "enum": [
-                                1,2,3
-                            ]
-                        }
-                    },
-                    "user_name_type": {
-                        "type": "integer",
-                        "enum": [1,2],
-                        "description":"1=>Email Type, 2=>Mobile Number"
-                    },
-                    "email": {
-                        "type": "string",
-                        "format": "email"
-                    },
-                    "mobile": {
-                        "type": "string"
-                    },
-                    "date_of_birth": {
-                        "type": "string",
-                        "format": "date"
-                    },
-                    "physical_disability_status": {
-                        "type": "integer",
-                        "enum": [0,1],
-                        "description": "0=>No,1=>Yes",
-                        "default": 0
-                    },
-                    "physical_disabilities": {
-                        "type": "array",
-                        "items": {
-                            "type": "integer",
-                            "uniqueItems": true,
-                            "enum": [
-                                1,2,3
-                            ]
-                        }
-                    },
-                    "password": {
-                        "type": "string",
-                        "format": "password",
-                        "example": "#Piyal_15021#"
-                    },
-                    "password_confirmation": {
-                        "type": "string",
-                        "format": "password",
-                        "example": "#Piyal_15021#"
-                    },
-                    "deleted_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    }
-                },
-                "required": [
-                    "username",
-                    "first_name",
-                    "last_name",
-                    "gender",
-                    "email",
-                    "mobile",
-                    "skills",
-                    "password",
-                    "password_confirmation",
-                    "physical_disability_status",
-                    "user_name_type",
-                    "date_of_birth"
-                ]
-            },
-            "youthProfileUpdateSchema": {
-                "type": "object",
-                "description": "Youth Profile",
-                "properties": {
-                    "first_name": {
-                        "type": "string",
-                        "example": "ABC Name"
-                    },
-                    "last_name": {
-                        "type": "string",
-                        "example": "abc"
-                    },
-                    "email": {
-                        "type": "string",
-                        "format": "email",
-                        "example": "test.123@gmail.com"
-                    },
-                    "mobile": {
-                        "type": "string",
-                        "example": "01767111434"
-                    },
-                    "city": {
-                        "type": "string",
-                        "example": "1/2 Dhaka Bangladesh"
-                    },
-                    "zip_or_postal_code": {
-                        "type": "string",
-                        "example": "12345"
-                    },
-                    "bio": {
-                        "type": "string",
-                        "example": "A required Microsoft Windows system directory, the System32 directory is located in either C:\\Windows\\System32 or C:\\Winnt\\system32 directory. The system32 directory contains Windows system files and software program files, vital to the operation of the Windows operating system and software programs running in Windows. The most common types of files found in the system32 directory are DLL (Dynamic Link Library) and EXE (executable) files."
-
-                    },
-                    "photo": {
-                        "type": "string",
-                        "example": "photo.png"
-                    },
-                    "cv_path": {
-                        "type": "string",
-                        "example": "cv_path.png"
-                    }
-                },
-                "required": [
-                    "first_name",
-                    "last_name",
-                    "gender",
-                    "email",
-                    "mobile",
-                    "city",
-                    "zip_or_postal_code",
-                    "bio"
-                ]
-            },
-            "portfolio": {
-                "type": "object",
-                "description": "Youth Portfolios",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
-                    "title": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
-                    },
-                    "file_path": {
-                        "type": "string"
-                    },
-                    "youth_id": {
-                        "type": "integer"
-                    },
-                    "deleted_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    }
-                },
-                "required": [
-                    "title",
-                    "youth_id"
-                ]
-            }
-        },
-        "parameters" : {
-        "parameters": {
-            "skillId": {
-                "name": "skillId",
-                "in": "path",
-                "required": true,
-                "schema": {
-                    "type": "integer",
-                    "example": 1
-                }
-            },
-            "title_bn_optional": {
-                "name": "title_bn",
-                "in": "query",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "title_en_optional": {
-                "name": "title_en",
-                "in": "query",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "row_status_optional": {
-                "name": "row_status",
-                "in": "query",
-                "required": false,
-                "schema": {
-                    "type": "integer"
-                }
-            },
-            "page_size": {
-                "name": "page_size",
-                "in": "query",
-                "required": false,
-                "schema": {
-                    "type": "integer"
-                }
-            },
-            "youthId": {
-                "name": "youthId",
-                "in": "path",
-                "required": true,
-                "schema": {
-                    "type": "integer",
-                    "example": 1
-                }
-            },
-            "name_en": {
-                "style": "form",
-                "name": "name_en",
-                "in": "query",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "name_bn": {
-                "style": "form",
-                "name": "name_bn",
-                "in": "query",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "name_bn_optional": {
-                "style": "form",
-                "name": "name_bn",
-                "in": "query",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "name_en_optional": {
-                "style": "form",
-                "name": "name_en",
-                "in": "query",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "page": {
-                "name": "page",
-                "in": "query",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "integer",
-                    "example": 1
-                }
-            },
-            "order": {
-                "in": "query",
-                "name": "order",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "string",
-                    "enum": [
-                        "asc",
-                        "desc"
-                    ]
-                }
-            },
-            "row_status": {
-                "name": "row_status",
-                "in": "query",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        0
-                    ],
-                    "example": 1
-                }
-            },
-            "title_optional": {
-                "name": "title",
-                "in": "query",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "page": {
-                "name": "page",
-                "in": "query",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "integer"
-                }
-            },
-            "page_size": {
-                "name": "page_size",
-                "in": "query",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "integer"
-                }
-            },
-            "youth_id": {
-                "name": "youth_id",
-                "in": "query",
-                "required": true,
-                "style": "form",
-                "schema": {
-                    "type": "integer"
-                }
-            },
-            "portfolioId": {
-                "name": "portfolioId",
-                "in": "path",
-                "required": true,
-                "style": "form",
-                "schema": {
-                    "type": "integer"
-                }
-            }
-        },
-        "schemas": {
             "Youth": {
                 "type": "object",
                 "description": "Provide Youth Profile Information",
@@ -1287,7 +911,382 @@
                     "title_en",
                     "title_bn"
                 ]
+            },
+            "youthRegistration": {
+                "type": "object",
+                "description": "Youth Profile",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "gender": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
+                        "description": "1=>Male,2=>Female,3=>Others",
+                        "default": 1
+                    },
+                    "skills": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "uniqueItems": true,
+                            "enum": [
+                                1,
+                                2,
+                                3
+                            ]
+                        }
+                    },
+                    "user_name_type": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2
+                        ],
+                        "description": "1=>Email Type, 2=>Mobile Number"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "mobile": {
+                        "type": "string"
+                    },
+                    "date_of_birth": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "physical_disability_status": {
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "description": "0=>No,1=>Yes",
+                        "default": 0
+                    },
+                    "physical_disabilities": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "uniqueItems": true,
+                            "enum": [
+                                1,
+                                2,
+                                3
+                            ]
+                        }
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "#Piyal_15021#"
+                    },
+                    "password_confirmation": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "#Piyal_15021#"
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "username",
+                    "first_name",
+                    "last_name",
+                    "gender",
+                    "email",
+                    "mobile",
+                    "skills",
+                    "password",
+                    "password_confirmation",
+                    "physical_disability_status",
+                    "user_name_type",
+                    "date_of_birth"
+                ]
+            },
+            "youthProfileUpdateSchema": {
+                "type": "object",
+                "description": "Youth Profile",
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "example": "ABC Name"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "example": "abc"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "test.123@gmail.com"
+                    },
+                    "mobile": {
+                        "type": "string",
+                        "example": "01767111434"
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "1/2 Dhaka Bangladesh"
+                    },
+                    "zip_or_postal_code": {
+                        "type": "string",
+                        "example": "12345"
+                    },
+                    "bio": {
+                        "type": "string",
+                        "example": "A required Microsoft Windows system directory, the System32 directory is located in either C:\\Windows\\System32 or C:\\Winnt\\system32 directory. The system32 directory contains Windows system files and software program files, vital to the operation of the Windows operating system and software programs running in Windows. The most common types of files found in the system32 directory are DLL (Dynamic Link Library) and EXE (executable) files."
+                    },
+                    "photo": {
+                        "type": "string",
+                        "example": "photo.png"
+                    },
+                    "cv_path": {
+                        "type": "string",
+                        "example": "cv_path.png"
+                    }
+                },
+                "required": [
+                    "first_name",
+                    "last_name",
+                    "gender",
+                    "email",
+                    "mobile",
+                    "city",
+                    "zip_or_postal_code",
+                    "bio"
+                ]
+            },
+            "portfolio": {
+                "type": "object",
+                "description": "Youth Portfolios",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "file_path": {
+                        "type": "string"
+                    },
+                    "youth_id": {
+                        "type": "integer"
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "title",
+                    "youth_id"
+                ]
+            }
+        },
+        "parameters": {
+            "skillId": {
+                "name": "skillId",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            "title_bn_optional": {
+                "name": "title_bn",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "title_en_optional": {
+                "name": "title_en",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "row_status_optional": {
+                "name": "row_status",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "page_size": {
+                "name": "page_size",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "youthId": {
+                "name": "youthId",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            "name_en": {
+                "style": "form",
+                "name": "name_en",
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "name_bn": {
+                "style": "form",
+                "name": "name_bn",
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "name_bn_optional": {
+                "style": "form",
+                "name": "name_bn",
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "name_en_optional": {
+                "style": "form",
+                "name": "name_en",
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "page": {
+                "name": "page",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            "order": {
+                "in": "query",
+                "name": "order",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "asc",
+                        "desc"
+                    ]
+                }
+            },
+            "row_status": {
+                "name": "row_status",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        0
+                    ],
+                    "example": 1
+                }
+            },
+            "title_optional": {
+                "name": "title",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "page_size": {
+                "name": "page_size",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "youth_id": {
+                "name": "youth_id",
+                "in": "query",
+                "required": true,
+                "style": "form",
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "portfolioId": {
+                "name": "portfolioId",
+                "in": "path",
+                "required": true,
+                "style": "form",
+                "schema": {
+                    "type": "integer"
+                }
             }
         }
     }
-}
+
+
