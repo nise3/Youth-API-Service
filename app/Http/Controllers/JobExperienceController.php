@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Portfolio;
 use App\Services\YouthManagementServices\JobExperienceService;
-use App\Services\YouthManagementServices\PortfolioService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -56,7 +55,7 @@ class JobExperienceController extends Controller
     public function read(int $id): JsonResponse
     {
         try {
-            $response = $this->portfolioService->getOnePortfolio($id, $this->startTime);
+            $response = $this->jobExperienceService->getOneJobExperience($id, $this->startTime);
         } catch (Throwable $e) {
             return $e;
         }
@@ -72,9 +71,9 @@ class JobExperienceController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $validated = $this->portfolioService->validator($request)->validate();
+        $validated = $this->jobExperienceService->validator($request)->validate();
         try {
-            $portfolio = $this->portfolioService->store($validated);
+            $portfolio = $this->jobExperienceService->store($validated);
             $response = [
                 'data' => $portfolio,
                 '_response_status' => [

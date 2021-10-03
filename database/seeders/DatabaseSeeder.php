@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             GroupSeeder::class,
             LanguageInfoSeeder::class,
             PortfolioSeeder::class,
+            JobExperienceSeeder::class,
             SkillSeeder::class
         ]);
     }

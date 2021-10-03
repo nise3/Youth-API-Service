@@ -176,7 +176,7 @@ class PortfolioService
                 'string'
             ],
             'title_en' => [
-                'required',
+                'nullable',
                 'string'
             ],
             'description' => [

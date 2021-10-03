@@ -17,7 +17,7 @@ class CreatePortfoliosTable extends Migration
             $table->increments("id");
             $table->unsignedInteger("youth_id");
             $table->string('title',300);
-            $table->string('title_en',300);
+            $table->string('title_en',300)->nullable();
             $table->text("description")->nullable();
             $table->text("description_en")->nullable();
             $table->string("file_path", 500)->nullable();

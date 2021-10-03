@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Model;
+use App\Models\EmploymentType;
 use App\Models\JobExperience;
 use App\Models\Youth;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -33,6 +34,7 @@ class JobExperienceFactory extends Factory
             'start_date' => $this->faker->dateTime(),
             'end_date' => $this->faker->dateTime(),
             'youth_id' => $youthId,
+            'employment_type_id' => EmploymentType::all()->random()->id,
         ];
     }
 }

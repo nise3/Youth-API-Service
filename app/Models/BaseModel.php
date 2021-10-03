@@ -94,4 +94,7 @@ abstract class BaseModel extends Model
         self::USER_TYPE_MOBILE_NUMBER
     ];
 
+    public const CURRENTLY_WORKING = 1;
+    public const CURRENTLY_NOT_WORKING = 0;
+
 }
