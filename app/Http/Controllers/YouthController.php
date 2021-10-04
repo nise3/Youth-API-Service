@@ -82,16 +82,11 @@ class YouthController extends Controller
                 'username' => $validated['username'],
                 'password' => $validated['password']
             ];
-            $httpClient = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
-            if ($httpClient->json("id")) {
-                $validated['idp_user_id'] = $httpClient->json("id");
-                if ($validated['user_name_type'] == 1) {
-                    $validated["email_verification_code"] = "1234";
-                    $validated['send_verification_code_at'] = Carbon::now();
-                } elseif ($validated['user_name_type'] == 2) {
-                    $validated["sms_verification_code"] = "1234";
-                    $validated['send_verification_code_at'] = Carbon::now();
-                }
+            $httpClient = Uuid::uuid();//$this->youthProfileService->idpUserCreate($idpUserPayLoad);
+            if ($httpClient) {
+                $validated['idp_user_id'] = $httpClient;
+                $validated["verification_code"] = "1234";
+                $validated['verification_code_sent_at'] = Carbon::now();
                 $youth = $this->youthProfileService->store($youth, $validated);
                 $response = [
                     'data' => $youth ?? new stdClass(),
