@@ -42,12 +42,14 @@ class AuthServiceProvider extends ServiceProvider
 //        });
 
         $token = Request::capture()->header('Token');
+
         $authUser = null;
         if ($token) {
             $header = explode(" ", $token);
 
             if (count($header) > 0) {
                 $tokenParts = explode(".", $header[0]);
+
                 if (count($tokenParts) == 3) {
 
                     $tokenPayload = base64_decode($tokenParts[1]);

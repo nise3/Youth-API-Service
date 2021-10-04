@@ -27,11 +27,12 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     $router->post('youths/{id}/verify', ["as" => "youths.verify", "uses" => "YouthController@youthVerification"]);
 
     /** youth profile */
-    $router->get('youth-profiles', ["as"=>"youth-profiles.get-profile","uses"=>"YouthProfileController@getYouthProfile"]);
-    $router->post('youth-profiles', ["as"=>"youth-profiles.create","uses"=>"YouthProfileController@youthRegister"]);
-    $router->post('youth-profiles-update', ["as"=>"youth-profiles.update","uses"=>"YouthProfileController@youthProfileUpdate"]);
-    $router->post('youth-profile-verify', ["as"=>"youth-profiles.verify","uses"=>"YouthProfileController@youthVerification"]);
-    $router->post('youth-resend-verify-code', ["as"=>"youth-profiles.youth-resend-verify-code","uses"=>"YouthProfileController@resendVerificationCode"]);
+    $router->get('youth-profile', ["as"=>"youth-profile.get-profile","uses"=>"YouthProfileController@getYouthProfile"]);
+    $router->post('youth-profile', ["as"=>"youth-profile.create","uses"=>"YouthProfileController@youthRegister"]);
+    $router->post('youth-profile-update', ["as"=>"youth-profile.update","uses"=>"YouthProfileController@youthProfileUpdate"]);
+    $router->post('youth-profile-verify', ["as"=>"youth-profile.verify","uses"=>"YouthProfileController@youthVerification"]);
+    $router->post('youth-resend-verify-code', ["as"=>"youth-profile.youth-resend-verify-code","uses"=>"YouthProfileController@resendVerificationCode"]);
+    $router->post('youth-set-freelance-status', ["as"=>"youth-profile.youth-set-freelance-status","uses"=>"YouthProfileController@setFreelanceStatus"]);
 
 });
 

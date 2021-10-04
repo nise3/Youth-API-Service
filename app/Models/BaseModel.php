@@ -45,6 +45,11 @@ abstract class BaseModel extends Model
         self::FALSE
     ];
 
+    public const FREELANCE_PROFILE_STATUS=[
+        self::TRUE,
+        self::FALSE
+    ];
+
     public const MALE = 1;
     public const FEMALE = 2;
     public const OTHERS = 3;

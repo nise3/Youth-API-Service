@@ -4,6 +4,7 @@
 namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
+use App\Models\PhysicalDisability;
 use App\Models\Skill;
 use App\Models\Trainer;
 use App\Models\Youth;
@@ -12,6 +13,7 @@ use Faker\Provider\Uuid;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -29,135 +31,68 @@ use Symfony\Component\HttpFoundation\Response;
 class YouthProfileService
 {
     /**
-     * @param Request $request
-     * @param Carbon $startTime
-     * @return array
+     * @return Builder|Model|object
      */
-    public function getYouthProfileList(Request $request, Carbon $startTime): array
+    public function getYouthProfile()
     {
-        $paginateLink = [];
-        $page = [];
-        $firstName = $request->query('first_name');
 
-        $lastName = $request->query('last_name');
-        $paginate = $request->query('page');
-        $order = !empty($request->query('order')) ? $request->query('order') : 'ASC';
-
-        /** @var Builder $youthProfileBuilder */
-
-        $youthProfileBuilder = Youth::select(
-            [
-                'youths.id as id',
-                'youths.first_name',
-                'youths.last_name',
-                'youths.gender',
-                'youths.skills',
-                'youths.email',
-                'youths.mobile',
-                'youths.date_of_birth',
-                'youths.physical_disability_status',
-                'youths.physical_disabilities',
-                'youths.city_or_town',
-                'youths.address',
-                'youths.zip_or_postal_code',
-                'youths.bio',
-                'youths.photo',
-                'youths.cv_path',
-                'youths.date_of_birth',
-                'youths.created_at',
-                'youths.updated_at',
-            ]
-        );
-
-        $youthProfileBuilder->orderBy('youths.id', $order);
-
-        if (!empty($firstName)) {
-            $youthProfileBuilder->where('youths.first_name', 'like', '%' . $firstName . '%');
-        } elseif (!empty($lastName)) {
-            $youthProfileBuilder->where('youths.last_name', 'like', '%' . $lastName . '%');
-        }
-
-        /** @var Collection $youthProfiles */
-
-        if (!empty($paginate)) {
-            $youthProfiles = $youthProfileBuilder->paginate(10);
-            $paginateData = (object)$youthProfiles->toArray();
-            $page = [
-                "size" => $paginateData->per_page,
-                "total_element" => $paginateData->total,
-                "total_page" => $paginateData->last_page,
-                "current_page" => $paginateData->current_page
-            ];
-            $paginateLink[] = $paginateData->links;
-        } else {
-            $youthProfiles = $youthProfileBuilder->get();
-        }
-
-        $data = $youthProfiles->toArray();
-
-        return [
-            "data" => $data['data'] ?? $data,
-            "_response_status" => [
-                "success" => true,
-                "code" => Response::HTTP_OK,
-                "started" => $startTime->format('H i s'),
-                "finished" => Carbon::now()->format('H i s'),
-            ],
-            "_links" => [
-                'paginate' => $paginateLink,
-            ],
-            "_page" => $page,
-            "_order" => $order
-        ];
-    }
-
-    /**
-     * @param int $id
-     * @param Carbon $startTime
-     * @return array
-     */
-    public function getYouthProfile(int $id, Carbon $startTime): array
-    {
         /** @var Builder $youthProfileBuilder */
         $youthProfileBuilder = Youth::select(
             [
                 'youths.id as id',
                 'youths.first_name',
+                'youths.first_name_en',
                 'youths.last_name',
+                'youths.last_name_en',
                 'youths.gender',
-                'youths.skills',
                 'youths.email',
                 'youths.mobile',
                 'youths.date_of_birth',
                 'youths.physical_disability_status',
-                'youths.physical_disabilities',
-                'youths.city_or_town',
+                'youths.loc_division_id',
+                'loc_divisions.title_en as loc_division_title_en',
+                'loc_divisions.title_bn as loc_division_title_bn',
+                'youths.loc_district_id',
+                'loc_districts.title_en as loc_district_title_en',
+                'loc_districts.title_bn as loc_district_title_bn',
+                'youths.loc_upazila_id',
+                'loc_upazilas.title_en as loc_upazila_title_en',
+                'loc_upazilas.title_bn as loc_upazila_title_bn',
+                'youths.village_or_area',
+                'youths.village_or_area_en',
+                'youths.house_n_road',
+                'youths.house_n_road_en',
                 'youths.zip_or_postal_code',
                 'youths.bio',
-                'youths.address',
+                'youths.bio_en',
                 'youths.photo',
-                'youths.cv_path',
-                'youths.date_of_birth',
-                'youths.created_at',
-                'youths.updated_at',
+                'youths.cv_path'
             ]
         );
 
-        $youthProfileBuilder->with(["languages","skills","educations","jobExperiences","certifications","portfolios"]);
-        $youthProfileBuilder->where('youths.idp_user_id', '=', Auth::id());
+        $youthProfileBuilder->leftJoin('loc_divisions', function ($join) {
+            $join->on('loc_divisions.id', '=', 'youths.loc_division_id')
+                ->whereNull('loc_divisions.deleted_at')
+                ->where('loc_divisions.row_status', BaseModel::ROW_STATUS_ACTIVE);
+        });
 
-        /** @var Youth $youthProfile */
-        $youthProfile = $youthProfileBuilder->first();
+        $youthProfileBuilder->leftJoin('loc_districts', function ($join) {
+            $join->on('loc_districts.id', '=', 'youths.loc_district_id')
+                ->whereNull('loc_districts.deleted_at')
+                ->where("loc_districts.row_status", BaseModel::ROW_STATUS_ACTIVE);
 
-        return [
-            "data" => $youthProfile ?: [],
-            "_response_status" => [
-                "success" => true,
-                "code" => Response::HTTP_OK,
-                "started" => $startTime->format('H i s'),
-                "finished" => Carbon::now()->format('H i s'),
-            ]
-        ];
+        });
+
+        $youthProfileBuilder->leftJoin('loc_upazilas', function ($join) {
+            $join->on('loc_upazilas.id', '=', 'youths.loc_upazila_id')
+                ->whereNull('loc_upazilas.deleted_at')
+                ->where("loc_upazilas.row_status", BaseModel::ROW_STATUS_ACTIVE);
+
+        });
+
+        $youthProfileBuilder->with(["physicalDisabilities","languages", "skills", "educations", "jobExperiences", "certifications", "portfolios"]);
+        $youthProfileBuilder->where('youths.id', '=', Auth::id());
+        return $youthProfileBuilder->first();
 
     }
 
@@ -170,23 +105,11 @@ class YouthProfileService
         $youth->fill($data);
         $youth->save();
         $this->assignSkills($youth, $data["skills"]);
+        if ($data['physical_disabilities']) {
+            $this->assignPhysicalDisabilities($youth, $data['physical_disabilities']);
+        }
         return $youth;
     }
-
-
-    /**
-     * @param Youth $youth
-     * @param array $skills
-     */
-    private function assignSkills(Youth $youth, array $skills)
-    {
-        Log::info("youth" . json_encode($youth));
-        /** Assign skills to Youth */
-        $skillIds = Skill::whereIn("id", $skills)->orderBy('id', 'ASC')->pluck('id')->toArray();
-        $youth->skills()->sync($skillIds);
-
-    }
-
 
     /**
      * @param Youth $youth
@@ -197,17 +120,42 @@ class YouthProfileService
     {
         $youth->fill($data);
         $youth->save();
+        $this->assignSkills($youth, $data["skills"]);
         return $youth;
     }
 
+    /**
+     * @param Youth $youth
+     * @param array $skills
+     */
+    private function assignSkills(Youth $youth, array $skills)
+    {
+        /** Assign skills to Youth */
+        $skillIds = Skill::whereIn("id", $skills)->orderBy('id', 'ASC')->pluck('id')->toArray();
+        $youth->skills()->sync($skillIds);
+
+    }
+
+    /**
+     * @param Youth $youth
+     * @param array $disabilities
+     */
+    private function assignPhysicalDisabilities(Youth $youth, array $disabilities)
+    {
+        /** Assign skills to Youth */
+        $disabilityIds = PhysicalDisability::whereIn("id", $disabilities)->orderBy('id', 'ASC')->pluck('id')->toArray();
+        $youth->physicalDisabilities()->sync($disabilityIds);
+
+    }
 
     /**
      * @param Youth $youth
      * @return bool
      */
-    public function destroy(Youth $youth): bool
+    public function setFreelanceStatus(Youth $youth, array $data): bool
     {
-        return $youth->delete();
+        $youth->is_freelance_profile = $data['freelance_profile_status'];
+        return $youth->save();
     }
 
     /**
@@ -299,7 +247,6 @@ class YouthProfileService
     public function idpUserCreate(array $data)
     {
         $url = clientUrl(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
-        Log::info($url);
         $client = Http::retry(3)->withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
             ->withHeaders([
                 'Content-Type' => 'application/json'
@@ -321,15 +268,35 @@ class YouthProfileService
                         'type' => 'work',
                     ]
                 ],
-            ])->throw(function ($response, $e) {
-                return $e;
-            });
+            ]);
 
         Log::channel('idp_user')->info('idp_user_payload', $data);
         Log::channel('idp_user')->info('idp_user_info', $client->json());
 
         return $client;
 
+    }
+
+    /**
+     * @param Request $request
+     * @return Validator
+     */
+    public function freelanceStatusValidator(Request $request): Validator
+    {
+        $customMessage = [
+            "freelance_profile_status.in" => [
+                "code" => 30000,
+                "message" => "The freelance_status is either 0 or 1"
+            ]
+        ];
+
+        $rules = [
+            "freelance_profile_status" => [
+                "required",
+                Rule::in(BaseModel::FREELANCE_PROFILE_STATUS)
+            ]
+        ];
+        return \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $customMessage);
     }
 
     /**
@@ -456,7 +423,9 @@ class YouthProfileService
             ],
             "skills" => [
                 "required",
-                "array"
+                "array",
+                "min:1",
+                "max:10"
             ],
             "skills.*" => [
                 "required",
@@ -561,11 +530,16 @@ class YouthProfileService
     }
 
 
-    public function getAuthYouth(string $id): stdClass
+    /**
+     * @param string $id
+     * @return Youth
+     */
+    public function getAuthYouth(string $id): ?Youth
     {
+        /** @var Youth $youth */
         $youth = Youth::where('idp_user_id', $id)
             ->where("row_status", BaseModel::ROW_STATUS_ACTIVE)
             ->first();
-        return $youth ?? new stdClass();
+        return $youth;
     }
 }

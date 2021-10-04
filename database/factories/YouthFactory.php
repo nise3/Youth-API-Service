@@ -13,8 +13,9 @@ class YouthFactory extends Factory
     {
         $name = $this->faker->name();
         $email = $this->faker->safeEmail();
-
+        $idp_user_id="327ec391-a2b9-44c6-a271-3a9b98e71ee5";
         return [
+            "idp_user_id"=>$idp_user_id,
             'first_name' => ucfirst($name),
             'last_name' => ucfirst($name),
             'username' => $email,
@@ -24,6 +25,7 @@ class YouthFactory extends Factory
             'email' => $email,
             'loc_division_id' => 1,
             'loc_district_id' => 1,
+            'row_status'=>1
         ];
     }
 }

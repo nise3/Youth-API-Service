@@ -21,4 +21,6 @@ class Skill extends BaseModel
      * @var string[]
      */
     protected $guarded = ['id'];
+
+    protected $hidden=["pivot"];
 }
