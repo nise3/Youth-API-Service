@@ -23,7 +23,6 @@ class PortfolioService
 
     public function getAllPortfolios(array $request, Carbon $startTime): array
     {
-
         $title = $request['title'] ?? "";
         $titleEn = $request['title_en'] ?? "";
         $youthId = $request['youth_id'];

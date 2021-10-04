@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class BaseModel
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 abstract class BaseModel extends Model
 {
 
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     public const COMMON_GUARDED_FIELDS_SIMPLE = ['id', 'created_at', 'updated_at'];
     public const COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE = ['id', 'created_at', 'updated_at', 'deleted_at'];
@@ -80,16 +81,16 @@ abstract class BaseModel extends Model
     public const PASSWORD_MIN_LENGTH = "min:8";
     public const PASSWORD_MAX_LENGTH = "max:50";
 
-    public const PASSWORD_COMMON_RULES=[
+    public const PASSWORD_COMMON_RULES = [
         self::PASSWORD_TYPE,
         self::PASSWORD_MIN_LENGTH,
         self::PASSWORD_MAX_LENGTH,
         self::PASSWORD_REGEX
     ];
 
-    public const USER_TYPE_EMAIL=1;
-    public const USER_TYPE_MOBILE_NUMBER=2;
-    public const USER_TYPE=[
+    public const USER_TYPE_EMAIL = 1;
+    public const USER_TYPE_MOBILE_NUMBER = 2;
+    public const USER_TYPE = [
         self::USER_TYPE_EMAIL,
         self::USER_TYPE_MOBILE_NUMBER
     ];

@@ -16,6 +16,7 @@ use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use ParseError;
+use PDOException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -121,8 +122,7 @@ class Handler extends ExceptionHandler
                 "query_time" => 0
             ];
             return response()->json($errors);
-        }
-        elseif ($e instanceof ParseError) {
+        } elseif ($e instanceof ParseError) {
             $errors['_response_status'] = [
                 'success' => false,
                 "code" => ResponseAlias::HTTP_INTERNAL_SERVER_ERROR,
@@ -138,8 +138,15 @@ class Handler extends ExceptionHandler
                 "query_time" => 0
             ];
             return response()->json($errors);
-        }
-        elseif ($e instanceof Exception) {
+        } elseif ($e instanceof PDOException) {
+            $errors['_response_status'] = [
+                'success' => false,
+                "code" => ResponseAlias::HTTP_INTERNAL_SERVER_ERROR,
+                "message" => "PDO exception",
+                "query_time" => 0
+            ];
+            return response()->json($errors);
+        } elseif ($e instanceof Exception) {
             $errors['_response_status'] = [
                 'success' => false,
                 "code" => ResponseAlias::HTTP_INTERNAL_SERVER_ERROR,
