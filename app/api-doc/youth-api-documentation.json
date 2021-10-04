@@ -1081,6 +1081,14 @@
                             ]
                         }
                     },
+                    "loc_division_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "loc_district_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
                     "password": {
                         "type": "string",
                         "format": "password",
@@ -1119,7 +1127,9 @@
                     "password_confirmation",
                     "physical_disability_status",
                     "user_name_type",
-                    "date_of_birth"
+                    "date_of_birth",
+                    "loc_district_id",
+                    "loc_division_id"
                 ]
             },
             "youthProfileUpdateSchema": {
