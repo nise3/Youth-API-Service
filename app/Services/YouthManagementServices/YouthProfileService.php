@@ -8,6 +8,7 @@ use App\Models\Skill;
 use App\Models\Trainer;
 use App\Models\Youth;
 use Carbon\Carbon;
+use Faker\Provider\Uuid;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -162,13 +163,24 @@ class YouthProfileService
      */
     public function store(Youth $youth, array $data): Youth
     {
-        /** Assign skills to Youth */
-        $skillIds = Skill::whereIn("id", $data['skills'])->orderBy('id', 'ASC')->pluck('id')->toArray();
-        Log::info(json_encode([$data['skills'],$skillIds]));
-//        $youth->skills()->sync($skillIds);
         $youth->fill($data);
         $youth->save();
+        $this->assignSkills($youth, $data["skills"]);
         return $youth;
+    }
+
+
+    /**
+     * @param Youth $youth
+     * @param array $skills
+     */
+    private function assignSkills(Youth $youth, array $skills)
+    {
+        Log::info("youth" . json_encode($youth));
+        /** Assign skills to Youth */
+        $skillIds = Skill::whereIn("id", $skills)->orderBy('id', 'ASC')->pluck('id')->toArray();
+        $youth->skills()->sync($skillIds);
+
     }
 
 
@@ -194,25 +206,86 @@ class YouthProfileService
         return $youth->delete();
     }
 
+    /**
+     * @param array $data
+     * @return bool
+     */
     public function verifyYouth(array $data): bool
     {
         $email = $data['email'] ?? null;
         $mobile = $data['mobile'] ?? null;
         $code = $data['verification_code'] ?? null;
-
         $conditionalAttribute = "email";
         $conditionalValue = $email;
         if ($mobile) {
             $conditionalAttribute = "mobile";
             $conditionalValue = $mobile;
         }
-        $youth = Youth::where([
-                $conditionalAttribute, "=", $conditionalValue,
-                "verification_code", "=", $code
-            ]
-        )->first();
+        /** @var Youth $youth */
+        $youth = Youth::where($conditionalAttribute, $conditionalValue)
+            ->where("verification_code", $code)
+            ->where("row_status", BaseModel::ROW_STATUS_INACTIVE)
+            ->first();
 
+        if ($youth) {
+            $youth->row_status = BaseModel::ROW_STATUS_ACTIVE;
+            $youth->verification_code_verified_at = Carbon::now();
+            $youth->save();
+            return true;
+        }
+        return false;
+    }
 
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function sendVerifyCode(array $data): bool
+    {
+        $email = $data["email"] ?? null;
+        $mobile_number = $data["mobile"] ?? null;
+        if ($email) {
+            return true;
+        } elseif ($mobile_number) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function resendCode(array $data): bool
+    {
+        $email = $data["email"] ?? null;
+        $mobile = $data["mobile"] ?? null;
+        $attributeField = $email ? "email" : "mobile";
+        $payLoad[$attributeField] = $email ?: $mobile;
+
+        $code = $this->generateCode();
+
+        /** @var Youth $youth */
+        $youth = Youth::where($attributeField, $payLoad[$attributeField])
+            ->where("row_status", BaseModel::ROW_STATUS_INACTIVE)
+            ->first();
+
+        if ($youth) {
+            $youth->verification_code = $code;
+            $youth->verification_code_sent_at = Carbon::now();
+            $youth->save();
+            $payLoad["verification_code"] = $code;
+            return $this->sendVerifyCode($payLoad);
+        }
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function generateCode(): string
+    {
+        return "1234";
     }
 
     /**
@@ -244,7 +317,9 @@ class YouthProfileService
                         'type' => 'work',
                     ]
                 ],
-            ]);
+            ])->throw(function ($response, $e) {
+                return $e;
+            });
 
         Log::channel('idp_user')->info('idp_user_payload', $data);
         Log::channel('idp_user')->info('idp_user_info', $client->json());
@@ -272,11 +347,15 @@ class YouthProfileService
 
         $rules = [
             "email" => [
-                "nullable",
+                Rule::requiredIf(function () use ($request) {
+                    return !array_key_exists("mobile", $request->all());
+                }),
                 "exists:youths,email"
             ],
             "mobile" => [
-                "nullable",
+                Rule::requiredIf(function () use ($request) {
+                    return !array_key_exists("email", $request->all());
+                }),
                 "max:11",
                 BaseModel::MOBILE_REGEX,
                 "exists:youths,mobile"
@@ -284,6 +363,39 @@ class YouthProfileService
             "verification_code" => [
                 "required",
                 "digits:4",
+            ]
+        ];
+
+        return \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $customMessage);
+    }
+
+    public function resendCodeValidator(Request $request): Validator
+    {
+        $customMessage = [
+            "email.exists" => [
+                "code" => 24000,
+                "message" => "The email is not exists in the system"
+            ],
+            "mobile.exists" => [
+                "code" => 24000,
+                "message" => "The mobile is not exists in the system"
+            ],
+        ];
+
+        $rules = [
+            "email" => [
+                Rule::requiredIf(function () use ($request) {
+                    return !array_key_exists("mobile", $request->all());
+                }),
+                "exists:youths,email"
+            ],
+            "mobile" => [
+                Rule::requiredIf(function () use ($request) {
+                    return !array_key_exists("email", $request->all());
+                }),
+                "max:11",
+                BaseModel::MOBILE_REGEX,
+                "exists:youths,mobile"
             ]
         ];
 
@@ -304,17 +416,23 @@ class YouthProfileService
 
         $rules = [
             "username" => [
-                'required_if:' . $id . ',==,null',
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
                 "unique:youths,username"
             ],
             "user_name_type" => [
-                'required_if:' . $id . ',==,null',
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
                 Rule::in(BaseModel::USER_TYPE)
             ],
             "first_name" => "required|string|min:2|max:191",
             "last_name" => "required|string|min:2|max:191",
             "gender" => [
-                'required_if:' . $id . ',==,null',
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
                 "int",
                 Rule::in(BaseModel::GENDER)
             ],
@@ -326,39 +444,52 @@ class YouthProfileService
                 "unique:youths,mobile," . $id
             ],
             "date_of_birth" => [
-                'required_if:' . $id . ',==,null',
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
                 'date',
                 'date_format:Y-m-d'
             ],
             "skills" => [
-                'required_if:' . $id . ',==,null',
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
                 "array"
             ],
             "skills.*" => [
-                'required_if:' . $id . ',==,null',
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
                 'numeric',
                 "distinct",
                 "min:1"
             ],
             "physical_disability_status" => [
-                'required_if:' . $id . ',==,null',
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
                 "int",
                 Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUS)
             ],
             "physical_disabilities" => [
-                "required_if:" . $id . ",==,null",
-                "required_if:physical_disability_status,==," . BaseModel::TRUE,
+                Rule::requiredIf(function () use ($id, $request) {
+                    return ($id == null && $request->physical_disability_status == BaseModel::TRUE);
+                }),
                 "array",
                 "min:1"
             ],
             "physical_disabilities.*" => [
-                "required_if:" . $id . ",==,null",
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
                 "numeric",
                 "distinct",
                 "min:1"
             ],
             "password" => [
-                "required_if:" . $id . ",==,null",
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
                 "required_with:password_confirmation",
                 BaseModel::PASSWORD_REGEX,
                 BaseModel::PASSWORD_TYPE,
@@ -367,7 +498,9 @@ class YouthProfileService
                 "confirmed"
             ],
             "password_confirmation" => [
-                "required_if:" . $id . ",==,null",
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
                 "required_with:password",
                 BaseModel::PASSWORD_REGEX,
                 BaseModel::PASSWORD_TYPE,
@@ -384,29 +517,31 @@ class YouthProfileService
                 "exists:loc_districts,id",
                 "int"
             ],
-            "loc_upazila_id"=>[
+            "loc_upazila_id" => [
                 "nullable",
                 "numeric",
                 "exists:loc_upazilas,id",
             ],
-            "village_or_area"=>[
+            "village_or_area" => [
                 "nullable",
                 "string"
             ],
-            "village_or_area_en"=>[
+            "village_or_area_en" => [
                 "nullable",
                 "string"
             ],
-            "house_n_road"=>[
+            "house_n_road" => [
                 "nullable",
                 "string"
             ],
-            "house_n_road_en"=>[
+            "house_n_road_en" => [
                 "nullable",
                 "string"
             ],
             "zip_or_postal_code" => [
-                "required_if:" . $id . ",!=,null",
+                Rule::requiredIf(function () use ($id) {
+                    return $id != null;
+                }),
                 "string"
             ],
             "bio" => [

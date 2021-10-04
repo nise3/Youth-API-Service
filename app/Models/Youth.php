@@ -37,11 +37,9 @@ use PHPUnit\Util\Json;
  * @property string | null photo
  * @property string | null cv_path
  * @property string password
- * @property string email_verification_code
- * @property Carbon email_verified_at
- * @property Carbon sms_verification_code
- * @property Carbon sms_verified_at
- * @property Carbon send_verification_code_at
+ * @property string verification_code
+ * @property Carbon verification_code_verified_at
+ * @property Carbon verification_code_sent_at
  * @property int row_status
  * @property Carbon deleted_at
  * @property Carbon created_at

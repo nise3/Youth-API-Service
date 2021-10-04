@@ -31,14 +31,14 @@ abstract class BaseModel extends Model
     public const CORE_CLIENT_URL_TYPE = "CORE";
     public const IDP_SERVER_CLIENT_URL_TYPE = "IDP_SERVER";
 
-    public const ROW_STATUS_ACTIVE = '1';
-    public const ROW_STATUS_INACTIVE = '0';
+    public const ROW_STATUS_ACTIVE = 1;
+    public const ROW_STATUS_INACTIVE = 0;
 
     public const ROW_ORDER_ASC = 'ASC';
     public const ROW_ORDER_DESC = 'DESC';
 
     public const TRUE = 1;
-    public const FALSE = 1;
+    public const FALSE = 0;
 
     public const PHYSICAL_DISABILITIES_STATUS = [
         self::TRUE,

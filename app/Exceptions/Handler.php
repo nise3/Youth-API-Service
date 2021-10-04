@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -35,6 +36,7 @@ class Handler extends ExceptionHandler
         HttpException::class,
         ModelNotFoundException::class,
         ValidationException::class,
+        RequestException::class
     ];
 
     /**
@@ -63,7 +65,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e)
     {
-
         if ($e instanceof HttpResponseException) {
             $errors['_response_status'] = [
                 'success' => false,
@@ -73,6 +74,16 @@ class Handler extends ExceptionHandler
             ];
             return response()->json($errors);
 
+        } elseif ($e instanceof RequestException) {
+            $errors['_response_status'] = [
+                'success' => false,
+                "code" => ResponseAlias::HTTP_CONFLICT,
+                "query_time" => 0
+            ];
+            if ($e->getCode() == 409) {
+                $errors["_response_status"]["message"] =$e->getMessage();
+            }
+            return response()->json($errors);
         } elseif ($e instanceof ModelNotFoundException || $e instanceof NotFoundHttpException) {
             $errors['_response_status'] = [
                 'success' => false,
@@ -135,14 +146,6 @@ class Handler extends ExceptionHandler
                 'success' => false,
                 "code" => ResponseAlias::HTTP_INTERNAL_SERVER_ERROR,
                 "message" => "Call a Bad Method",
-                "query_time" => 0
-            ];
-            return response()->json($errors);
-        } elseif ($e instanceof PDOException) {
-            $errors['_response_status'] = [
-                'success' => false,
-                "code" => ResponseAlias::HTTP_INTERNAL_SERVER_ERROR,
-                "message" => "PDO exception",
                 "query_time" => 0
             ];
             return response()->json($errors);
