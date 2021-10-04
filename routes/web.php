@@ -18,7 +18,10 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     $customRouter()->resourceRoute('skills', 'SkillController')->render();
     $customRouter()->resourceRoute('job-experience', 'JobExperienceController')->render();
     $customRouter()->resourceRoute('references', 'ReferenceController')->render();
+
+    $customRouter()->resourceRoute('youth-educations', 'youthEducationController')->render();
     /** youth verification */
+    $router->post('youths/{id}/verify', ["as"=>"youths.verify","uses"=>"YouthController@youthVerification"]);
     $router->post('youths/{id}/verify', ["as" => "youths.verify", "uses" => "YouthController@youthVerification"]);
 
     /** youth profile */
