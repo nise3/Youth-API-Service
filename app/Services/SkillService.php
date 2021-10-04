@@ -40,6 +40,7 @@ class SkillService
                 'skills.title',
                 'skills.title_en',
                 'skills.description',
+                'skills.description_en',
                 'skills.row_status',
                 'skills.created_at',
                 'skills.updated_at',
@@ -98,6 +99,7 @@ class SkillService
                 'skills.title',
                 'skills.title_en',
                 'skills.description',
+                'skills.description_en',
                 'skills.row_status',
                 'skills.created_at',
                 'skills.updated_at',
@@ -174,6 +176,7 @@ class SkillService
                 'skills.title_en',
                 'skills.title_bn',
                 'skills.description',
+                'skills.description_en',
                 'skills.row_status',
                 'skills.created_at',
                 'skills.updated_at',
@@ -260,6 +263,10 @@ class SkillService
                 'min:2'
             ],
             'description' => [
+                'nullable',
+                'string',
+            ],
+            'description_en' => [
                 'nullable',
                 'string',
             ],
