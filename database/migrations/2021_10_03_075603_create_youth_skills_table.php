@@ -25,7 +25,7 @@ class CreateYouthSkillsTable extends Migration
 
             $table->foreign('skill_id')
                 ->references('id')
-                ->on('youth_skills')
+                ->on('skills')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
         });
