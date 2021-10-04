@@ -6,7 +6,6 @@ namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
 use App\Models\JobExperience;
-use App\Models\Portfolio;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -125,7 +124,7 @@ class JobExperienceService
         $jobExperience = $jobExperienceBuilder->first();
 
         return [
-            "data" => $jobExperience ?: null,
+            "data" => $jobExperience ?: [],
             "_response_status" => [
                 "success" => true,
                 "code" => Response::HTTP_OK,

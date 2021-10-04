@@ -258,6 +258,7 @@ class SkillService
                 'min:2',
             ],
             'title' => [
+                'required',
                 'string',
                 'max: 400',
                 'min:2'

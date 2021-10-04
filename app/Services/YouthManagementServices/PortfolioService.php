@@ -113,7 +113,7 @@ class PortfolioService
         $portfolio = $portfolioBuilder->first();
 
         return [
-            "data" => $portfolio ?: null,
+            "data" => $portfolio ?: [],
             "_response_status" => [
                 "success" => true,
                 "code" => Response::HTTP_OK,
