@@ -750,6 +750,282 @@
                     "skills"
                 ]
             }
+        },
+        "/job-experience": {
+            "get": {
+                "summary": "get_list",
+                "description": "API endpoint to get the list of Job Experiences. A successful request response will show 200 HTTP status code ",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/company_name_en"
+                    },
+                    {
+                        "$ref": "#/components/parameters/company_name_bn"
+                    },
+                    {
+                        "$ref": "#/components/parameters/youth_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page_size"
+                    },
+                    {
+                        "$ref": "#/components/parameters/row_status"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get_list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/jobExperience"
+                                },
+                                "example": {
+                                    "current_page": 1,
+                                    "total_page": 1,
+                                    "page_size": 10,
+                                    "total": 10,
+                                    "order": "ASC",
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "youth_id": 1,
+                                            "company_name": "Schmitt Group",
+                                            "company_name_en": "Schmitt Group",
+                                            "position": "HR Manager",
+                                            "position_en": "HR Manager",
+                                            "employment_type_id": 1,
+                                            "location": "720 Gina Ways",
+                                            "location_en": "8485 Gleason Place",
+                                            "job_description": "Pressing Machine Operator",
+                                            "job_description_en": "Wind Instrument Repairer",
+                                            "start_date": "1974-07-03",
+                                            "end_date": "1993-06-06",
+                                            "is_currently_work": 0,
+                                            "row_status": 1,
+                                            "created_at": "2021-08-19T08:55:03.000000Z",
+                                            "updated_at": "2021-08-19T08:55:03.000000Z"
+                                        }
+                                    ],
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "job experience"
+                ]
+            },
+            "post": {
+                "summary": "create",
+                "description": "API endpoint to create a Job Experience.A successful request response will show 200 HTTP status code",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/jobExperience"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "create",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/jobExperience"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 2,
+                                        "youth_id": 5,
+                                        "company_name": "Kerluke-Maggio",
+                                        "company_name_en": "Kerluke-Maggio",
+                                        "position": "Psychiatric Aide",
+                                        "position_en": "Psychiatric Aide",
+                                        "employment_type_id": 3,
+                                        "location": "720 Gina Ways",
+                                        "location_en": "8485 Gleason Place",
+                                        "job_description": "Pressing Machine Operator",
+                                        "job_description_en": "Wind Instrument Repairer",
+                                        "start_date": "1974-07-03",
+                                        "end_date": "1993-06-06",
+                                        "is_currently_work": 0,
+                                        "row_status": 1,
+                                        "created_at": "2021-08-19T08:55:03.000000Z",
+                                        "updated_at": "2021-08-19T08:55:03.000000Z"
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 201,
+                                        "message": "Job experience added successfully",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "job experience"
+                ]
+            }
+        },
+        "/job-experience/{jobExperienceId}": {
+            "get": {
+                "summary": "get_one",
+                "description": "API endpoint to get a specified Job Experience.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/jobExperienceId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get_one",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/jobExperience"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 3,
+                                        "youth_id": 18,
+                                        "company_name": "Durgan-Marks",
+                                        "company_name_en": "Durgan-Marks",
+                                        "position": "User Experience Manager",
+                                        "position_en": "User Experience Manager",
+                                        "employment_type_id": 1,
+                                        "location": "720 Gina Ways",
+                                        "location_en": "8485 Gleason Place",
+                                        "job_description": "Pressing Machine Operator",
+                                        "job_description_en": "Wind Instrument Repairer",
+                                        "start_date": "1974-07-03",
+                                        "end_date": "1993-06-06",
+                                        "is_currently_work": 1,
+                                        "row_status": 1,
+                                        "created_at": "2021-07-26T12:08:11.000000Z",
+                                        "updated_at": "2021-07-26T12:08:11.000000Z"
+                                    },
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "job experience"
+                ]
+            },
+            "put": {
+                "summary": "update",
+                "description": "API endpoint to update the specified Job experience. A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/jobExperienceId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/jobExperience"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/jobExperience"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 4,
+                                        "youth_id": 9,
+                                        "company_name": "Brekke-Abbott",
+                                        "company_name_en": "Brekke-Abbott",
+                                        "position": "Electronics Engineering Technician",
+                                        "position_en": "Electronics Engineering Technician",
+                                        "employment_type_id": 1,
+                                        "location": "720 Gina Ways",
+                                        "location_en": "8485 Gleason Place",
+                                        "job_description": "Pressing Machine Operator",
+                                        "job_description_en": "Wind Instrument Repairer",
+                                        "start_date": "1974-07-03",
+                                        "end_date": "1993-06-06",
+                                        "is_currently_work": 0,
+                                        "row_status": 1,
+                                        "created_at": "2021-07-26T12:08:11.000000Z",
+                                        "updated_at": "2021-07-26T12:08:11.000000Z"
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Job experience updated successfully.",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "job experience"
+                ]
+            },
+            "delete": {
+                "summary": "delete",
+                "description": "API endpoint to delete the specified Job experience.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/jobExperienceId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "delete",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/jobExperience"
+                                },
+                                "example": {
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Job experience deleted successfully.",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "job experience"
+                ]
+            }
         }
     },
     "components": {
@@ -969,6 +1245,12 @@
                     "description": {
                         "type": "string",
                         "description": "Details of a skill",
+                        "maximum": 5000,
+                        "minimum": 2
+                    },
+                    "description_en": {
+                        "type": "string",
+                        "description": "Details of a skill in english",
                         "maximum": 5000,
                         "minimum": 2
                     },
@@ -1240,6 +1522,103 @@
                     "title",
                     "youth_id"
                 ]
+            },
+            "jobExperience":  {
+                "type": "object",
+                "description": "Job Experience",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "youth_id": {
+                        "type": "integer"
+                    },
+                    "company_name": {
+                        "type": "string"
+                    },
+                    "company_name_en": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "position": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "position_en": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "employment_type_id": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2,
+                            3,
+                            4
+                        ],
+                        "description": "1=>Full Time,2=>Part Time,3=>Casual,4=>Apprentice or Trainee "
+                    },
+                    "location": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "location_en": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "job_description": {
+                        "type": "string"
+                    },
+                    "job_description_en": {
+                        "type": "string"
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "end_date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "is_currently_work": {
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "description": "1=>Yes,0=>No",
+                        "default": 0
+                    },
+                    "row_status": {
+                        "type": "integer",
+                        "default": 1
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "youth_id",
+                    "company_name",
+                    "position",
+                    "employment_type_id",
+                    "location",
+                    "start_date",
+                    "is_currently_work"
+                ]
             }
         },
         "parameters": {
@@ -1394,6 +1773,32 @@
             },
             "portfolioId": {
                 "name": "portfolioId",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "company_name_en": {
+                "name": "company_name_en",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "company_name_bn": {
+                "name": "company_name_bn",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "jobExperienceId": {
+                "name": "jobExperienceId",
                 "in": "path",
                 "required": true,
                 "schema": {
