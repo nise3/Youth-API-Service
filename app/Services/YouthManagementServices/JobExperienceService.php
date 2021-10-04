@@ -53,7 +53,7 @@ class JobExperienceService
             'job_experiences.updated_at'
         ]);
 
-        if ($youthId) {
+        if (is_numeric($youthId)) {
             $jobExperienceBuilder->where('job_experiences.youth_id', $youthId);
         }
 
@@ -91,7 +91,6 @@ class JobExperienceService
             "query_time" => $startTime->diffInSeconds(Carbon::now())
         ];
         return $response;
-
     }
 
     /**
