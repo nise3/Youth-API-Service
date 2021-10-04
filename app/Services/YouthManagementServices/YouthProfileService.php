@@ -13,10 +13,12 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Prophecy\Promise\PromiseInterface;
+use stdClass;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -114,7 +116,7 @@ class YouthProfileService
      * @param Carbon $startTime
      * @return array
      */
-    public function getOneYouthProfile(int $id, Carbon $startTime): array
+    public function getYouthProfile(int $id, Carbon $startTime): array
     {
         /** @var Builder $youthProfileBuilder */
         $youthProfileBuilder = Youth::select(
@@ -140,7 +142,9 @@ class YouthProfileService
                 'youths.updated_at',
             ]
         );
-        $youthProfileBuilder->where('youths.id', '=', $id);
+
+        $youthProfileBuilder->with(["languages","skills","educations","jobExperiences","certifications","portfolios"]);
+        $youthProfileBuilder->where('youths.idp_user_id', '=', Auth::id());
 
         /** @var Youth $youthProfile */
         $youthProfile = $youthProfileBuilder->first();
@@ -451,15 +455,11 @@ class YouthProfileService
                 'date_format:Y-m-d'
             ],
             "skills" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
+                "required",
                 "array"
             ],
             "skills.*" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
+                "required",
                 'numeric',
                 "distinct",
                 "min:1"
@@ -561,14 +561,11 @@ class YouthProfileService
     }
 
 
-    public function getAuthYouth(string $id): \stdClass
+    public function getAuthYouth(string $id): stdClass
     {
-        $youth = Youth::where('idp_user_id', $id)->first();
-
-        if (!$youth) {
-            return new \stdClass();
-        }
-
-        return $youth;
+        $youth = Youth::where('idp_user_id', $id)
+            ->where("row_status", BaseModel::ROW_STATUS_ACTIVE)
+            ->first();
+        return $youth ?? new stdClass();
     }
 }
