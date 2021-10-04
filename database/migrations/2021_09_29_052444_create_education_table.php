@@ -18,9 +18,11 @@ class CreateEducationTable extends Migration
             $table->unsignedInteger("youth_id");
             $table->unsignedInteger("examination_id");
             $table->string("institute_name", 400);
+            $table->string("institute_name_en", 400)->nullable();
             $table->unsignedInteger('board_id')->nullable();
             $table->unsignedInteger('group_id');
-            $table->unsignedInteger('result');
+            $table->unsignedInteger('result_type')->comment("1 => Division, 2 => Grade point");
+            $table->unsignedInteger('result')->comment("1 => 1st Class, 2 => 2nd Class, 3 => 3rd Class, 4 => GPA(Out of 4), 5 => GPA(Out of 5), 6 => Pass");
             $table->unsignedFloat("cgpa")->nullable();
             $table->date('passing_year');
             $table->unsignedTinyInteger("row_status")->default(1);
