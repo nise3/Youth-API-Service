@@ -2,7 +2,6 @@
 
 namespace App\Exceptions;
 
-//use ErrorException;
 use BadMethodCallException;
 use ErrorException;
 use Exception;
