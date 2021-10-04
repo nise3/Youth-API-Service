@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Model;
+
 use App\Models\Certification;
-use App\Models\EmploymentType;
 use App\Models\Youth;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,24 +17,21 @@ class CertificationFactory extends Factory
         $instituteName = $this->faker->name();
         $location = $this->faker->streetAddress();
         $locationEn = $this->faker->streetAddress();
-        $jobDescription = $this->faker->jobTitle();
-        $jobDescriptionEn = $this->faker->jobTitle();
-        $start = $this->faker->dateTimeBetween('next Monday', 'next Monday +7 days');
+        $start = $this->faker->dateTime()->format('Y-m-d');
+        $end = $this->faker->dateTimeBetween($start, $start.' +2 days');
         $youthId = Youth::all()->random()->id;
 
     	return [
-//            'company_name' => ucfirst($company),
-//            'company_name_en' => ucfirst($company),
-//            'position' => $position,
-//            'position_en' => $position,
-            'job_description' => $jobDescription,
-            'job_description_en' => $jobDescriptionEn,
+            'certification_name' => $certificationName,
+            'certification_name_en' => $certificationName,
+            'institute_name' => $instituteName,
+            'institute_name_en' => $instituteName,
             'location' => $location,
             'location_en' => $locationEn,
-            'start_date' => $this->faker->dateTime(),
-            'end_date' => $this->faker->dateTime(),
+            'start_date' => $start,
+            'end_date' => $end,
             'youth_id' => $youthId,
-            'employment_type_id' => EmploymentType::all()->random()->id,
+            'certificate_file_path' => $certificationName,
     	];
     }
 }
