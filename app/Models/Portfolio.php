@@ -9,14 +9,15 @@ use Carbon\Carbon;
 /**
  * App\Models\Portfolio
  *
- * @property int $id
+ * @property int id
  * @property string title
  * @property string title_bn
  * @property string description
  * @property string description_bn
- * @property int $youth_id
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property int youth_id
+ * @property int row_status
+ * @property Carbon created_at
+ * @property Carbon updated_at
  */
 class Portfolio extends BaseModel
 {
