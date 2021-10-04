@@ -107,7 +107,7 @@ class CertificationService
         ]);
         $certificationBuilder->where('certifications.id', $id);
 
-        /** @var JobExperience $certification */
+        /** @var Certification $certification */
         $certification = $certificationBuilder->first();
 
         return [
