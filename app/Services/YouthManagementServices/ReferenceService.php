@@ -53,7 +53,7 @@ class ReferenceService
             'references.created_at',
             'references.updated_at',
         ]);
-        $referenceBuilder->orderBy('reference.id', $order);
+        $referenceBuilder->orderBy('references.id', $order);
 
         if (is_numeric($youthId)) {
             $referenceBuilder->where('references.youth_id', $youthId);

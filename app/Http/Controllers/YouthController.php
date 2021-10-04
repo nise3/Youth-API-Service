@@ -3,32 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Youth;
-use Illuminate\Http\Client\RequestException;
+use App\Services\YouthManagementServices\YouthService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use stdClass;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
-use App\Services\YouthManagementServices\YouthProfileService;
 
 
 class YouthController extends Controller
 {
+    public YouthService $youthService;
+    public Carbon $startTime;
 
 
-    public YouthProfileService $youthProfileService;
-    private Carbon $startTime;
-
-
-    public function __construct(YouthProfileService $youthProfileService)
+    public function __construct(YouthService $youthService)
     {
-        $this->youthProfileService = $youthProfileService;
+        $this->youthService = $youthService;
         $this->startTime = Carbon::now();
     }
 
@@ -36,13 +31,15 @@ class YouthController extends Controller
      * Display a listing of the resource.
      * @param Request $request
      * @return Exception|JsonResponse|Throwable
+     * @throws ValidationException|Throwable
      */
     public function getList(Request $request): JsonResponse
     {
+        $filter = $this->youthService->filterValidator($request)->validate();
         try {
-            $response = $this->youthProfileService->getYouthProfileList($request, $this->startTime);
+            $response = $this->youthService->getYouthProfileList($filter, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -51,13 +48,14 @@ class YouthController extends Controller
     /**
      * @param int $id
      * @return Exception|JsonResponse|Throwable
+     * @throws Throwable
      */
     public function read(int $id): JsonResponse
     {
         try {
-            $response = $this->youthProfileService->getOneYouthProfile($id, $this->startTime);
+            $response = $this->youthService->getOneYouthProfile($id, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -66,49 +64,48 @@ class YouthController extends Controller
      * Store a newly created resource in storage.
      * @param Request $request
      * @return Exception|JsonResponse|Throwable
-     * @throws ValidationException
+     * @throws ValidationException|Throwable
      */
     function store(Request $request)
     {
-        $youth = new Youth();
-        $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
-
-        DB::beginTransaction();
+//        $youth = new Youth();
+        $validated = $this->youthService->youthRegisterValidation($request)->validate();
+//
+//        DB::beginTransaction();
         try {
-            $idpUserPayLoad = [
-                'name' => $validated['first_name'] . " " . $validated["last_name"],
-                'email' => $validated['email'],
-                'username' => $validated['username'],
-                'password' => $validated['password']
+//            $idpUserPayLoad = [
+//                'name' => $validated['first_name'] . " " . $validated["last_name"],
+//                'email' => $validated['email'],
+//                'username' => $validated['username'],
+//                'password' => $validated['password']
+//            ];
+//            $httpClient = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
+//            if ($httpClient->json("id")) {
+//                $validated['idp_user_id'] = $httpClient->json("id");
+//                $validated["verification_code"] = "1234";
+//                $validated['verification_code_sent_at'] = Carbon::now();
+            $youth = $this->youthService->store($validated);
+            $response = [
+                'data' => $youth ?? new stdClass(),
+                '_response_status' => [
+                    "success" => true,
+                    "code" => ResponseAlias::HTTP_CREATED,
+                    "message" => "Youth registration successfully done!",
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                ]
             ];
-            $httpClient = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
-            if ($httpClient->json("id")) {
-                $validated['idp_user_id'] = $httpClient->json("id");
-                $validated["verification_code"] = "1234";
-                $validated['verification_code_sent_at'] = Carbon::now();
-                $youth = $this->youthProfileService->store($youth, $validated);
-                $response = [
-                    'data' => $youth ?? new stdClass(),
-                    '_response_status' => [
-                        "success" => true,
-                        "code" => ResponseAlias::HTTP_CREATED,
-                        "message" => "Youth registration successfully done!",
-                        "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-                    ]
-                ];
-                DB::commit();
-            } else {
-                DB::rollBack();
-                $response = [
-                    '_response_status' => [
-                        "success" => false,
-                        "code" => ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
-                        "message" => "Youth registration is not done",
-                        "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-                    ]
-                ];
-            }
-
+//                DB::commit();
+//            } else {
+//                DB::rollBack();//              $response = [
+//                    '_response_status' => [
+//                        "success" => false,
+//                        "code" => ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
+//                        "message" => "Youth registration is not done",
+//                        "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+//                    ]
+//                ];
+//            }
+//
         } catch (Throwable $e) {
             throw $e;
         }
@@ -124,12 +121,11 @@ class YouthController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        /** @var Youth $youth */
         $youth = Youth::findOrFail($id);
-        $validated = $this->youthProfileService->youthRegisterValidation($request, $id)->validate();
-        Log::info(json_encode($validated));
+        $validated = $this->youthService->youthRegisterValidation($request, $id)->validate();
+
         try {
-            $data = $this->youthProfileService->update($youth, $validated);
+            $data = $this->youthService->update($youth, $validated);
             $response = [
                 'data' => $data ?: [],
                 '_response_status' => [
@@ -149,6 +145,7 @@ class YouthController extends Controller
      * Remove the specified resource from storage
      * @param int $id
      * @return Exception|JsonResponse|Throwable
+     * @throws Throwable
      */
     public function destroy(int $id): JsonResponse
     {
@@ -156,41 +153,17 @@ class YouthController extends Controller
         $youth = Youth::findOrFail($id);
 
         try {
-            $this->youthProfileService->destroy($youth);
+            $this->youthService->destroy($youth);
             $response = [
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Skill deleted successfully",
+                    "message" => "Youth Profile deleted successfully",
                     "query_time" => $this->startTime->diffForHumans(Carbon::now())
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
-        }
-        return Response::json($response, ResponseAlias::HTTP_OK);
-    }
-
-    /**
-     * @param Request $request
-     * @param int $id
-     * @return Exception|JsonResponse|Throwable
-     */
-    public function youthVerification(Request $request):JsonResponse
-    {
-        $validated=$this->youthProfileService->verifyYouthValidator($request)->validate();
-        try {
-            $this->youthProfileService->verifyYouth($validated);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Skill deleted successfully",
-                    "query_time" => $this->startTime->diffForHumans(Carbon::now())
-                ]
-            ];
-        } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
