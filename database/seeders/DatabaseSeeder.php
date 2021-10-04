@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             PortfolioSeeder::class,
             JobExperienceSeeder::class,
             SkillSeeder::class,
-            ReferenceSeeder::class
+            ReferenceSeeder::class,
+            CertificationSeeder::class
         ]);
     }
 }

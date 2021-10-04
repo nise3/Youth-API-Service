@@ -31,30 +31,30 @@ class CertificationService
 
         /** @var Builder $certificationBuilder */
         $certificationBuilder = JobExperience::select([
-            'certification.id',
-            'certification.youth_id',
-            'certification.certification_name',
-            'certification.certification_name_en',
-            'certification.institute_name',
-            'certification.institute_name_en',
-            'certification.location',
-            'certification.location_en',
-            'certification.start_date',
-            'certification.end_date',
-            'certification.certificate_file_path',
-            'certification.row_status',
-            'certification.created_at',
-            'certification.updated_at'
+            'certifications.id',
+            'certifications.youth_id',
+            'certifications.certification_name',
+            'certifications.certification_name_en',
+            'certifications.institute_name',
+            'certifications.institute_name_en',
+            'certifications.location',
+            'certifications.location_en',
+            'certifications.start_date',
+            'certifications.end_date',
+            'certifications.certificate_file_path',
+            'certifications.row_status',
+            'certifications.created_at',
+            'certifications.updated_at'
         ]);
 
         if (is_numeric($youthId)) {
-            $certificationBuilder->where('certification.youth_id', $youthId);
+            $certificationBuilder->where('certifications.youth_id', $youthId);
         }
 
-        $certificationBuilder->orderBy('certification.id', $order);
+        $certificationBuilder->orderBy('certifications.id', $order);
 
         if (is_numeric($rowStatus)) {
-            $certificationBuilder->where('certification.row_status', $rowStatus);
+            $certificationBuilder->where('certifications.row_status', $rowStatus);
         }
 
         /** @var Collection $certifications */
@@ -90,22 +90,22 @@ class CertificationService
     {
         /** @var Builder $certificationBuilder */
         $certificationBuilder = JobExperience::select([
-            'certification.id',
-            'certification.youth_id',
-            'certification.certification_name',
-            'certification.certification_name_en',
-            'certification.institute_name',
-            'certification.institute_name_en',
-            'certification.location',
-            'certification.location_en',
-            'certification.start_date',
-            'certification.end_date',
-            'certification.certificate_file_path',
-            'certification.row_status',
-            'certification.created_at',
-            'certification.updated_at'
+            'certifications.id',
+            'certifications.youth_id',
+            'certifications.certification_name',
+            'certifications.certification_name_en',
+            'certifications.institute_name',
+            'certifications.institute_name_en',
+            'certifications.location',
+            'certifications.location_en',
+            'certifications.start_date',
+            'certifications.end_date',
+            'certifications.certificate_file_path',
+            'certifications.row_status',
+            'certifications.created_at',
+            'certifications.updated_at'
         ]);
-        $certificationBuilder->where('certification.id', $id);
+        $certificationBuilder->where('certifications.id', $id);
 
         /** @var JobExperience $certification */
         $certification = $certificationBuilder->first();

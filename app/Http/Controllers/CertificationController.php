@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Certification;
-use App\Models\JobExperience;
 use App\Services\YouthManagementServices\CertificationService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -15,10 +15,7 @@ use Throwable;
 
 class CertificationController extends Controller
 {
-    /**
-     * @var CertificatiojnService
-     */
-    public CertificatiojnService $certificationService;
+    public CertificationService $certificationService;
     /**
      * @var Carbon
      */
@@ -27,9 +24,9 @@ class CertificationController extends Controller
 
     /**
      * certificationController constructor.
-     * @param CertificatiojnService $certificationService
+     * @param CertificationService $certificationService
      */
-    public function __construct(CertificatiojnService $certificationService)
+    public function __construct(CertificationService $certificationService)
     {
         $this->certificationService = $certificationService;
         $this->startTime = Carbon::now();
@@ -51,7 +48,7 @@ class CertificationController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
      */
     public function read(int $id): JsonResponse
     {
@@ -67,7 +64,7 @@ class CertificationController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
     public function store(Request $request): JsonResponse
@@ -95,7 +92,7 @@ class CertificationController extends Controller
      *
      * @param Request $request
      * @param int $id
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
     public function update(Request $request, int $id): JsonResponse
@@ -122,7 +119,7 @@ class CertificationController extends Controller
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
      */
     public function destroy(int $id): JsonResponse
     {

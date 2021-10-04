@@ -13,7 +13,7 @@ class CreateCertificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('certification', function (Blueprint $table) {
+        Schema::create('certifications', function (Blueprint $table) {
             $table->increments("id");
             $table->unsignedInteger("youth_id");
             $table->string("certification_name", 300);
