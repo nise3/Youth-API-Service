@@ -5,6 +5,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -56,25 +57,21 @@ class Youth extends AuthBaseModel
     protected $guarded=BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
 
     protected $casts = [
-        'skills' => 'array',
         'physical_disabilities' => 'array'
     ];
 
     protected $hidden = [
-        "password",
-        "sms_verification_code",
-        "email_verification_code"
+        "verification_code"
     ];
-
-    public function setPasswordAttribute($pass)
-    {
-        $this->attributes['password'] = Hash::make($pass);
-    }
-
 
     public function portfolios()
     {
         return $this->hasMany(Portfolio::class,'youth_id','id');
+    }
+
+    public function skills():BelongsToMany
+    {
+        return $this->belongsToMany(Skill::class,'youth_skills');
     }
 
 }

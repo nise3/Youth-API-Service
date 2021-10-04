@@ -4,6 +4,8 @@
 namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
+use App\Models\Skill;
+use App\Models\Trainer;
 use App\Models\Youth;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Validator;
@@ -160,6 +162,10 @@ class YouthProfileService
      */
     public function store(Youth $youth, array $data): Youth
     {
+        /** Assign skills to Youth */
+        $skillIds = Skill::whereIn("id", $data['skills'])->orderBy('id', 'ASC')->pluck('id')->toArray();
+        Log::info(json_encode([$data['skills'],$skillIds]));
+//        $youth->skills()->sync($skillIds);
         $youth->fill($data);
         $youth->save();
         return $youth;
@@ -215,8 +221,8 @@ class YouthProfileService
      */
     public function idpUserCreate(array $data)
     {
-        $url = config(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
-
+        $url = clientUrl(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
+        Log::info($url);
         $client = Http::retry(3)->withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
             ->withHeaders([
                 'Content-Type' => 'application/json'
@@ -369,17 +375,34 @@ class YouthProfileService
                 BaseModel::PASSWORD_MAX_LENGTH,
             ],
             "loc_division_id" => [
-                "required_if:" . $id . ",!=,null",
+                "required",
                 "exists:loc_divisions,id",
                 "int"
             ],
             "loc_district_id" => [
-                "required_if:" . $id . ",!=,null",
+                "required",
                 "exists:loc_districts,id",
                 "int"
             ],
-            "city_or_town" => [
-                "required_if:" . $id . ",!=,null",
+            "loc_upazila_id"=>[
+                "nullable",
+                "numeric",
+                "exists:loc_upazilas,id",
+            ],
+            "village_or_area"=>[
+                "nullable",
+                "string"
+            ],
+            "village_or_area_en"=>[
+                "nullable",
+                "string"
+            ],
+            "house_n_road"=>[
+                "nullable",
+                "string"
+            ],
+            "house_n_road_en"=>[
+                "nullable",
                 "string"
             ],
             "zip_or_postal_code" => [

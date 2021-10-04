@@ -24,7 +24,7 @@ if (!function_exists("clientUrl")) {
             } elseif ($type == "INSTITUTE") {
                 return $config["institute"]["local"];
             } elseif ($type == "IDP_SERVER") {
-                return env("IS_DEVELOPMENT_MOOD") ? $config["idp_server"]["dev"] : $config["idp_server"]["prod"];
+                return env("IS_DEVELOPMENT_MOOD",false) ? $config["idp_server"]["dev"] : $config["idp_server"]["prod"];
             }
         }
         return "";
