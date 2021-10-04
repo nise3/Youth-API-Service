@@ -1524,7 +1524,7 @@
                     "youth_id"
                 ]
             },
-            "jobExperience":  {
+            "jobExperience": {
                 "type": "object",
                 "description": "Job Experience",
                 "properties": {
@@ -1617,6 +1617,189 @@
                     "company_name",
                     "position",
                     "employment_type_id",
+                    "location",
+                    "start_date"
+                ]
+            },
+            "Reference": {
+                "type": "object",
+                "description": "Provide references",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "youth_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "referrer_first_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "referrer_first_name_en": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "referrer_last_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "referrer_last_name_en": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "referrer_organization_name": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "referrer_organization_name_en": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "referrer_designation": {
+                        "type": "string",
+                        "maxLength": 200
+                    },
+                    "referrer_designation_en": {
+                        "type": "string",
+                        "maxLength": 200
+                    },
+                    "referrer_address": {
+                        "type": "string",
+                        "maxLength": 600
+                    },
+                    "referrer_address_en": {
+                        "type": "string",
+                        "maxLength": 600
+                    },
+                    "referrer_email": {
+                        "type": "string",
+                        "maxLength": 191
+                    },
+                    "referrer_mobile": {
+                        "type": "string",
+                        "maxLength": 15
+                    },
+                    "referrer_relation": {
+                        "type": "string",
+                        "maxLength": 191
+                    },
+                    "referrer_relation_en": {
+                        "type": "string",
+                        "maxLength": 15
+                    },
+                    "row_status": {
+                        "type": "integer",
+                        "description": "District activation status",
+                        "enum": [
+                            1,
+                            0
+                        ]
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "youth_id",
+                    "referrer_first_name",
+                    "referrer_last_name",
+                    "referrer_designation",
+                    "referrer_address",
+                    "referrer_email",
+                    "referrer_mobile",
+                    "referrer_relation"
+                ]
+            },
+            "Certification": {
+                "type": "object",
+                "description": "Provide certifications",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "youth_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "certification_name": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "certification_name_en": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "institute_name": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "institute_name_en": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "location": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "location_en": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2021-10-04"
+                    },
+                    "end_date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "certificate_file_path": {
+                        "type": "string",
+                        "maxLength": 500
+                    },
+                    "row_status": {
+                        "type": "integer",
+                        "description": "District activation status",
+                        "enum": [
+                            1,
+                            0
+                        ]
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "certification_name",
+                    "institute_name",
                     "location",
                     "start_date"
                 ]
