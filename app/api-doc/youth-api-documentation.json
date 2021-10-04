@@ -1260,7 +1260,8 @@
                         "enum": [
                             0,
                             1
-                        ]
+                        ],
+                        "default": 1
                     },
                     "created_by": {
                         "type": "integer",
@@ -1575,7 +1576,8 @@
                     },
                     "start_date": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "example": "2021-10-04"
                     },
                     "end_date": {
                         "type": "string",
@@ -1584,8 +1586,8 @@
                     "is_currently_work": {
                         "type": "integer",
                         "enum": [
-                            0,
-                            1
+                            1,
+                            0
                         ],
                         "description": "1=>Yes,0=>No",
                         "default": 0
@@ -1616,8 +1618,7 @@
                     "position",
                     "employment_type_id",
                     "location",
-                    "start_date",
-                    "is_currently_work"
+                    "start_date"
                 ]
             }
         },
@@ -1663,15 +1664,6 @@
                 "required": false,
                 "schema": {
                     "type": "integer"
-                }
-            },
-            "youth_id": {
-                "name": "youth_id",
-                "in": "path",
-                "required": true,
-                "schema": {
-                    "type": "integer",
-                    "example": 1
                 }
             },
             "youthId": {
