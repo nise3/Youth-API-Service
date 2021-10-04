@@ -19,13 +19,13 @@ class LanguageInfoSeeder extends Seeder
         $languages =[
             [
                 "code" => "bn",
-                "title_en" => "Bengali",
-                "title_bn" => "বাংলা"
+                "title" => "বাংলা",
+                "title_en" => "Bengali"
             ],
             [
                 "code" => "en",
-                "title_en" => "English",
-                "title_bn" => "ইংরেজি"
+                "title" => "ইংরেজি",
+                "title_en" => "English"
             ]
         ];
         LanguageInfo::insert($languages);

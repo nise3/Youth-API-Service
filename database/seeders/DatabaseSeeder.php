@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
             JobExperienceSeeder::class,
             SkillSeeder::class,
             ReferenceSeeder::class,
-            CertificationSeeder::class
+            CertificationSeeder::class,
+            YouthLanguageSeeder::class
         ]);
     }
 }
