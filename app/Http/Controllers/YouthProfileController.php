@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
@@ -34,10 +35,23 @@ class YouthProfileController extends Controller
         $this->startTime = Carbon::now();
     }
 
-    public function getYouthProfile(int $id): JsonResponse
+    /**
+     * @return JsonResponse
+     * @throws Throwable
+     */
+    public function getYouthProfile()
     {
         try {
-            $response = $this->youthProfileService->getOneYouthProfile($id, $this->startTime);
+            $youth = $this->youthProfileService->getYouthProfile();
+            $response =[
+                "data" => $youth ?: new stdClass(),
+                "_response_status" => [
+                    "success" => true,
+                    "code" =>ResponseAlias::HTTP_OK,
+                    "message"=>"Youth profile information",
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+                ]
+            ];
         } catch (Throwable $e) {
             throw $e;
         }
@@ -64,9 +78,9 @@ class YouthProfileController extends Controller
                 'username' => $validated['username'],
                 'password' => $validated['password']
             ];
-            $httpClient = Uuid::uuid();//$this->youthProfileService->idpUserCreate($idpUserPayLoad);
-            if ($httpClient) {
-                $validated['idp_user_id'] = $httpClient;
+            $httpClient = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
+            if ($httpClient->json("id")) {
+                $validated['idp_user_id'] = $httpClient->json("id");
                 $validated["verification_code"] = $this->youthProfileService->generateCode();
                 $validated['verification_code_sent_at'] = Carbon::now();
                 $youth = $this->youthProfileService->store($youth, $validated);
@@ -107,18 +121,16 @@ class YouthProfileController extends Controller
     }
 
     /**
-     * Update the specified resource in storage
      * @param Request $request
-     * @param int $id
      * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
-    public function update(Request $request, int $id): JsonResponse
+    public function youthProfileUpdate(Request $request): JsonResponse
     {
+        $id=Auth::id();
         /** @var Youth $youth */
         $youth = Youth::findOrFail($id);
         $validated = $this->youthProfileService->youthRegisterValidation($request, $id)->validate();
-        Log::info(json_encode($validated));
         try {
             $data = $this->youthProfileService->update($youth, $validated);
             $response = [
@@ -138,21 +150,26 @@ class YouthProfileController extends Controller
 
     /**
      * Remove the specified resource from storage
-     * @param int $id
+     * @param Request $request
      * @return Exception|JsonResponse|Throwable
+     * @throws ValidationException
      */
-    public function destroy(int $id): JsonResponse
+    public function setFreelanceStatus(Request $request): JsonResponse
     {
+        $id=Auth::id();
+
         /** @var Youth $youth */
         $youth = Youth::findOrFail($id);
 
+        $validator=$this->youthProfileService->freelanceStatusValidator($request)->validate();
+
         try {
-            $this->youthProfileService->destroy($youth);
+            $this->youthProfileService->setFreelanceStatus($youth,$validator);
             $response = [
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Skill deleted successfully",
+                    "message" => "Successfully set your profile as a freelance profile",
                     "query_time" => $this->startTime->diffForHumans(Carbon::now())
                 ]
             ];

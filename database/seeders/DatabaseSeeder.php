@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             ExaminationSeeder::class,
             GroupSeeder::class,
             LanguageInfoSeeder::class,
+            PhysicalDisabilitySeeder::class,
             PortfolioSeeder::class,
             JobExperienceSeeder::class,
             SkillSeeder::class,

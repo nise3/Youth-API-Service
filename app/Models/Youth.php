@@ -19,6 +19,7 @@ use PHPUnit\Util\Json;
  * @package App\Models
  * @property int id
  * @property string idp_user_id
+ * @property int is_freelance_profile
  * @property string username
  * @property int user_name_type
  * @property string first_name
@@ -56,18 +57,22 @@ class Youth extends AuthBaseModel
 
     protected $guarded=BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
 
-    protected $casts = [
-        'physical_disabilities' => 'array'
-    ];
 
     protected $hidden = [
-        "verification_code"
+        "pivot",
+        "verification_code",
+        "idp_user_id"
     ];
 
 
     public function skills():BelongsToMany
     {
         return $this->belongsToMany(Skill::class,'youth_skills');
+    }
+
+    public function physicalDisabilities():BelongsToMany
+    {
+        return $this->belongsToMany(PhysicalDisability::class,'youth_physical_disabilities');
     }
 
     public function jobExperiences():HasMany
