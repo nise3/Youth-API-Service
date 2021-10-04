@@ -5,7 +5,9 @@ namespace App\Models;
 
 use Carbon\Carbon;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -62,14 +64,36 @@ class Youth extends AuthBaseModel
         "verification_code"
     ];
 
-    public function portfolios()
-    {
-        return $this->hasMany(Portfolio::class,'youth_id','id');
-    }
 
     public function skills():BelongsToMany
     {
         return $this->belongsToMany(Skill::class,'youth_skills');
     }
+
+    public function jobExperiences():HasMany
+    {
+        return $this->hasMany(JobExperience::class,'youth_id','id');
+    }
+
+    public function languages(): HasMany
+    {
+        return $this->hasMany(Language::class,'youth_id','id');
+    }
+
+    public function certifications(): HasMany
+    {
+        return $this->hasMany(Certification::class,'youth_id','id');
+    }
+
+    public function educations(): HasMany
+    {
+        return $this->hasMany(Education::class,'youth_id','id');
+    }
+
+    public function portfolios():HasMany
+    {
+        return $this->hasMany(Portfolio::class,'youth_id','id');
+    }
+
 
 }

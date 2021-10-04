@@ -34,12 +34,12 @@ class YouthProfileController extends Controller
         $this->startTime = Carbon::now();
     }
 
-    public function read(int $id): JsonResponse
+    public function getYouthProfile(int $id): JsonResponse
     {
         try {
             $response = $this->youthProfileService->getOneYouthProfile($id, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
