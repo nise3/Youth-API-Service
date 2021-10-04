@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Portfolio;
+use App\Models\Youth;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PortfolioFactory extends Factory
@@ -14,11 +15,13 @@ class PortfolioFactory extends Factory
         $title = $this->faker->jobTitle();
         $description = $this->faker->sentence(100);
         $filePath = $this->faker->filePath();
-        $youthId = $this->faker->randomElement([1]);
+        $youthId = Youth::all()->random()->id;
 
     	return [
             'title' => ucfirst($title),
+            'title_en' => ucfirst($title),
             'description' => $description,
+            'description_en' => $description,
             'file_path' => $filePath,
             'youth_id' => $youthId,
     	];

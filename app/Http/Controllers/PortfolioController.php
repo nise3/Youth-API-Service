@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Portfolio;
 use App\Services\YouthManagementServices\PortfolioService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -40,8 +41,8 @@ class PortfolioController extends Controller
 
     /**
      * @param Request $request
-     * @return \Exception|JsonResponse|Throwable
-     * @throws \Illuminate\Validation\ValidationException
+     * @return Exception|JsonResponse|Throwable
+     * @throws ValidationException
      */
     public function getList(Request $request)
     {
@@ -58,7 +59,7 @@ class PortfolioController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
      */
     public function read(int $id): JsonResponse
     {
@@ -74,7 +75,7 @@ class PortfolioController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
     public function store(Request $request): JsonResponse
@@ -102,7 +103,7 @@ class PortfolioController extends Controller
      *
      * @param Request $request
      * @param int $id
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
     public function update(Request $request, int $id): JsonResponse
@@ -129,7 +130,7 @@ class PortfolioController extends Controller
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
      */
     public function destroy(int $id): JsonResponse
     {

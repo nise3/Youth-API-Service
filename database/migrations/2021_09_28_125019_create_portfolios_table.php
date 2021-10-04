@@ -16,8 +16,10 @@ class CreatePortfoliosTable extends Migration
         Schema::create('portfolios', function (Blueprint $table) {
             $table->increments("id");
             $table->unsignedInteger("youth_id");
-            $table->string('title',191);
+            $table->string('title', 400);
+            $table->string('title_en', 300)->nullable();
             $table->text("description")->nullable();
+            $table->text("description_en")->nullable();
             $table->string("file_path", 500)->nullable();
             $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();

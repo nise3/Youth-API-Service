@@ -16,12 +16,15 @@ class CreateJobExperiencesTable extends Migration
         Schema::create('job_experiences', function (Blueprint $table) {
             $table->increments("id");
             $table->unsignedInteger("youth_id");
-            $table->string("company_name_en", 300);
-            $table->string("company_name_bn", 500);
+            $table->string("company_name", 300);
+            $table->string("company_name_en", 300)->nullable();
             $table->string("position", 150);
+            $table->string("position_en", 150)->nullable();
             $table->unsignedInteger("employment_type_id")->comment("1=>Full Time,2=Part Time,3=>Casual,4=>Apprentice or Trainee");
-            $table->string("location", 500);
+            $table->string("location", 300);
+            $table->string("location_en", 300)->nullable();
             $table->text("job_description")->nullable();
+            $table->text("job_description_en")->nullable();
             $table->date("start_date");
             $table->date("end_date")->nullable();
             $table->unsignedTinyInteger("is_currently_work")->comment("1=>Yes,0=>No")->default(0);

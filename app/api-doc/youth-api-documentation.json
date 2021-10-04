@@ -143,8 +143,7 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/youthRegistration"
                                 },
-                                "example":{
-
+                                "example": {
                                 }
                             }
                         }
@@ -166,7 +165,8 @@
                             "type": "integer",
                             "example": 1
                         }
-                    },{
+                    },
+                    {
                         "name": "first_name",
                         "in": "query",
                         "required": true,
@@ -190,7 +190,7 @@
                         "required": true,
                         "schema": {
                             "type": "integer",
-                            "example":1
+                            "example": 1
                         }
                     },
                     {
@@ -227,7 +227,6 @@
                         "schema": {
                             "type": "string",
                             "example": "A required Microsoft Windows system directory, the System32 directory is located in either C:\\Windows\\System32 or C:\\Winnt\\system32 directory. The system32 directory contains Windows system files and software program files, vital to the operation of the Windows operating system and software programs running in Windows. The most common types of files found in the system32 directory are DLL (Dynamic Link Library) and EXE (executable) files."
-
                         }
                     },
                     {
@@ -258,7 +257,6 @@
                                     "$ref": "#/components/schemas/youthRegistration"
                                 },
                                 "example": {
-
                                 }
                             }
                         }
@@ -303,7 +301,7 @@
                 "description": " API endpoint to get the list of Youth portfolio",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/youthId"
+                        "$ref": "#/components/parameters/youth_id"
                     }
                 ],
                 "responses": {
@@ -312,7 +310,55 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Youth"
+                                    "$ref": "#/components/schemas/portfolio"
+                                },
+                                "example": {
+                                    "order": "ASC",
+                                    "data": [
+                                        {
+                                            "id": 4,
+                                            "title": "Geographer",
+                                            "title_en": "Geographer",
+                                            "description": "Vitae molestiae porro blanditiis quaerat quibusdam eveniet qui ",
+                                            "description_en": "Vitae molestiae porro blanditiis quaerat quibusdam eveniet qui",
+                                            "youth_id": 2,
+                                            "row_status": 1,
+                                            "created_at": "2021-10-03T09:55:34.000000Z",
+                                            "updated_at": "2021-10-03T09:55:34.000000Z"
+                                        }
+                                    ],
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Portfolios"
+                ]
+            },
+            "post": {
+                "summary": "create",
+                "description": "API endpoint to create a Youth portfolio.A successful request response will show 200 HTTP status code",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/portfolio"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
                                     "$ref": "#/components/schemas/portfolio"
                                 },
                                 "example": {
@@ -326,7 +372,47 @@
                                     "_response_status": {
                                         "success": true,
                                         "code": 201,
-                                        "message": "Portfolio added successfully",
+                                        "message": "Portfolio created successfully",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Portfolios"
+                ]
+            }
+        },
+        "/portfolios/{porfolioId}": {
+            "get": {
+                "summary": "get one",
+                "description": "API endpoint to get the specified Youth portfolio.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/portfolioId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/portfolio"
+                                },
+                                "example": {
+                                    "data": {
+                                        "title": "Test",
+                                        "youth_id": "1",
+                                        "updated_at": "2021-09-30T12:23:22.000000Z",
+                                        "created_at": "2021-09-30T12:23:22.000000Z",
+                                        "id": 24
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 201,
                                         "query_time": 0
                                     }
                                 }
@@ -664,382 +750,285 @@
                     "skills"
                 ]
             }
+        },
+        "/job-experience": {
+            "get": {
+                "summary": "get_list",
+                "description": "API endpoint to get the list of Job Experiences. A successful request response will show 200 HTTP status code ",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/company_name_en"
+                    },
+                    {
+                        "$ref": "#/components/parameters/company_name_bn"
+                    },
+                    {
+                        "$ref": "#/components/parameters/youth_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page_size"
+                    },
+                    {
+                        "$ref": "#/components/parameters/row_status"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get_list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/jobExperience"
+                                },
+                                "example": {
+                                    "current_page": 1,
+                                    "total_page": 1,
+                                    "page_size": 10,
+                                    "total": 10,
+                                    "order": "ASC",
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "youth_id": 1,
+                                            "company_name": "Schmitt Group",
+                                            "company_name_en": "Schmitt Group",
+                                            "position": "HR Manager",
+                                            "position_en": "HR Manager",
+                                            "employment_type_id": 1,
+                                            "location": "720 Gina Ways",
+                                            "location_en": "8485 Gleason Place",
+                                            "job_description": "Pressing Machine Operator",
+                                            "job_description_en": "Wind Instrument Repairer",
+                                            "start_date": "1974-07-03",
+                                            "end_date": "1993-06-06",
+                                            "is_currently_work": 0,
+                                            "row_status": 1,
+                                            "created_at": "2021-08-19T08:55:03.000000Z",
+                                            "updated_at": "2021-08-19T08:55:03.000000Z"
+                                        }
+                                    ],
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "job experience"
+                ]
+            },
+            "post": {
+                "summary": "create",
+                "description": "API endpoint to create a Job Experience.A successful request response will show 200 HTTP status code",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/jobExperience"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "create",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/jobExperience"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 2,
+                                        "youth_id": 5,
+                                        "company_name": "Kerluke-Maggio",
+                                        "company_name_en": "Kerluke-Maggio",
+                                        "position": "Psychiatric Aide",
+                                        "position_en": "Psychiatric Aide",
+                                        "employment_type_id": 3,
+                                        "location": "720 Gina Ways",
+                                        "location_en": "8485 Gleason Place",
+                                        "job_description": "Pressing Machine Operator",
+                                        "job_description_en": "Wind Instrument Repairer",
+                                        "start_date": "1974-07-03",
+                                        "end_date": "1993-06-06",
+                                        "is_currently_work": 0,
+                                        "row_status": 1,
+                                        "created_at": "2021-08-19T08:55:03.000000Z",
+                                        "updated_at": "2021-08-19T08:55:03.000000Z"
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 201,
+                                        "message": "Job experience added successfully",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "job experience"
+                ]
+            }
+        },
+        "/job-experience/{jobExperienceId}": {
+            "get": {
+                "summary": "get_one",
+                "description": "API endpoint to get a specified Job Experience.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/jobExperienceId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get_one",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/jobExperience"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 3,
+                                        "youth_id": 18,
+                                        "company_name": "Durgan-Marks",
+                                        "company_name_en": "Durgan-Marks",
+                                        "position": "User Experience Manager",
+                                        "position_en": "User Experience Manager",
+                                        "employment_type_id": 1,
+                                        "location": "720 Gina Ways",
+                                        "location_en": "8485 Gleason Place",
+                                        "job_description": "Pressing Machine Operator",
+                                        "job_description_en": "Wind Instrument Repairer",
+                                        "start_date": "1974-07-03",
+                                        "end_date": "1993-06-06",
+                                        "is_currently_work": 1,
+                                        "row_status": 1,
+                                        "created_at": "2021-07-26T12:08:11.000000Z",
+                                        "updated_at": "2021-07-26T12:08:11.000000Z"
+                                    },
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "job experience"
+                ]
+            },
+            "put": {
+                "summary": "update",
+                "description": "API endpoint to update the specified Job experience. A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/jobExperienceId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/jobExperience"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/jobExperience"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 4,
+                                        "youth_id": 9,
+                                        "company_name": "Brekke-Abbott",
+                                        "company_name_en": "Brekke-Abbott",
+                                        "position": "Electronics Engineering Technician",
+                                        "position_en": "Electronics Engineering Technician",
+                                        "employment_type_id": 1,
+                                        "location": "720 Gina Ways",
+                                        "location_en": "8485 Gleason Place",
+                                        "job_description": "Pressing Machine Operator",
+                                        "job_description_en": "Wind Instrument Repairer",
+                                        "start_date": "1974-07-03",
+                                        "end_date": "1993-06-06",
+                                        "is_currently_work": 0,
+                                        "row_status": 1,
+                                        "created_at": "2021-07-26T12:08:11.000000Z",
+                                        "updated_at": "2021-07-26T12:08:11.000000Z"
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Job experience updated successfully.",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "job experience"
+                ]
+            },
+            "delete": {
+                "summary": "delete",
+                "description": "API endpoint to delete the specified Job experience.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/jobExperienceId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "delete",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/jobExperience"
+                                },
+                                "example": {
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Job experience deleted successfully.",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "job experience"
+                ]
+            }
         }
     },
     "components": {
-        "schemas": {
-            "youthRegistration": {
-                "type": "object",
-                "description": "Youth Profile",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
-                    "username": {
-                        "type": "string"
-                    },
-                    "first_name": {
-                        "type": "string"
-                    },
-                    "last_name": {
-                        "type": "string",
-                        "maxLength": 20
-                    },
-                    "gender": {
-                        "type": "integer",
-                        "enum": [1,2,3],
-                        "description": "1=>Male,2=>Female,3=>Others",
-                        "default": 1
-                    },
-                    "skills": {
-                        "type": "array",
-                        "items": {
-                            "type": "integer",
-                            "uniqueItems": true,
-                            "enum": [
-                                1,2,3
-                            ]
-                        }
-                    },
-                    "user_name_type": {
-                        "type": "integer",
-                        "enum": [1,2],
-                        "description":"1=>Email Type, 2=>Mobile Number"
-                    },
-                    "email": {
-                        "type": "string",
-                        "format": "email"
-                    },
-                    "mobile": {
-                        "type": "string"
-                    },
-                    "date_of_birth": {
-                        "type": "string",
-                        "format": "date"
-                    },
-                    "physical_disability_status": {
-                        "type": "integer",
-                        "enum": [0,1],
-                        "description": "0=>No,1=>Yes",
-                        "default": 0
-                    },
-                    "physical_disabilities": {
-                        "type": "array",
-                        "items": {
-                            "type": "integer",
-                            "uniqueItems": true,
-                            "enum": [
-                                1,2,3
-                            ]
-                        }
-                    },
-                    "password": {
-                        "type": "string",
-                        "format": "password",
-                        "example": "#Piyal_15021#"
-                    },
-                    "password_confirmation": {
-                        "type": "string",
-                        "format": "password",
-                        "example": "#Piyal_15021#"
-                    },
-                    "deleted_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    }
-                },
-                "required": [
-                    "username",
-                    "first_name",
-                    "last_name",
-                    "gender",
-                    "email",
-                    "mobile",
-                    "skills",
-                    "password",
-                    "password_confirmation",
-                    "physical_disability_status",
-                    "user_name_type",
-                    "date_of_birth"
-                ]
-            },
-            "youthProfileUpdateSchema": {
-                "type": "object",
-                "description": "Youth Profile",
-                "properties": {
-                    "first_name": {
-                        "type": "string",
-                        "example": "ABC Name"
-                    },
-                    "last_name": {
-                        "type": "string",
-                        "example": "abc"
-                    },
-                    "email": {
-                        "type": "string",
-                        "format": "email",
-                        "example": "test.123@gmail.com"
-                    },
-                    "mobile": {
-                        "type": "string",
-                        "example": "01767111434"
-                    },
-                    "city": {
-                        "type": "string",
-                        "example": "1/2 Dhaka Bangladesh"
-                    },
-                    "zip_or_postal_code": {
-                        "type": "string",
-                        "example": "12345"
-                    },
-                    "bio": {
-                        "type": "string",
-                        "example": "A required Microsoft Windows system directory, the System32 directory is located in either C:\\Windows\\System32 or C:\\Winnt\\system32 directory. The system32 directory contains Windows system files and software program files, vital to the operation of the Windows operating system and software programs running in Windows. The most common types of files found in the system32 directory are DLL (Dynamic Link Library) and EXE (executable) files."
-
-                    },
-                    "photo": {
-                        "type": "string",
-                        "example": "photo.png"
-                    },
-                    "cv_path": {
-                        "type": "string",
-                        "example": "cv_path.png"
-                    }
-                },
-                "required": [
-                    "first_name",
-                    "last_name",
-                    "gender",
-                    "email",
-                    "mobile",
-                    "city",
-                    "zip_or_postal_code",
-                    "bio"
-                ]
-            },
-            "portfolio": {
-                "type": "object",
-                "description": "Youth Portfolios",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
-                    "title": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
-                    },
-                    "file_path": {
-                        "type": "string"
-                    },
-                    "youth_id": {
-                        "type": "integer"
-                    },
-                    "deleted_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    }
-                },
-                "required": [
-                    "title",
-                    "youth_id"
-                ]
-            }
-        },
-        "parameters" : {
-        "parameters": {
-            "skillId": {
-                "name": "skillId",
-                "in": "path",
-                "required": true,
-                "schema": {
-                    "type": "integer",
-                    "example": 1
-                }
-            },
-            "title_bn_optional": {
-                "name": "title_bn",
-                "in": "query",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "title_en_optional": {
-                "name": "title_en",
-                "in": "query",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "row_status_optional": {
-                "name": "row_status",
-                "in": "query",
-                "required": false,
-                "schema": {
-                    "type": "integer"
-                }
-            },
-            "page_size": {
-                "name": "page_size",
-                "in": "query",
-                "required": false,
-                "schema": {
-                    "type": "integer"
-                }
-            },
-            "youthId": {
-                "name": "youthId",
-                "in": "path",
-                "required": true,
-                "schema": {
-                    "type": "integer",
-                    "example": 1
-                }
-            },
-            "name_en": {
-                "style": "form",
-                "name": "name_en",
-                "in": "query",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "name_bn": {
-                "style": "form",
-                "name": "name_bn",
-                "in": "query",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "name_bn_optional": {
-                "style": "form",
-                "name": "name_bn",
-                "in": "query",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "name_en_optional": {
-                "style": "form",
-                "name": "name_en",
-                "in": "query",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "page": {
-                "name": "page",
-                "in": "query",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "integer",
-                    "example": 1
-                }
-            },
-            "order": {
-                "in": "query",
-                "name": "order",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "string",
-                    "enum": [
-                        "asc",
-                        "desc"
-                    ]
-                }
-            },
-            "row_status": {
-                "name": "row_status",
-                "in": "query",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        0
-                    ],
-                    "example": 1
-                }
-            },
-            "title_optional": {
-                "name": "title",
-                "in": "query",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "page": {
-                "name": "page",
-                "in": "query",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "integer"
-                }
-            },
-            "page_size": {
-                "name": "page_size",
-                "in": "query",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "integer"
-                }
-            },
-            "youth_id": {
-                "name": "youth_id",
-                "in": "query",
-                "required": true,
-                "style": "form",
-                "schema": {
-                    "type": "integer"
-                }
-            },
-            "portfolioId": {
-                "name": "portfolioId",
-                "in": "path",
-                "required": true,
-                "style": "form",
-                "schema": {
-                    "type": "integer"
-                }
-            }
-        },
         "schemas": {
             "Youth": {
                 "type": "object",
@@ -1246,15 +1235,22 @@
                         "minLength": 2,
                         "maxLength": 191
                     },
-                    "title_bn": {
+                    "title": {
                         "type": "string",
-                        "description": " title in Bengali",
+                        "description": " title in Native",
                         "minLength": 2,
-                        "maxLength": 600
+                        "maxLength": 600,
+                        "example": "Native title"
                     },
                     "description": {
                         "type": "string",
                         "description": "Details of a skill",
+                        "maximum": 5000,
+                        "minimum": 2
+                    },
+                    "description_en": {
+                        "type": "string",
+                        "description": "Details of a skill in english",
                         "maximum": 5000,
                         "minimum": 2
                     },
@@ -1264,7 +1260,8 @@
                         "enum": [
                             0,
                             1
-                        ]
+                        ],
+                        "default": 1
                     },
                     "created_by": {
                         "type": "integer",
@@ -1284,10 +1281,524 @@
                     }
                 },
                 "required": [
-                    "title_en",
-                    "title_bn"
+                    "title"
                 ]
+            },
+            "youthRegistration": {
+                "type": "object",
+                "description": "Youth Profile",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "gender": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
+                        "description": "1=>Male,2=>Female,3=>Others",
+                        "default": 1
+                    },
+                    "skills": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "uniqueItems": true,
+                            "enum": [
+                                1,
+                                2,
+                                3
+                            ]
+                        }
+                    },
+                    "user_name_type": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2
+                        ],
+                        "description": "1=>Email Type, 2=>Mobile Number"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "mobile": {
+                        "type": "string"
+                    },
+                    "date_of_birth": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "physical_disability_status": {
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "description": "0=>No,1=>Yes",
+                        "default": 0
+                    },
+                    "physical_disabilities": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "uniqueItems": true,
+                            "enum": [
+                                1,
+                                2,
+                                3
+                            ]
+                        }
+                    },
+                    "loc_division_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "loc_district_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "#Piyal_15021#"
+                    },
+                    "password_confirmation": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "#Piyal_15021#"
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "username",
+                    "first_name",
+                    "last_name",
+                    "gender",
+                    "email",
+                    "mobile",
+                    "skills",
+                    "password",
+                    "password_confirmation",
+                    "physical_disability_status",
+                    "user_name_type",
+                    "date_of_birth",
+                    "loc_district_id",
+                    "loc_division_id"
+                ]
+            },
+            "youthProfileUpdateSchema": {
+                "type": "object",
+                "description": "Youth Profile",
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "example": "ABC Name"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "example": "abc"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "test.123@gmail.com"
+                    },
+                    "mobile": {
+                        "type": "string",
+                        "example": "01767111434"
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "1/2 Dhaka Bangladesh"
+                    },
+                    "zip_or_postal_code": {
+                        "type": "string",
+                        "example": "12345"
+                    },
+                    "bio": {
+                        "type": "string",
+                        "example": "A required Microsoft Windows system directory, the System32 directory is located in either C:\\Windows\\System32 or C:\\Winnt\\system32 directory. The system32 directory contains Windows system files and software program files, vital to the operation of the Windows operating system and software programs running in Windows. The most common types of files found in the system32 directory are DLL (Dynamic Link Library) and EXE (executable) files."
+                    },
+                    "photo": {
+                        "type": "string",
+                        "example": "photo.png"
+                    },
+                    "cv_path": {
+                        "type": "string",
+                        "example": "cv_path.png"
+                    }
+                },
+                "required": [
+                    "first_name",
+                    "last_name",
+                    "gender",
+                    "email",
+                    "mobile",
+                    "city",
+                    "zip_or_postal_code",
+                    "bio"
+                ]
+            },
+            "portfolio": {
+                "type": "object",
+                "description": "Youth Portfolios",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Title in native",
+                        "maxLength": 400,
+                        "minLength": 2,
+                        "example": "native title"
+                    },
+                    "title_en": {
+                        "type": "string",
+                        "description": "Title in english",
+                        "maxLength": 300,
+                        "minLength": 2
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description in English"
+                    },
+                    "description_en": {
+                        "type": "string",
+                        "description": "Description in native"
+                    },
+                    "file_path": {
+                        "type": "string"
+                    },
+                    "youth_id": {
+                        "type": "integer"
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "title",
+                    "youth_id"
+                ]
+            },
+            "jobExperience":  {
+                "type": "object",
+                "description": "Job Experience",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "youth_id": {
+                        "type": "integer"
+                    },
+                    "company_name": {
+                        "type": "string"
+                    },
+                    "company_name_en": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "position": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "position_en": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "employment_type_id": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2,
+                            3,
+                            4
+                        ],
+                        "description": "1=>Full Time,2=>Part Time,3=>Casual,4=>Apprentice or Trainee "
+                    },
+                    "location": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "location_en": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "job_description": {
+                        "type": "string"
+                    },
+                    "job_description_en": {
+                        "type": "string"
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2021-10-04"
+                    },
+                    "end_date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "is_currently_work": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            0
+                        ],
+                        "description": "1=>Yes,0=>No",
+                        "default": 0
+                    },
+                    "row_status": {
+                        "type": "integer",
+                        "default": 1
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "youth_id",
+                    "company_name",
+                    "position",
+                    "employment_type_id",
+                    "location",
+                    "start_date"
+                ]
+            }
+        },
+        "parameters": {
+            "skillId": {
+                "name": "skillId",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            "title_bn_optional": {
+                "name": "title_bn",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "title_en_optional": {
+                "name": "title_en",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "row_status_optional": {
+                "name": "row_status",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "page_size": {
+                "name": "page_size",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "youthId": {
+                "name": "youthId",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            "name_en": {
+                "style": "form",
+                "name": "name_en",
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "name_bn": {
+                "style": "form",
+                "name": "name_bn",
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "name_bn_optional": {
+                "style": "form",
+                "name": "name_bn",
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "name_en_optional": {
+                "style": "form",
+                "name": "name_en",
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "page": {
+                "name": "page",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            "order": {
+                "in": "query",
+                "name": "order",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "asc",
+                        "desc"
+                    ]
+                }
+            },
+            "row_status": {
+                "name": "row_status",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        0
+                    ],
+                    "example": 1
+                }
+            },
+            "title_optional": {
+                "name": "title",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "youth_id": {
+                "name": "youth_id",
+                "in": "query",
+                "required": true,
+                "style": "form",
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            "portfolioId": {
+                "name": "portfolioId",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "company_name_en": {
+                "name": "company_name_en",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "company_name_bn": {
+                "name": "company_name_bn",
+                "in": "query",
+                "required": false,
+                "style": "form",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "jobExperienceId": {
+                "name": "jobExperienceId",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "integer"
+                }
             }
         }
     }
 }
+
+

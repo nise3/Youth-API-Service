@@ -9,7 +9,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,51 +23,56 @@ class PortfolioService
 
     public function getAllPortfolios(array $request, Carbon $startTime): array
     {
-
         $title = $request['title'] ?? "";
-        $youthId = $request['youth_id'] ?? "";
+        $titleEn = $request['title_en'] ?? "";
+        $youthId = $request['youth_id'];
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
 
         /** @var Builder $portfolioBuilder */
-        $portfoliosBuilder = Portfolio::select([
+        $portfolioBuilder = Portfolio::select([
             'portfolios.id',
             'portfolios.title',
+            'portfolios.title_en',
             'portfolios.description',
+            'portfolios.description_en',
             'portfolios.file_path',
             'portfolios.youth_id',
             'portfolios.row_status',
             'portfolios.created_at',
             'portfolios.updated_at'
         ]);
+        $portfolioBuilder->orderBy('portfolios.id', $order);
 
-        if ($youthId) {
-            $portfoliosBuilder->where('portfolios.youth_id', $youthId);
+        if (is_numeric($youthId)) {
+            $portfolioBuilder->where('portfolios.youth_id', $youthId);
         }
-
-        $portfoliosBuilder->orderBy('portfolios.id', $order);
 
         if (is_numeric($rowStatus)) {
-            $portfoliosBuilder->where('portfolios.row_status', $rowStatus);
+            $portfolioBuilder->where('portfolios.row_status', $rowStatus);
         }
         if (!empty($title)) {
-            $portfoliosBuilder->where('portfolios.title', 'like', '%' . $title . '%');
+            $portfolioBuilder->where('portfolios.title', 'like', '%' . $title . '%');
+        }
+
+        if (!empty($titleEn)) {
+            $portfolioBuilder->where('portfolios.title_en', 'like', '%' . $titleEn . '%');
         }
 
         /** @var Collection $portfolios */
 
         if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
-            $portfolios = $portfoliosBuilder->paginate($pageSize);
+            $portfolios = $portfolioBuilder->paginate($pageSize);
             $paginateData = (object)$portfolios->toArray();
             $response['current_page'] = $paginateData->current_page;
             $response['total_page'] = $paginateData->last_page;
             $response['page_size'] = $paginateData->per_page;
             $response['total'] = $paginateData->total;
         } else {
-            $portfolios = $portfoliosBuilder->get();
+            $portfolios = $portfolioBuilder->get();
         }
 
         $response['order'] = $order;
@@ -93,7 +97,9 @@ class PortfolioService
         $portfolioBuilder = Portfolio::select([
             'portfolios.id',
             'portfolios.title',
+            'portfolios.title_en',
             'portfolios.description',
+            'portfolios.description_en',
             'portfolios.file_path',
             'portfolios.youth_id',
             'portfolios.row_status',
@@ -106,7 +112,7 @@ class PortfolioService
         $portfolio = $portfolioBuilder->first();
 
         return [
-            "data" => $portfolio ?: null,
+            "data" => $portfolio ?: [],
             "_response_status" => [
                 "success" => true,
                 "code" => Response::HTTP_OK,
@@ -165,9 +171,22 @@ class PortfolioService
         $rules = [
             'title' => [
                 'required',
-                'string'
+                'string',
+                'max:400',
+                'min:2'
+            ],
+            'title_en' => [
+                'nullable',
+                'string',
+                'max:300',
+                'min:2'
             ],
             'description' => [
+                'nullable',
+                'string',
+                'min:2'
+            ],
+            'description_en' => [
                 'nullable',
                 'string',
                 'min:2'
@@ -212,9 +231,10 @@ class PortfolioService
 
         return Validator::make($request->all(), [
             'page' => 'numeric|gt:0',
-            'title' => 'nullable|max:500|min:2',
-            'youth_id' => 'min:1',
-            'pageSize' => 'numeric|gt:0',
+            'title' => 'nullable|max:400|min:2',
+            'title_en' => 'nullable|max:300|min:2',
+            'youth_id' => 'required|min:1',
+            'page_size' => 'numeric|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])

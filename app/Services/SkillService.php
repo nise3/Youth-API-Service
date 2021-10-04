@@ -37,9 +37,10 @@ class SkillService
         $skillBuilder = Skill::select(
             [
                 'skills.id',
+                'skills.title',
                 'skills.title_en',
-                'skills.title_bn',
                 'skills.description',
+                'skills.description_en',
                 'skills.row_status',
                 'skills.created_at',
                 'skills.updated_at',
@@ -95,9 +96,10 @@ class SkillService
         $skillBuilder = Skill::select(
             [
                 'skills.id',
+                'skills.title',
                 'skills.title_en',
-                'skills.title_bn',
                 'skills.description',
+                'skills.description_en',
                 'skills.row_status',
                 'skills.created_at',
                 'skills.updated_at',
@@ -174,6 +176,7 @@ class SkillService
                 'skills.title_en',
                 'skills.title_bn',
                 'skills.description',
+                'skills.description_en',
                 'skills.row_status',
                 'skills.created_at',
                 'skills.updated_at',
@@ -249,18 +252,22 @@ class SkillService
         ];
         $rules = [
             'title_en' => [
-                'required',
+                'nullable',
                 'string',
                 'max:191',
                 'min:2',
             ],
-            'title_bn' => [
+            'title' => [
                 'required',
                 'string',
                 'max: 400',
                 'min:2'
             ],
             'description' => [
+                'nullable',
+                'string',
+            ],
+            'description_en' => [
                 'nullable',
                 'string',
             ],
@@ -295,7 +302,7 @@ class SkillService
 
         return Validator::make($request->all(), [
             'title_en' => 'nullable|max:191|min:2',
-            'title_bn' => 'nullable|min:600|min:2',
+            'title' => 'nullable|max:400|min:2',
             'page' => 'numeric|gt:0',
             '$pageSize' => 'numeric|gt:0',
             'order' => [
