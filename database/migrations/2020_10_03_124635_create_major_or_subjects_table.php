@@ -15,6 +15,7 @@ class CreateMajorOrSubjectsTable extends Migration
     {
         Schema::create('major_or_subjects', function (Blueprint $table) {
             $table->tinyIncrements('id');
+            $table->char('code', 10);
             $table->string("title_en", 200);
             $table->string("title_bn", 400);
             $table->text("description")->nullable();

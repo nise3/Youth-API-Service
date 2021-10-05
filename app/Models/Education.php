@@ -36,7 +36,6 @@ class Education extends BaseModel
     const DIVISION_THIRD_CLASS = 3;
     const DIVISION_PASS = 6;
 
-
     const GPA_OUT_OF_FIVE = 5;
     const GPA_OUT_OF_FOUR = 4;
     const RESULT_TYPE_DIVISION = 1;
