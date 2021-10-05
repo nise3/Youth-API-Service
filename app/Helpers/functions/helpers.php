@@ -1,6 +1,9 @@
 <?php
 
 if (!function_exists("clientUrl")) {
+
+
+
     function clientUrl($type)
     {
         $config = config("httpclientendpoint");

@@ -68,8 +68,9 @@ class YouthProfileController extends Controller
     function youthRegistration(Request $request): JsonResponse
     {
         $youth = new Youth();
-
         $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
+
+
         DB::beginTransaction();
         try {
             $idpUserPayLoad = [
@@ -78,6 +79,7 @@ class YouthProfileController extends Controller
                 'username' => $validated['username'],
                 'password' => $validated['password']
             ];
+
             $httpClient = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
             if ($httpClient->json("id")) {
                 $validated['idp_user_id'] = $httpClient->json("id");
