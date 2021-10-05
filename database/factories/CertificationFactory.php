@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 
 use App\Models\Certification;
-use App\Models\Youth;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CertificationFactory extends Factory
@@ -19,7 +18,6 @@ class CertificationFactory extends Factory
         $locationEn = $this->faker->streetAddress();
         $start = $this->faker->dateTime()->format('Y-m-d');
         $end = $this->faker->dateTimeBetween($start, $start.' +2 days');
-        $youthId = Youth::all()->random()->id;
 
     	return [
             'certification_name' => $certificationName,
@@ -30,7 +28,6 @@ class CertificationFactory extends Factory
             'location_en' => $locationEn,
             'start_date' => $start,
             'end_date' => $end,
-            'youth_id' => $youthId,
             'certificate_file_path' => $certificationName,
     	];
     }

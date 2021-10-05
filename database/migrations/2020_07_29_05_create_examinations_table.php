@@ -15,6 +15,7 @@ class CreateExaminationsTable extends Migration
     {
         Schema::create('examinations', function (Blueprint $table) {
             $table->tinyIncrements("id");
+            $table->string("code" , 20);
             $table->string("title_en" , 255);
             $table->string("title_bn", 400);
             $table->text("description")->nullable();

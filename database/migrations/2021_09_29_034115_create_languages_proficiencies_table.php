@@ -31,9 +31,9 @@ class CreateLanguagesProficienciesTable extends Migration
                 ->onDelete("CASCADE")
                 ->onUpdate("CASCADE");
 
-            $table->foreign('language_info_id')
+            $table->foreign('language_id')
                 ->references('id')
-                ->on('language_infos')
+                ->on('languages')
                 ->onDelete("CASCADE")
                 ->onUpdate("CASCADE");
         });

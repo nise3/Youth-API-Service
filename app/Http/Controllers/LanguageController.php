@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Language;
+use App\Models\LanguagesProficiency;
 use App\Services\YouthManagementServices\LanguageService;
 use Carbon\Carbon;
 use Exception;
@@ -87,7 +87,7 @@ class LanguageController extends Controller
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "Language added successfully",
+                    "message" => "LanguagesProficiency added successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
@@ -106,7 +106,7 @@ class LanguageController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $language = Language::findOrFail($id);
+        $language = LanguagesProficiency::findOrFail($id);
         $validated = $this->languageService->validator($request, $id)->validate();
         try {
             $language = $this->languageService->update($language, $validated);
@@ -115,7 +115,7 @@ class LanguageController extends Controller
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Language updated successfully",
+                    "message" => "LanguagesProficiency updated successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];
@@ -132,14 +132,14 @@ class LanguageController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $language = Language::findOrFail($id);
+        $language = LanguagesProficiency::findOrFail($id);
         try {
             $this->languageService->destroy($language);
             $response = [
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Language deleted successfully",
+                    "message" => "LanguagesProficiency deleted successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];

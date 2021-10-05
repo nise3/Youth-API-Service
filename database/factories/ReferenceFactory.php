@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Reference;
-use App\Models\Youth;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ReferenceFactory extends Factory
@@ -16,9 +15,7 @@ class ReferenceFactory extends Factory
         $firstName = $this->faker->firstName();
         $lastName = $this->faker->lastName();
         $address = $this->faker->address();
-        $youthId = Youth::all()->random()->id;
         return [
-            'youth_id' => $youthId,
             'referrer_first_name' => $firstName,
             'referrer_first_name_en' => $firstName,
             'referrer_last_name' => $lastName,

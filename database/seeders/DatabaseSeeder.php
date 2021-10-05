@@ -14,20 +14,21 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            GeoLocationDatabaseSeeder::class,
+//            GeoLocationDatabaseSeeder::class,
+//            SkillSeeder::class,
+//            EmploymentTypeSeeder::class,
+//            BoardSeeder::class,
+//            ExaminationSeeder::class,
+//            EduGroupSeeder::class,
+//            LanguageSeeder::class,
+//            PhysicalDisabilitySeeder::class,
+//            MajorOrSubjectSeeder::class,
             YouthSeeder::class,
-            EmploymentTypeSeeder::class,
-            BoardSeeder::class,
-            ExaminationSeeder::class,
-            EduGroupSeeder::class,
-            LanguageInfoSeeder::class,
-            PhysicalDisabilitySeeder::class,
-            PortfolioSeeder::class,
-            JobExperienceSeeder::class,
-            SkillSeeder::class,
-            ReferenceSeeder::class,
-            CertificationSeeder::class,
-            YouthLanguageSeeder::class
+//            PortfolioSeeder::class,
+//            JobExperienceSeeder::class,
+//            ReferenceSeeder::class,
+//            CertificationSeeder::class,
+//            YouthLanguageSeeder::class
         ]);
     }
 }

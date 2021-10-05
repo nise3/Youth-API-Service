@@ -21,9 +21,9 @@ class CreateEducationTable extends Migration
             $table->unsignedTinyInteger("examination_id")->comment('PSC, JSC, SSC, HSC, Degree, Honours, Masters etc');
             $table->unsignedTinyInteger('board_id')->nullable()->comment('Only for PSC, JSC, SSC, HSC etc');
             $table->unsignedTinyInteger('edu_group_id')->nullable()->comment('1 => Science, 2 => Commerce, 3 => Arts (Only for PSC, JSC, SSC, HSC, Degree)');
-            $table->unsignedTinyInteger('major_subject_id')->nullable()->comment('Only for Honours/Masters');
-            $table->string('registration_number', 100)->nullable();
+            $table->unsignedTinyInteger('major_or_subject_id')->nullable()->comment('Only for Honours/Masters');
             $table->string('roll_number', 100);
+            $table->string('registration_number', 100)->nullable();
             $table->unsignedTinyInteger('result_type')->comment("1 => Division, 2 => Grade point");
             $table->unsignedTinyInteger('division_type_result')->comment("1 => 1st Class, 2 => 2nd Class, 3 => 3rd Class")->nullable();
             $table->float("cgpa_gpa_max_value")->nullable();
@@ -51,7 +51,13 @@ class CreateEducationTable extends Migration
                 ->onDelete("SET NULL")
                 ->onUpdate("CASCADE");
 
-            $table->foreign('major_subject_id')
+            $table->foreign('edu_group_id')
+                ->references('id')
+                ->on('edu_groups')
+                ->onDelete("SET NULL")
+                ->onUpdate("CASCADE");
+
+            $table->foreign('major_or_subject_id')
                 ->references('id')
                 ->on('major_or_subjects')
                 ->onDelete("SET NULL")

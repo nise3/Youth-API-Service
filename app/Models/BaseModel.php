@@ -59,7 +59,7 @@ abstract class BaseModel extends Model
         self::OTHERS
     ];
 
-    /** Language Level */
+    /** LanguagesProficiency Level */
     public const EASY = 1;
     public const NOT_EASY = 0;
     public const FLUENTLY = 1;

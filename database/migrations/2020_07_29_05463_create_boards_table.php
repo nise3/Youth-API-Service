@@ -2,9 +2,10 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEduGroupsTable extends Migration
+class CreateBoardsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +14,17 @@ class CreateEduGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('edu_groups', function (Blueprint $table) {
+        Schema::create('boards', function (Blueprint $table) {
             $table->tinyIncrements("id");
             $table->string("title_en", 200);
-            $table->string("title_bn", 350);
+            $table->string("title_bn", 400);
             $table->text("description")->nullable();
             $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();
             $table->softDeletes();
         });
+
+        DB::statement("ALTER TABLE `boards` comment 'Education board or national authority'");
     }
 
     /**
@@ -31,6 +34,6 @@ class CreateEduGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('boards');
     }
 }

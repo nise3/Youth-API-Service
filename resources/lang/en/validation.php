@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Validation Language Lines
+    | Validation LanguagesProficiency Lines
     |--------------------------------------------------------------------------
     |
     | The following language lines contain the default error messages used by
@@ -390,7 +390,7 @@ return [
     ],
     /*
     |--------------------------------------------------------------------------
-    | Custom Validation Language Lines
+    | Custom Validation LanguagesProficiency Lines
     |--------------------------------------------------------------------------
     |
     | Here you may specify custom validation messages for attributes using the

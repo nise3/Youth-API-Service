@@ -5,7 +5,7 @@ namespace App\Services\YouthManagementServices;
 
 
 use App\Models\BaseModel;
-use App\Models\Language;
+use App\Models\LanguagesProficiency;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -31,7 +31,7 @@ class LanguageService
         $order = $request['order'] ?? "ASC";
 
         /** @var Builder $languageBuilder */
-        $languageBuilder = Language::select([
+        $languageBuilder = LanguagesProficiency::select([
             'languages.id',
             'languages.youth_id',
             'languages.language_info_id',
@@ -95,7 +95,7 @@ class LanguageService
     public function getOneLanguage(int $id, Carbon $startTime): array
     {
         /** @var Builder $languageBuilder */
-        $languageBuilder = Language::select([
+        $languageBuilder = LanguagesProficiency::select([
             'languages.id',
             'languages.youth_id',
             'languages.language_info_id',
@@ -109,7 +109,7 @@ class LanguageService
         ]);
         $languageBuilder->where('languages.id', $id);
 
-        /** @var Language $language */
+        /** @var LanguagesProficiency $language */
         $language = $languageBuilder->first();
 
         return [
@@ -125,22 +125,22 @@ class LanguageService
 
     /**
      * @param array $data
-     * @return Language
+     * @return LanguagesProficiency
      */
-    public function store(array $data): Language
+    public function store(array $data): LanguagesProficiency
     {
-        $language = new Language();
+        $language = new LanguagesProficiency();
         $language->fill($data);
         $language->save();
         return $language;
     }
 
     /**
-     * @param Language $language
+     * @param LanguagesProficiency $language
      * @param array $data
-     * @return Language
+     * @return LanguagesProficiency
      */
-    public function update(Language $language, array $data): Language
+    public function update(LanguagesProficiency $language, array $data): LanguagesProficiency
     {
         $language->fill($data);
         $language->save();
@@ -148,10 +148,10 @@ class LanguageService
     }
 
     /**
-     * @param Language $language
+     * @param LanguagesProficiency $language
      * @return bool
      */
-    public function destroy(Language $language): bool
+    public function destroy(LanguagesProficiency $language): bool
     {
         return $language->delete();
     }

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 
-
 use Carbon\Carbon;
 
 /**
@@ -21,5 +20,5 @@ use Carbon\Carbon;
  */
 class Portfolio extends BaseModel
 {
-    protected $guarded=BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
+    protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
 }

@@ -26,8 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon created_at
  * @property Carbon updated_at
  */
-
 class JobExperience extends BaseModel
 {
-    protected $guarded=BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
+    protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
 }

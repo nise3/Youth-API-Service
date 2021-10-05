@@ -24,7 +24,7 @@ class Education extends BaseModel
 {
     use SoftDeletes, HasFactory;
 
-    protected $table = 'education';
+    protected $table = 'educations';
 
     /**
      * @var string[]
