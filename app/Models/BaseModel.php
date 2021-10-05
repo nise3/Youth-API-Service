@@ -93,11 +93,11 @@ abstract class BaseModel extends Model
         self::PASSWORD_REGEX
     ];
 
-    public const USER_TYPE_EMAIL = 1;
-    public const USER_TYPE_MOBILE_NUMBER = 2;
-    public const USER_TYPE = [
-        self::USER_TYPE_EMAIL,
-        self::USER_TYPE_MOBILE_NUMBER
+    public const USER_NAME_TYPE_EMAIL = 1;
+    public const USER_NAME_TYPE_MOBILE_NUMBER = 2;
+    public const USER_NAME_TYPE = [
+        self::USER_NAME_TYPE_EMAIL,
+        self::USER_NAME_TYPE_MOBILE_NUMBER
     ];
 
     public const CURRENTLY_WORKING = 1;

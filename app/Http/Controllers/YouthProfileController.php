@@ -85,8 +85,8 @@ class YouthProfileController extends Controller
 
                 /** @var  $sendVeryCodePayLoad */
                 $sendVeryCodePayLoad["code"] = $validated['verification_code'];
-                $payloadField = $validated['user_name_type'] == BaseModel::USER_TYPE_EMAIL ? "email" : "mobile";
-                $sendVeryCodePayLoad[$payloadField] = $validated['user_name_type'] == BaseModel::USER_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
+                $payloadField = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? "email" : "mobile";
+                $sendVeryCodePayLoad[$payloadField] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
 
                 $send_status=$this->youthProfileService->sendVerifyCode($sendVeryCodePayLoad);
 

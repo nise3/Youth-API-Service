@@ -396,7 +396,7 @@ class YouthProfileService
                 Rule::requiredIf(function () use ($id) {
                     return $id == null;
                 }),
-                Rule::in(BaseModel::USER_TYPE)
+                Rule::in(BaseModel::USER_NAME_TYPE)
             ],
             "first_name" => "required|string|min:2|max:191",
             "last_name" => "required|string|min:2|max:191",
