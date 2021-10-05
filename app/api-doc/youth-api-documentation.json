@@ -1026,6 +1026,564 @@
                     "job experience"
                 ]
             }
+        },
+        "/youth-profile": {
+            "get": {
+                "summary": "get youth profile",
+                "description": "API endpoint to get the youth profile. A successful request response will show 200 HTTP status code ",
+                "responses": {
+                    "200": {
+                        "description": "get youth profile",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthProfile"
+                                },
+                                "example": {
+                                    "current_page": 1,
+                                    "total_page": 1,
+                                    "page_size": 10,
+                                    "total": 10,
+                                    "order": "ASC",
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "first_name": "Tellur",
+                                            "last_name": "Rahman",
+                                            "gender": 1,
+                                            "skills": null,
+                                            "email": "",
+                                            "mobile": "",
+                                            "date_of_birth": "0000-00-00",
+                                            "physical_disability_status": 0,
+                                            "physical_disabilities": null,
+                                            "city": null,
+                                            "zip_or_postal_code": null,
+                                            "bio": null,
+                                            "photo": null,
+                                            "cv_path": null,
+                                            "created_at": null,
+                                            "updated_at": null
+                                        }
+                                    ],
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Profile"
+                ]
+            },
+            "post": {
+                "summary": "Youth profile registration",
+                "description": "API endpoint to register a youth. A successful request response will show 200 HTTP status code ",
+                "parameters": [
+                    {
+                        "name": "is_freelance_profile",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "uniqueItems": true,
+                            "example": "habib.034"
+                        }
+                    },
+                    {
+                        "name": "user_name_type",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                1,
+                                2
+                            ],
+                            "description": "1=>Email Type,2=>Mobile Number"
+                        }
+                    },
+                    {
+                        "name": "first_name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "first_name_en",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "last_name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "last_name_en",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "gender",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                1,
+                                2,
+                                3
+                            ],
+                            "description": "1=>male,2=>female,3=>others"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "date_of_birth",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2021-10-5"
+                        }
+                    },
+                    {
+                        "name": "physical_disability_status",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1
+                            ],
+                            "description": "0=>No,1=>Yes",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "loc_division_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "loc_district_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "loc_upazila_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "village_or_area",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "village_or_area_en",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "house_n_road",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "house_n_road_en",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "zip_or_postal_code",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 10
+                        }
+                    },
+                    {
+                        "name": "bio",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "bio_en",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "photo",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 300
+                        }
+                    },
+                    {
+                        "name": "cv_path",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 300
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "register_youth",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthProfileRegistration"
+                                },
+                                "example": {
+                                    "current_page": 1,
+                                    "total_page": 1,
+                                    "page_size": 10,
+                                    "total": 10,
+                                    "order": "ASC",
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "first_name": "Tellur",
+                                            "last_name": "Rahman",
+                                            "gender": 1,
+                                            "skills": null,
+                                            "email": "sdfg@dom.com",
+                                            "mobile": "01245577498",
+                                            "date_of_birth": "0000-00-00",
+                                            "physical_disability_status": 0,
+                                            "physical_disabilities": null,
+                                            "city": null,
+                                            "zip_or_postal_code": null,
+                                            "bio": null,
+                                            "photo": null,
+                                            "cv_path": null,
+                                            "created_at": "2021-08-19T08:55:03.000000Z",
+                                            "updated_at": "2021-08-19T08:55:03.000000Z"
+                                        }
+                                    ],
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Profile"
+                ]
+            }
+        },
+        "/youth-profile-update": {
+            "post": {
+                "summary": "Youth profile update",
+                "description": "API endpoint to update a youth profile. A successful request response will show 200 HTTP status code ",
+                "parameters": [
+                    {
+                        "name": "is_freelance_profile",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "first_name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "first_name_en",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "last_name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "last_name_en",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "gender",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                1,
+                                2,
+                                3
+                            ],
+                            "description": "1=>male,2=>female,3=>others"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "date_of_birth",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2021-10-5"
+                        }
+                    },
+                    {
+                        "name": "physical_disability_status",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1
+                            ],
+                            "description": "0=>No,1=>Yes",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "loc_division_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "loc_district_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "loc_upazila_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "village_or_area",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "village_or_area_en",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "house_n_road",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "house_n_road_en",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 500
+                        }
+                    },
+                    {
+                        "name": "zip_or_postal_code",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 10
+                        }
+                    },
+                    {
+                        "name": "bio",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "bio_en",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "photo",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 300
+                        }
+                    },
+                    {
+                        "name": "cv_path",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 300
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update_youth_profile",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthProfileUpdateSchema"
+                                },
+                                "example": {
+                                    "current_page": 1,
+                                    "total_page": 1,
+                                    "page_size": 10,
+                                    "total": 10,
+                                    "order": "ASC",
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "first_name": "Tellur",
+                                            "last_name": "Rahman",
+                                            "gender": 1,
+                                            "skills": null,
+                                            "email": "sdfg@dom.com",
+                                            "mobile": "01245577498",
+                                            "date_of_birth": "0000-00-00",
+                                            "physical_disability_status": 0,
+                                            "physical_disabilities": null,
+                                            "city": null,
+                                            "zip_or_postal_code": null,
+                                            "bio": null,
+                                            "photo": null,
+                                            "cv_path": null,
+                                            "created_at": "2021-08-19T08:55:03.000000Z",
+                                            "updated_at": "2021-08-19T08:55:03.000000Z"
+                                        }
+                                    ],
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Profile"
+                ]
+            }
         }
     },
     "components": {
@@ -1415,6 +1973,292 @@
                     "loc_division_id"
                 ]
             },
+            "youthProfile": {
+                "type": "object",
+                "description": "Youth Profile",
+                "properties": {
+                    "idp_user_id": {
+                        "type": "string",
+                        "example": "yt7idt698adugiiausj"
+                    },
+                    "is_freelance_profile": {
+                        "type": "string",
+                        "default": 0
+                    },
+                    "username": {
+                        "type": "string",
+                        "uniqueItems": true
+                    },
+                    "user_name_type": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2
+                        ],
+                        "description": "1=>Email Type,2=>Mobile Number"
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "first_name_en": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "last_name_en": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "gender": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
+                        "description": "1=>male,2=>female,3=>others"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "mobile": {
+                        "type": "string"
+                    },
+                    "date_of_birth": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "physical_disability_status": {
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "description": "0=>No,1=>Yes",
+                        "default": 0
+                    },
+                    "loc_division_id": {
+                        "type": "integer"
+                    },
+                    "loc_district_id": {
+                        "type": "integer"
+                    },
+                    "loc_upazila_id": {
+                        "type": "integer"
+                    },
+                    "village_or_area": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "village_or_area_en": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "house_n_road": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "house_n_road_en": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "zip_or_postal_code": {
+                        "type": "string",
+                        "maximum": 10
+                    },
+                    "bio": {
+                        "type": "string"
+                    },
+                    "bio_en": {
+                        "type": "string"
+                    },
+                    "photo": {
+                        "type": "string",
+                        "maximum": 300
+                    },
+                    "cv_path": {
+                        "type": "string",
+                        "maximum": 300
+                    },
+                    "row_status": {
+                        "type": "integer",
+                        "description": "Youth activation status",
+                        "enum": [
+                            1,
+                            0
+                        ]
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "username",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "mobile",
+                    "loc_division_id",
+                    "loc_district_id"
+                ]
+            },
+            "youthProfileRegistration":  {
+                "type": "object",
+                "description": "Youth Profile Registration",
+                "properties": {
+                    "is_freelance_profile": {
+                        "type": "string",
+                        "default": 0
+                    },
+                    "username": {
+                        "type": "string",
+                        "uniqueItems": true
+                    },
+                    "user_name_type": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2
+                        ],
+                        "description": "1=>Email Type,2=>Mobile Number"
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "first_name_en": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "last_name_en": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "gender": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
+                        "description": "1=>male,2=>female,3=>others"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "mobile": {
+                        "type": "string"
+                    },
+                    "date_of_birth": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "physical_disability_status": {
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "description": "0=>No,1=>Yes",
+                        "default": 0
+                    },
+                    "loc_division_id": {
+                        "type": "integer"
+                    },
+                    "loc_district_id": {
+                        "type": "integer"
+                    },
+                    "loc_upazila_id": {
+                        "type": "integer"
+                    },
+                    "village_or_area": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "village_or_area_en": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "house_n_road": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "house_n_road_en": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "zip_or_postal_code": {
+                        "type": "string",
+                        "maximum": 10
+                    },
+                    "bio": {
+                        "type": "string"
+                    },
+                    "bio_en": {
+                        "type": "string"
+                    },
+                    "photo": {
+                        "type": "string",
+                        "maximum": 300
+                    },
+                    "cv_path": {
+                        "type": "string",
+                        "maximum": 300
+                    },
+                    "row_status": {
+                        "type": "integer",
+                        "description": "Youth activation status",
+                        "enum": [
+                            1,
+                            0
+                        ]
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "username",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "mobile",
+                    "loc_division_id",
+                    "loc_district_id"
+                ]
+            },
             "youthProfileUpdateSchema": {
                 "type": "object",
                 "description": "Youth Profile",
@@ -1423,7 +2267,15 @@
                         "type": "string",
                         "example": "ABC Name"
                     },
+                    "first_name_en": {
+                        "type": "string",
+                        "example": "ABC Name"
+                    },
                     "last_name": {
+                        "type": "string",
+                        "example": "abc"
+                    },
+                    "last_name_en": {
                         "type": "string",
                         "example": "abc"
                     },
