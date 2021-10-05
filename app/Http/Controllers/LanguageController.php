@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Language;
 use App\Services\YouthManagementServices\LanguageService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -35,7 +36,14 @@ class LanguageController extends Controller
     }
 
 
-    public function getList(Request $request)
+    /**
+     * Display a listing of the resource.
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Throwable
+     * @throws ValidationException
+     */
+    public function getList(Request $request): JsonResponse
     {
         $filter = $this->languageService->filterValidator($request)->validate();
         try {
@@ -48,9 +56,9 @@ class LanguageController extends Controller
 
     /**
      * Display the specified resource.
-     *
      * @param int $id
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
+     * @throws Throwable
      */
     public function read(int $id): JsonResponse
     {
@@ -66,7 +74,7 @@ class LanguageController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
     public function store(Request $request): JsonResponse
@@ -91,10 +99,9 @@ class LanguageController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
      * @param Request $request
      * @param int $id
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
     public function update(Request $request, int $id): JsonResponse
@@ -121,7 +128,7 @@ class LanguageController extends Controller
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
      */
     public function destroy(int $id): JsonResponse
     {
