@@ -2,17 +2,44 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Carbon\Traits\Date;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Class Education
+ * @package App\Models
+ * @property int id
+ * @property int youth_id
+ * @property int examination_id
+ * @property string institute_name
+ * @property int|null board_id
+ * @property int group_id
+ * @property int result_type
+ * @property int result
+ * @property double|null cgpa
+ * @property Date passing_year
+ */
 class Education extends BaseModel
 {
-    protected $guarded=BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
-    protected $table="educations";
-    /** Result Type Info */
-    public const RESULT_FIRST_CLASS = 1;
-    public const RESULT_SECOND_CLASS = 2;
-    public const RESULT_THIRD_CLASS = 3;
-    public const RESULT_OUT_OF_FOUR = 4;
-    public const RESULT_OUT_OF_FIVE = 5;
-    public const RESULT_PASSED = 6;
+    use SoftDeletes, HasFactory;
+
+    protected $table = 'education';
+
+    /**
+     * @var string[]
+     */
+    protected $guarded = ['id'];
+
+    const DIVISION_FIRST_CLASS = 1;
+    const DIVISION_SECOND_CLASS = 2;
+    const DIVISION_THIRD_CLASS = 3;
+    const DIVISION_PASS = 6;
+
+
+    const GPA_OUT_OF_FIVE = 5;
+    const GPA_OUT_OF_FOUR = 4;
+    const RESULT_TYPE_DIVISION = 1;
+    const RESULT_TYPE_GPA = 2;
+
 }
