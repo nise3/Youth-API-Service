@@ -1685,19 +1685,19 @@
                     {
                         "name": "email",
                         "in": "query",
-                        "required": true,
                         "schema": {
                             "type": "string",
-                            "example": "test14@gmail.com"
+                            "example": "test14@gmail.com",
+                            "description": "If youth select email as verification type then email is required"
                         }
                     },
                     {
                         "name": "mobile",
                         "in": "query",
-                        "required": true,
                         "schema": {
                             "type": "string",
-                            "example": "01767000124"
+                            "example": "01767000124",
+                            "description": "If youth select mobile as verification type then mobile is required"
                         }
                     },
                     {
