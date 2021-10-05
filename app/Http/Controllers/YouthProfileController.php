@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\BaseModel;
 use App\Models\Youth;
-use Faker\Provider\Uuid;
-use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Exception;
@@ -39,7 +37,7 @@ class YouthProfileController extends Controller
      * @return JsonResponse
      * @throws Throwable
      */
-    public function getYouthProfile()
+    public function getYouthProfile(): JsonResponse
     {
         try {
             $youth = $this->youthProfileService->getYouthProfile();
@@ -181,8 +179,9 @@ class YouthProfileController extends Controller
 
     /**
      * @param Request $request
-     * @param int $id
      * @return Exception|JsonResponse|Throwable
+     * @throws Throwable
+     * @throws ValidationException
      */
     public function youthVerification(Request $request): JsonResponse
     {

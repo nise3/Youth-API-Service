@@ -47,9 +47,12 @@ class LanguageService
         ]);
         $languageBuilder->orderBy('languages.id', $order);
 
-        $languageBuilder->join('language_infos', function ($join) {
+        $languageBuilder->join('language_infos', function ($join) use ($rowStatus) {
             $join->on('languages.language_info_id', '=', 'language_infos.id')
                 ->whereNull('language_infos.deleted_at');
+            if (is_numeric($rowStatus)) {
+                $join->where('language_infos.row_status', $rowStatus);
+            }
         });
 
         if (is_numeric($youthId)) {
@@ -82,7 +85,6 @@ class LanguageService
             "query_time" => $startTime->diffInSeconds(Carbon::now())
         ];
         return $response;
-
     }
 
     /**
@@ -245,5 +247,4 @@ class LanguageService
             ],
         ], $customMessage);
     }
-
 }
