@@ -65,7 +65,7 @@ class YouthProfileController extends Controller
      * @throws ValidationException
      * @throws Throwable
      */
-    function youthRegister(Request $request): JsonResponse
+    function youthRegistration(Request $request): JsonResponse
     {
         $youth = new Youth();
 
