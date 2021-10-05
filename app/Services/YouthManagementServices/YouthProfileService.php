@@ -154,7 +154,7 @@ class YouthProfileService
      */
     public function setFreelanceStatus(Youth $youth, array $data): bool
     {
-        $youth->is_freelance_profile = $data['freelance_profile_status'];
+        $youth->is_freelance_profile = $data['is_freelance_profile'];
         return $youth->save();
     }
 
@@ -292,7 +292,7 @@ class YouthProfileService
         ];
 
         $rules = [
-            "freelance_profile_status" => [
+            "is_freelance_profile" => [
                 "required",
                 Rule::in(BaseModel::FREELANCE_PROFILE_STATUS)
             ]
@@ -540,6 +540,7 @@ class YouthProfileService
      */
     public function getAuthYouth(string $id): ?Youth
     {
+
         /** @var Youth $youth */
         $youth = Youth::where('idp_user_id', $id)
             ->where("row_status", BaseModel::ROW_STATUS_ACTIVE)
