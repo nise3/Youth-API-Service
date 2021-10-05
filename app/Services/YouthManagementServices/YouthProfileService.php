@@ -105,7 +105,7 @@ class YouthProfileService
         $youth->fill($data);
         $youth->save();
         $this->assignSkills($youth, $data["skills"]);
-        if ($data['physical_disabilities']) {
+        if (array_key_exists('physical_disabilities',$data)) {
             $this->assignPhysicalDisabilities($youth, $data['physical_disabilities']);
         }
         return $youth;
@@ -247,6 +247,7 @@ class YouthProfileService
     public function idpUserCreate(array $data)
     {
         $url = clientUrl(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
+
         $client = Http::retry(3)->withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
             ->withHeaders([
                 'Content-Type' => 'application/json'
@@ -379,11 +380,11 @@ class YouthProfileService
         if (!empty($data["skills"])) {
             $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
         }
-        if (!empty($data["physical_disabilities"])) {
-            $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
-        } else {
-            unset($data["physical_disabilities"]);
-        }
+//        if (!empty($data["physical_disabilities"])) {
+//            $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
+//        } else {
+//            unset($data["physical_disabilities"]);
+//        }
 
         $rules = [
             "username" => [
@@ -398,8 +399,10 @@ class YouthProfileService
                 }),
                 Rule::in(BaseModel::USER_NAME_TYPE)
             ],
-            "first_name" => "required|string|min:2|max:191",
-            "last_name" => "required|string|min:2|max:191",
+            "first_name" => "required|string|min:2|max:500",
+            "first_name_en" => "nullable|string|min:2|max:500",
+            "last_name" => "required|string|min:2|max:500",
+            "last_name_en" => "nullable|string|min:2|max:500",
             "gender" => [
                 Rule::requiredIf(function () use ($id) {
                     return $id == null;
@@ -516,7 +519,7 @@ class YouthProfileService
             "bio" => [
                 "nullable"
             ],
-            "address" => [
+            "bio_en" => [
                 "nullable"
             ],
             "photo" => [
