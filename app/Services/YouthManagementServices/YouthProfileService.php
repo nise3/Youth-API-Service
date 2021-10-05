@@ -90,7 +90,7 @@ class YouthProfileService
 
         });
 
-        $youthProfileBuilder->with(["physicalDisabilities","languages", "skills", "educations", "jobExperiences", "certifications", "portfolios"]);
+        $youthProfileBuilder->with(["physicalDisabilities","LanguagesProficiencies", "skills", "educations", "jobExperiences", "certifications", "portfolios"]);
         $youthProfileBuilder->where('youths.id', '=', Auth::id());
         return $youthProfileBuilder->first();
 
@@ -377,6 +377,7 @@ class YouthProfileService
     public function youthRegisterValidation(Request $request, int $id = null): Validator
     {
         $data = $request->all();
+
         if (!empty($data["skills"])) {
             $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
         }
