@@ -20,7 +20,7 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     $customRouter()->resourceRoute('references', 'ReferenceController')->render();
     $customRouter()->resourceRoute('languages', 'LanguageController')->render();
     $customRouter()->resourceRoute('certifications', 'CertificationController')->render();
-    $customRouter()->resourceRoute('educations', 'youthEducationController')->render();
+    $customRouter()->resourceRoute('educations', 'EducationController')->render();
     /** youth verification */
     $router->post('youths/{id}/verify', ["as"=>"youths.verify","uses"=>"YouthController@youthVerification"]);
     $router->post('youths/{id}/verify', ["as" => "youths.verify", "uses" => "YouthController@youthVerification"]);

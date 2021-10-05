@@ -24,7 +24,7 @@ class CreateEducationTable extends Migration
             $table->unsignedInteger('result_type')->comment("1 => Division, 2 => Grade point");
             $table->unsignedInteger('result')->comment("1 => 1st Class, 2 => 2nd Class, 3 => 3rd Class, 4 => GPA(Out of 4), 5 => GPA(Out of 5), 6 => Pass");
             $table->unsignedFloat("cgpa")->nullable();
-            $table->date('passing_year');
+            $table->string('passing_year',4);
             $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();
             $table->softDeletes();
