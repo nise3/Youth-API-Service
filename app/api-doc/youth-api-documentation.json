@@ -1676,6 +1676,56 @@
                     "Youth Profile"
                 ]
             }
+        },
+        "/youth-profile-verification": {
+            "post": {
+                "summary": "Youth profile verification",
+                "description": "API endpoint to verify a youth profile. A successful request response will show 200 HTTP status code ",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "test14@gmail.com"
+                        }
+                    },
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "01767000124"
+                        }
+                    },
+                    {
+                        "name": "verification_code",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1234
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "verify_youth_profile",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/verifyYouthProfile"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Profile"
+                ]
+            }
         }
     },
     "components": {
@@ -2731,6 +2781,26 @@
                     "institute_name",
                     "location",
                     "start_date"
+                ]
+            },
+            "verifyYouthProfile": {
+                "type": "object",
+                "description": "Provide certifications",
+                "properties": {
+                    "mobile": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "verification_code": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "verification_code"
                 ]
             }
         },
