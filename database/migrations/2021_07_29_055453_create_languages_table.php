@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmploymentTypesTable extends Migration
+class CreateLanguagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateEmploymentTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('employment_types', function (Blueprint $table) {
+        Schema::create('languages', function (Blueprint $table) {
             $table->tinyIncrements("id");
-            $table->string("title_en", 200);
-            $table->string("title_bn", 350);
-            $table->text("description")->nullable();
+            $table->char("lang_code", 7);
+            $table->string("title_bn", 500);
+            $table->string("title_en", 250);
             $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();
             $table->softDeletes();
@@ -31,6 +31,6 @@ class CreateEmploymentTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employment_types');
+        Schema::dropIfExists('language_infos');
     }
 }

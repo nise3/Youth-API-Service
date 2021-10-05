@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             EmploymentTypeSeeder::class,
             BoardSeeder::class,
             ExaminationSeeder::class,
-            GroupSeeder::class,
+            EduGroupSeeder::class,
             LanguageInfoSeeder::class,
             PhysicalDisabilitySeeder::class,
             PortfolioSeeder::class,

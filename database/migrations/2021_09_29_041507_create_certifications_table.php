@@ -16,11 +16,11 @@ class CreateCertificationsTable extends Migration
         Schema::create('certifications', function (Blueprint $table) {
             $table->increments("id");
             $table->unsignedInteger("youth_id");
-            $table->string("certification_name", 300);
+            $table->string("certification_name", 500);
             $table->string("certification_name_en", 300)->nullable();
-            $table->string("institute_name", 300);
+            $table->string("institute_name", 500);
             $table->string("institute_name_en", 300)->nullable();
-            $table->string("location", 500)->nullable();
+            $table->string("location", 1000)->nullable();
             $table->string("location_en", 500)->nullable();
             $table->date("start_date");
             $table->date("end_date");

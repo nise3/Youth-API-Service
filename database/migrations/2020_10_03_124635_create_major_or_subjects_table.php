@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGroupsTable extends Migration
+class CreateMajorOrSubjectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
-            $table->increments("id");
+        Schema::create('major_or_subjects', function (Blueprint $table) {
+            $table->tinyIncrements('id');
             $table->string("title_en", 200);
-            $table->string("title_bn", 350);
+            $table->string("title_bn", 400);
             $table->text("description")->nullable();
-            $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -31,6 +29,6 @@ class CreateGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('major_or_subjects');
     }
 }

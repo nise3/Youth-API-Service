@@ -17,7 +17,7 @@ class LanguageFactory extends Factory
         $languageInfoId = LanguageInfo::all()->random()->id;
         return [
             'youth_id' => $youthId,
-            'language_info_id' => $languageInfoId,
+            'language_id' => $languageInfoId,
             'reading_proficiency_level' => $this->faker->randomElement([1,2]),
             'writing_proficiency_level' => $this->faker->randomElement([1,2]),
             'speaking_proficiency_level' => $this->faker->randomElement([1,2]),

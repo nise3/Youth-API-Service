@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLanguagesTable extends Migration
+class CreateLanguagesProficienciesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateLanguagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('languages', function (Blueprint $table) {
+        Schema::create('languages_proficiencies', function (Blueprint $table) {
             $table->increments("id");
             $table->unsignedInteger("youth_id");
-            $table->unsignedInteger("language_info_id");
+            $table->unsignedTinyInteger("language_id");
             $table->unsignedTinyInteger("reading_proficiency_level")->comment("1=>Easy,2=>Not Easy");
             $table->unsignedTinyInteger("writing_proficiency_level")->comment("1=>Easy,2=>Not Easy");
             $table->unsignedTinyInteger("speaking_proficiency_level")->comment("1=>Fluently,2=>Not Fluently");

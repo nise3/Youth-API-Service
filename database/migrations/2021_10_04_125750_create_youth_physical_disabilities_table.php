@@ -15,7 +15,7 @@ class CreateYouthPhysicalDisabilitiesTable extends Migration
     {
         Schema::create('youth_physical_disabilities', function (Blueprint $table) {
             $table->unsignedInteger('youth_id');
-            $table->unsignedInteger('physical_disability_id');
+            $table->unsignedTinyInteger('physical_disability_id');
 
             $table->foreign('youth_id')
                 ->references('id')

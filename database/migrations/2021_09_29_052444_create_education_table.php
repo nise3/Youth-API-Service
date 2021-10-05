@@ -16,15 +16,19 @@ class CreateEducationTable extends Migration
         Schema::create('educations', function (Blueprint $table) {
             $table->increments("id");
             $table->unsignedInteger("youth_id");
-            $table->unsignedInteger("examination_id");
             $table->string("institute_name", 400);
             $table->string("institute_name_en", 400)->nullable();
-            $table->unsignedInteger('board_id')->nullable();
-            $table->unsignedInteger('group_id');
-            $table->unsignedInteger('result_type')->comment("1 => Division, 2 => Grade point");
-            $table->unsignedInteger('result')->comment("1 => 1st Class, 2 => 2nd Class, 3 => 3rd Class, 4 => GPA(Out of 4), 5 => GPA(Out of 5), 6 => Pass");
-            $table->unsignedFloat("cgpa")->nullable();
-            $table->string('passing_year',4);
+            $table->unsignedTinyInteger("examination_id")->comment('PSC, JSC, SSC, HSC, Degree, Honours, Masters etc');
+            $table->unsignedTinyInteger('board_id')->nullable()->comment('Only for PSC, JSC, SSC, HSC etc');
+            $table->unsignedTinyInteger('edu_group_id')->nullable()->comment('1 => Science, 2 => Commerce, 3 => Arts (Only for PSC, JSC, SSC, HSC, Degree)');
+            $table->unsignedTinyInteger('major_subject_id')->nullable()->comment('Only for Honours/Masters');
+            $table->string('registration_number', 100)->nullable();
+            $table->string('roll_number', 100);
+            $table->unsignedTinyInteger('result_type')->comment("1 => Division, 2 => Grade point");
+            $table->unsignedTinyInteger('division_type_result')->comment("1 => 1st Class, 2 => 2nd Class, 3 => 3rd Class")->nullable();
+            $table->float("cgpa_gpa_max_value")->nullable();
+            $table->float("received_cgpa_gpa")->nullable();
+            $table->year('passing_year');
             $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();
             $table->softDeletes();
@@ -41,19 +45,17 @@ class CreateEducationTable extends Migration
                 ->onDelete("CASCADE")
                 ->onUpdate("CASCADE");
 
-
             $table->foreign('board_id')
                 ->references('id')
                 ->on('boards')
-                ->onDelete("CASCADE")
+                ->onDelete("SET NULL")
                 ->onUpdate("CASCADE");
 
-            $table->foreign('group_id')
+            $table->foreign('major_subject_id')
                 ->references('id')
-                ->on('groups')
-                ->onDelete("CASCADE")
+                ->on('major_or_subjects')
+                ->onDelete("SET NULL")
                 ->onUpdate("CASCADE");
-
 
         });
     }

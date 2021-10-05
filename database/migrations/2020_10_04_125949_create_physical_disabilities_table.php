@@ -14,9 +14,9 @@ class CreatePhysicalDisabilitiesTable extends Migration
     public function up()
     {
         Schema::create('physical_disabilities', function (Blueprint $table) {
-            $table->increments("id");
-            $table->string("title");
-            $table->string("title_en")->nullable();
+            $table->tinyIncrements("id");
+            $table->string("title", 500);
+            $table->string("title_en", 250)->nullable();
             $table->text("description")->nullable();
             $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();
