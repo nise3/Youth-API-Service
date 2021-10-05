@@ -15,6 +15,7 @@ class CreateEmploymentTypesTable extends Migration
     {
         Schema::create('employment_types', function (Blueprint $table) {
             $table->tinyIncrements("id");
+            $table->char('code', 10);
             $table->string("title_en", 200);
             $table->string("title_bn", 350);
             $table->text("description")->nullable();
