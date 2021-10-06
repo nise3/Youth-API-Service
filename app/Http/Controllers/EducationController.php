@@ -42,6 +42,7 @@ class EducationController extends Controller
      */
     public function getList(Request $request): JsonResponse
     {
+
         $filter = $this->educationService->filterValidator($request)->validate();
         try {
             $response = $this->educationService->getEducationList($filter, $this->startTime);
