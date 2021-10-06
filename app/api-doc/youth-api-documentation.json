@@ -3424,6 +3424,97 @@
                 "required": [
                     "is_freelance_profile"
                 ]
+            },
+            "Education": {
+                "type": "object",
+                "description": "Provide educational info of a youth",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "youth_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "institute_name": {
+                        "type": "string",
+                        "maxLength": 400
+                    },
+                    "institute_name_en": {
+                        "type": "string",
+                        "maxLength": 400
+                    },
+                    "examination_id": {
+                        "type": "integer",
+                        "description": "PSC, JSC, SSC, HSC, Degree, B.Sc. (Pass), Honours, Preliminary Masters, Masters etc"
+                    },
+                    "board_id": {
+                        "type": "integer",
+                        "description": "Only for PSC, JSC, SSC, HSC etc"
+                    },
+                    "edu_group_id": {
+                        "type": "integer",
+                        "description": "'1 => Science, 2 => Commerce, 3 => Arts (Only for PSC, JSC, SSC, HSC, Degree)"
+                    },
+                    "major_or_subject_id": {
+                        "type": "integer",
+                        "description": "'Only for Honours/Masters'"
+                    },
+                    "roll_number": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "registration_number": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "result_type": {
+                        "type": "integer",
+                        "description": "1 => Division, 2 => Grade point"
+                    },
+                    "division_type_result": {
+                        "type": "integer",
+                        "description": "1 => 1st Class, 2 => 2nd Class, 3 => 3rd Class"
+                    },
+                    "cgpa_gpa_max_value": {
+                        "type": "integer",
+                        "description": "floating point number"
+                    },
+                    "received_cgpa_gpa": {
+                        "type": "integer",
+                        "description": "floating point number"
+                    },
+                    "passing_year": {
+                        "type": "integer",
+                        "format": "year",
+                        "example": 2015
+                    },
+                    "row_status": {
+                        "type": "integer",
+                        "description": "activation status",
+                        "enum": [
+                            1,
+                            0
+                        ],
+                        "example": 1
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                }
             }
         },
         "parameters": {
