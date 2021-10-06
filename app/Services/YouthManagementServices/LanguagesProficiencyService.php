@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
-class LanguageService
+class LanguagesProficiencyService
 {
     /**
      * @param array $request
@@ -22,7 +22,7 @@ class LanguageService
      * @return array
      */
 
-    public function getAllLanguages(array $request, Carbon $startTime): array
+    public function getLanguagesProficiencyList(array $request, Carbon $startTime): array
     {
         $youthId = $request['youth_id'];
         $paginate = $request['page'] ?? "";
@@ -30,55 +30,56 @@ class LanguageService
         $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
 
-        /** @var Builder $languageBuilder */
-        $languageBuilder = LanguagesProficiency::select([
-            'languages.id',
-            'languages.youth_id',
-            'languages.language_info_id',
-            'language_infos.title as language_title',
-            'language_infos.title_en as language_title_en',
-            'languages.reading_proficiency_level',
-            'languages.writing_proficiency_level',
-            'languages.speaking_proficiency_level',
-            'languages.understand_proficiency_level',
-            'languages.row_status',
-            'languages.created_at',
-            'languages.updated_at'
+        /** @var Builder $languageProficiencyBuilder */
+        $languageProficiencyBuilder = LanguagesProficiency::select([
+            'languages_proficiencies.id',
+            'languages_proficiencies.youth_id',
+            'languages_proficiencies.language_id',
+            'languages.title_bn as language_title_bn',
+            'languages.title_en as language_title_en',
+            'languages.lang_code',
+            'languages_proficiencies.reading_proficiency_level',
+            'languages_proficiencies.writing_proficiency_level',
+            'languages_proficiencies.speaking_proficiency_level',
+            'languages_proficiencies.understand_proficiency_level',
+            'languages_proficiencies.row_status',
+            'languages_proficiencies.created_at',
+            'languages_proficiencies.updated_at'
         ]);
-        $languageBuilder->orderBy('languages.id', $order);
+        $languageProficiencyBuilder->orderBy('languages_proficiencies.id', $order);
 
-        $languageBuilder->join('language_infos', function ($join) use ($rowStatus) {
-            $join->on('languages.language_info_id', '=', 'language_infos.id')
-                ->whereNull('language_infos.deleted_at');
+        $languageProficiencyBuilder->join('languages', function ($join) use ($rowStatus) {
+            $join->on('languages_proficiencies.language_id', '=', 'languages.id')
+                ->whereNull('languages.deleted_at');
             if (is_numeric($rowStatus)) {
-                $join->where('language_infos.row_status', $rowStatus);
+                $join->where('languages.row_status', $rowStatus);
             }
         });
 
         if (is_numeric($youthId)) {
-            $languageBuilder->where('languages.youth_id', $youthId);
+            $languageProficiencyBuilder->where('languages_proficiencies.youth_id', $youthId);
         }
 
         if (is_numeric($rowStatus)) {
-            $languageBuilder->where('languages.row_status', $rowStatus);
+            $languageProficiencyBuilder->where('languages_proficiencies.row_status', $rowStatus);
         }
 
-        /** @var Collection $languages */
+        /** @var Collection $languagesProficiencies */
 
         if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
-            $languages = $languageBuilder->paginate($pageSize);
-            $paginateData = (object)$languages->toArray();
+            $languagesProficiencies = $languageProficiencyBuilder->paginate($pageSize);
+            $paginateData = (object)$languagesProficiencies->toArray();
             $response['current_page'] = $paginateData->current_page;
             $response['total_page'] = $paginateData->last_page;
             $response['page_size'] = $paginateData->per_page;
             $response['total'] = $paginateData->total;
         } else {
-            $languages = $languageBuilder->get();
+            $languagesProficiencies = $languageProficiencyBuilder->get();
         }
 
         $response['order'] = $order;
-        $response['data'] = $languages->toArray()['data'] ?? $languages->toArray();
+        $response['data'] = $languagesProficiencies->toArray()['data'] ?? $languagesProficiencies->toArray();
         $response['response_status'] = [
             "success" => true,
             "code" => Response::HTTP_OK,
@@ -92,28 +93,35 @@ class LanguageService
      * @param Carbon $startTime
      * @return array
      */
-    public function getOneLanguage(int $id, Carbon $startTime): array
+    public function getOneLanguagesProficiency(int $id, Carbon $startTime): array
     {
         /** @var Builder $languageBuilder */
-        $languageBuilder = LanguagesProficiency::select([
-            'languages.id',
-            'languages.youth_id',
-            'languages.language_info_id',
-            'languages.reading_proficiency_level',
-            'languages.writing_proficiency_level',
-            'languages.speaking_proficiency_level',
-            'languages.understand_proficiency_level',
-            'languages.row_status',
-            'languages.created_at',
-            'languages.updated_at'
+        $languageProficiencyBuilder = LanguagesProficiency::select([
+            'languages_proficiencies.id',
+            'languages_proficiencies.youth_id',
+            'languages_proficiencies.language_id',
+            'languages.title_bn as language_title_bn',
+            'languages.title_en as language_title_en',
+            'languages.lang_code',
+            'languages_proficiencies.reading_proficiency_level',
+            'languages_proficiencies.writing_proficiency_level',
+            'languages_proficiencies.speaking_proficiency_level',
+            'languages_proficiencies.understand_proficiency_level',
+            'languages_proficiencies.row_status',
+            'languages_proficiencies.created_at',
+            'languages_proficiencies.updated_at'
         ]);
-        $languageBuilder->where('languages.id', $id);
+        $languageProficiencyBuilder->join('languages', function ($join) {
+            $join->on('languages_proficiencies.language_id', '=', 'languages.id')
+                ->whereNull('languages.deleted_at');
+        });
+        $languageProficiencyBuilder->where('languages_proficiencies.id', $id);
 
-        /** @var LanguagesProficiency $language */
-        $language = $languageBuilder->first();
+        /** @var $languageProficiency $language */
+        $languagesProficiency = $languageProficiencyBuilder->first();
 
         return [
-            "data" => $language ?: [],
+            "data" => $languagesProficiency ?: [],
             "_response_status" => [
                 "success" => true,
                 "code" => Response::HTTP_OK,
@@ -129,31 +137,31 @@ class LanguageService
      */
     public function store(array $data): LanguagesProficiency
     {
-        $language = new LanguagesProficiency();
-        $language->fill($data);
-        $language->save();
-        return $language;
+        $languagesProficiency = new LanguagesProficiency();
+        $languagesProficiency->fill($data);
+        $languagesProficiency->save();
+        return $languagesProficiency;
     }
 
     /**
-     * @param LanguagesProficiency $language
+     * @param LanguagesProficiency $languagesProficiency
      * @param array $data
      * @return LanguagesProficiency
      */
-    public function update(LanguagesProficiency $language, array $data): LanguagesProficiency
+    public function update(LanguagesProficiency $languagesProficiency, array $data): LanguagesProficiency
     {
-        $language->fill($data);
-        $language->save();
-        return $language;
+        $languagesProficiency->fill($data);
+        $languagesProficiency->save();
+        return $languagesProficiency;
     }
 
     /**
-     * @param LanguagesProficiency $language
+     * @param LanguagesProficiency $languagesProficiency
      * @return bool
      */
-    public function destroy(LanguagesProficiency $language): bool
+    public function destroy(LanguagesProficiency $languagesProficiency): bool
     {
-        return $language->delete();
+        return $languagesProficiency->delete();
     }
 
     /**
@@ -175,10 +183,10 @@ class LanguageService
                 'int',
                 'exists:youths,id'
             ],
-            'language_info_id' => [
+            'language_id' => [
                 'required',
                 'int',
-                'exists:language_infos,id'
+                'exists:languages,id'
             ],
             'reading_proficiency_level' => [
                 'required',

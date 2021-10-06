@@ -16,6 +16,11 @@ class ExaminationSeeder extends Seeder
     {
         $examinations = [
             [
+                "title_en" => "PSC/Equivalent",
+                'code' => 'PSC',
+                "title_bn" => "পিএসসি/সমমান"
+            ],
+            [
                 "title_en" => "JSC/Equivalent",
                 'code' => 'JSC',
                 "title_bn" => "জেএসসি/সমমান"
@@ -56,14 +61,19 @@ class ExaminationSeeder extends Seeder
                 "title_bn" => "ডিগ্রী"
             ],
             [
-                "title_en" => "B.Sc. (Honours)",
-                'code' => 'BSc',
-                "title_bn" => "বিএসসি (সম্মান)"
+                "title_en" => "Honours",
+                'code' => 'HONOURS',
+                "title_bn" => "অনার্স"
             ],
             [
-                "title_en" => "M.Sc.",
-                'code' => 'Msc',
-                "title_bn" => "M.Sc."
+                "title_en" => "Preliminary Masters",
+                'code' => 'PMASTERS',
+                "title_bn" => "প্রিলিমিনারি মাস্টার্স"
+            ],
+            [
+                "title_en" => "Masters",
+                'code' => 'MASTERS',
+                "title_bn" => "মাস্টার্স"
             ]
         ];
 

@@ -4,7 +4,6 @@ namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
 use App\Models\Certification;
-use App\Models\JobExperience;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -30,7 +29,7 @@ class CertificationService
         $order = $request['order'] ?? "ASC";
 
         /** @var Builder $certificationBuilder */
-        $certificationBuilder = JobExperience::select([
+        $certificationBuilder = Certification::select([
             'certifications.id',
             'certifications.youth_id',
             'certifications.certification_name',
@@ -89,7 +88,7 @@ class CertificationService
     public function getOneCertification(int $id, Carbon $startTime): array
     {
         /** @var Builder $certificationBuilder */
-        $certificationBuilder = JobExperience::select([
+        $certificationBuilder = Certification::select([
             'certifications.id',
             'certifications.youth_id',
             'certifications.certification_name',
@@ -124,7 +123,7 @@ class CertificationService
      * @param array $data
      * @return certification
      */
-    public function store(array $data): certification
+    public function store(array $data): Certification
     {
         $certification = new Certification();
         $certification->fill($data);
@@ -242,10 +241,21 @@ class CertificationService
                 'nullable',
                 'after:start_date'
             ],
+            'youth_id' => [
+                'required',
+                'int',
+                'min:1',
+                'exists:youths,id'
+            ],
             'certificate_file_path' => [
+                'nullable',
                 'string',
                 'max:500'
-            ]
+            ],
+            'row_status' => [
+                'required_if:' . $id . ',!=,null',
+                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
+            ],
         ];
         return Validator::make($request->all(), $rules, $customMessage);
     }

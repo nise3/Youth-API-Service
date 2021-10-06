@@ -29,16 +29,28 @@ class Education extends BaseModel
     /**
      * @var string[]
      */
-    protected $guarded = ['id'];
+    protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
 
     const DIVISION_FIRST_CLASS = 1;
     const DIVISION_SECOND_CLASS = 2;
     const DIVISION_THIRD_CLASS = 3;
     const DIVISION_PASS = 6;
 
+    const EXAMINATION_ID_PSC = 1;
+    const EXAMINATION_ID_JSC = 2;
+    const EXAMINATION_ID_JDC = 3;
+    const EXAMINATION_ID_SSC = 4;
+    const EXAMINATION_ID_DAKHIL = 5;
+    const EXAMINATION_ID_ALIM = 6;
+    const EXAMINATION_ID_DIBS = 7;
+    const EXAMINATION_ID_DEGREE = 8;
+    const EXAMINATION_ID_HONOURS = 9;
+    const EXAMINATION_ID_PMASTERS = 10;
+    const EXAMINATION_ID_MASTERS = 11;
+
     const GPA_OUT_OF_FIVE = 5;
     const GPA_OUT_OF_FOUR = 4;
     const RESULT_TYPE_DIVISION = 1;
-    const RESULT_TYPE_GPA = 2;
+    const RESULT_TYPE_GRADE_POINT = 2;
 
 }
