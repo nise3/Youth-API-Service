@@ -14,12 +14,12 @@ $customRouter = function (string $as = '') use ($router) {
 $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($router, $customRouter) {
     $router->get('/', ['as' => 'api-info', 'uses' => 'ApiInfoController@apiInfo']);
     $customRouter()->resourceRoute('youths', 'YouthController')->render();
-    $customRouter()->resourceRoute('portfolios', 'PortfolioController')->render();
-    $customRouter()->resourceRoute('skills', 'SkillController')->render();
-    $customRouter()->resourceRoute('job-experience', 'JobExperienceController')->render();
-    $customRouter()->resourceRoute('references', 'ReferenceController')->render();
-    $customRouter()->resourceRoute('languages-proficiencies', 'LanguagesProficiencyController')->render();
-    $customRouter()->resourceRoute('certifications', 'CertificationController')->render();
+    $customRouter()->resourceRoute('youth-portfolios', 'PortfolioController')->render();
+    $customRouter()->resourceRoute('youth-skills', 'SkillController')->render();
+    $customRouter()->resourceRoute('youth-job-experience', 'JobExperienceController')->render();
+    $customRouter()->resourceRoute('youth-references', 'ReferenceController')->render();
+    $customRouter()->resourceRoute('youth-languages-proficiencies', 'LanguagesProficiencyController')->render();
+    $customRouter()->resourceRoute('youth-certifications', 'CertificationController')->render();
     $customRouter()->resourceRoute('youth-educations', 'EducationController')->render();
     /** youth verification */
     $router->post('youths/{id}/verify', ["as" => "youths.verify", "uses" => "YouthController@youthVerification"]);
