@@ -1758,7 +1758,7 @@
                 ]
             }
         },
-        "/certifications": {
+        "/youth-certifications": {
             "get": {
                 "summary": "get_list",
                 "description": "API endpoint to get the list of certifications. A successful request response will show 200 HTTP status code ",
@@ -1781,11 +1781,11 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "get_list",
+                        "description": "success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/certifications"
+                                    "$ref": "#/components/schemas/Certification"
                                 },
                                 "example": {
                                     "current_page": 1,
@@ -1822,49 +1822,17 @@
                     }
                 },
                 "tags": [
-                    "Certifications"
+                    "Certification"
                 ]
             },
             "post": {
                 "summary": "create",
                 "description": "API endpoint to create a certification.A successful request response will show 200 HTTP status code",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/youth_id"
-                    },
-                    {
-                        "$ref": "#/components/parameters/youth_id"
-                    },
-                    {
-                        "$ref": "#/components/parameters/page_size"
-                    },
-                    {
-                        "$ref": "#/components/parameters/order"
-                    },
-                    {
-                        "$ref": "#/components/parameters/row_status"
-                    },
-                    {
-                        "$ref": "#/components/parameters/page"
-                    },
-                    {
-                        "$ref": "#/components/parameters/youth_id"
-                    },
-                    {
-                        "$ref": "#/components/parameters/page_size"
-                    },
-                    {
-                        "$ref": "#/components/parameters/order"
-                    },
-                    {
-                        "$ref": "#/components/parameters/row_status"
-                    }
-                ],
                 "requestBody": {
                     "content": {
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "$ref": "#/components/schemas/certifications"
+                                "$ref": "#/components/schemas/Certification"
                             }
                         }
                     }
@@ -1875,7 +1843,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/certifications"
+                                    "$ref": "#/components/schemas/Certification"
                                 },
                                 "example": {
                                     "data": {
@@ -1897,7 +1865,7 @@
                                     "_response_status": {
                                         "success": true,
                                         "code": 201,
-                                        "message": "Job experience added successfully",
+                                        "message": "Certificate added successfully",
                                         "query_time": 0
                                     }
                                 }
@@ -1906,46 +1874,49 @@
                     }
                 },
                 "tags": [
-                    "job experience"
+                    "Certification"
                 ]
             }
         },
-        "/certifications/{certificationId}": {
+        "/youth-certifications/{certificationId}": {
             "get": {
                 "summary": "get_one",
                 "description": "API endpoint to get a specified Certificate.A successful request response will show 200 HTTP status code",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/certifications"
+                        "name": "certificationId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "get_one",
+                        "description": "success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/jobExperience"
+                                    "$ref": "#/components/schemas/Certification"
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 3,
-                                        "youth_id": 18,
-                                        "company_name": "Durgan-Marks",
-                                        "company_name_en": "Durgan-Marks",
-                                        "position": "User Experience Manager",
-                                        "position_en": "User Experience Manager",
-                                        "employment_type_id": 1,
+                                        "id": 1,
+                                        "youth_id": 1,
+                                        "certification_name": "Schmitt Group",
+                                        "certification_name_en": "Schmitt Group",
+                                        "institute_name": "Coursera",
+                                        "institute_name_en": "Coursera",
                                         "location": "720 Gina Ways",
                                         "location_en": "8485 Gleason Place",
-                                        "job_description": "Pressing Machine Operator",
-                                        "job_description_en": "Wind Instrument Repairer",
                                         "start_date": "1974-07-03",
                                         "end_date": "1993-06-06",
-                                        "is_currently_work": 1,
+                                        "certificate_file_path": 0,
                                         "row_status": 1,
-                                        "created_at": "2021-07-26T12:08:11.000000Z",
-                                        "updated_at": "2021-07-26T12:08:11.000000Z"
+                                        "created_at": "2021-08-19T08:55:03.000000Z",
+                                        "updated_at": "2021-08-19T08:55:03.000000Z"
                                     },
                                     "response_status": {
                                         "success": true,
@@ -1958,58 +1929,60 @@
                     }
                 },
                 "tags": [
-                    "job experience"
+                    "Certification"
                 ]
             },
             "put": {
                 "summary": "update",
-                "description": "API endpoint to update the specified Job experience. A successful request response will show 200 HTTP status code",
+                "description": "API endpoint to update the specified Certificate. A successful request response will show 200 HTTP status code",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/jobExperienceId"
+                        "name": "certificationId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
                     }
                 ],
                 "requestBody": {
                     "content": {
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "$ref": "#/components/schemas/jobExperience"
+                                "$ref": "#/components/schemas/Certification"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "update",
+                        "description": "success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/jobExperience"
+                                    "$ref": "#/components/schemas/Certification"
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 4,
-                                        "youth_id": 9,
-                                        "company_name": "Brekke-Abbott",
-                                        "company_name_en": "Brekke-Abbott",
-                                        "position": "Electronics Engineering Technician",
-                                        "position_en": "Electronics Engineering Technician",
-                                        "employment_type_id": 1,
+                                        "youth_id": 1,
+                                        "certification_name": "Schmitt Group",
+                                        "certification_name_en": "Schmitt Group",
+                                        "institute_name": "Coursera",
+                                        "institute_name_en": "Coursera",
                                         "location": "720 Gina Ways",
                                         "location_en": "8485 Gleason Place",
-                                        "job_description": "Pressing Machine Operator",
-                                        "job_description_en": "Wind Instrument Repairer",
                                         "start_date": "1974-07-03",
                                         "end_date": "1993-06-06",
-                                        "is_currently_work": 0,
+                                        "certificate_file_path": 0,
                                         "row_status": 1,
-                                        "created_at": "2021-07-26T12:08:11.000000Z",
-                                        "updated_at": "2021-07-26T12:08:11.000000Z"
+                                        "created_at": "2021-08-19T08:55:03.000000Z",
+                                        "updated_at": "2021-08-19T08:55:03.000000Z"
                                     },
                                     "_response_status": {
                                         "success": true,
                                         "code": 200,
-                                        "message": "Job experience updated successfully.",
+                                        "message": "Certificate updated successfully.",
                                         "query_time": 0
                                     }
                                 }
@@ -2018,30 +1991,36 @@
                     }
                 },
                 "tags": [
-                    "job experience"
+                    "Certification"
                 ]
             },
             "delete": {
                 "summary": "delete",
-                "description": "API endpoint to delete the specified Job experience.A successful request response will show 200 HTTP status code",
+                "description": "API endpoint to delete the specified Certificate.A successful request response will show 200 HTTP status code",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/jobExperienceId"
+                        "name": "certificationId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "delete",
+                        "description": "success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/jobExperience"
+                                    "$ref": "#/components/schemas/Certification"
                                 },
                                 "example": {
                                     "_response_status": {
                                         "success": true,
                                         "code": 200,
-                                        "message": "Job experience deleted successfully.",
+                                        "message": "Certificate deleted successfully.",
                                         "query_time": 0
                                     }
                                 }
@@ -2050,7 +2029,7 @@
                     }
                 },
                 "tags": [
-                    "job experience"
+                    "Certification"
                 ]
             }
         }
@@ -3068,12 +3047,13 @@
                     },
                     "start_date": {
                         "type": "string",
-                        "format": "date-time",
+                        "format": "date",
                         "example": "2021-10-04"
                     },
                     "end_date": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date",
+                        "example": "2021-10-06"
                     },
                     "certificate_file_path": {
                         "type": "string",
@@ -3085,7 +3065,8 @@
                         "enum": [
                             1,
                             0
-                        ]
+                        ],
+                        "default": 1
                     },
                     "created_at": {
                         "type": "string",
@@ -3107,7 +3088,8 @@
                     "certification_name",
                     "institute_name",
                     "location",
-                    "start_date"
+                    "youth_id",
+                    "certificate_file_path"
                 ]
             },
             "verifyYouthProfile": {
