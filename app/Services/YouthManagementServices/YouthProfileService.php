@@ -381,11 +381,9 @@ class YouthProfileService
         if (!empty($data["skills"])) {
             $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
         }
-//        if (!empty($data["physical_disabilities"])) {
-//            $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
-//        } else {
-//            unset($data["physical_disabilities"]);
-//        }
+        if (!empty($data["physical_disabilities"])) {
+            $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
+        }
 
         $rules = [
             "username" => [
