@@ -45,7 +45,6 @@ class YouthService
                 'youths.mobile',
                 'youths.date_of_birth',
                 'youths.physical_disability_status',
-                'youths.physical_disabilities',
                 'youths.loc_division_id',
                 'youths.loc_district_id',
                 'youths.loc_upazila_id',
