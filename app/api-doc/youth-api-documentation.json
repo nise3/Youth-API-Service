@@ -2032,6 +2032,304 @@
                     "Certification"
                 ]
             }
+        },
+        "/youth-references": {
+            "get": {
+                "summary": "get_list",
+                "description": "API endpoint to get the list of References.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "name": "youth_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page_size"
+                    },
+                    {
+                        "$ref": "#/components/parameters/row_status_optional"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get_list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reference"
+                                },
+                                "example": {
+                                    "order": "ASC",
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "youth_id": 1,
+                                            "referrer_first_name": "Sally",
+                                            "referrer_first_name_en": "Sally",
+                                            "referrer_last_name": "Kihn",
+                                            "referrer_last_name_en": "Kihn",
+                                            "referrer_organization_name": "Johns, Yost and Huel",
+                                            "referrer_organization_name_en": "Fay-Wolff",
+                                            "referrer_designation": "Athletic Trainer",
+                                            "referrer_designation_en": "Food Science Technician",
+                                            "referrer_address": "436 Jacquelyn Stream Suite 147\nJuanitafort, OK 63286",
+                                            "referrer_address_en": "436 Jacquelyn Stream Suite 147\nJuanitafort, OK 63286",
+                                            "referrer_email": "rolfson.tracey@example.net",
+                                            "referrer_mobile": "(312) 747-7214",
+                                            "referrer_relation": "vitae",
+                                            "referrer_relation_en": "officiis",
+                                            "row_status": 1,
+                                            "created_at": "2021-10-06T06:32:28.000000Z",
+                                            "updated_at": "2021-10-06T06:32:28.000000Z"
+                                        }
+                                    ],
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Reference"
+                ]
+            },
+            "post": {
+                "summary": "create",
+                "description": "API endpoint to create a Reference.A successful request response will show 200 HTTP status code",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reference"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "create",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reference"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 1,
+                                        "youth_id": 1,
+                                        "referrer_first_name": "Sally",
+                                        "referrer_first_name_en": "Sally",
+                                        "referrer_last_name": "Kihn",
+                                        "referrer_last_name_en": "Kihn",
+                                        "referrer_organization_name": "Johns, Yost and Huel",
+                                        "referrer_organization_name_en": "Fay-Wolff",
+                                        "referrer_designation": "Athletic Trainer",
+                                        "referrer_designation_en": "Food Science Technician",
+                                        "referrer_address": "436 Jacquelyn Stream Suite 147\nJuanitafort, OK 63286",
+                                        "referrer_address_en": "436 Jacquelyn Stream Suite 147\nJuanitafort, OK 63286",
+                                        "referrer_email": "rolfson.tracey@example.net",
+                                        "referrer_mobile": "(312) 747-7214",
+                                        "referrer_relation": "vitae",
+                                        "referrer_relation_en": "officiis",
+                                        "row_status": 1,
+                                        "created_at": "2021-10-06T06:32:28.000000Z",
+                                        "updated_at": "2021-10-06T06:32:28.000000Z"
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 201,
+                                        "message": "Reference added successfully",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Reference"
+                ]
+            }
+        },
+        "/youth-references/{youthReferenceId}": {
+            "get": {
+                "summary": "get_one",
+                "description": "API endpoint to get a specified Reference.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "name": "youthReferenceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get_one",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reference"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 1,
+                                        "youth_id": 1,
+                                        "referrer_first_name": "Sally",
+                                        "referrer_first_name_en": "Sally",
+                                        "referrer_last_name": "Kihn",
+                                        "referrer_last_name_en": "Kihn",
+                                        "referrer_organization_name": "Johns, Yost and Huel",
+                                        "referrer_organization_name_en": "Fay-Wolff",
+                                        "referrer_designation": "Athletic Trainer",
+                                        "referrer_designation_en": "Food Science Technician",
+                                        "referrer_address": "436 Jacquelyn Stream Suite 147\nJuanitafort, OK 63286",
+                                        "referrer_address_en": "436 Jacquelyn Stream Suite 147\nJuanitafort, OK 63286",
+                                        "referrer_email": "rolfson.tracey@example.net",
+                                        "referrer_mobile": "(312) 747-7214",
+                                        "referrer_relation": "vitae",
+                                        "referrer_relation_en": "officiis",
+                                        "row_status": 1,
+                                        "created_at": "2021-10-06T06:32:28.000000Z",
+                                        "updated_at": "2021-10-06T06:32:28.000000Z"
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Reference"
+                ]
+            },
+            "put": {
+                "summary": "update",
+                "description": "API endpoint to update the specified Reference. A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "name": "youthReferenceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reference"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reference"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 1,
+                                        "youth_id": 1,
+                                        "referrer_first_name": "Sally",
+                                        "referrer_first_name_en": "Sally",
+                                        "referrer_last_name": "Kihn",
+                                        "referrer_last_name_en": "Kihn",
+                                        "referrer_organization_name": "Johns, Yost and Huel",
+                                        "referrer_organization_name_en": "Fay-Wolff",
+                                        "referrer_designation": "Athletic Trainer",
+                                        "referrer_designation_en": "Food Science Technician",
+                                        "referrer_address": "436 Jacquelyn Stream Suite 147\nJuanitafort, OK 63286",
+                                        "referrer_address_en": "436 Jacquelyn Stream Suite 147\nJuanitafort, OK 63286",
+                                        "referrer_email": "rolfson.tracey@example.net",
+                                        "referrer_mobile": "(312) 747-7214",
+                                        "referrer_relation": "vitae",
+                                        "referrer_relation_en": "officiis",
+                                        "row_status": 1,
+                                        "created_at": "2021-10-06T06:32:28.000000Z",
+                                        "updated_at": "2021-10-06T06:32:28.000000Z"
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 201,
+                                        "message": "Reference updated successfully",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Reference"
+                ]
+            },
+            "delete": {
+                "summary": "delete",
+                "description": "API endpoint to delete the specified Reference.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "name": "youthReferenceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "delete",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reference"
+                                },
+                                "example": {
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Referene deleted successfully.",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Reference"
+                ]
+            }
         }
     },
     "components": {
@@ -2908,7 +3206,7 @@
             },
             "Reference": {
                 "type": "object",
-                "description": "Provide references",
+                "description": "Provide references of a youth",
                 "properties": {
                     "id": {
                         "type": "integer",
@@ -2920,7 +3218,7 @@
                     },
                     "referrer_first_name": {
                         "type": "string",
-                        "maxLength": 150
+                        "maxLength": 250
                     },
                     "referrer_first_name_en": {
                         "type": "string",
@@ -2928,7 +3226,7 @@
                     },
                     "referrer_last_name": {
                         "type": "string",
-                        "maxLength": 150
+                        "maxLength": 250
                     },
                     "referrer_last_name_en": {
                         "type": "string",
@@ -2936,7 +3234,7 @@
                     },
                     "referrer_organization_name": {
                         "type": "string",
-                        "maxLength": 300
+                        "maxLength": 600
                     },
                     "referrer_organization_name_en": {
                         "type": "string",
@@ -2944,7 +3242,7 @@
                     },
                     "referrer_designation": {
                         "type": "string",
-                        "maxLength": 200
+                        "maxLength": 500
                     },
                     "referrer_designation_en": {
                         "type": "string",
@@ -2952,7 +3250,7 @@
                     },
                     "referrer_address": {
                         "type": "string",
-                        "maxLength": 600
+                        "maxLength": 1000
                     },
                     "referrer_address_en": {
                         "type": "string",
@@ -2968,19 +3266,20 @@
                     },
                     "referrer_relation": {
                         "type": "string",
-                        "maxLength": 191
+                        "maxLength": 600
                     },
                     "referrer_relation_en": {
                         "type": "string",
-                        "maxLength": 15
+                        "maxLength": 300
                     },
                     "row_status": {
                         "type": "integer",
-                        "description": "District activation status",
+                        "description": "activation status",
                         "enum": [
                             1,
                             0
-                        ]
+                        ],
+                        "example": 1
                     },
                     "deleted_at": {
                         "type": "string",
@@ -3003,6 +3302,7 @@
                     "referrer_first_name",
                     "referrer_last_name",
                     "referrer_designation",
+                    "referrer_organization_name",
                     "referrer_address",
                     "referrer_email",
                     "referrer_mobile",
