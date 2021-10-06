@@ -103,7 +103,9 @@ class EducationController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
+
         $education = Education::findOrFail($id);
+
         $validated = $this->educationService->validator($request, $id)->validate();
 
         try {

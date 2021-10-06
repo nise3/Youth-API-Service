@@ -90,7 +90,7 @@ class YouthProfileService
 
         });
 
-        $youthProfileBuilder->with(["physicalDisabilities","LanguagesProficiencies", "skills", "educations", "jobExperiences", "certifications", "portfolios"]);
+        $youthProfileBuilder->with(["physicalDisabilities", "LanguagesProficiencies", "skills", "educations", "jobExperiences", "certifications", "portfolios"]);
         $youthProfileBuilder->where('youths.id', '=', Auth::id());
         return $youthProfileBuilder->first();
 
@@ -105,7 +105,7 @@ class YouthProfileService
         $youth->fill($data);
         $youth->save();
         $this->assignSkills($youth, $data["skills"]);
-        if (array_key_exists('physical_disabilities',$data)) {
+        if (array_key_exists('physical_disabilities', $data)) {
             $this->assignPhysicalDisabilities($youth, $data['physical_disabilities']);
         }
         return $youth;
@@ -450,12 +450,13 @@ class YouthProfileService
                 "min:1"
             ],
             "physical_disabilities.*" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
+                Rule::requiredIf(function () use ($id, $request) {
+                    return ($id == null && $request->physical_disability_status == BaseModel::TRUE);
                 }),
                 "numeric",
                 "distinct",
-                "min:1"
+                "min:1",
+                "exists:physical_disabilities,id"
             ],
             "password" => [
                 Rule::requiredIf(function () use ($id) {
