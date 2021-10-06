@@ -18,7 +18,7 @@ class CreateEducationTable extends Migration
             $table->unsignedInteger("youth_id");
             $table->string("institute_name", 400);
             $table->string("institute_name_en", 400)->nullable();
-            $table->unsignedTinyInteger("examination_id")->comment('PSC, JSC, SSC, HSC, Degree, Honours, Masters etc');
+            $table->unsignedTinyInteger("examination_id")->comment('PSC, JSC, SSC, HSC, Degree, B.Sc. (Pass), Honours, Preliminary Masters, Masters etc');
             $table->unsignedTinyInteger('board_id')->nullable()->comment('Only for PSC, JSC, SSC, HSC etc');
             $table->unsignedTinyInteger('edu_group_id')->nullable()->comment('1 => Science, 2 => Commerce, 3 => Arts (Only for PSC, JSC, SSC, HSC, Degree)');
             $table->unsignedTinyInteger('major_or_subject_id')->nullable()->comment('Only for Honours/Masters');
