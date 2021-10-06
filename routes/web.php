@@ -30,7 +30,7 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     $router->put('youth-personal-info-update', ["as"=>"youth-profile.update","uses"=>"YouthProfileController@youthProfileUpdate"]);
     $router->post('youth-profile-verification', ["as"=>"youth-profile.verify","uses"=>"YouthProfileController@youthVerification"]);
     $router->post('youth-resend-verification-code', ["as"=>"youth-profile.youth-resend-verify-code","uses"=>"YouthProfileController@resendVerificationCode"]);
-    $router->post('youth-set-freelance-status', ["as"=>"youth-profile.youth-set-freelance-status","uses"=>"YouthProfileController@setFreelanceStatus"]);
+    $router->post('youth-change-freelance-status', ["as"=>"youth-profile.youth-set-freelance-status","uses"=>"YouthProfileController@setFreelanceStatus"]);
 
 });
 
