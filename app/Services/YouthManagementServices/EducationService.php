@@ -40,76 +40,104 @@ class EducationService
         $examinationTitleBn = $request['examination_title_bn'] ?? "";
         $boardTitleEn = $request['board_title_en'] ?? "";
         $boardTitleBn = $request['board_title_bn'] ?? "";
-
-        $groupTitleEn = $request['group_title_en'] ?? "";
-        $groupTitleBn = $request['group_title_bn'] ?? "";
+        $eduGroupTitleEn = $request['edu_group_title_en'] ?? "";
+        $eduGroupTitleBn = $request['edu_group_title_bn'] ?? "";
 
         $paginate = $request['page'] ?? "";
+        $youthId = $request['youth_id'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
 
 
-        /** @var Builder $educationBuilders */
-        $educationBuilders = Education::select(
+        /** @var Builder $educationBuilder */
+        $educationBuilder = Education::select(
             [
-                'education.id',
-                'education.youth_id',
-                'education.examination_id',
+                'educations.id',
+                'educations.youth_id',
+                'educations.institute_name',
+                'educations.institute_name_en',
+                'educations.examination_id',
+                'examinations.code as examination_code',
                 'examinations.title_en as examination_title_en',
                 'examinations.title_bn as examination_title_bn',
-                'education.institute_name',
-                'education.institute_name_en',
-                'education.board_id',
+                'educations.board_id',
                 'boards.title_en as board_title_en',
                 'boards.title_bn as board_title_bn',
-                'education.group_id',
-                'groups.title_en as group_title_en',
-                'groups.title_bn as group_title_bn',
-                'education.result_type',
-                'education.result',
-                'education.cgpa',
-                'education.passing_year',
-                'education.row_status',
-                'education.created_at',
-                'education.updated_at',
+                'educations.edu_group_id',
+                'edu_groups.code as edu_group_code',
+                'edu_groups.title_en as edu_group_title_en',
+                'edu_groups.title_bn as edu_group_title_bn',
+                'educations.major_or_subject_id',
+                'educations.roll_number',
+                'educations.registration_number',
+                'educations.result_type',
+                'educations.division_type_result',
+                'educations.cgpa_gpa_max_value',
+                'educations.received_cgpa_gpa',
+                'educations.passing_year',
+                'educations.row_status',
+                'educations.created_at',
+                'educations.updated_at',
             ]
         );
-        $educationBuilders->join('youths', 'youths.id', '=', 'education.youth_id');
-        $educationBuilders->join('examinations', 'examinations.id', '=', 'education.examination_id');
-        $educationBuilders->join('boards', 'boards.id', '=', 'education.board_id');
-        $educationBuilders->join('groups', 'groups.id', '=', 'education.group_id');
-        $educationBuilders->orderBy('education.id', $order);
+        $educationBuilder->join('examinations', function ($join) use ($rowStatus) {
+            $join->on('examinations.id', '=', 'educations.examination_id')
+                ->whereNull('examinations.deleted_at');
+            if (is_numeric($rowStatus)) {
+                $join->where('examinations.row_status', $rowStatus);
+            }
+        });
+        $educationBuilder->join('boards', function ($join) use ($rowStatus) {
+            $join->on('boards.id', '=', 'educations.board_id')
+                ->whereNull('boards.deleted_at');
+            if (is_numeric($rowStatus)) {
+                $join->where('boards.row_status', $rowStatus);
+            }
+        }
+        );
+        $educationBuilder->join('edu_groups', function ($join) use ($rowStatus) {
+            $join->on('edu_groups.id', '=', 'educations.edu_group_id')
+                ->whereNull('edu_groups.deleted_at');
+            if (is_numeric($rowStatus)) {
+                $join->where('edu_groups.row_status', $rowStatus);
+            }
+        });
+        $educationBuilder->orderBy('educations.id', $order);
 
         if (is_numeric($rowStatus)) {
-            $educationBuilders->where('education.row_status', $rowStatus);
+            $educationBuilder->where('educations.row_status', $rowStatus);
         }
+        if (is_numeric($youthId)) {
+            $educationBuilder->where('educations.youth_id', $youthId);
+        }
+
         if (!empty($instituteName)) {
-            $educationBuilders->where('education.institute_name', 'like', '%' . $instituteName . '%');
+            $educationBuilder->where('educations.institute_name', 'like', '%' . $instituteName . '%');
         }
         if (!empty($instituteNameEn)) {
-            $educationBuilders->where('education.institute_name_en', 'like', '%' . $instituteNameEn . '%');
+            $educationBuilder->where('educations.institute_name_en', 'like', '%' . $instituteNameEn . '%');
         }
 
         if (!empty($examinationTitleEn)) {
-            $educationBuilders->where('examinations.title_en', 'like', '%' . $examinationTitleEn . '%');
+            $educationBuilder->where('examinations.title_en', 'like', '%' . $examinationTitleEn . '%');
         }
         if (!empty($examinationTitleBn)) {
-            $educationBuilders->where('examinations.title_bn', 'like', '%' . $examinationTitleBn . '%');
+            $educationBuilder->where('examinations.title_bn', 'like', '%' . $examinationTitleBn . '%');
         }
 
         if (!empty($boardTitleEn)) {
-            $educationBuilders->where('boards.title_en', 'like', '%' . $boardTitleEn . '%');
+            $educationBuilder->where('boards.title_en', 'like', '%' . $boardTitleEn . '%');
         }
         if (!empty($boardTitleBn)) {
-            $educationBuilders->where('boards.title_bn', 'like', '%' . $boardTitleBn . '%');
+            $educationBuilder->where('boards.title_bn', 'like', '%' . $boardTitleBn . '%');
         }
 
-        if (!empty($groupTitleEn)) {
-            $educationBuilders->where('groups.title_en', 'like', '%' . $groupTitleEn . '%');
+        if (!empty($eduGroupTitleEn)) {
+            $educationBuilder->where('edu_groups.title_en', 'like', '%' . $eduGroupTitleEn . '%');
         }
-        if (!empty($groupTitleBn)) {
-            $educationBuilders->where('groups.title_bn', 'like', '%' . $groupTitleBn . '%');
+        if (!empty($eduGroupTitleBn)) {
+            $educationBuilder->where('edu_groups.title_bn', 'like', '%' . $eduGroupTitleBn . '%');
         }
 
 
@@ -117,14 +145,14 @@ class EducationService
 
         if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
-            $educations = $educationBuilders->paginate($pageSize);
+            $educations = $educationBuilder->paginate($pageSize);
             $paginateData = (object)$educations->toArray();
             $response['current_page'] = $paginateData->current_page;
             $response['total_page'] = $paginateData->last_page;
             $response['page_size'] = $paginateData->per_page;
             $response['total'] = $paginateData->total;
         } else {
-            $educations = $educationBuilders->get();
+            $educations = $educationBuilder->get();
         }
 
         $response['order'] = $order;
@@ -322,13 +350,15 @@ class EducationService
             'youth_id' => [
                 'required',
                 'integer',
+                'exists:youths,id',
                 'min:1',
             ],
             'examination_id' => [
                 'required',
                 'integer',
+                'exists:examinations,id',
                 'min:1',
-                Rule::unique('education')->where(function ($query) use ($request) {
+                Rule::unique('educations')->where(function ($query) use ($request) {
                     return $query->where('youth_id', $request->youth_id);
                 }),
             ],
@@ -345,13 +375,19 @@ class EducationService
             'board_id' => [
                 'required',
                 'integer',
+                'exists:boards,id',
                 'min:1'
             ],
-            'group_id' => [
+            'edu_group_id' => [
                 'required',
                 'integer',
+                'exists:edu_groups',
                 'min:1'
             ],
+//            'major_or_subject_id' => [
+//
+//            ],
+
             'result_type' => [
                 'required',
                 'integer',
@@ -425,46 +461,8 @@ class EducationService
         }
 
         return \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'institute_name' => [
-                'nullable',
-                'string',
-                'max:400',
-            ],
-            'institute_name_en' => [
-                'nullable',
-                'string',
-                'max:400',
-            ],
-            'examination_title_en' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
-            'examination_title_bn' => [
-                'nullable',
-                'string',
-                'max:400',
-            ],
-            'board_title_en' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
-            'board_title_bn' => [
-                'nullable',
-                'string',
-                'max:400',
-            ],
-            'group_title_en' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
-            'group_title_bn' => [
-                'nullable',
-                'string',
-                'max:400',
-            ],
+
+            'youth_id' => 'required|numeric|min:1',
             'page' => 'numeric|gt:0',
             'pageSize' => 'numeric|gt:0',
             'order' => [

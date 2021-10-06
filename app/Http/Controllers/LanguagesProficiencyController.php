@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LanguagesProficiency;
-use App\Services\YouthManagementServices\LanguageService;
+use App\Services\YouthManagementServices\LanguagesProficiencyService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -13,25 +13,17 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
-class LanguageController extends Controller
+class LanguagesProficiencyController extends Controller
 {
-    /**
-     * @var LanguageService
-     */
-    public LanguageService $languageService;
-    /**
-     * @var Carbon
-     */
+
+    public LanguagesProficiencyService $languagesProficiencyService;
+
     private Carbon $startTime;
 
 
-    /**
-     * LanguageController constructor.
-     * @param LanguageService $languageService
-     */
-    public function __construct(LanguageService $languageService)
+    public function __construct(LanguagesProficiencyService $languagesProficiencyService)
     {
-        $this->languageService = $languageService;
+        $this->languagesProficiencyService = $languagesProficiencyService;
         $this->startTime = Carbon::now();
     }
 
@@ -45,9 +37,9 @@ class LanguageController extends Controller
      */
     public function getList(Request $request): JsonResponse
     {
-        $filter = $this->languageService->filterValidator($request)->validate();
+        $filter = $this->languagesProficiencyService->filterValidator($request)->validate();
         try {
-            $response = $this->languageService->getAllLanguages($filter, $this->startTime);
+            $response = $this->languagesProficiencyService->getLanguagesProficiencyList($filter, $this->startTime);
         } catch (Throwable $e) {
             throw $e;
         }
@@ -63,7 +55,7 @@ class LanguageController extends Controller
     public function read(int $id): JsonResponse
     {
         try {
-            $response = $this->languageService->getOneLanguage($id, $this->startTime);
+            $response = $this->languagesProficiencyService->getOneLanguagesProficiency($id, $this->startTime);
         } catch (Throwable $e) {
             throw $e;
         }
@@ -79,11 +71,11 @@ class LanguageController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $validated = $this->languageService->validator($request)->validate();
+        $validated = $this->languagesProficiencyService->validator($request)->validate();
         try {
-            $language = $this->languageService->store($validated);
+            $languageProficiency = $this->languagesProficiencyService->store($validated);
             $response = [
-                'data' => $language,
+                'data' => $languageProficiency,
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_CREATED,
@@ -106,12 +98,12 @@ class LanguageController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $language = LanguagesProficiency::findOrFail($id);
-        $validated = $this->languageService->validator($request, $id)->validate();
+        $languageProficiency = LanguagesProficiency::findOrFail($id);
+        $validated = $this->languagesProficiencyService->validator($request, $id)->validate();
         try {
-            $language = $this->languageService->update($language, $validated);
+            $language = $this->languagesProficiencyService->update($languageProficiency, $validated);
             $response = [
-                'data' => $language,
+                'data' => $languageProficiency,
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
@@ -132,9 +124,9 @@ class LanguageController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $language = LanguagesProficiency::findOrFail($id);
+        $languageProficiency = LanguagesProficiency::findOrFail($id);
         try {
-            $this->languageService->destroy($language);
+            $this->languagesProficiencyService->destroy($languageProficiency);
             $response = [
                 '_response_status' => [
                     "success" => true,
