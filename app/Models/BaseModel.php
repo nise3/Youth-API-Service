@@ -40,14 +40,17 @@ abstract class BaseModel extends Model
     public const TRUE = 1;
     public const FALSE = 0;
 
+    public const FREELANCE_PROFILE_YES = 1;
+    public const FREELANCE_PROFILE_NO = 1;
+
     public const PHYSICAL_DISABILITIES_STATUS = [
         self::TRUE,
         self::FALSE
     ];
 
     public const FREELANCE_PROFILE_STATUS=[
-        self::TRUE,
-        self::FALSE
+        self::FREELANCE_PROFILE_YES,
+        self::FREELANCE_PROFILE_NO
     ];
 
     public const MALE = 1;

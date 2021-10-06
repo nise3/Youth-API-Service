@@ -35,6 +35,11 @@ class JobExperienceController extends Controller
     }
 
 
+    /**
+     * @param Request $request
+     * @return \Exception|JsonResponse|Throwable
+     * @throws ValidationException
+     */
     public function getList(Request $request)
     {
         $filter = $this->jobExperienceService->filterValidator($request)->validate();
