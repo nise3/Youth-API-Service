@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BaseModel;
+use App\Models\Education;
 use App\Models\Youth;
 use Faker\Provider\Uuid;
 use Illuminate\Http\Client\RequestException;
@@ -102,17 +103,17 @@ class EducationController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $skill = Skill::findOrFail($id);
+        $education = Education::findOrFail($id);
         $validated = $this->educationService->validator($request, $id)->validate();
 
         try {
-            $data = $this->educationService->update($skill, $validated);
+            $data = $this->educationService->update($education, $validated);
             $response = [
                 'data' => $data ?: null,
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Skill updated successfully",
+                    "message" => "Education updated successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
@@ -129,15 +130,15 @@ class EducationController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $skill = Skill::findOrFail($id);
+        $education = Education::findOrFail($id);
 
         try {
-            $this->educationService->destroy($skill);
+            $this->educationService->destroy($education);
             $response = [
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Skill deleted successfully",
+                    "message" => "Education deleted successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
@@ -154,7 +155,7 @@ class EducationController extends Controller
     public function getTrashedData(Request $request)
     {
         try {
-            $response = $this->educationService->getTrashedSkillList($request, $this->startTime);
+            $response = $this->educationService->getTrashedYouthEducationList($request, $this->startTime);
         } catch (Throwable $e) {
             return $e;
         }
