@@ -90,7 +90,7 @@ class YouthProfileService
 
         });
 
-        $youthProfileBuilder->with(["physicalDisabilities","languages", "skills", "educations", "jobExperiences", "certifications", "portfolios"]);
+        $youthProfileBuilder->with(["physicalDisabilities","LanguagesProficiencies", "skills", "educations", "jobExperiences", "certifications", "portfolios"]);
         $youthProfileBuilder->where('youths.id', '=', Auth::id());
         return $youthProfileBuilder->first();
 
@@ -154,7 +154,7 @@ class YouthProfileService
      */
     public function setFreelanceStatus(Youth $youth, array $data): bool
     {
-        $youth->is_freelance_profile = $data['freelance_profile_status'];
+        $youth->is_freelance_profile = $data['is_freelance_profile'];
         return $youth->save();
     }
 
@@ -292,7 +292,7 @@ class YouthProfileService
         ];
 
         $rules = [
-            "freelance_profile_status" => [
+            "is_freelance_profile" => [
                 "required",
                 Rule::in(BaseModel::FREELANCE_PROFILE_STATUS)
             ]
@@ -377,6 +377,7 @@ class YouthProfileService
     public function youthRegisterValidation(Request $request, int $id = null): Validator
     {
         $data = $request->all();
+
         if (!empty($data["skills"])) {
             $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
         }
@@ -539,6 +540,7 @@ class YouthProfileService
      */
     public function getAuthYouth(string $id): ?Youth
     {
+
         /** @var Youth $youth */
         $youth = Youth::where('idp_user_id', $id)
             ->where("row_status", BaseModel::ROW_STATUS_ACTIVE)

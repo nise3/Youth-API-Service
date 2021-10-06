@@ -1676,6 +1676,87 @@
                     "Youth Profile"
                 ]
             }
+        },
+        "/youth-profile-verification": {
+            "post": {
+                "summary": "Youth profile verification",
+                "description": "API endpoint to verify a youth profile. A successful request response will show 200 HTTP status code ",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "test14@gmail.com",
+                            "description": "If youth select email as verification type then email is required"
+                        }
+                    },
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "01767000124",
+                            "description": "If youth select mobile as verification type then mobile is required"
+                        }
+                    },
+                    {
+                        "name": "verification_code",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1234
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "verify_youth_profile",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/verifyYouthProfile"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Profile"
+                ]
+            }
+        },
+        "/youth-set-freelance-status": {
+            "post": {
+                "summary": "Youth set freelance status",
+                "description": "API endpoint to update freelance status. A successful request response will show 200 HTTP status code ",
+                "parameters": [
+                    {
+                        "name": "is_freelance_profile",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "set_freelance_status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/freelanceStatusUpdate"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Profile"
+                ]
+            }
         }
     },
     "components": {
@@ -2731,6 +2812,39 @@
                     "institute_name",
                     "location",
                     "start_date"
+                ]
+            },
+            "verifyYouthProfile": {
+                "type": "object",
+                "description": "Verify youth profile",
+                "properties": {
+                    "mobile": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "verification_code": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "verification_code"
+                ]
+            },
+            "freelanceStatusUpdate": {
+                "type": "object",
+                "description": "Youth profile verification",
+                "properties": {
+                    "is_freelance_profile": {
+                        "type": "integer",
+                        "default": 0
+                    }
+                },
+                "required": [
+                    "is_freelance_profile"
                 ]
             }
         },
