@@ -376,7 +376,7 @@ class EducationService
                 'integer',
                 'exists:examinations,id',
                 'min:1',
-                Rule::unique('educations')->ignore($request->youth_id)
+                'unique_with:educations,youth_id,' . $id
             ],
             'institute_name' => [
                 'required',
@@ -423,8 +423,7 @@ class EducationService
             $rules['major_or_subject_id'] = [
                 'required',
                 'integer',
-                'exists:boards,id',
-                'min:major_or_subjects,id'
+                'exists:major_or_subjects,id',
             ];
         } else {
             $rules['board_id'] = [
@@ -438,7 +437,7 @@ class EducationService
         if ($request->result_type == Education::RESULT_TYPE_DIVISION) {
             $rules['division_type_result'] = [
                 'required',
-                'integer',
+                'numeric',
                 'min:1',
                 Rule::in(Education::DIVISION_FIRST_CLASS, Education::DIVISION_SECOND_CLASS, Education::DIVISION_THIRD_CLASS, Education::DIVISION_PASS),
             ];
