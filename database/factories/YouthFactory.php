@@ -25,7 +25,7 @@ class YouthFactory extends Factory
             'email' => $email,
             'loc_division_id' => 1,
             'loc_district_id' => 1,
-            'row_status' => 18
+            'row_status' => 1
         ];
     }
 }
