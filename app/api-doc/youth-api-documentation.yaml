@@ -68,23 +68,6 @@ paths:
                 _order: ASC
       tags:
         - youth
-    post:
-      summary: Store
-      description: API endpoint to store a Youth profile.A successful request response will show 200 HTTP status code
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/youthRegistration'
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/youthRegistration'
-      tags:
-        - youth
   /youths/{youthId}:
     get:
       summary: get one
@@ -106,107 +89,7 @@ paths:
               example: {}
       tags:
         - youth
-    put:
-      summary: update
-      description: API endpoint to update the specified Youth profile.A successful request response will show 200 HTTP status code
-      parameters:
-        - name: youthId
-          in: path
-          required: true
-          schema:
-            type: integer
-            example: 1
-        - name: first_name
-          in: query
-          required: true
-          schema:
-            type: string
-            example: ABC Name
-        - name: last_name
-          in: query
-          required: true
-          schema:
-            type: string
-            example: Last Name
-        - name: loc_division_id
-          in: query
-          required: true
-          schema:
-            type: integer
-            example: 1
-        - name: loc_district_id
-          in: query
-          required: true
-          schema:
-            type: string
-            example: 1
-        - name: city
-          in: query
-          required: true
-          schema:
-            type: string
-            example: 1/2 Dhaka, Bangladesh
-        - name: zip_or_postal_code
-          in: query
-          required: true
-          schema:
-            type: string
-            example: '1234'
-        - name: bio
-          in: query
-          required: true
-          schema:
-            type: string
-            example: A required Microsoft Windows system directory, the System32 directory is located in either C:\Windows\System32 or C:\Winnt\system32 directory. The system32 directory contains Windows system files and software program files, vital to the operation of the Windows operating system and software programs running in Windows. The most common types of files found in the system32 directory are DLL (Dynamic Link Library) and EXE (executable) files.
-        - name: photo
-          in: query
-          required: true
-          schema:
-            type: string
-            example: https://www.pngitem.com/pimgs/m/80-800194_transparent-users-icon-png-flat-user-icon-png.png
-        - name: cv_path
-          in: query
-          required: true
-          schema:
-            type: string
-            example: http://laspoderosasteatro.com/wp-content/uploads/2021/01/fiverr-resume-writing-service-writer-templates-review-software-professional.jpg
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/youthRegistration'
-              example: {}
-      tags:
-        - youth
-    delete:
-      summary: delete
-      description: API endpoint to delete the Youth profile.A successful request response will show 200 HTTP status code
-      parameters:
-        - name: youthId
-          in: path
-          required: true
-          schema:
-            type: integer
-            example: 1
-      responses:
-        '200':
-          description: success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/youthRegistration'
-              example:
-                _response_status:
-                  success: true
-                  code: 200
-                  message: Skill deleted successfully
-                  started: 12 40 05
-                  finished: 12 40 05
-      tags:
-        - youth
-  /portfolios:
+  /youth-portfolios:
     get:
       summary: get_list
       description: ' API endpoint to get the list of Youth portfolio'
@@ -266,7 +149,7 @@ paths:
                   query_time: 0
       tags:
         - Portfolios
-  /portfolios/{portfolioId}:
+  /youth-portfolios/{portfolioId}:
     get:
       summary: get one
       description: API endpoint to get the specified Youth portfolio.A successful request response will show 200 HTTP status code
@@ -504,7 +387,7 @@ paths:
                   query_time: 0
       tags:
         - skills
-  /job-experience:
+  /youth-job-experience:
     get:
       summary: get_list
       description: 'API endpoint to get the list of Job Experiences. A successful request response will show 200 HTTP status code '
@@ -594,7 +477,7 @@ paths:
                   query_time: 0
       tags:
         - job experience
-  /job-experience/{jobExperienceId}:
+  /youth-job-experience/{jobExperienceId}:
     get:
       summary: get_one
       description: API endpoint to get a specified Job Experience.A successful request response will show 200 HTTP status code
@@ -961,9 +844,9 @@ paths:
                   query_time: 0
       tags:
         - Youth Registration
-  /youth-profile-update:
-    post:
-      summary: Youth profile update
+  /youth-personal-info-update:
+    put:
+      summary: Youth personal info update
       description: 'API endpoint to update a youth profile. A successful request response will show 200 HTTP status code '
       parameters:
         - name: is_freelance_profile
@@ -1153,9 +1036,9 @@ paths:
                 $ref: '#/components/schemas/verifyYouthProfile'
       tags:
         - Youth Profile
-  /youth-set-freelance-status:
-    post:
-      summary: Youth set freelance status
+  /youth-change-freelance-status:
+    put:
+      summary: Youth change freelance status
       description: 'API endpoint to update freelance status. A successful request response will show 200 HTTP status code '
       parameters:
         - name: is_freelance_profile
@@ -1172,6 +1055,667 @@ paths:
                 $ref: '#/components/schemas/freelanceStatusUpdate'
       tags:
         - Youth Profile
+  /youth-certifications:
+    get:
+      summary: get_list
+      description: 'API endpoint to get the list of certifications. A successful request response will show 200 HTTP status code '
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/youth_id'
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/row_status'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Certification'
+              example:
+                current_page: 1
+                total_page: 1
+                page_size: 10
+                total: 10
+                order: ASC
+                data:
+                  - id: 1
+                    youth_id: 1
+                    certification_name: Schmitt Group
+                    certification_name_en: Schmitt Group
+                    institute_name: Coursera
+                    institute_name_en: Coursera
+                    location: 720 Gina Ways
+                    location_en: 8485 Gleason Place
+                    start_date: '1974-07-03'
+                    end_date: '1993-06-06'
+                    certificate_file_path: 0
+                    row_status: 1
+                    created_at: '2021-08-19T08:55:03.000000Z'
+                    updated_at: '2021-08-19T08:55:03.000000Z'
+                response_status:
+                  success: true
+                  code: 200
+                  query_time: 0
+      tags:
+        - Certification
+    post:
+      summary: create
+      description: API endpoint to create a certification.A successful request response will show 200 HTTP status code
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Certification'
+      responses:
+        '200':
+          description: create
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Certification'
+              example:
+                data:
+                  id: 1
+                  youth_id: 1
+                  certification_name: Schmitt Group
+                  certification_name_en: Schmitt Group
+                  institute_name: Coursera
+                  institute_name_en: Coursera
+                  location: 720 Gina Ways
+                  location_en: 8485 Gleason Place
+                  start_date: '1974-07-03'
+                  end_date: '1993-06-06'
+                  certificate_file_path: 0
+                  row_status: 1
+                  created_at: '2021-08-19T08:55:03.000000Z'
+                  updated_at: '2021-08-19T08:55:03.000000Z'
+                _response_status:
+                  success: true
+                  code: 201
+                  message: Certificate added successfully
+                  query_time: 0
+      tags:
+        - Certification
+  /youth-certifications/{certificationId}:
+    get:
+      summary: get_one
+      description: API endpoint to get a specified Certificate.A successful request response will show 200 HTTP status code
+      parameters:
+        - name: certificationId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Certification'
+              example:
+                data:
+                  id: 1
+                  youth_id: 1
+                  certification_name: Schmitt Group
+                  certification_name_en: Schmitt Group
+                  institute_name: Coursera
+                  institute_name_en: Coursera
+                  location: 720 Gina Ways
+                  location_en: 8485 Gleason Place
+                  start_date: '1974-07-03'
+                  end_date: '1993-06-06'
+                  certificate_file_path: 0
+                  row_status: 1
+                  created_at: '2021-08-19T08:55:03.000000Z'
+                  updated_at: '2021-08-19T08:55:03.000000Z'
+                response_status:
+                  success: true
+                  code: 200
+                  query_time: 0
+      tags:
+        - Certification
+    put:
+      summary: update
+      description: API endpoint to update the specified Certificate. A successful request response will show 200 HTTP status code
+      parameters:
+        - name: certificationId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Certification'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Certification'
+              example:
+                data:
+                  youth_id: 1
+                  certification_name: Schmitt Group
+                  certification_name_en: Schmitt Group
+                  institute_name: Coursera
+                  institute_name_en: Coursera
+                  location: 720 Gina Ways
+                  location_en: 8485 Gleason Place
+                  start_date: '1974-07-03'
+                  end_date: '1993-06-06'
+                  certificate_file_path: 0
+                  row_status: 1
+                  created_at: '2021-08-19T08:55:03.000000Z'
+                  updated_at: '2021-08-19T08:55:03.000000Z'
+                _response_status:
+                  success: true
+                  code: 200
+                  message: Certificate updated successfully.
+                  query_time: 0
+      tags:
+        - Certification
+    delete:
+      summary: delete
+      description: API endpoint to delete the specified Certificate.A successful request response will show 200 HTTP status code
+      parameters:
+        - name: certificationId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Certification'
+              example:
+                _response_status:
+                  success: true
+                  code: 200
+                  message: Certificate deleted successfully.
+                  query_time: 0
+      tags:
+        - Certification
+  /youth-references:
+    get:
+      summary: get_list
+      description: API endpoint to get the list of References.A successful request response will show 200 HTTP status code
+      parameters:
+        - name: youth_id
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/row_status_optional'
+        - $ref: '#/components/parameters/order'
+      responses:
+        '200':
+          description: get_list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reference'
+              example:
+                order: ASC
+                data:
+                  - id: 1
+                    youth_id: 1
+                    referrer_first_name: Sally
+                    referrer_first_name_en: Sally
+                    referrer_last_name: Kihn
+                    referrer_last_name_en: Kihn
+                    referrer_organization_name: Johns, Yost and Huel
+                    referrer_organization_name_en: Fay-Wolff
+                    referrer_designation: Athletic Trainer
+                    referrer_designation_en: Food Science Technician
+                    referrer_address: |-
+                      436 Jacquelyn Stream Suite 147
+                      Juanitafort, OK 63286
+                    referrer_address_en: |-
+                      436 Jacquelyn Stream Suite 147
+                      Juanitafort, OK 63286
+                    referrer_email: rolfson.tracey@example.net
+                    referrer_mobile: (312) 747-7214
+                    referrer_relation: vitae
+                    referrer_relation_en: officiis
+                    row_status: 1
+                    created_at: '2021-10-06T06:32:28.000000Z'
+                    updated_at: '2021-10-06T06:32:28.000000Z'
+                response_status:
+                  success: true
+                  code: 200
+                  query_time: 0
+      tags:
+        - Reference
+    post:
+      summary: create
+      description: API endpoint to create a Reference.A successful request response will show 200 HTTP status code
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Reference'
+      responses:
+        '200':
+          description: create
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reference'
+              example:
+                data:
+                  id: 1
+                  youth_id: 1
+                  referrer_first_name: Sally
+                  referrer_first_name_en: Sally
+                  referrer_last_name: Kihn
+                  referrer_last_name_en: Kihn
+                  referrer_organization_name: Johns, Yost and Huel
+                  referrer_organization_name_en: Fay-Wolff
+                  referrer_designation: Athletic Trainer
+                  referrer_designation_en: Food Science Technician
+                  referrer_address: |-
+                    436 Jacquelyn Stream Suite 147
+                    Juanitafort, OK 63286
+                  referrer_address_en: |-
+                    436 Jacquelyn Stream Suite 147
+                    Juanitafort, OK 63286
+                  referrer_email: rolfson.tracey@example.net
+                  referrer_mobile: (312) 747-7214
+                  referrer_relation: vitae
+                  referrer_relation_en: officiis
+                  row_status: 1
+                  created_at: '2021-10-06T06:32:28.000000Z'
+                  updated_at: '2021-10-06T06:32:28.000000Z'
+                _response_status:
+                  success: true
+                  code: 201
+                  message: Reference added successfully
+                  query_time: 0
+      tags:
+        - Reference
+  /youth-references/{youthReferenceId}:
+    get:
+      summary: get_one
+      description: API endpoint to get a specified Reference.A successful request response will show 200 HTTP status code
+      parameters:
+        - name: youthReferenceId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: get_one
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reference'
+              example:
+                data:
+                  id: 1
+                  youth_id: 1
+                  referrer_first_name: Sally
+                  referrer_first_name_en: Sally
+                  referrer_last_name: Kihn
+                  referrer_last_name_en: Kihn
+                  referrer_organization_name: Johns, Yost and Huel
+                  referrer_organization_name_en: Fay-Wolff
+                  referrer_designation: Athletic Trainer
+                  referrer_designation_en: Food Science Technician
+                  referrer_address: |-
+                    436 Jacquelyn Stream Suite 147
+                    Juanitafort, OK 63286
+                  referrer_address_en: |-
+                    436 Jacquelyn Stream Suite 147
+                    Juanitafort, OK 63286
+                  referrer_email: rolfson.tracey@example.net
+                  referrer_mobile: (312) 747-7214
+                  referrer_relation: vitae
+                  referrer_relation_en: officiis
+                  row_status: 1
+                  created_at: '2021-10-06T06:32:28.000000Z'
+                  updated_at: '2021-10-06T06:32:28.000000Z'
+                _response_status:
+                  success: true
+                  code: 200
+                  query_time: 0
+      tags:
+        - Reference
+    put:
+      summary: update
+      description: API endpoint to update the specified Reference. A successful request response will show 200 HTTP status code
+      parameters:
+        - name: youthReferenceId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Reference'
+      responses:
+        '200':
+          description: update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reference'
+              example:
+                data:
+                  id: 1
+                  youth_id: 1
+                  referrer_first_name: Sally
+                  referrer_first_name_en: Sally
+                  referrer_last_name: Kihn
+                  referrer_last_name_en: Kihn
+                  referrer_organization_name: Johns, Yost and Huel
+                  referrer_organization_name_en: Fay-Wolff
+                  referrer_designation: Athletic Trainer
+                  referrer_designation_en: Food Science Technician
+                  referrer_address: |-
+                    436 Jacquelyn Stream Suite 147
+                    Juanitafort, OK 63286
+                  referrer_address_en: |-
+                    436 Jacquelyn Stream Suite 147
+                    Juanitafort, OK 63286
+                  referrer_email: rolfson.tracey@example.net
+                  referrer_mobile: (312) 747-7214
+                  referrer_relation: vitae
+                  referrer_relation_en: officiis
+                  row_status: 1
+                  created_at: '2021-10-06T06:32:28.000000Z'
+                  updated_at: '2021-10-06T06:32:28.000000Z'
+                _response_status:
+                  success: true
+                  code: 201
+                  message: Reference updated successfully
+                  query_time: 0
+      tags:
+        - Reference
+    delete:
+      summary: delete
+      description: API endpoint to delete the specified Reference.A successful request response will show 200 HTTP status code
+      parameters:
+        - name: youthReferenceId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: delete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reference'
+              example:
+                _response_status:
+                  success: true
+                  code: 200
+                  message: Referene deleted successfully.
+                  query_time: 0
+      tags:
+        - Reference
+  /youth-educations:
+    get:
+      summary: get_list
+      description: API endpoint to get the list of Educations.A successful request response will show 200 HTTP status code
+      parameters:
+        - name: youth_id
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/row_status_optional'
+        - $ref: '#/components/parameters/order'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Education'
+              example:
+                order: ASC
+                data:
+                  - id: 1
+                    youth_id: 1
+                    institute_name: Ondricka, Casper and Tromp
+                    institute_name_en: Ondricka, Casper and Tromp
+                    examination_id: 3
+                    examination_code: SSC
+                    examination_title_en: SSC/Equivalent
+                    examination_title_bn: এসএসসি/সমমান
+                    board_id: 8
+                    board_title_en: Rajshahi
+                    board_title_bn: রাজশাহী
+                    edu_group_id: 2
+                    edu_group_code: Humanities
+                    edu_group_title_en: Arts and Humanities
+                    edu_group_title_bn: মানবিক
+                    major_or_subject_id: null
+                    roll_number: '210381657639'
+                    registration_number: '932081741473'
+                    result_type: 2
+                    division_type_result: null
+                    cgpa_gpa_max_value: 5
+                    received_cgpa_gpa: 2.1
+                    passing_year: 1989
+                    row_status: 1
+                    created_at: '2021-10-06T07:06:47.000000Z'
+                    updated_at: '2021-10-06T07:06:47.000000Z'
+                response_status:
+                  success: true
+                  code: 200
+                  query_time: 0
+      tags:
+        - Education
+    post:
+      summary: create
+      description: API endpoint to create an Education.A successful request response will show 200 HTTP status code
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Education'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Education'
+              example:
+                data:
+                  id: 1
+                  youth_id: 1
+                  institute_name: Ondricka, Casper and Tromp
+                  institute_name_en: Ondricka, Casper and Tromp
+                  examination_id: 3
+                  examination_code: SSC
+                  examination_title_en: SSC/Equivalent
+                  examination_title_bn: এসএসসি/সমমান
+                  board_id: 8
+                  board_title_en: Rajshahi
+                  board_title_bn: রাজশাহী
+                  edu_group_id: 2
+                  edu_group_code: Humanities
+                  edu_group_title_en: Arts and Humanities
+                  edu_group_title_bn: মানবিক
+                  major_or_subject_id: null
+                  roll_number: '210381657639'
+                  registration_number: '932081741473'
+                  result_type: 2
+                  division_type_result: null
+                  cgpa_gpa_max_value: 5
+                  received_cgpa_gpa: 2.1
+                  passing_year: 1989
+                  row_status: 1
+                  created_at: '2021-10-06T07:06:47.000000Z'
+                  updated_at: '2021-10-06T07:06:47.000000Z'
+                _response_status:
+                  success: true
+                  code: 201
+                  message: Education added successfully
+                  query_time: 0
+      tags:
+        - Education
+  /youth-educations/{educationsId}:
+    get:
+      summary: get_one
+      description: API endpoint to get a specified Education.A successful request response will show 200 HTTP status code
+      parameters:
+        - name: educationsId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: get_one
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Education'
+              example:
+                data:
+                  id: 1
+                  youth_id: 1
+                  institute_name: Ondricka, Casper and Tromp
+                  institute_name_en: Ondricka, Casper and Tromp
+                  examination_id: 3
+                  examination_code: SSC
+                  examination_title_en: SSC/Equivalent
+                  examination_title_bn: এসএসসি/সমমান
+                  board_id: 8
+                  board_title_en: Rajshahi
+                  board_title_bn: রাজশাহী
+                  edu_group_id: 2
+                  edu_group_code: Humanities
+                  edu_group_title_en: Arts and Humanities
+                  edu_group_title_bn: মানবিক
+                  major_or_subject_id: null
+                  roll_number: '210381657639'
+                  registration_number: '932081741473'
+                  result_type: 2
+                  division_type_result: null
+                  cgpa_gpa_max_value: 5
+                  received_cgpa_gpa: 2.1
+                  passing_year: 1989
+                  row_status: 1
+                  created_at: '2021-10-06T07:06:47.000000Z'
+                  updated_at: '2021-10-06T07:06:47.000000Z'
+                _response_status:
+                  success: true
+                  code: 200
+                  query_time: 0
+      tags:
+        - Education
+    put:
+      summary: update
+      description: API endpoint to update the Education. A successful request response will show 200 HTTP status code
+      parameters:
+        - name: educationsId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Education'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Education'
+              example:
+                data:
+                  id: 1
+                  youth_id: 1
+                  institute_name: Ondricka, Casper and Tromp
+                  institute_name_en: Ondricka, Casper and Tromp
+                  examination_id: 3
+                  examination_code: SSC
+                  examination_title_en: SSC/Equivalent
+                  examination_title_bn: এসএসসি/সমমান
+                  board_id: 8
+                  board_title_en: Rajshahi
+                  board_title_bn: রাজশাহী
+                  edu_group_id: 2
+                  edu_group_code: Humanities
+                  edu_group_title_en: Arts and Humanities
+                  edu_group_title_bn: মানবিক
+                  major_or_subject_id: null
+                  roll_number: '210381657639'
+                  registration_number: '932081741473'
+                  result_type: 2
+                  division_type_result: null
+                  cgpa_gpa_max_value: 5
+                  received_cgpa_gpa: 2.1
+                  passing_year: 1989
+                  row_status: 1
+                  created_at: '2021-10-06T07:06:47.000000Z'
+                  updated_at: '2021-10-06T07:06:47.000000Z'
+                _response_status:
+                  success: true
+                  code: 201
+                  message: Education updated successfully
+                  query_time: 0
+      tags:
+        - Education
+    delete:
+      summary: delete
+      description: API endpoint to delete the specified Education.A successful request response will show 200 HTTP status code
+      parameters:
+        - name: educationsId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Education'
+              example:
+                _response_status:
+                  success: true
+                  code: 200
+                  message: Education deleted successfully.
+                  query_time: 0
+      tags:
+        - Education
 components:
   schemas:
     Youth:
@@ -1836,7 +2380,7 @@ components:
         - start_date
     Reference:
       type: object
-      description: Provide references
+      description: Provide references of a youth
       properties:
         id:
           type: integer
@@ -1846,31 +2390,31 @@ components:
           example: 1
         referrer_first_name:
           type: string
-          maxLength: 150
+          maxLength: 250
         referrer_first_name_en:
           type: string
           maxLength: 150
         referrer_last_name:
           type: string
-          maxLength: 150
+          maxLength: 250
         referrer_last_name_en:
           type: string
           maxLength: 150
         referrer_organization_name:
           type: string
-          maxLength: 300
+          maxLength: 600
         referrer_organization_name_en:
           type: string
           maxLength: 300
         referrer_designation:
           type: string
-          maxLength: 200
+          maxLength: 500
         referrer_designation_en:
           type: string
           maxLength: 200
         referrer_address:
           type: string
-          maxLength: 600
+          maxLength: 1000
         referrer_address_en:
           type: string
           maxLength: 600
@@ -1882,16 +2426,17 @@ components:
           maxLength: 15
         referrer_relation:
           type: string
-          maxLength: 191
+          maxLength: 600
         referrer_relation_en:
           type: string
-          maxLength: 15
+          maxLength: 300
         row_status:
           type: integer
-          description: District activation status
+          description: activation status
           enum:
             - 1
             - 0
+          example: 1
         deleted_at:
           type: string
           format: date-time
@@ -1909,6 +2454,7 @@ components:
         - referrer_first_name
         - referrer_last_name
         - referrer_designation
+        - referrer_organization_name
         - referrer_address
         - referrer_email
         - referrer_mobile
@@ -1943,11 +2489,12 @@ components:
           maxLength: 300
         start_date:
           type: string
-          format: date-time
+          format: date
           example: '2021-10-04'
         end_date:
           type: string
-          format: date-time
+          format: date
+          example: '2021-10-06'
         certificate_file_path:
           type: string
           maxLength: 500
@@ -1957,6 +2504,7 @@ components:
           enum:
             - 1
             - 0
+          default: 1
         created_at:
           type: string
           format: date-time
@@ -1973,7 +2521,8 @@ components:
         - certification_name
         - institute_name
         - location
-        - start_date
+        - youth_id
+        - certificate_file_path
     verifyYouthProfile:
       type: object
       description: Verify youth profile
@@ -1997,6 +2546,75 @@ components:
           default: 0
       required:
         - is_freelance_profile
+    Education:
+      type: object
+      description: Provide educational info of a youth
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        youth_id:
+          type: integer
+          example: 1
+        institute_name:
+          type: string
+          maxLength: 400
+        institute_name_en:
+          type: string
+          maxLength: 400
+        examination_id:
+          type: integer
+          description: PSC, JSC, SSC, HSC, Degree, B.Sc. (Pass), Honours, Preliminary Masters, Masters etc
+        board_id:
+          type: integer
+          description: Only for PSC, JSC, SSC, HSC etc
+        edu_group_id:
+          type: integer
+          description: '''1 => Science, 2 => Commerce, 3 => Arts (Only for PSC, JSC, SSC, HSC, Degree)'
+        major_or_subject_id:
+          type: integer
+          description: '''Only for Honours/Masters'''
+        roll_number:
+          type: string
+          maxLength: 100
+        registration_number:
+          type: string
+          maxLength: 100
+        result_type:
+          type: integer
+          description: 1 => Division, 2 => Grade point
+        division_type_result:
+          type: integer
+          description: 1 => 1st Class, 2 => 2nd Class, 3 => 3rd Class
+        cgpa_gpa_max_value:
+          type: integer
+          description: floating point number
+        received_cgpa_gpa:
+          type: integer
+          description: floating point number
+        passing_year:
+          type: integer
+          format: year
+          example: 2015
+        row_status:
+          type: integer
+          description: activation status
+          enum:
+            - 1
+            - 0
+          example: 1
+        deleted_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
   parameters:
     skillId:
       name: skillId
