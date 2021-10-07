@@ -137,7 +137,7 @@
                 ]
             }
         },
-        "/portfolios": {
+        "/youth-portfolios": {
             "get": {
                 "summary": "get_list",
                 "description": " API endpoint to get the list of Youth portfolio",
@@ -227,7 +227,7 @@
                 ]
             }
         },
-        "/portfolios/{portfolioId}": {
+        "/youth-portfolios/{portfolioId}": {
             "get": {
                 "summary": "get one",
                 "description": "API endpoint to get the specified Youth portfolio.A successful request response will show 200 HTTP status code",
@@ -593,7 +593,7 @@
                 ]
             }
         },
-        "/job-experience": {
+        "/youth-job-experience": {
             "get": {
                 "summary": "get_list",
                 "description": "API endpoint to get the list of Job Experiences. A successful request response will show 200 HTTP status code ",
@@ -725,7 +725,7 @@
                 ]
             }
         },
-        "/job-experience/{jobExperienceId}": {
+        "/youth-job-experience/{jobExperienceId}": {
             "get": {
                 "summary": "get_one",
                 "description": "API endpoint to get a specified Job Experience.A successful request response will show 200 HTTP status code",
