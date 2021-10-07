@@ -4,6 +4,7 @@ namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
 use App\Models\Certification;
+use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -234,12 +235,15 @@ class CertificationService
             ],
             'start_date' => [
                 'date',
-                'required',
+                'nullable'
             ],
             'end_date' => [
                 'date',
                 'nullable',
-                'after:start_date'
+                'after:start_date',
+                Rule::requiredIf(function () use ($request){
+                    return (!empty($request->start_date));
+                })
             ],
             'youth_id' => [
                 'required',
@@ -250,7 +254,8 @@ class CertificationService
             'certificate_file_path' => [
                 'nullable',
                 'string',
-                'max:500'
+                'max:500',
+                'required'
             ],
             'row_status' => [
                 'required_if:' . $id . ',!=,null',

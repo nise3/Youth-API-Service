@@ -410,9 +410,8 @@ class EducationService
             ],
             'passing_year' => [
                 'required',
-                'string',
-                'max:4',
-                'min:4',
+                'integer',
+                'min:1971'
             ],
             'row_status' => [
                 'required_if:' . $id . ',!=,null',

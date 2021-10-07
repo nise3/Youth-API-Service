@@ -236,11 +236,12 @@ class ReferenceService
             ],
             'referrer_email' => [
                 'required',
-                'string',
+                'email'
             ],
             'referrer_mobile' => [
                 'required',
                 'string',
+                BaseModel::MOBILE_REGEX
             ],
             'referrer_relation' => [
                 'required',
