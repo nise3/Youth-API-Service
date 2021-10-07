@@ -1255,9 +1255,9 @@
                 ]
             }
         },
-        "/youth-profile-update": {
-            "post": {
-                "summary": "Youth profile update",
+        "/youth-personal-info-update": {
+            "put": {
+                "summary": "Youth personal info update",
                 "description": "API endpoint to update a youth profile. A successful request response will show 200 HTTP status code ",
                 "parameters": [
                     {
@@ -1547,9 +1547,9 @@
                 ]
             }
         },
-        "/youth-set-freelance-status": {
-            "post": {
-                "summary": "Youth set freelance status",
+        "/youth-change-freelance-status": {
+            "put": {
+                "summary": "Youth change freelance status",
                 "description": "API endpoint to update freelance status. A successful request response will show 200 HTTP status code ",
                 "parameters": [
                     {
