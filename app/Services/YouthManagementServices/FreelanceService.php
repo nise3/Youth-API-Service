@@ -66,11 +66,11 @@ class FreelanceService
         $freelancersBuilder->where('youths.is_freelance_profile', BaseModel::FREELANCE_PROFILE_YES);
 
         if (count($skills)>0) {
-//            $users = Youth::whereHas('skills', function($query) {
-//                $query->whereIn('id', [1, 2, 3]);
-//            })
-//                ->get();
-//            dd(Youth::find(1));
+            $users = Youth::whereHas('skills', function($query) {
+                $query->whereIn('id', [1, 2, 3]);
+            })
+                ->get();
+            dd(Youth::find(1)->with('skills'));
         }
 
 
