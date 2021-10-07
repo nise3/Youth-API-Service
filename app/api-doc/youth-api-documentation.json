@@ -927,284 +927,15 @@
             "post": {
                 "summary": "Youth registration",
                 "description": "API endpoint to register a youth. A successful request response will show 200 HTTP status code ",
-                "parameters": [
-                    {
-                        "name": "is_freelance_profile",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "default": 0
-                        }
-                    },
-                    {
-                        "name": "username",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "uniqueItems": true,
-                            "example": "habib.1"
-                        }
-                    },
-                    {
-                        "name": "user_name_type",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "enum": [
-                                1,
-                                2
-                            ],
-                            "description": "1=>Email Type,2=>Mobile Number"
-                        },
-                        "example": 1
-                    },
-                    {
-                        "name": "first_name",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500
-                        },
-                        "example": "Rakibur"
-                    },
-                    {
-                        "name": "first_name_en",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500
-                        }
-                    },
-                    {
-                        "name": "last_name",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500
-                        },
-                        "example": "Rahman"
-                    },
-                    {
-                        "name": "last_name_en",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500
-                        }
-                    },
-                    {
-                        "name": "gender",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "enum": [
-                                1,
-                                2,
-                                3
-                            ],
-                            "description": "1=>male,2=>female,3=>others"
-                        },
-                        "example": 1
-                    },
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "uniqueItems": true
-                        },
-                        "example": "rakib@gmail.com"
-                    },
-                    {
-                        "name": "mobile",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "maxLength": 11,
-                            "uniqueItems": true
-                        },
-                        "example": "01307711937"
-                    },
-                    {
-                        "name": "date_of_birth",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "date",
-                            "example": "2021-10-05"
-                        }
-                    },
-                    {
-                        "name": "skills",
-                        "in": "query",
-                        "content": {
-                            "multipart/form-data": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "integer",
-                                        "uniqueItems": true
-                                    }
-                                }
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/youthRegistration"
                             }
-                        }
-                    },
-                    {
-                        "name": "physical_disability_status",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "enum": [
-                                0,
-                                1
-                            ],
-                            "description": "0=>No,1=>Yes",
-                            "default": 0
-                        }
-                    },
-                    {
-                        "name": "physical_disabilities",
-                        "in": "query",
-                        "content": {
-                            "multipart/form-data": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "integer",
-                                        "uniqueItems": true
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "minimum": 8,
-                            "maximum": 50
-                        },
-                        "example": "12asASas!@"
-                    },
-                    {
-                        "name": "password_confirmation",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "minimum": 8,
-                            "maximum": 50
-                        },
-                        "example": "12asASas!@"
-                    },
-                    {
-                        "name": "loc_division_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        },
-                        "example": 1
-                    },
-                    {
-                        "name": "loc_district_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        },
-                        "example": 1
-                    },
-                    {
-                        "name": "loc_upazila_id",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "village_or_area",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500
-                        }
-                    },
-                    {
-                        "name": "village_or_area_en",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500
-                        }
-                    },
-                    {
-                        "name": "house_n_road",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500
-                        }
-                    },
-                    {
-                        "name": "house_n_road_en",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500
-                        }
-                    },
-                    {
-                        "name": "zip_or_postal_code",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "maximum": 10
-                        },
-                        "example": 1
-                    },
-                    {
-                        "name": "bio",
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "bio_en",
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "photo",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 300
-                        }
-                    },
-                    {
-                        "name": "cv_path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 300
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "register_youth",
@@ -2743,14 +2474,36 @@
                         "readOnly": true
                     },
                     "username": {
-                        "type": "string"
+                        "type": "string",
+                        "uniqueItems": true
+                    },
+                    "user_name_type": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2
+                        ],
+                        "description": "1=>Email Type, 2=>Mobile Number"
                     },
                     "first_name": {
-                        "type": "string"
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 500
+                    },
+                    "first_name_en": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 500
                     },
                     "last_name": {
                         "type": "string",
-                        "maxLength": 20
+                        "minLength": 2,
+                        "maxLength": 500
+                    },
+                    "last_name_en": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 500
                     },
                     "gender": {
                         "type": "integer",
@@ -2762,8 +2515,25 @@
                         "description": "1=>Male,2=>Female,3=>Others",
                         "default": 1
                     },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "uniqueItems": true
+                    },
+                    "mobile": {
+                        "type": "string",
+                        "maxLength": 11,
+                        "uniqueItems": true
+                    },
+                    "date_of_birth": {
+                        "type": "string",
+                        "format": "date",
+                        "pattern": "yyyy-mm-dd"
+                    },
                     "skills": {
                         "type": "array",
+                        "minItems": 1,
+                        "maxItems": 10,
                         "items": {
                             "type": "integer",
                             "uniqueItems": true,
@@ -2773,25 +2543,6 @@
                                 3
                             ]
                         }
-                    },
-                    "user_name_type": {
-                        "type": "integer",
-                        "enum": [
-                            1,
-                            2
-                        ],
-                        "description": "1=>Email Type, 2=>Mobile Number"
-                    },
-                    "email": {
-                        "type": "string",
-                        "format": "email"
-                    },
-                    "mobile": {
-                        "type": "string"
-                    },
-                    "date_of_birth": {
-                        "type": "string",
-                        "format": "date"
                     },
                     "physical_disability_status": {
                         "type": "integer",
@@ -2804,6 +2555,7 @@
                     },
                     "physical_disabilities": {
                         "type": "array",
+                        "minItems": 1,
                         "items": {
                             "type": "integer",
                             "uniqueItems": true,
@@ -2814,14 +2566,6 @@
                             ]
                         }
                     },
-                    "loc_division_id": {
-                        "type": "integer",
-                        "example": "1"
-                    },
-                    "loc_district_id": {
-                        "type": "integer",
-                        "example": "1"
-                    },
                     "password": {
                         "type": "string",
                         "format": "password",
@@ -2831,6 +2575,45 @@
                         "type": "string",
                         "format": "password",
                         "example": "#Piyal_15021#"
+                    },
+                    "loc_division_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "loc_district_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "loc_upazila_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "village_or_area": {
+                        "type": "string"
+                    },
+                    "village_or_area_en": {
+                        "type": "string"
+                    },
+                    "house_n_road": {
+                        "type": "string"
+                    },
+                    "house_n_road_en": {
+                        "type": "string"
+                    },
+                    "zip_or_postal_code": {
+                        "type": "string"
+                    },
+                    "bio": {
+                        "type": "string"
+                    },
+                    "bio_en": {
+                        "type": "string"
+                    },
+                    "photo": {
+                        "type": "string"
+                    },
+                    "cv_path": {
+                        "type": "string"
                     },
                     "deleted_at": {
                         "type": "string",
@@ -2850,6 +2633,7 @@
                 },
                 "required": [
                     "username",
+                    "user_name_type",
                     "first_name",
                     "last_name",
                     "gender",
@@ -2859,10 +2643,10 @@
                     "password",
                     "password_confirmation",
                     "physical_disability_status",
-                    "user_name_type",
                     "date_of_birth",
                     "loc_district_id",
-                    "loc_division_id"
+                    "loc_division_id",
+                    "zip_or_postal_code"
                 ]
             },
             "youthProfile": {
@@ -3660,7 +3444,16 @@
                         "format": "date-time",
                         "readOnly": true
                     }
-                }
+                },
+                "required": [
+                    "youth_id",
+                    "examination_id",
+                    "roll_number",
+                    "institute_name",
+                    "registration_number",
+                    "result_type",
+                    "passing_year"
+                ]
             }
         },
         "parameters": {
