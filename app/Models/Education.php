@@ -41,12 +41,13 @@ class Education extends BaseModel
     const EXAMINATION_ID_JDC = 3;
     const EXAMINATION_ID_SSC = 4;
     const EXAMINATION_ID_DAKHIL = 5;
-    const EXAMINATION_ID_ALIM = 6;
-    const EXAMINATION_ID_DIBS = 7;
-    const EXAMINATION_ID_DEGREE = 8;
-    const EXAMINATION_ID_HONOURS = 9;
-    const EXAMINATION_ID_PMASTERS = 10;
-    const EXAMINATION_ID_MASTERS = 11;
+    const EXAMINATION_ID_HSC = 6;
+    const EXAMINATION_ID_ALIM = 7;
+    const EXAMINATION_ID_DIBS = 8;
+    const EXAMINATION_ID_DEGREE = 9;
+    const EXAMINATION_ID_HONOURS = 10;
+    const EXAMINATION_ID_PMASTERS = 11;
+    const EXAMINATION_ID_MASTERS = 12;
 
     const GPA_OUT_OF_FIVE = 5;
     const GPA_OUT_OF_FOUR = 4;

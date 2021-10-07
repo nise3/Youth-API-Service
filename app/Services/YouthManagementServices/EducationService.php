@@ -6,18 +6,12 @@ namespace App\Services\YouthManagementServices;
 use App\Models\BaseModel;
 use App\Models\Examination;
 use App\Models\Education;
-use App\Models\Trainer;
-use App\Models\Youth;
 use Carbon\Carbon;
-use Faker\Provider\Uuid;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
-use Prophecy\Promise\PromiseInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -388,12 +382,6 @@ class EducationService
                 'string',
                 'max:400',
             ],
-            'edu_group_id' => [
-                'required',
-                'integer',
-                'exists:edu_groups,id',
-                'min:1'
-            ],
             'roll_number' => [
                 'required',
                 'string',
@@ -439,6 +427,14 @@ class EducationService
                 'numeric',
                 'min:1',
                 Rule::in(Education::DIVISION_FIRST_CLASS, Education::DIVISION_SECOND_CLASS, Education::DIVISION_THIRD_CLASS, Education::DIVISION_PASS),
+            ];
+        }
+        if ($request->examination_id == Education::EXAMINATION_ID_SSC or $request->examination_id == Education::EXAMINATION_ID_DAKHIL or $request->examination_id == Education::EXAMINATION_ID_HSC or $request->examination_id == Education::EXAMINATION_ID_ALIM) {
+            $rules['edu_group_id'] = [
+                'required',
+                'integer',
+                'exists:edu_groups,id',
+                'min:1'
             ];
         }
 
