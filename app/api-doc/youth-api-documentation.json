@@ -101,34 +101,6 @@
                 "tags": [
                     "youth"
                 ]
-            },
-            "post": {
-                "summary": "Store",
-                "description": "API endpoint to store a Youth profile.A successful request response will show 200 HTTP status code",
-                "requestBody": {
-                    "content": {
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "$ref": "#/components/schemas/youthRegistration"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/youthRegistration"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "youth"
-                ]
             }
         },
         "/youths/{youthId}": {
@@ -155,158 +127,6 @@
                                     "$ref": "#/components/schemas/youthRegistration"
                                 },
                                 "example": {
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "youth"
-                ]
-            },
-            "put": {
-                "summary": "update",
-                "description": "API endpoint to update the specified Youth profile.A successful request response will show 200 HTTP status code",
-                "parameters": [
-                    {
-                        "name": "youthId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "first_name",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "ABC Name"
-                        }
-                    },
-                    {
-                        "name": "last_name",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "Last Name"
-                        }
-                    },
-                    {
-                        "name": "loc_division_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "loc_district_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "city",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "1/2 Dhaka, Bangladesh"
-                        }
-                    },
-                    {
-                        "name": "zip_or_postal_code",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "1234"
-                        }
-                    },
-                    {
-                        "name": "bio",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "A required Microsoft Windows system directory, the System32 directory is located in either C:\\Windows\\System32 or C:\\Winnt\\system32 directory. The system32 directory contains Windows system files and software program files, vital to the operation of the Windows operating system and software programs running in Windows. The most common types of files found in the system32 directory are DLL (Dynamic Link Library) and EXE (executable) files."
-                        }
-                    },
-                    {
-                        "name": "photo",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "https://www.pngitem.com/pimgs/m/80-800194_transparent-users-icon-png-flat-user-icon-png.png"
-                        }
-                    },
-                    {
-                        "name": "cv_path",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "http://laspoderosasteatro.com/wp-content/uploads/2021/01/fiverr-resume-writing-service-writer-templates-review-software-professional.jpg"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/youthRegistration"
-                                },
-                                "example": {
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "youth"
-                ]
-            },
-            "delete": {
-                "summary": "delete",
-                "description": "API endpoint to delete the Youth profile.A successful request response will show 200 HTTP status code",
-                "parameters": [
-                    {
-                        "name": "youthId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/youthRegistration"
-                                },
-                                "example": {
-                                    "_response_status": {
-                                        "success": true,
-                                        "code": 200,
-                                        "message": "Skill deleted successfully",
-                                        "started": "12 40 05",
-                                        "finished": "12 40 05"
-                                    }
                                 }
                             }
                         }
@@ -3190,7 +3010,7 @@
                     "loc_district_id"
                 ]
             },
-            "youthProfileRegistration":  {
+            "youthProfileRegistration": {
                 "type": "object",
                 "description": "Youth Profile Registration",
                 "properties": {
