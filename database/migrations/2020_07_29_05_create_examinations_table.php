@@ -17,7 +17,7 @@ class CreateExaminationsTable extends Migration
             $table->tinyIncrements("id");
             $table->string("code" , 20);
             $table->string("title_en" , 255);
-            $table->string("title_bn", 400);
+            $table->string("title", 500);
             $table->text("description")->nullable();
             $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();

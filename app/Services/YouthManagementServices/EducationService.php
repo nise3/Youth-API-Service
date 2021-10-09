@@ -54,7 +54,7 @@ class EducationService
                 'educations.examination_id',
                 'examinations.code as examination_code',
                 'examinations.title_en as examination_title_en',
-                'examinations.title_bn as examination_title_bn',
+                'examinations.title as examination_title_bn',
                 'educations.board_id',
                 'boards.title_en as board_title_en',
                 'boards.title_bn as board_title_bn',
@@ -117,7 +117,7 @@ class EducationService
             $educationBuilder->where('examinations.title_en', 'like', '%' . $examinationTitleEn . '%');
         }
         if (!empty($examinationTitleBn)) {
-            $educationBuilder->where('examinations.title_bn', 'like', '%' . $examinationTitleBn . '%');
+            $educationBuilder->where('examinations.title', 'like', '%' . $examinationTitleBn . '%');
         }
 
         if (!empty($boardTitleEn)) {
@@ -176,7 +176,7 @@ class EducationService
                 'educations.examination_id',
                 'examinations.code as examination_code',
                 'examinations.title_en as examination_title_en',
-                'examinations.title_bn as examination_title_bn',
+                'examinations.title as examination_title_bn',
                 'educations.board_id',
                 'boards.title_en as board_title_en',
                 'boards.title_bn as board_title_bn',
