@@ -369,7 +369,7 @@
                         "$ref": "#/components/parameters/title_en_optional"
                     },
                     {
-                        "$ref": "#/components/parameters/title_bn_optional"
+                        "$ref": "#/components/parameters/title_optional"
                     }
                 ],
                 "responses": {
@@ -390,7 +390,7 @@
                                         {
                                             "id": 1,
                                             "title_en": "Heavy Equipment Mechanic",
-                                            "title_bn": "Heavy Equipment Mechanic",
+                                            "title": "Heavy Equipment Mechanic",
                                             "description": "Sed omnis nemo sint consequatur qui quia maiores. Est non labore et. Dolorum sapiente dolorum earum cupiditate. Qui velit nam sequi hic est quisquam. Mollitia enim dicta iure consequatur. Nam aut non est maxime aspernatur. Quidem cumque eius numquam eos repellendus. Eum reprehenderit ullam et ut voluptatem natus quia. Voluptas voluptatibus cupiditate distinctio minima enim. Eaque nihil qui qui delectus. Modi sed aut soluta qui. Numquam veniam fuga a veniam ea eligendi. Hic odit illo nihil ab. Sapiente et sit ut at nulla qui nostrum. Eaque ea qui aut iusto quaerat quae non est. Eum et ex et aut a aut. Debitis repellat ex omnis aut quisquam magnam sequi maxime. Repudiandae laborum eum harum enim optio vero. Sunt et voluptatem aut architecto natus a fuga. Et odit magni dicta accusamus molestiae culpa eaque. Esse doloremque quasi ipsam ea dolorem aut. Esse non adipisci quod omnis nisi magni. Et ea corrupti minus consequatur quo molestiae. Sunt quisquam et voluptatibus omnis voluptas at eum. Iure asperiores doloribus id. Laudantium optio error aut ut ratione et nulla. Consequatur officiis odio et eos. Illo porro in nulla et consequatur id. Molestiae reprehenderit dicta nihil omnis. Qui debitis incidunt quis eum dolorum. Qui illo quas vero aut eum. Aperiam et eum voluptas autem recusandae quis. Delectus enim voluptatibus qui hic et. Quidem dolores possimus omnis eveniet voluptatibus. Quam possimus suscipit occaecati commodi architecto. Harum tempora minima id voluptatem expedita aliquam. Repudiandae ut minima dolorum alias fugiat officiis repudiandae. Ratione corrupti tempore et doloribus aut doloribus quasi quidem. Praesentium soluta et debitis eaque voluptatem architecto corporis. Aut laudantium harum sed. Dolores optio impedit a animi veniam illum. Qui expedita praesentium ut nam dolores distinctio. Ipsum rerum aliquid aliquam eligendi vel a. Debitis magnam rem adipisci non qui. Iure reprehenderit a id deserunt eligendi qui incidunt velit. Sint aut et ea sapiente optio impedit autem. Quasi enim ea recusandae omnis mollitia consequuntur ipsam. Doloremque incidunt facere quisquam est aut voluptatem. Aut labore autem id omnis.",
                                             "row_status": 1,
                                             "created_at": "2021-08-19T08:55:03.000000Z",
@@ -401,7 +401,7 @@
                                         {
                                             "id": 2,
                                             "title_en": "Logging Supervisor",
-                                            "title_bn": "Logging Supervisor",
+                                            "title": "Logging Supervisor",
                                             "description": "Quasi unde necessitatibus ut sequi est adipisci. Accusamus in sit deserunt voluptate. Sunt aspernatur architecto delectus. Incidunt sit voluptatem qui cum autem eum ut. Voluptatem eos et consequatur optio sit. Eveniet excepturi accusantium ipsum. Est nihil delectus at et. Saepe totam ipsa laboriosam tenetur. Et voluptate aut fugit error voluptate. Est dolorem sapiente dolore asperiores amet. Nemo dolor rerum eveniet voluptatem cumque et. Quidem qui corrupti vero repellat sunt. Non vel consequatur rerum deleniti voluptas. Impedit architecto libero et suscipit. Eveniet est dolorem qui. Ea eum nobis enim sed. Nulla cupiditate vero cupiditate non reprehenderit error. Quo quae quod velit enim ratione deserunt. Qui et numquam qui et quo maxime veniam sit. Rerum expedita occaecati sed in saepe et et. Et consequatur repudiandae quia. Mollitia nulla consequatur omnis. Doloremque optio ipsum cumque unde nisi. Quod molestiae quos quia nulla officiis. Dolore impedit sit architecto laboriosam. Sint nisi dolore ut enim. Sit non quae qui nesciunt temporibus a. Inventore odio non harum reiciendis. Vero eligendi sequi deserunt consequatur non velit. Voluptatem quia veritatis voluptatem ipsum odio dolorem. Fuga voluptates consectetur magni rerum. Accusantium assumenda atque magnam temporibus a placeat laudantium. Reprehenderit ut consequuntur magnam praesentium. Distinctio nobis aliquid optio. Iure est tempore officia quas recusandae hic quisquam. Soluta aut aut delectus maxime tenetur porro. Qui dolor maiores veritatis odio tenetur et. Voluptatem omnis velit eos similique perferendis ut. Temporibus dolore aut ex hic quisquam. Sequi quo optio quasi qui facere eius. Sint sint voluptas qui culpa tempora qui eveniet. Vero laborum labore et quod nulla ut. Quis iste qui a dolor dolorum nulla possimus. Illum necessitatibus maiores ad voluptatem possimus. Blanditiis eaque ut ut maxime eius autem occaecati. Quibusdam nihil sint non dolores vel quia. Eos facilis doloremque eligendi deleniti id. Esse qui velit praesentium quaerat qui a accusamus. Perspiciatis excepturi harum deleniti in doloremque est dolorum ipsa. In molestiae corrupti quo quos corporis aut. Aut necessitatibus temporibus non natus blanditiis iste. Maiores aut quod praesentium deserunt error deserunt in. Earum iusto autem asperiores tenetur unde. Libero ipsa corporis commodi atque incidunt. Ratione qui ea ab doloremque porro aut cupiditate sit. Et fugiat ad nihil officia.",
                                             "row_status": 1,
                                             "created_at": "2021-08-19T08:55:03.000000Z",
@@ -447,7 +447,7 @@
                                 "example": {
                                     "data": {
                                         "title_en": "abc",
-                                        "title_bn": "abc",
+                                        "title": "abc",
                                         "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
                                         "updated_at": "2021-08-22T11:25:13.000000Z",
                                         "created_at": "2021-08-22T11:25:13.000000Z",
@@ -490,7 +490,7 @@
                                     "data": {
                                         "id": 1,
                                         "title_en": "Corporate management",
-                                        "title_bn": "কর্পোরেট ব্যবস্থাপনা",
+                                        "title": "কর্পোরেট ব্যবস্থাপনা",
                                         "description": null,
                                         "row_status": 1,
                                         "created_at": "2021-07-26T12:08:11.000000Z",
@@ -539,7 +539,7 @@
                                     "data": {
                                         "id": 1,
                                         "title_en": "Corporate management",
-                                        "title_bn": "কর্পোরেট ব্যবস্থাপনা",
+                                        "title": "কর্পোরেট ব্যবস্থাপনা",
                                         "description": null,
                                         "row_status": 1,
                                         "created_at": "2021-07-26T12:08:11.000000Z",
@@ -1928,14 +1928,14 @@
                                             "examination_id": 3,
                                             "examination_code": "SSC",
                                             "examination_title_en": "SSC/Equivalent",
-                                            "examination_title_bn": "এসএসসি/সমমান",
+                                            "examination_title": "এসএসসি/সমমান",
                                             "board_id": 8,
                                             "board_title_en": "Rajshahi",
-                                            "board_title_bn": "রাজশাহী",
+                                            "board_title": "রাজশাহী",
                                             "edu_group_id": 2,
                                             "edu_group_code": "Humanities",
                                             "edu_group_title_en": "Arts and Humanities",
-                                            "edu_group_title_bn": "মানবিক",
+                                            "edu_group_title": "মানবিক",
                                             "major_or_subject_id": null,
                                             "roll_number": "210381657639",
                                             "registration_number": "932081741473",
@@ -1992,14 +1992,14 @@
                                         "examination_id": 3,
                                         "examination_code": "SSC",
                                         "examination_title_en": "SSC/Equivalent",
-                                        "examination_title_bn": "এসএসসি/সমমান",
+                                        "examination_title": "এসএসসি/সমমান",
                                         "board_id": 8,
                                         "board_title_en": "Rajshahi",
-                                        "board_title_bn": "রাজশাহী",
+                                        "board_title": "রাজশাহী",
                                         "edu_group_id": 2,
                                         "edu_group_code": "Humanities",
                                         "edu_group_title_en": "Arts and Humanities",
-                                        "edu_group_title_bn": "মানবিক",
+                                        "edu_group_title": "মানবিক",
                                         "major_or_subject_id": null,
                                         "roll_number": "210381657639",
                                         "registration_number": "932081741473",
@@ -2060,14 +2060,14 @@
                                         "examination_id": 3,
                                         "examination_code": "SSC",
                                         "examination_title_en": "SSC/Equivalent",
-                                        "examination_title_bn": "এসএসসি/সমমান",
+                                        "examination_title": "এসএসসি/সমমান",
                                         "board_id": 8,
                                         "board_title_en": "Rajshahi",
-                                        "board_title_bn": "রাজশাহী",
+                                        "board_title": "রাজশাহী",
                                         "edu_group_id": 2,
                                         "edu_group_code": "Humanities",
                                         "edu_group_title_en": "Arts and Humanities",
-                                        "edu_group_title_bn": "মানবিক",
+                                        "edu_group_title": "মানবিক",
                                         "major_or_subject_id": null,
                                         "roll_number": "210381657639",
                                         "registration_number": "932081741473",
@@ -2134,14 +2134,14 @@
                                         "examination_id": 3,
                                         "examination_code": "SSC",
                                         "examination_title_en": "SSC/Equivalent",
-                                        "examination_title_bn": "এসএসসি/সমমান",
+                                        "examination_title": "এসএসসি/সমমান",
                                         "board_id": 8,
                                         "board_title_en": "Rajshahi",
-                                        "board_title_bn": "রাজশাহী",
+                                        "board_title": "রাজশাহী",
                                         "edu_group_id": 2,
                                         "edu_group_code": "Humanities",
                                         "edu_group_title_en": "Arts and Humanities",
-                                        "edu_group_title_bn": "মানবিক",
+                                        "edu_group_title": "মানবিক",
                                         "major_or_subject_id": null,
                                         "roll_number": "210381657639",
                                         "registration_number": "932081741473",
@@ -3299,8 +3299,8 @@
                     "example": 1
                 }
             },
-            "title_bn_optional": {
-                "name": "title_bn",
+            "title_optional": {
+                "name": "title",
                 "in": "query",
                 "required": false,
                 "style": "form",
@@ -3409,15 +3409,6 @@
                         0
                     ],
                     "example": 1
-                }
-            },
-            "title_optional": {
-                "name": "title",
-                "in": "query",
-                "required": false,
-                "style": "form",
-                "schema": {
-                    "type": "string"
                 }
             },
             "youth_id": {

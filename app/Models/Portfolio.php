@@ -10,7 +10,7 @@ use Carbon\Carbon;
  *
  * @property int id
  * @property string title
- * @property string title_bn
+ * @property string title
  * @property string description
  * @property string description_bn
  * @property int youth_id

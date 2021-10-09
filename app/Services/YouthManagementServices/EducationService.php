@@ -31,11 +31,11 @@ class EducationService
         $instituteName = $request['institute_name'] ?? "";
         $instituteNameEn = $request['institute_name_en'] ?? "";
         $examinationTitleEn = $request['examination_title_en'] ?? "";
-        $examinationTitleBn = $request['examination_title_bn'] ?? "";
+        $examinationTitleBn = $request['examination_title'] ?? "";
         $boardTitleEn = $request['board_title_en'] ?? "";
-        $boardTitleBn = $request['board_title_bn'] ?? "";
+        $boardTitleBn = $request['board_title'] ?? "";
         $eduGroupTitleEn = $request['edu_group_title_en'] ?? "";
-        $eduGroupTitleBn = $request['edu_group_title_bn'] ?? "";
+        $eduGroupTitleBn = $request['edu_group_title'] ?? "";
 
         $paginate = $request['page'] ?? "";
         $youthId = $request['youth_id'] ?? "";
@@ -54,14 +54,14 @@ class EducationService
                 'educations.examination_id',
                 'examinations.code as examination_code',
                 'examinations.title_en as examination_title_en',
-                'examinations.title as examination_title_bn',
+                'examinations.title as examination_title',
                 'educations.board_id',
                 'boards.title_en as board_title_en',
-                'boards.title_bn as board_title_bn',
+                'boards.title as board_title',
                 'educations.edu_group_id',
                 'edu_groups.code as edu_group_code',
                 'edu_groups.title_en as edu_group_title_en',
-                'edu_groups.title_bn as edu_group_title_bn',
+                'edu_groups.title as edu_group_title',
                 'educations.major_or_subject_id',
                 'educations.roll_number',
                 'educations.registration_number',
@@ -124,14 +124,14 @@ class EducationService
             $educationBuilder->where('boards.title_en', 'like', '%' . $boardTitleEn . '%');
         }
         if (!empty($boardTitleBn)) {
-            $educationBuilder->where('boards.title_bn', 'like', '%' . $boardTitleBn . '%');
+            $educationBuilder->where('boards.title', 'like', '%' . $boardTitleBn . '%');
         }
 
         if (!empty($eduGroupTitleEn)) {
             $educationBuilder->where('edu_groups.title_en', 'like', '%' . $eduGroupTitleEn . '%');
         }
         if (!empty($eduGroupTitleBn)) {
-            $educationBuilder->where('edu_groups.title_bn', 'like', '%' . $eduGroupTitleBn . '%');
+            $educationBuilder->where('edu_groups.title', 'like', '%' . $eduGroupTitleBn . '%');
         }
 
 
@@ -176,14 +176,14 @@ class EducationService
                 'educations.examination_id',
                 'examinations.code as examination_code',
                 'examinations.title_en as examination_title_en',
-                'examinations.title as examination_title_bn',
+                'examinations.title as examination_title',
                 'educations.board_id',
                 'boards.title_en as board_title_en',
-                'boards.title_bn as board_title_bn',
+                'boards.title as board_title',
                 'educations.edu_group_id',
                 'edu_groups.code as edu_group_code',
                 'edu_groups.title_en as edu_group_title_en',
-                'edu_groups.title_bn as edu_group_title_bn',
+                'edu_groups.title as edu_group_title',
                 'educations.major_or_subject_id',
                 'educations.roll_number',
                 'educations.registration_number',
@@ -269,7 +269,7 @@ class EducationService
     public function getTrashedYouthEducationList(Request $request, Carbon $startTime): array
     {
         $titleEn = $request->query('title_en');
-        $titleBn = $request->query('title_bn');
+        $titleBn = $request->query('title');
         $limit = $request->query('limit', 10);
         $paginate = $request->query('page');
         $order = !empty($request->query('order')) ? $request->query('order') : 'ASC';
@@ -279,7 +279,7 @@ class EducationService
             [
                 'skills.id as id',
                 'skills.title_en',
-                'skills.title_bn',
+                'skills.title',
                 'skills.description',
                 'skills.description_en',
                 'skills.row_status',
@@ -295,7 +295,7 @@ class EducationService
         if (!empty($titleEn)) {
             $educationBuilder->where('skills.title_en', 'like', '%' . $titleEn . '%');
         } elseif (!empty($titleBn)) {
-            $educationBuilder->where('skills.title_bn', 'like', '%' . $titleBn . '%');
+            $educationBuilder->where('skills.title', 'like', '%' . $titleBn . '%');
         }
 
         /** @var Collection $youthEducations */

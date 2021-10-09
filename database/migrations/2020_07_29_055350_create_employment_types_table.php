@@ -17,7 +17,7 @@ class CreateEmploymentTypesTable extends Migration
             $table->tinyIncrements("id");
             $table->char('code', 10);
             $table->string("title_en", 200);
-            $table->string("title_bn", 350);
+            $table->string("title", 350);
             $table->text("description")->nullable();
             $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();

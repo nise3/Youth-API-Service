@@ -17,7 +17,7 @@ class CreateEduGroupsTable extends Migration
             $table->tinyIncrements("id");
             $table->string("title_en", 200);
             $table->string('code', 10)->nullable();
-            $table->string("title_bn", 350);
+            $table->string("title", 350);
             $table->text("description")->nullable();
             $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();

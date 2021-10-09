@@ -19,22 +19,22 @@ class LanguageSeeder extends Seeder
         $languages =[
             [
                 "lang_code" => "bn",
-                "title_bn" => "বাংলা",
+                "title" => "বাংলা",
                 "title_en" => "Bengali"
             ],
             [
                 "lang_code" => "en",
-                "title_bn" => "ইংরেজি",
+                "title" => "ইংরেজি",
                 "title_en" => "English"
             ],
             [
                 "lang_code" => "es",
-                "title_bn" => "Spanish",
+                "title" => "Spanish",
                 "title_en" => "স্পেনীয়"
             ],
             [
                 "lang_code" => "ar",
-                "title_bn" => "Arabic",
+                "title" => "Arabic",
                 "title_en" => "আরবি"
             ]
         ];

@@ -164,7 +164,7 @@ class SkillService
     public function getTrashedSkillList(Request $request, Carbon $startTime): array
     {
         $titleEn = $request->query('title_en');
-        $titleBn = $request->query('title_bn');
+        $titleBn = $request->query('title');
         $limit = $request->query('limit', 10);
         $paginate = $request->query('page');
         $order = !empty($request->query('order')) ? $request->query('order') : 'ASC';
@@ -190,7 +190,7 @@ class SkillService
         if (!empty($titleEn)) {
             $skillBuilder->where('skills.title_en', 'like', '%' . $titleEn . '%');
         } elseif (!empty($titleBn)) {
-            $skillBuilder->where('skills.title_bn', 'like', '%' . $titleBn . '%');
+            $skillBuilder->where('skills.title', 'like', '%' . $titleBn . '%');
         }
 
         /** @var Collection $skills */
