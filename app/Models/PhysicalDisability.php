@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class PhysicalDisability extends BaseModel
 {
 
-    protected $hidden=[
+    protected $hidden = [
         "pivot"
     ];
 
