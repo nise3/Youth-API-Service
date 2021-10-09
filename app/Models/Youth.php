@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,7 +24,6 @@ use PHPUnit\Util\Json;
  * @property string first_name
  * @property string last_name
  * @property int gender
- * @property json skills
  * @property string mobile
  * @property string email
  * @property Date date_of_birth
@@ -45,6 +45,7 @@ use PHPUnit\Util\Json;
  * @property Carbon deleted_at
  * @property Carbon created_at
  * @property Carbon updated_at
+ * @property-read  Collection skills
  */
 class Youth extends AuthBaseModel
 {
@@ -64,41 +65,65 @@ class Youth extends AuthBaseModel
     ];
 
 
+    /**
+     * @return BelongsToMany
+     */
     public function skills(): BelongsToMany
     {
         return $this->belongsToMany(Skill::class, 'youth_skills');
     }
 
+    /**
+     * @return BelongsToMany
+     */
     public function physicalDisabilities(): BelongsToMany
     {
         return $this->belongsToMany(PhysicalDisability::class, 'youth_physical_disabilities');
     }
 
+    /**
+     * @return HasMany
+     */
     public function jobExperiences(): HasMany
     {
         return $this->hasMany(JobExperience::class, 'youth_id', 'id');
     }
 
+    /**
+     * @return HasMany
+     */
     public function LanguagesProficiencies(): HasMany
     {
         return $this->hasMany(LanguagesProficiency::class, 'youth_id', 'id');
     }
 
+    /**
+     * @return HasMany
+     */
     public function certifications(): HasMany
     {
         return $this->hasMany(Certification::class, 'youth_id', 'id');
     }
 
+    /**
+     * @return HasMany
+     */
     public function educations(): HasMany
     {
         return $this->hasMany(Education::class, 'youth_id', 'id');
     }
 
+    /**
+     * @return HasMany
+     */
     public function portfolios(): HasMany
     {
         return $this->hasMany(Portfolio::class, 'youth_id', 'id');
     }
 
+    /**
+     * @return HasMany
+     */
     public function references(): HasMany
     {
         return $this->hasMany(Reference::class, 'youth_id', 'id');
