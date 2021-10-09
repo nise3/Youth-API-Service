@@ -2469,10 +2469,6 @@
                 "type": "object",
                 "description": "Youth Profile",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
                     "user_name_type": {
                         "type": "integer",
                         "enum": [
