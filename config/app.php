@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Lumen'),
+    'name' => env('APP_NAME', 'Youth API Service'),
 
     /*
     |--------------------------------------------------------------------------
@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'Asia/Dhaka',
+    'timezone' => env('APP_TIMEZONE','Asia/Dhaka'),
 
     /*
     |--------------------------------------------------------------------------
