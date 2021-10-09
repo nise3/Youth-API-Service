@@ -47,11 +47,9 @@ class AuthServiceProvider extends ServiceProvider
         if ($token) {
             $header = explode(" ", $token);
 
-            if (count($header) > 0) {
-                $tokenParts = explode(".", $header[0]);
-
+            if (count($header) > 1) {
+                $tokenParts = explode(".", $header[1]);
                 if (count($tokenParts) == 3) {
-
                     $tokenPayload = base64_decode($tokenParts[1]);
                     $jwtPayload = json_decode($tokenPayload);
 
