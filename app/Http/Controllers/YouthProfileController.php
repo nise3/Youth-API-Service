@@ -74,7 +74,7 @@ class YouthProfileController extends Controller
             $idpUserPayLoad = [
                 'name' => $validated['first_name'] . " " . $validated["last_name"],
                 'email' => $validated['email'],
-                'username' => $validated['username'],
+                'username' => $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'],
                 'password' => $validated['password']
             ];
 

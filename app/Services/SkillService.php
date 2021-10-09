@@ -25,8 +25,8 @@ class SkillService
      */
     public function getSkillList(array $request, Carbon $startTime): array
     {
+        $title = $request['title'] ?? "";
         $titleEn = $request['title_en'] ?? "";
-        $titleBn = $request['title_bn'] ?? "";
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
@@ -53,11 +53,11 @@ class SkillService
         if (is_numeric($rowStatus)) {
             $skillBuilder->where('skills.row_status', $rowStatus);
         }
+        if (!empty($title)) {
+            $skillBuilder->where('skills.title', 'like', '%' . $title . '%');
+        }
         if (!empty($titleEn)) {
             $skillBuilder->where('skills.title_en', 'like', '%' . $titleEn . '%');
-        }
-        if (!empty($titleBn)) {
-            $skillBuilder->where('skills.title_bn', 'like', '%' . $titleBn . '%');
         }
 
         /** @var Collection $skills */
@@ -173,8 +173,8 @@ class SkillService
         $skillBuilder = Skill::onlyTrashed()->select(
             [
                 'skills.id as id',
+                'skills.title',
                 'skills.title_en',
-                'skills.title_bn',
                 'skills.description',
                 'skills.description_en',
                 'skills.row_status',

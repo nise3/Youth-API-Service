@@ -386,12 +386,6 @@ class YouthProfileService
         }
 
         $rules = [
-            "username" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
-                "unique:youths,username"
-            ],
             "user_name_type" => [
                 Rule::requiredIf(function () use ($id) {
                     return $id == null;
@@ -502,32 +496,12 @@ class YouthProfileService
                 "nullable",
                 "string"
             ],
-            "house_n_road" => [
-                "nullable",
-                "string"
-            ],
-            "house_n_road_en" => [
-                "nullable",
-                "string"
-            ],
             "zip_or_postal_code" => [
                 Rule::requiredIf(function () use ($id) {
                     return $id != null;
                 }),
                 "string"
             ],
-            "bio" => [
-                "nullable"
-            ],
-            "bio_en" => [
-                "nullable"
-            ],
-            "photo" => [
-                "nullable"
-            ],
-            "cv_path" => [
-                "nullable"
-            ]
         ];
         return \Illuminate\Support\Facades\Validator::make($data, $rules);
     }
