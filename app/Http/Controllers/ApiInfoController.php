@@ -24,16 +24,6 @@ class ApiInfoController extends Controller
             ]
         ];
 
-        $mpdf = new \Mpdf\Mpdf();
-        $mpdf->WriteHTML('
-                <h1>' . $response['service_name'] . '</h1>' .
-            '<p> service_version: ' . $response['service_version'] . '</p>' .
-            '<p> lumen_version: ' . $response['lumen_version'] . '</p>' .
-            '<p> module_list: ' . $response['module_list'][0] . '</p>' .
-            '<p> description: <br>' . $response['description'][0] . '</p>'
-        );
-        $mpdf->Output('MyPDF.pdf', 'D');
-
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 }
