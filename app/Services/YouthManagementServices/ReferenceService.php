@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
@@ -25,7 +26,6 @@ class ReferenceService
      */
     public function getReferenceList(array $request, Carbon $startTime): array
     {
-        $youthId = $request['youth_id'];
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
@@ -55,8 +55,8 @@ class ReferenceService
         ]);
         $referenceBuilder->orderBy('references.id', $order);
 
-        if (is_numeric($youthId)) {
-            $referenceBuilder->where('references.youth_id', $youthId);
+        if (is_numeric(Auth::id())) {
+            $referenceBuilder->where('references.youth_id', Auth::id());
         }
 
         if (is_numeric($rowStatus)) {
@@ -281,9 +281,8 @@ class ReferenceService
         }
 
         return Validator::make($request->all(), [
-            'page' => 'numeric|gt:0',
-            'youth_id' => 'required|min:1',
-            'page_size' => 'numeric|gt:0',
+            'page' => 'int|gt:0',
+            'page_size' => 'int|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
