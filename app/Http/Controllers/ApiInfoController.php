@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Response;
-use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class ApiInfoController extends Controller
 {
@@ -25,6 +23,7 @@ class ApiInfoController extends Controller
                 'It is a youth management api service that manages the youths'
             ]
         ];
+
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 }
