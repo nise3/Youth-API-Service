@@ -51,7 +51,7 @@ class PortfolioController extends Controller
         try {
             $response = $this->portfolioService->getAllPortfolios($filter, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -67,7 +67,7 @@ class PortfolioController extends Controller
         try {
             $response = $this->portfolioService->getOnePortfolio($id, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -96,7 +96,7 @@ class PortfolioController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -125,7 +125,7 @@ class PortfolioController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -149,7 +149,7 @@ class PortfolioController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }

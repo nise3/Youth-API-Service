@@ -49,7 +49,7 @@ class EducationController extends Controller
         try {
             $response = $this->educationService->getEducationList($filter, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -64,7 +64,7 @@ class EducationController extends Controller
         try {
             $response = $this->educationService->getOneEducation($id, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -92,7 +92,7 @@ class EducationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -123,7 +123,7 @@ class EducationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -148,7 +148,7 @@ class EducationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
@@ -162,7 +162,7 @@ class EducationController extends Controller
         try {
             $response = $this->educationService->getTrashedYouthEducationList($request, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -186,7 +186,7 @@ class EducationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
@@ -209,7 +209,7 @@ class EducationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
