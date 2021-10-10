@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,6 @@ class PortfolioService
     {
         $title = $request['title'] ?? "";
         $titleEn = $request['title_en'] ?? "";
-        $youthId = $request['youth_id'];
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
@@ -46,8 +46,8 @@ class PortfolioService
         ]);
         $portfolioBuilder->orderBy('portfolios.id', $order);
 
-        if (is_numeric($youthId)) {
-            $portfolioBuilder->where('portfolios.youth_id', $youthId);
+        if (is_numeric(Auth::id())) {
+            $portfolioBuilder->where('portfolios.youth_id', Auth::id());
         }
 
         if (is_numeric($rowStatus)) {
@@ -233,7 +233,6 @@ class PortfolioService
             'page' => 'numeric|gt:0',
             'title' => 'nullable|max:400|min:2',
             'title_en' => 'nullable|max:300|min:2',
-            'youth_id' => 'required|min:1',
             'page_size' => 'numeric|gt:0',
             'order' => [
                 'string',

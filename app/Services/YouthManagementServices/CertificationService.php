@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,6 @@ class CertificationService
 
     public function getAllCertifications(array $request, Carbon $startTime): array
     {
-        $youthId = $request['youth_id'] ?? "";
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
@@ -47,8 +47,8 @@ class CertificationService
             'certifications.updated_at'
         ]);
 
-        if (is_numeric($youthId)) {
-            $certificationBuilder->where('certifications.youth_id', $youthId);
+        if (is_numeric(Auth::id())) {
+            $certificationBuilder->where('certifications.youth_id', Auth::id());
         }
 
         $certificationBuilder->orderBy('certifications.id', $order);
@@ -176,7 +176,6 @@ class CertificationService
 
         return Validator::make($request->all(), [
             'page' => 'numeric|gt:0',
-            'youth_id' => 'required|min:1',
             'page_size' => 'numeric|gt:0',
             'order' => [
                 'string',
@@ -241,7 +240,7 @@ class CertificationService
                 'date',
                 'nullable',
                 'after:start_date',
-                Rule::requiredIf(function () use ($request){
+                Rule::requiredIf(function () use ($request) {
                     return (!empty($request->start_date));
                 })
             ],

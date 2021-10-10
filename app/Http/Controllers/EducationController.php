@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
@@ -76,8 +77,10 @@ class EducationController extends Controller
      */
     function store(Request $request): JsonResponse
     {
+        $request['youth_id'] = $request['youth_id'] ?? Auth::id();
         $validated = $this->educationService->validator($request)->validate();
         try {
+            $validated['youth_id'] = $validated['youth_id'] ?? Auth::id();
             $data = $this->educationService->createEducation($validated);
             $response = [
                 'data' => $data ?: null,

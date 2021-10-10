@@ -11,6 +11,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -38,7 +39,6 @@ class EducationService
         $eduGroupTitleBn = $request['edu_group_title'] ?? "";
 
         $paginate = $request['page'] ?? "";
-        $youthId = $request['youth_id'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
@@ -102,8 +102,8 @@ class EducationService
         if (is_numeric($rowStatus)) {
             $educationBuilder->where('educations.row_status', $rowStatus);
         }
-        if (is_numeric($youthId)) {
-            $educationBuilder->where('educations.youth_id', $youthId);
+        if (is_numeric(Auth::id())) {
+            $educationBuilder->where('educations.youth_id', Auth::id());
         }
 
         if (!empty($instituteName)) {
@@ -361,9 +361,8 @@ class EducationService
         $rules = [
             'youth_id' => [
                 'required',
-                'integer',
-                'exists:youths,id',
-                'min:1',
+                'int',
+                'exists:youths,id'
             ],
             'examination_id' => [
                 'required',
@@ -478,7 +477,6 @@ class EducationService
 
         return \Illuminate\Support\Facades\Validator::make($request->all(), [
 
-            'youth_id' => 'required|numeric|min:1',
             'page' => 'numeric|gt:0',
             'pageSize' => 'numeric|gt:0',
             'order' => [
