@@ -41,7 +41,7 @@ class AuthServiceProvider extends ServiceProvider
 //            dd('asdasdasd');
 //        });
 
-        $token = Request::capture()->header('Token');
+        $token = Request::capture()->header('Authorization');
 
         $authUser = null;
         if ($token) {
