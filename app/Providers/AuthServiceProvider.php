@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Models\Youth;
 use App\Services\UserRolePermissionManagementServices\UserService;
 use App\Services\YouthManagementServices\YouthProfileService;
 use Illuminate\Http\Request;
@@ -42,12 +43,12 @@ class AuthServiceProvider extends ServiceProvider
 //        });
 
         $token = Request::capture()->header('Authorization');
+        Auth::setUser(new Youth());
 
         $authUser = null;
         if ($token) {
             $header = explode(" ", $token);
             if (count($header) > 1) {
-
                 if(isset($header[1])){
                     $tokenParts = explode(".", $header[1]);
                     if (count($tokenParts) == 3) {
