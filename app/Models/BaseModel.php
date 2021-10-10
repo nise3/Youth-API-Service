@@ -37,6 +37,10 @@ abstract class BaseModel extends Model
     public const ROW_ORDER_ASC = 'ASC';
     public const ROW_ORDER_DESC = 'DESC';
 
+
+    public const YOUTH_USER_TYPE = 4;
+
+
     public const TRUE = 1;
     public const FALSE = 0;
 
@@ -105,5 +109,7 @@ abstract class BaseModel extends Model
 
     public const CURRENTLY_WORKING = 1;
     public const CURRENTLY_NOT_WORKING = 0;
+
+    public const DEFAULT_PAGE_SIZE = 10;
 
 }

@@ -63,7 +63,7 @@ class SkillService
         /** @var Collection $skills */
 
         if (is_numeric($paginate) || is_numeric($pageSize)) {
-            $pageSize = $pageSize ?: 10;
+            $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $skills = $skillBuilder->paginate($pageSize);
             $paginateData = (object)$skills->toArray();
             $response['current_page'] = $paginateData->current_page;
