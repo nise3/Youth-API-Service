@@ -262,7 +262,8 @@ class YouthProfileService
                 ],
                 'userName' => $data['username'],
                 'password' => $data['password'],
-                'userType' => BaseModel::YOUTH_USER_TYPE,
+                'userType' => $data['user_type'],
+                'active' => $data['status'],
                 'emails' => [
                     0 => [
                         'primary' => true,

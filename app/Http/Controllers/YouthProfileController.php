@@ -75,7 +75,9 @@ class YouthProfileController extends Controller
                 'name' => $validated['first_name'] . " " . $validated["last_name"],
                 'email' => $validated['email'],
                 'username' => $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'],
-                'password' => $validated['password']
+                'password' => $validated['password'],
+                'user_type' => BaseModel::YOUTH_USER_TYPE,
+                'status' => BaseModel::ROW_STATUS_PENDING,
             ];
 
             $httpClient = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
