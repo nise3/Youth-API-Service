@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Response;
-use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class ApiInfoController extends Controller
 {
@@ -25,6 +23,17 @@ class ApiInfoController extends Controller
                 'It is a youth management api service that manages the youths'
             ]
         ];
+
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->WriteHTML('
+                <h1>' . $response['service_name'] . '</h1>' .
+            '<p> service_version: ' . $response['service_version'] . '</p>' .
+            '<p> lumen_version: ' . $response['lumen_version'] . '</p>' .
+            '<p> module_list: ' . $response['module_list'][0] . '</p>' .
+            '<p> description: <br>' . $response['description'][0] . '</p>'
+        );
+        $mpdf->Output('MyPDF.pdf', 'D');
+
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 }

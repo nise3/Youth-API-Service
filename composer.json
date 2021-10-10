@@ -8,6 +8,7 @@
         "php": "^7.4|^8.0",
         "ext-json": "*",
         "ext-pdo": "*",
+        "carlos-meneses/laravel-mpdf": "2.1.6",
         "felixkiss/uniquewith-validator": "^3.4",
         "flipbox/lumen-generator": "^8.2",
         "guzzlehttp/guzzle": "^7.3",
