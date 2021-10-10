@@ -46,21 +46,24 @@ class AuthServiceProvider extends ServiceProvider
         $authUser = null;
         if ($token) {
             $header = explode(" ", $token);
-
             if (count($header) > 1) {
-                $tokenParts = explode(".", $header[2]);
 
-                if (count($tokenParts) == 3) {
-                    $tokenPayload = base64_decode($tokenParts[1]);
-                    $jwtPayload = json_decode($tokenPayload);
-                    $youthService = $this->app->make(YouthProfileService::class);
-                    $authUser = $youthService->getAuthYouth($jwtPayload->sub ?? null);
-                    if($authUser){
-                        Auth::setUser($authUser);
+                if(isset($header[1])){
+                    $tokenParts = explode(".", $header[1]);
+
+                    if (count($tokenParts) == 3) {
+                        $tokenPayload = base64_decode($tokenParts[1]);
+                        $jwtPayload = json_decode($tokenPayload);
+                        $youthService = $this->app->make(YouthProfileService::class);
+                        $authUser = $youthService->getAuthYouth($jwtPayload->sub ?? null);
+                        if($authUser){
+                            Auth::setUser($authUser);
+                        }
                     }
+                    Log::info("userInfoWithIdpId:" . json_encode($authUser));
                 }
             }
-            Log::info("userInfoWithIdpId:" . json_encode($authUser));
+
         }
     }
 }
