@@ -68,7 +68,7 @@ class YouthProfileController extends Controller
         $youth = new Youth();
         $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
 
-
+        dd($validated);
         DB::beginTransaction();
         try {
             $idpUserPayLoad = [

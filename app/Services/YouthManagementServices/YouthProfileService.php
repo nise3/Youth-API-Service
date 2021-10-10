@@ -263,7 +263,7 @@ class YouthProfileService
                 'userName' => $data['username'],
                 'password' => $data['password'],
                 'userType' => $data['user_type'],
-                'active' => $data['status'],
+               // 'active' => $data['status'],
                 'emails' => [
                     0 => [
                         'primary' => true,
