@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
 
-class YouthController extends Controller
+class  YouthController extends Controller
 {
     public YouthService $youthService;
     public Carbon $startTime;

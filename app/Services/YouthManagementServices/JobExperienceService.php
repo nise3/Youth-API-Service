@@ -28,7 +28,7 @@ class JobExperienceService
     {
         $companyNameEn = $request['company_name_en'] ?? "";
         $companyNameBn = $request['company_name_bn'] ?? "";
-        $youthId = $request['youth_id'] ?? "";
+        $youthId = $request['youth_id'] ?? Auth::id();
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
@@ -140,9 +140,8 @@ class JobExperienceService
      * @param array $data
      * @return JobExperience
      */
-    public function store(array $data): JobExperience
+    public function store(JobExperience $jobExperience,array $data): JobExperience
     {
-        $jobExperience = new JobExperience();
         $jobExperience->fill($data);
         $jobExperience->save();
         return $jobExperience;
@@ -273,7 +272,9 @@ class JobExperienceService
                 'string',
             ],
             'youth_id' => [
-                'required',
+                Rule::requiredIf(function (){
+                    return !Auth::id();
+                }),
                 'int',
                 'exists:youths,id'
             ],

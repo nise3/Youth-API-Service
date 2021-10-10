@@ -61,7 +61,6 @@ class JobExperienceController extends Controller
      */
     public function read(int $id = null): JsonResponse
     {
-        $id = $id ?? Auth::id();
         try {
             $response = $this->jobExperienceService->getOneJobExperience($id, $this->startTime);
         } catch (Throwable $e) {
@@ -79,9 +78,11 @@ class JobExperienceController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        $jobExperience = new JobExperience();
         $validated = $this->jobExperienceService->validator($request)->validate();
         try {
-            $jobExperience = $this->jobExperienceService->store($validated);
+            $validated['youth_id'] = $validated['youth_id'] ?? Auth::id();
+            $jobExperience = $this->jobExperienceService->store($jobExperience, $validated);
             $response = [
                 'data' => $jobExperience,
                 '_response_status' => [
@@ -99,15 +100,13 @@ class JobExperienceController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
      * @param Request $request
      * @param int|null $id
      * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
-    public function update(Request $request, int $id=null): JsonResponse
+    public function update(Request $request, int $id): JsonResponse
     {
-        $id = $id ?? Auth::id();
         $jobExperience = JobExperience::findOrFail($id);
         $validated = $this->jobExperienceService->validator($request, $id)->validate();
         try {
@@ -132,9 +131,8 @@ class JobExperienceController extends Controller
      * @param int|null $id
      * @return \Exception|JsonResponse|Throwable
      */
-    public function destroy(int $id=null): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
-        $id = $id ?? Auth::id();
         $jobExperience = JobExperience::findOrFail($id);
         try {
             $this->jobExperienceService->destroy($jobExperience);
