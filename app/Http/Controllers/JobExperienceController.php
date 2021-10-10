@@ -48,7 +48,7 @@ class JobExperienceController extends Controller
         try {
             $response = $this->jobExperienceService->getAllJobExperiences($filter, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
