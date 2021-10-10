@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+//use ErrorException;
 use BadMethodCallException;
 use ErrorException;
 use Exception;
@@ -13,7 +14,6 @@ use Illuminate\Http\Client\RequestException as IlluminateRequestException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use ParseError;
@@ -52,7 +52,6 @@ class Handler extends ExceptionHandler
         parent::report($exception);
     }
 
-
     /**
      * Render an exception into an HTTP response.
      *
@@ -72,27 +71,27 @@ class Handler extends ExceptionHandler
                 "query_time" => 0
             ]
         ];
+
         if ($e instanceof HttpResponseException) {
+            $errors['_response_status']['code'] = ResponseAlias::HTTP_BAD_REQUEST;
             $errors['_response_status']['message'] = "Invalid Request Format";
         } elseif ($e instanceof AuthorizationException) {
+            $errors['_response_status']['code'] = ResponseAlias::HTTP_UNAUTHORIZED;
             $errors['_response_status']['message'] = "Unable to Access";
         } elseif ($e instanceof ValidationException) {
+            $errors['_response_status']['code'] = ResponseAlias::HTTP_UNPROCESSABLE_ENTITY;
             $errors['_response_status']['message'] = "Validation Error";
             $errors['errors'] = $e->errors();
         } elseif ($e instanceof BindingResolutionException) {
             $errors['_response_status']['message'] = "Binding Resolution Error";
-        } else if ($e instanceof CoreApiCallException) {
-            $errors['_response_status']['message'] = "Core Service API Call Failed.";
-        } else if ($e instanceof OrganizationApiCallException) {
-            $errors['_response_status']['message'] = "Industry/Organization Service API Call Failed.";
-        } else if ($e instanceof InstituteApiCallException) {
-            $errors['_response_status']['message'] = "Institute Service API Call Failed.";
-        } else if ($e instanceof IlluminateRequestException || $e instanceof RequestException) {
-            $errors['_response_status']['message'] = "External API Call Failed.";
+        } else if ($e instanceof RequestException || $e instanceof IlluminateRequestException) {
+            $errors['_response_status']['message'] = $e->getMessage();
+            $errors['_response_status']['code'] = $e->getCode();
         } elseif ($e instanceof ModelNotFoundException) {
             $errors['_response_status']['code'] = ResponseAlias::HTTP_NOT_FOUND;
             $errors['_response_status']['message'] = 'Entry or Row for ' . str_replace('App\\', '', $e->getModel()) . ' was not Found'; //$e->getMessage();
         } elseif ($e instanceof NotFoundHttpException) {
+            $errors['_response_status']['code'] = ResponseAlias::HTTP_NOT_FOUND;
             $errors['_response_status']['message'] = $e->getMessage();
         } elseif ($e instanceof BadMethodCallException) {
             $errors['_response_status']['message'] = "Bad Method has been Called";
@@ -106,116 +105,7 @@ class Handler extends ExceptionHandler
             $errors['_response_status']['message'] = $e->getMessage();
         }
 
-        return response()->json($errors);
+        return response()->json($errors, $errors['_response_status']['code']);
 
     }
-
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param Request $request
-     * @param Throwable $e
-     * @return JsonResponse
-     *
-     * @throws Throwable
-     */
-/*    public function render1($request, Throwable $e)
-    {
-
-        if ($e instanceof HttpResponseException) {
-            $errors['_response_status'] = [
-                'success' => false,
-                "code" => ResponseAlias::HTTP_BAD_REQUEST,
-                "message" => "Invalid Request Format",
-                "query_time" => 0
-            ];
-            return response()->json($errors);
-
-        } elseif ($e instanceof ModelNotFoundException || $e instanceof NotFoundHttpException) {
-            $errors['_response_status'] = [
-                'success' => false,
-                "code" => ResponseAlias::HTTP_NOT_FOUND,
-                "message" => $e->getMessage(),
-                "query_time" => 0
-            ];
-            return response()->json($errors);
-        } elseif ($e instanceof AuthorizationException) {
-            $errors['_response_status'] = [
-                'success' => false,
-                "code" => ResponseAlias::HTTP_UNAUTHORIZED,
-                "message" => "Unable to Access",
-                "query_time" => 0
-            ];
-            return response()->json($errors);
-        } elseif ($e instanceof ValidationException) {
-            $errors['errors'] = $e->errors();
-            $errors['_response_status'] = [
-                'success' => false,
-                "code" => ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
-                "message" => "validation Error",
-                "query_time" => 0
-            ];
-            return response()->json($errors);
-        } elseif ($e instanceof BindingResolutionException) {
-            $errors['_response_status'] = [
-                'success' => false,
-                "code" => ResponseAlias::HTTP_INTERNAL_SERVER_ERROR,
-                "message" => "Binding Resolution Error",
-                "query_time" => 0
-            ];
-            return response()->json($errors);
-        } elseif ($e instanceof ErrorException) {
-            $errors['_response_status'] = [
-                'success' => false,
-                "code" => ResponseAlias::HTTP_INTERNAL_SERVER_ERROR,
-                "message" => "Internal Server Side Error",
-                "query_time" => 0
-            ];
-            return response()->json($errors);
-        } elseif ($e instanceof TypeError) {
-            $errors['_response_status'] = [
-                'success' => false,
-                "code" => ResponseAlias::HTTP_INTERNAL_SERVER_ERROR,
-                "message" => "Type Error",
-                "query_time" => 0
-            ];
-            return response()->json($errors);
-        }
-        elseif ($e instanceof ParseError) {
-            $errors['_response_status'] = [
-                'success' => false,
-                "code" => ResponseAlias::HTTP_INTERNAL_SERVER_ERROR,
-                "message" => "Parsing Error",
-                "query_time" => 0
-            ];
-            return response()->json($errors);
-        } elseif ($e instanceof BadMethodCallException) {
-            $errors['_response_status'] = [
-                'success' => false,
-                "code" => ResponseAlias::HTTP_INTERNAL_SERVER_ERROR,
-                "message" => "Call a Bad Method",
-                "query_time" => 0
-            ];
-            return response()->json($errors);
-        }
-        elseif ($e instanceof Exception) {
-            $errors['_response_status'] = [
-                'success' => false,
-                "code" => ResponseAlias::HTTP_INTERNAL_SERVER_ERROR,
-                "message" => $e->getMessage(),
-                "query_time" => 0
-            ];
-            return response()->json($errors);
-        } else {
-            $errors['_response_status'] = [
-                'success' => false,
-                "code" => ResponseAlias::HTTP_INTERNAL_SERVER_ERROR,
-                "message" => "Unknown error",
-                "query_time" => 0
-            ];
-            return response()->json($errors);
-        }
-
-        return parent::render($request, $e);
-    }*/
 }
