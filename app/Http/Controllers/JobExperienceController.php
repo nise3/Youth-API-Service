@@ -48,7 +48,7 @@ class JobExperienceController extends Controller
         try {
             $response = $this->jobExperienceService->getAllJobExperiences($filter, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -64,7 +64,7 @@ class JobExperienceController extends Controller
         try {
             $response = $this->jobExperienceService->getOneJobExperience($id, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -93,7 +93,7 @@ class JobExperienceController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -121,7 +121,7 @@ class JobExperienceController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -145,7 +145,7 @@ class JobExperienceController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }

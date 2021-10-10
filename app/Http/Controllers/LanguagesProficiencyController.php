@@ -87,7 +87,7 @@ class LanguagesProficiencyController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -98,6 +98,7 @@ class LanguagesProficiencyController extends Controller
      * @param int $id
      * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
+     * @throws Throwable
      */
     public function update(Request $request, int $id): JsonResponse
     {
@@ -106,7 +107,7 @@ class LanguagesProficiencyController extends Controller
         try {
             $language = $this->languagesProficiencyService->update($languageProficiency, $validated);
             $response = [
-                'data' => $languageProficiency,
+                'data' => $language,
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
@@ -115,7 +116,7 @@ class LanguagesProficiencyController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -124,6 +125,7 @@ class LanguagesProficiencyController extends Controller
      * Remove the specified resource from storage.
      * @param int $id
      * @return Exception|JsonResponse|Throwable
+     * @throws Throwable
      */
     public function destroy(int $id): JsonResponse
     {
@@ -139,7 +141,7 @@ class LanguagesProficiencyController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
