@@ -882,32 +882,25 @@
                                     "$ref": "#/components/schemas/youthProfile"
                                 },
                                 "example": {
-                                    "current_page": 1,
-                                    "total_page": 1,
-                                    "page_size": 10,
-                                    "total": 10,
-                                    "order": "ASC",
-                                    "data": [
-                                        {
-                                            "id": 1,
-                                            "first_name": "Tellur",
-                                            "last_name": "Rahman",
-                                            "gender": 1,
-                                            "skills": null,
-                                            "email": "",
-                                            "mobile": "",
-                                            "date_of_birth": "0000-00-00",
-                                            "physical_disability_status": 0,
-                                            "physical_disabilities": null,
-                                            "city": null,
-                                            "zip_or_postal_code": null,
-                                            "bio": null,
-                                            "photo": null,
-                                            "cv_path": null,
-                                            "created_at": null,
-                                            "updated_at": null
-                                        }
-                                    ],
+                                    "data": {
+                                        "id": 1,
+                                        "first_name": "Tellur",
+                                        "last_name": "Rahman",
+                                        "gender": 1,
+                                        "skills": null,
+                                        "email": "",
+                                        "mobile": "",
+                                        "date_of_birth": "0000-00-00",
+                                        "physical_disability_status": 0,
+                                        "physical_disabilities": null,
+                                        "city": null,
+                                        "zip_or_postal_code": null,
+                                        "bio": null,
+                                        "photo": null,
+                                        "cv_path": null,
+                                        "created_at": null,
+                                        "updated_at": null
+                                    },
                                     "response_status": {
                                         "success": true,
                                         "code": 200,

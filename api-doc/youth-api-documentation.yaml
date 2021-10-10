@@ -590,29 +590,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/youthProfile'
               example:
-                current_page: 1
-                total_page: 1
-                page_size: 10
-                total: 10
-                order: ASC
                 data:
-                  - id: 1
-                    first_name: Tellur
-                    last_name: Rahman
-                    gender: 1
-                    skills: null
-                    email: ''
-                    mobile: ''
-                    date_of_birth: '0000-00-00'
-                    physical_disability_status: 0
-                    physical_disabilities: null
-                    city: null
-                    zip_or_postal_code: null
-                    bio: null
-                    photo: null
-                    cv_path: null
-                    created_at: null
-                    updated_at: null
+                  id: 1
+                  first_name: Tellur
+                  last_name: Rahman
+                  gender: 1
+                  skills: null
+                  email: ''
+                  mobile: ''
+                  date_of_birth: '0000-00-00'
+                  physical_disability_status: 0
+                  physical_disabilities: null
+                  city: null
+                  zip_or_postal_code: null
+                  bio: null
+                  photo: null
+                  cv_path: null
+                  created_at: null
+                  updated_at: null
                 response_status:
                   success: true
                   code: 200
@@ -1734,9 +1729,6 @@ components:
       type: object
       description: Youth Profile
       properties:
-        id:
-          type: integer
-          readOnly: true
         user_name_type:
           type: integer
           enum:
@@ -2369,6 +2361,13 @@ components:
       schema:
         type: integer
         example: 1
+    title_optional:
+      name: title
+      in: query
+      required: false
+      style: form
+      schema:
+        type: string
     title_en_optional:
       name: title_en
       in: query
@@ -2448,13 +2447,6 @@ components:
           - 1
           - 0
         example: 1
-    title_optional:
-      name: title
-      in: query
-      required: false
-      style: form
-      schema:
-        type: string
     youth_id:
       name: youth_id
       in: query
