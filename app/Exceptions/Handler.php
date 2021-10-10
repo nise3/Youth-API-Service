@@ -13,6 +13,7 @@ use Illuminate\Http\Client\RequestException as IlluminateRequestException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use ParseError;
@@ -71,15 +72,11 @@ class Handler extends ExceptionHandler
                 "query_time" => 0
             ]
         ];
-
         if ($e instanceof HttpResponseException) {
-            $errors['_response_status']['code'] = ResponseAlias::HTTP_BAD_REQUEST;
             $errors['_response_status']['message'] = "Invalid Request Format";
         } elseif ($e instanceof AuthorizationException) {
-            $errors['_response_status']['code'] = ResponseAlias::HTTP_UNAUTHORIZED;
             $errors['_response_status']['message'] = "Unable to Access";
         } elseif ($e instanceof ValidationException) {
-            $errors['_response_status']['code'] = ResponseAlias::HTTP_UNPROCESSABLE_ENTITY;
             $errors['_response_status']['message'] = "Validation Error";
             $errors['errors'] = $e->errors();
         } elseif ($e instanceof BindingResolutionException) {
@@ -96,7 +93,6 @@ class Handler extends ExceptionHandler
             $errors['_response_status']['code'] = ResponseAlias::HTTP_NOT_FOUND;
             $errors['_response_status']['message'] = 'Entry or Row for ' . str_replace('App\\', '', $e->getModel()) . ' was not Found'; //$e->getMessage();
         } elseif ($e instanceof NotFoundHttpException) {
-            $errors['_response_status']['code'] = ResponseAlias::HTTP_NOT_FOUND;
             $errors['_response_status']['message'] = $e->getMessage();
         } elseif ($e instanceof BadMethodCallException) {
             $errors['_response_status']['message'] = "Bad Method has been Called";

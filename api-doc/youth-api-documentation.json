@@ -141,11 +141,6 @@
             "get": {
                 "summary": "get_list",
                 "description": " API endpoint to get the list of Youth portfolio",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/youth_id"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "get one",
@@ -603,9 +598,6 @@
                     },
                     {
                         "$ref": "#/components/parameters/company_name_bn"
-                    },
-                    {
-                        "$ref": "#/components/parameters/youth_id"
                     },
                     {
                         "$ref": "#/components/parameters/page"
@@ -1297,9 +1289,6 @@
                         "$ref": "#/components/parameters/page"
                     },
                     {
-                        "$ref": "#/components/parameters/youth_id"
-                    },
-                    {
                         "$ref": "#/components/parameters/page_size"
                     },
                     {
@@ -1568,15 +1557,6 @@
                 "summary": "get_list",
                 "description": "API endpoint to get the list of References.A successful request response will show 200 HTTP status code",
                 "parameters": [
-                    {
-                        "name": "youth_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
                     {
                         "$ref": "#/components/parameters/page"
                     },
@@ -1866,15 +1846,6 @@
                 "summary": "get_list",
                 "description": "API endpoint to get the list of Educations.A successful request response will show 200 HTTP status code",
                 "parameters": [
-                    {
-                        "name": "youth_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
                     {
                         "$ref": "#/components/parameters/page"
                     },
@@ -3425,7 +3396,6 @@
             "jobExperienceId": {
                 "name": "jobExperienceId",
                 "in": "path",
-                "required": true,
                 "schema": {
                     "type": "integer"
                 }
