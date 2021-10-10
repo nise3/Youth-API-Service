@@ -10,9 +10,11 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
+use const http\Client\Curl\AUTH_ANY;
 
 class JobExperienceService
 {
@@ -196,7 +198,11 @@ class JobExperienceService
             'location_en' => 'nullable|max:300|min:2',
             'position' => 'nullable|max:300|min:2',
             'position_en' => 'nullable|max:300|min:2',
-            'youth_id' => 'required|min:1',
+            'youth_id' => [
+              Rule::requiredIf(function (){
+                  return !Auth::id();
+              })
+            ],
             'page_size' => 'numeric|gt:0',
             'order' => [
                 'string',

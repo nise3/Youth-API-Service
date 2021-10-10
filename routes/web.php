@@ -43,6 +43,12 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     /** freelance corner */
     $router->get('freelancers', ["as" => "freelancers.get-all-freelancers", "uses" => "FreelanceController@getAllFreelancers"]);
 
+    /** Youth Job Experience */
+//    $router->get('youth-job-experience-read[/{id}]', [
+//        "as" => "youth-job-experience.read",
+//        "uses" => "JobExperienceController@read"
+//    ]);
+
 
 });
 

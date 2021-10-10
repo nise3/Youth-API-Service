@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\JobExperience;
 use App\Services\YouthManagementServices\JobExperienceService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -37,7 +39,7 @@ class JobExperienceController extends Controller
 
     /**
      * @param Request $request
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
     public function getList(Request $request)
@@ -54,11 +56,12 @@ class JobExperienceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return \Exception|JsonResponse|Throwable
+     * @param int|null $id
+     * @return Exception|JsonResponse|Throwable
      */
-    public function read(int $id): JsonResponse
+    public function read(int $id = null): JsonResponse
     {
+        $id = $id ?? Auth::id();
         try {
             $response = $this->jobExperienceService->getOneJobExperience($id, $this->startTime);
         } catch (Throwable $e) {
@@ -71,7 +74,7 @@ class JobExperienceController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
     public function store(Request $request): JsonResponse
@@ -98,12 +101,13 @@ class JobExperienceController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param int $id
-     * @return \Exception|JsonResponse|Throwable
+     * @param int|null $id
+     * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
-    public function update(Request $request, int $id): JsonResponse
+    public function update(Request $request, int $id=null): JsonResponse
     {
+        $id = $id ?? Auth::id();
         $jobExperience = JobExperience::findOrFail($id);
         $validated = $this->jobExperienceService->validator($request, $id)->validate();
         try {
@@ -125,11 +129,12 @@ class JobExperienceController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
+     * @param int|null $id
      * @return \Exception|JsonResponse|Throwable
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(int $id=null): JsonResponse
     {
+        $id = $id ?? Auth::id();
         $jobExperience = JobExperience::findOrFail($id);
         try {
             $this->jobExperienceService->destroy($jobExperience);

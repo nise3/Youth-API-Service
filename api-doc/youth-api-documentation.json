@@ -3425,7 +3425,6 @@
             "jobExperienceId": {
                 "name": "jobExperienceId",
                 "in": "path",
-                "required": true,
                 "schema": {
                     "type": "integer"
                 }

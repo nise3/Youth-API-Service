@@ -46,8 +46,8 @@ class CustomRouter
     {
         $this->router->get($this->uri, ['as' => $this->as . '.get-list', 'uses' => $this->controller . '@getList']);
         $this->router->post($this->uri, ['as' => $this->as . '.store', 'uses' => $this->controller . '@store']);
-        $this->router->get($this->uri . '/{id}', ['as' => $this->as . '.read', 'uses' => $this->controller . '@read']);
-        $this->router->put($this->uri . '/{id}', ['as' => $this->as . '.update', 'uses' => $this->controller . '@update']);
-        $this->router->delete($this->uri . '/{id}', ['as' => $this->as . '.destroy', 'uses' => $this->controller . '@destroy']);
+        $this->router->get($this->uri . '-read[/{id}]', ['as' => $this->as . '.read', 'uses' => $this->controller . '@read']);
+        $this->router->put($this->uri . '[/{id}]', ['as' => $this->as . '.update', 'uses' => $this->controller . '@update']);
+        $this->router->delete($this->uri . '[/{id}]', ['as' => $this->as . '.destroy', 'uses' => $this->controller . '@destroy']);
     }
 }
