@@ -4,8 +4,8 @@ namespace App\Http\Middleware;
 
 use Carbon\Carbon;
 use Closure;
-use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class Authenticate
@@ -32,18 +32,19 @@ class Authenticate
      * Handle an incoming request.
      *
      * @param Request $request
-     * @param  \Closure  $next
+     * @param \Closure $next
      * @param string|null $guard
      * @return mixed
      */
     public function handle(Request $request, Closure $next, string $guard = null)
     {
-        if ($this->auth->guard($guard)->guest()) {
-            return[
+        $isGuest = Auth::id() == null;
+        if ($isGuest) {
+            return [
                 "_response_status" => [
                     "success" => false,
-                    "code" =>ResponseAlias::HTTP_UNAUTHORIZED,
-                    "message"=>"Unauthenticated action. No token Found"
+                    "code" => ResponseAlias::HTTP_UNAUTHORIZED,
+                    "message" => "Unauthenticated action"
                 ]
             ];
         }

@@ -84,6 +84,7 @@ class YouthProfileController extends Controller
                 $validated['idp_user_id'] = $httpClient->json("id");
                 $validated["verification_code"] = $this->youthProfileService->generateCode();
                 $validated['verification_code_sent_at'] = Carbon::now();
+                $validated['row_status'] = BaseModel::ROW_STATUS_PENDING;
                 $youth = $this->youthProfileService->store($youth, $validated);
 
                 /** @var  $sendVeryCodePayLoad */
