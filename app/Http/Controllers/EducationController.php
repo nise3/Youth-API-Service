@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
@@ -48,7 +49,7 @@ class EducationController extends Controller
         try {
             $response = $this->educationService->getEducationList($filter, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -63,7 +64,7 @@ class EducationController extends Controller
         try {
             $response = $this->educationService->getOneEducation($id, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -76,8 +77,10 @@ class EducationController extends Controller
      */
     function store(Request $request): JsonResponse
     {
+        $request['youth_id'] = $request['youth_id'] ?? Auth::id();
         $validated = $this->educationService->validator($request)->validate();
         try {
+            $validated['youth_id'] = $validated['youth_id'] ?? Auth::id();
             $data = $this->educationService->createEducation($validated);
             $response = [
                 'data' => $data ?: null,
@@ -89,7 +92,7 @@ class EducationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -120,7 +123,7 @@ class EducationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -145,7 +148,7 @@ class EducationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
@@ -159,7 +162,7 @@ class EducationController extends Controller
         try {
             $response = $this->educationService->getTrashedYouthEducationList($request, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -183,7 +186,7 @@ class EducationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
@@ -206,7 +209,7 @@ class EducationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }

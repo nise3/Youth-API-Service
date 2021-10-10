@@ -38,7 +38,7 @@ class FreelanceController extends Controller
         try {
             $response = $this->freelanceService->getAllFreelancerList($filter, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }

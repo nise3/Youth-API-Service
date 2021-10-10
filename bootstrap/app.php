@@ -99,7 +99,7 @@ $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(Felixkiss\UniqueWithValidator\ServiceProvider::class);
-$app->register(Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class);
+//$app->register(Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class);
 
 
 // $app->register(App\Providers\EventServiceProvider::class);

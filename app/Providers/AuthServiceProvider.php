@@ -43,7 +43,6 @@ class AuthServiceProvider extends ServiceProvider
 
         $token = Request::capture()->header('Authorization');
         Auth::setUser(new Youth());
-
         $authUser = null;
         if ($token) {
             //$header = explode(" ", $token);
@@ -56,7 +55,6 @@ class AuthServiceProvider extends ServiceProvider
             if($authUser){
                 Auth::setUser($authUser);
             }
-
             Log::info("userInfoWithIdpId:" . json_encode($authUser));
 
         }
@@ -66,7 +64,7 @@ class AuthServiceProvider extends ServiceProvider
    {
         $sections = explode('.', $data);
         if (count($sections) < 3) {
-            throw new \Exception('Invalid number of sections (<3)');
+            throw new \Exception('Invalid number of sections of Tokens (<3)');
         }
 
         list($header, $claims, $signature) = $sections;

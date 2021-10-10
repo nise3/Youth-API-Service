@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -55,7 +56,7 @@ class CertificationController extends Controller
         try {
             $response = $this->certificationService->getOneCertification($id, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -69,8 +70,10 @@ class CertificationController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        $request['youth_id'] = $request['youth_id'] ?? Auth::id();
         $validated = $this->certificationService->validator($request)->validate();
         try {
+
             $certification = $this->certificationService->store($validated);
             $response = [
                 'data' => $certification,
@@ -82,7 +85,7 @@ class CertificationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -111,7 +114,7 @@ class CertificationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -135,7 +138,7 @@ class CertificationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }

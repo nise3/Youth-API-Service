@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\JobExperience;
 use App\Services\YouthManagementServices\JobExperienceService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -37,7 +39,7 @@ class JobExperienceController extends Controller
 
     /**
      * @param Request $request
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
     public function getList(Request $request)
@@ -46,7 +48,7 @@ class JobExperienceController extends Controller
         try {
             $response = $this->jobExperienceService->getAllJobExperiences($filter, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -54,15 +56,15 @@ class JobExperienceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return \Exception|JsonResponse|Throwable
+     * @param int|null $id
+     * @return Exception|JsonResponse|Throwable
      */
-    public function read(int $id): JsonResponse
+    public function read(int $id = null): JsonResponse
     {
         try {
             $response = $this->jobExperienceService->getOneJobExperience($id, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -71,14 +73,16 @@ class JobExperienceController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return \Exception|JsonResponse|Throwable
+     * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
     public function store(Request $request): JsonResponse
     {
+        $jobExperience = new JobExperience();
         $validated = $this->jobExperienceService->validator($request)->validate();
         try {
-            $jobExperience = $this->jobExperienceService->store($validated);
+            $validated['youth_id'] = $validated['youth_id'] ?? Auth::id();
+            $jobExperience = $this->jobExperienceService->store($jobExperience, $validated);
             $response = [
                 'data' => $jobExperience,
                 '_response_status' => [
@@ -89,17 +93,16 @@ class JobExperienceController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
     /**
      * Update the specified resource in storage.
-     *
      * @param Request $request
-     * @param int $id
-     * @return \Exception|JsonResponse|Throwable
+     * @param int|null $id
+     * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
     public function update(Request $request, int $id): JsonResponse
@@ -118,14 +121,14 @@ class JobExperienceController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
+     * @param int|null $id
      * @return \Exception|JsonResponse|Throwable
      */
     public function destroy(int $id): JsonResponse
@@ -142,7 +145,7 @@ class JobExperienceController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }

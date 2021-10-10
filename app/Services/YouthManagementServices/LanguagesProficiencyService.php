@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,7 @@ class LanguagesProficiencyService
 
     public function getLanguagesProficiencyList(array $request, Carbon $startTime): array
     {
-        $youthId = $request['youth_id'];
+        $youthId = $request['youth_id'] ?? Auth::id();
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
@@ -243,7 +244,6 @@ class LanguagesProficiencyService
 
         return Validator::make($request->all(), [
             'page' => 'numeric|gt:0',
-            'youth_id' => 'required|min:1',
             'page_size' => 'numeric|gt:0',
             'order' => [
                 'string',

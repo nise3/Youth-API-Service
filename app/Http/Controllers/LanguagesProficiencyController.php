@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -71,8 +72,10 @@ class LanguagesProficiencyController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        $request['youth_id'] = $request['youth_id'] ?? Auth::id();
         $validated = $this->languagesProficiencyService->validator($request)->validate();
         try {
+            $validated['youth_id'] = $validated['youth_id'] ?? Auth::id();
             $languageProficiency = $this->languagesProficiencyService->store($validated);
             $response = [
                 'data' => $languageProficiency,
@@ -84,7 +87,7 @@ class LanguagesProficiencyController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -95,6 +98,7 @@ class LanguagesProficiencyController extends Controller
      * @param int $id
      * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
+     * @throws Throwable
      */
     public function update(Request $request, int $id): JsonResponse
     {
@@ -103,7 +107,7 @@ class LanguagesProficiencyController extends Controller
         try {
             $language = $this->languagesProficiencyService->update($languageProficiency, $validated);
             $response = [
-                'data' => $languageProficiency,
+                'data' => $language,
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
@@ -112,7 +116,7 @@ class LanguagesProficiencyController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -121,6 +125,7 @@ class LanguagesProficiencyController extends Controller
      * Remove the specified resource from storage.
      * @param int $id
      * @return Exception|JsonResponse|Throwable
+     * @throws Throwable
      */
     public function destroy(int $id): JsonResponse
     {
@@ -136,7 +141,7 @@ class LanguagesProficiencyController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
 
-class YouthController extends Controller
+class  YouthController extends Controller
 {
     public YouthService $youthService;
     public Carbon $startTime;
@@ -136,7 +136,7 @@ class YouthController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
