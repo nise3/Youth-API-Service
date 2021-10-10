@@ -28,9 +28,9 @@ class YouthService
         $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
 
-        /** @var Builder $youthProfileBuilder */
+        /** @var Builder $youthBuilder */
 
-        $youthProfileBuilder = Youth::select(
+        $youthBuilder = Youth::select(
             [
                 'youths.id',
                 'youths.idp_user_id',
@@ -66,34 +66,35 @@ class YouthService
             ]
         );
 
-        $youthProfileBuilder->orderBy('youths.id', $order);
+        $youthBuilder->orderBy('youths.id', $order);
+        $youthBuilder->with(["skills", "physicalDisabilities", "jobExperiences","LanguagesProficiencies","certifications","educations","portfolios","references"]);
 
         if (!empty($firstName)) {
-            $youthProfileBuilder->where('youths.first_name', 'like', '%' . $firstName . '%');
+            $youthBuilder->where('youths.first_name', 'like', '%' . $firstName . '%');
         }
         if (!empty($lastName)) {
-            $youthProfileBuilder->where('youths.last_name', 'like', '%' . $lastName . '%');
+            $youthBuilder->where('youths.last_name', 'like', '%' . $lastName . '%');
         }
         if (is_numeric($rowStatus)) {
-            $youthProfileBuilder->where('youths.id', $order);
+            $youthBuilder->where('youths.id', $order);
         }
 
-        /** @var Collection $youthProfiles */
+        /** @var Collection $youths */
 
         if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
-            $youthProfiles = $youthProfileBuilder->paginate($pageSize);
-            $paginateData = (object)$youthProfiles->toArray();
+            $youths = $youthBuilder->paginate($pageSize);
+            $paginateData = (object)$youths->toArray();
             $response['current_page'] = $paginateData->current_page;
             $response['total_page'] = $paginateData->last_page;
             $response['page_size'] = $paginateData->per_page;
             $response['total'] = $paginateData->total;
         } else {
-            $youthProfiles = $youthProfileBuilder->get();
+            $youths = $youthBuilder->get();
         }
 
         $response['order'] = $order;
-        $response['data'] = $youthProfiles->toArray()['data'] ?? $youthProfiles->toArray();
+        $response['data'] = $youths->toArray()['data'] ?? $youths->toArray();
         $response['_response_status'] = [
             "success" => true,
             "code" => Response::HTTP_OK,
@@ -110,8 +111,8 @@ class YouthService
      */
     public function getOneYouthProfile(int $id, Carbon $startTime): array
     {
-        /** @var Builder $youthProfileBuilder */
-        $youthProfileBuilder = Youth::select(
+        /** @var Builder $youthBuilder */
+        $youthBuilder = Youth::select(
             [
                 'youths.id',
                 'youths.idp_user_id',
@@ -141,18 +142,23 @@ class YouthService
                 'youths.verification_code',
                 'youths.verification_code_sent_at',
                 'youths.verification_code_verified_at',
+
+
                 'youths.row_status',
                 'youths.created_at',
                 'youths.updated_at',
             ]
         );
-        $youthProfileBuilder->where('youths.id', $id);
 
-        /** @var Youth $youthProfile */
-        $youthProfile = $youthProfileBuilder->first();
+        $youthBuilder->where('youths.id', $id);
+        $youthBuilder->with(["skills", "physicalDisabilities", "jobExperiences","LanguagesProficiencies","certifications","educations","portfolios","references"]);
+
+
+        /** @var Youth $youth */
+        $youth = $youthBuilder->first();
 
         return [
-            "data" => $youthProfile ?: [],
+            "data" => $youth ?: [],
             "_response_status" => [
                 "success" => true,
                 "code" => Response::HTTP_OK,
