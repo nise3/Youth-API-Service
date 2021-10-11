@@ -22,19 +22,17 @@ use PHPUnit\Util\Json;
  * @property string username
  * @property int user_name_type
  * @property string first_name
+ * @property string first_name_en
  * @property string last_name
+ * @property string last_name_en
  * @property int gender
  * @property string mobile
  * @property string email
  * @property Date date_of_birth
  * @property int physical_disability_status
  * @property json physical_disabilities
- * @property int loc_division_id
- * @property int loc_district_id
- * @property string | null city_or_town
- * @property string | null zip_or_postal_code
- * @property string | null address
  * @property string | null bio
+ * @property string | null bio_en
  * @property string | null photo
  * @property string | null cv_path
  * @property string password

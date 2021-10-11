@@ -15,8 +15,8 @@ class CreateYouthsTable extends Migration
         Schema::create('youths', function (Blueprint $table) {
             $table->increments('id');
             $table->string("idp_user_id", 100)->nullable();
-            $table->string("is_freelance_profile", 100)
-                ->default(0);
+            $table->unsignedTinyInteger("is_freelance_profile")->default(0);
+
             $table->string("username", 100)->unique()
                 ->comment("username is either email or mobile");
             $table->unsignedTinyInteger("user_name_type")
@@ -52,9 +52,7 @@ class CreateYouthsTable extends Migration
                 ->default(0);
 
             $table->unsignedTinyInteger('physical_disability_status')
-                ->comment('0=>No,1=>Yes')->default(0);
-
-
+                ->comment('0=>No, 1=>Yes')->default(0);
 
             $table->text("bio")->nullable();
             $table->text("bio_en")->nullable();
@@ -70,6 +68,7 @@ class CreateYouthsTable extends Migration
                 ->comment('Email Or SMS verification code verified at');
 
             $table->unsignedTinyInteger("row_status")->default(0);
+
             $table->timestamps();
             $table->softDeletes();
 
