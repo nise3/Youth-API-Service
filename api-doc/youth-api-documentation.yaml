@@ -2035,6 +2035,102 @@ paths:
                   query_time: 0
       tags:
         - Education
+  /youth-educations-exam-board-edugroup-subject:
+    get:
+      tags:
+        - Youth Educations Exam Board Education-group Major Subject
+      summary: Find youth educations exam board edugroup subject
+      description: API endpoint to get the educations exam board edugroup subject. A successful request response will show 200 HTTP status code
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              example:
+                data:
+                  examinations:
+                    - id: 1
+                      code: PSC
+                      title_en: PSC/Equivalent
+                      title: পিএসসি/সমমান
+                      description: null
+                      row_status: 1
+                      created_at: null
+                      updated_at: null
+                      deleted_at: null
+                    - id: 2
+                      code: JSC
+                      title_en: JSC/Equivalent
+                      title: জেএসসি/সমমান
+                      description: null
+                      row_status: 1
+                      created_at: null
+                      updated_at: null
+                      deleted_at: null
+                  edu_groups:
+                    - id: 1
+                      title_en: Science
+                      code: Science
+                      title: বিজ্ঞান
+                      description: null
+                      row_status: 1
+                      created_at: null
+                      updated_at: null
+                      deleted_at: null
+                    - id: 2
+                      title_en: Arts and Humanities
+                      code: Humanities
+                      title: মানবিক
+                      description: null
+                      row_status: 1
+                      created_at: null
+                      updated_at: null
+                      deleted_at: null
+                    - id: 3
+                      title_en: Commerce or Business Studies
+                      code: Commerce
+                      title: ব্যবসায় শিক্ষা
+                      description: null
+                      row_status: 1
+                      created_at: null
+                      updated_at: null
+                      deleted_at: null
+                  boards:
+                    - id: 1
+                      title_en: Barisal
+                      title: বরিশাল
+                      description: null
+                      row_status: 1
+                      created_at: null
+                      updated_at: null
+                      deleted_at: null
+                    - id: 2
+                      title_en: Chittagong
+                      title: চট্টগ্রাম
+                      description: null
+                      row_status: 1
+                      created_at: null
+                      updated_at: null
+                      deleted_at: null
+                  major_subjects:
+                    - id: 1
+                      code: CSE
+                      title_en: Computer Science & Engineering
+                      title: Computer Science & Engineering
+                      description: null
+                      created_at: null
+                      updated_at: null
+                      deleted_at: null
+                    - id: 2
+                      code: EEE
+                      title_en: Electrical & Electronics Engineering
+                      title: Electrical & Electronics Engineering
+                      description: null
+                      created_at: null
+                      updated_at: null
+                      deleted_at: null
+                code: 200
+                query_time: 1 second before
 components:
   schemas:
     Youth:
