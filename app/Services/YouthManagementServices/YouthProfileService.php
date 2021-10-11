@@ -247,11 +247,12 @@ class YouthProfileService
     public function idpUserCreate(array $data)
     {
         $url = clientUrl(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
-
         $client = Http::retry(3)
             ->withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
-            ->withHeaders(['Content-Type' => 'application/json'])
-            ->withOptions(['debug' => config("nise3.is_dev_mode"), 'verify' => config("nise3.should_ssl_verify")])
+            ->withHeaders([
+                'Content-Type' => 'application/json'
+            ])
+            ->withOptions(['debug' => fopen('php://stderr', 'w'), 'verify' => false])
             ->post($url, [
                 'schemas' => [
                 ],
@@ -408,7 +409,7 @@ class YouthProfileService
             "mobile" => [
                 "required",
                 "max:11",
-                BaseModel::MOBILE_REGEX,
+                BaseModel::MOBILE_REGEX
             ],
             "date_of_birth" => [
                 Rule::requiredIf(function () use ($id) {
@@ -437,15 +438,15 @@ class YouthProfileService
                 Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUS)
             ],
             "physical_disabilities" => [
-                Rule::requiredIf(function () use ($id, $request) {
-                    return ($id == null && $request->physical_disability_status == BaseModel::TRUE);
+                Rule::requiredIf(function () use ($id, $data) {
+                    return ($id == null && $data['physical_disability_status'] == BaseModel::TRUE);
                 }),
                 "array",
                 "min:1"
             ],
             "physical_disabilities.*" => [
-                Rule::requiredIf(function () use ($id, $request) {
-                    return ($id == null && $request->physical_disability_status == BaseModel::TRUE);
+                Rule::requiredIf(function () use ($id, $data) {
+                    return ($id == null && $data['physical_disability_status'] == BaseModel::TRUE);
                 }),
                 "numeric",
                 "distinct",

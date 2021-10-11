@@ -20,6 +20,7 @@ use ParseError;
 use PDOException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 use TypeError;
@@ -65,6 +66,8 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e): JsonResponse
     {
+
+
         $errors = [
             '_response_status' => [
                 'success' => false,
@@ -73,12 +76,16 @@ class Handler extends ExceptionHandler
                 "query_time" => 0
             ]
         ];
+
         if ($e instanceof HttpResponseException) {
             $errors['_response_status']['code'] = ResponseAlias::HTTP_NOT_FOUND;
             $errors['_response_status']['message'] = "Invalid Request Format";
         } elseif ($e instanceof AuthorizationException) {
             $errors['_response_status']['code'] = ResponseAlias::HTTP_FORBIDDEN;
             $errors['_response_status']['message'] = "Unable to Access";
+        } elseif ($e instanceof MethodNotAllowedHttpException) {
+            $errors['_response_status']['code'] = ResponseAlias::HTTP_METHOD_NOT_ALLOWED;
+            $errors['_response_status']['message'] = "Http Request Method Not Allowed";
         } elseif ($e instanceof ValidationException) {
             $errors['_response_status']['code'] = ResponseAlias::HTTP_UNPROCESSABLE_ENTITY;
             $errors['_response_status']['message'] = "Validation Error";
@@ -87,8 +94,7 @@ class Handler extends ExceptionHandler
             $errors['_response_status']['code'] = ResponseAlias::HTTP_INTERNAL_SERVER_ERROR;
             $errors['_response_status']['message'] = "Binding Resolution Error";
         } else if ($e instanceof IlluminateRequestException || $e instanceof RequestException) {
-            $errors['_response_status']['code'] = ResponseAlias::HTTP_BAD_REQUEST;
-            $errors['_response_status']['message'] = "External API Call Failed.";
+            $errors=idUserErrorMessage($e);
         } elseif ($e instanceof ModelNotFoundException) {
             $errors['_response_status']['code'] = ResponseAlias::HTTP_NOT_FOUND;
             $errors['_response_status']['message'] = 'Entry or Row for ' . str_replace('App\\', '', $e->getModel()) . ' was not Found'; //$e->getMessage();
@@ -112,8 +118,7 @@ class Handler extends ExceptionHandler
             $errors['_response_status']['code'] = $e->getCode() ?? ResponseAlias::HTTP_INTERNAL_SERVER_ERROR;
             $errors['_response_status']['message'] = $e->getMessage();
         }
-
-        return response()->json($errors);
+        return response()->json($errors, $errors['_response_status']['code']);
 
     }
 
