@@ -29,7 +29,7 @@ class CreateEducationTable extends Migration
             $table->float("cgpa_gpa_max_value")->nullable();
             $table->float("received_cgpa_gpa")->nullable();
             $table->year('passing_year');
-            $table->unsignedTinyInteger("row_status")->default(1);
+
             $table->timestamps();
             $table->softDeletes();
 

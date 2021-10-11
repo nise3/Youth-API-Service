@@ -15,11 +15,12 @@ class CreateMajorOrSubjectsTable extends Migration
     {
         Schema::create('major_or_subjects', function (Blueprint $table) {
             $table->tinyIncrements('id');
-            $table->char('code', 10);
-            $table->string("title_en", 200);
-            $table->string("title", 400);
-            $table->text("description")->nullable();
+            $table->char('code', 20);
+            $table->string("title_en", 250);
+            $table->string("title", 500);
+//            $table->text("description")->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

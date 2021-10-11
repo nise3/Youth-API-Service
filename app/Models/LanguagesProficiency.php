@@ -3,13 +3,16 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\LanguagesProficiency
  *
  * @property int id
  * @property int youth_id
- * @property int language_info_id
+ * @property int language_id
  * @property int reading_proficiency_level
  * @property int writing_proficiency_level
  * @property int speaking_proficiency_level
@@ -20,5 +23,14 @@ use Carbon\Carbon;
  */
 class LanguagesProficiency extends BaseModel
 {
+    use SoftDeletes, HasFactory;
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
+
+    /**
+     * @return BelongsTo
+     */
+    public function youth(): BelongsTo
+    {
+        return $this->belongsTo(Youth::class);
+    }
 }

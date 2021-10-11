@@ -16,9 +16,9 @@ class CreateBoardsTable extends Migration
     {
         Schema::create('boards', function (Blueprint $table) {
             $table->tinyIncrements("id");
-            $table->string("title_en", 200);
-            $table->string("title", 400);
-            $table->text("description")->nullable();
+            $table->string("title_en", 250);
+            $table->string('code', 20);
+            $table->string("title", 500);
             $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();
             $table->softDeletes();

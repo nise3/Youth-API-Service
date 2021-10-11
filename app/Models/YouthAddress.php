@@ -4,35 +4,30 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * App\Models\JobExperience
+ * App\Models\YouthAddress
  *
  * @property int id
  * @property int youth_id
- * @property string company_name
- * @property string|null company_name_en
- * @property string position
- * @property string|null position_en
- * @property int employment_type_id
- * @property string location
- * @property string|null location_en
- * @property string|null job_description
- * @property string|null job_description_en
- * @property Carbon start_date
- * @property Carbon end_date
- * @property bool is_currently_work
+ * @property int address_type
+ * @property int loc_division_id
+ * @property int loc_district_id
+ * @property int loc_upazila_id
+ * @property string|null village_n_area
+ * @property string|null village_or_area_en
+ * @property string|null house_n_road
+ * @property string|null house_n_road_en
+ * @property string zip_or_postal_code
  * @property int row_status
  * @property Carbon created_at
  * @property Carbon updated_at
  */
-class JobExperience extends BaseModel
+class YouthAddress extends BaseModel
 {
     use SoftDeletes, HasFactory;
-
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
 
     /**

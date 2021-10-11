@@ -15,6 +15,7 @@ class CreatePhysicalDisabilitiesTable extends Migration
     {
         Schema::create('physical_disabilities', function (Blueprint $table) {
             $table->tinyIncrements("id");
+            $table->char('code', 20);
             $table->string("title", 500);
             $table->string("title_en", 250)->nullable();
             $table->unsignedTinyInteger("row_status")->default(1);

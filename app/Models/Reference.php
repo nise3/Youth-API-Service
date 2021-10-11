@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Role
@@ -30,5 +32,15 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Reference extends BaseModel
 {
+    use SoftDeletes, HasFactory;
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
+
+    /**
+     * @return BelongsTo
+     */
+    public function youth(): BelongsTo
+    {
+        return $this->belongsTo(Youth::class);
+    }
+
 }

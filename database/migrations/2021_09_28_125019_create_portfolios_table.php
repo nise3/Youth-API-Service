@@ -21,7 +21,6 @@ class CreatePortfoliosTable extends Migration
             $table->text("description")->nullable();
             $table->text("description_en")->nullable();
             $table->string("file_path", 500)->nullable();
-            $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();
             $table->softDeletes();
 

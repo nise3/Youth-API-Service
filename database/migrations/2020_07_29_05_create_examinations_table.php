@@ -18,7 +18,7 @@ class CreateExaminationsTable extends Migration
             $table->string("code" , 20);
             $table->string("title_en" , 255);
             $table->string("title", 500);
-            $table->text("description")->nullable();
+//            $table->text("description")->nullable();
             $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();
             $table->softDeletes();

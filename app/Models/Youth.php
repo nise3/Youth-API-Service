@@ -64,7 +64,6 @@ class Youth extends AuthBaseModel
         "idp_user_id"
     ];
 
-
     /**
      * @return BelongsToMany
      */

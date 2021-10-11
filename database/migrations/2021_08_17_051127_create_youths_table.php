@@ -28,10 +28,6 @@ class CreateYouthsTable extends Migration
             $table->string('last_name_en', 500)->nullable();
 
             $table->date('date_of_birth');
-
-            $table->string('email', 191)->unique();
-            $table->string('mobile', 20)->unique();
-
             $table->unsignedTinyInteger('gender')
                 ->comment('1=>male,2=>female,3=>others');
 
@@ -43,26 +39,22 @@ class CreateYouthsTable extends Migration
 
             $table->unsignedSmallInteger('nationality')->default(1); /** Coming from nise3 config file */
 
+            $table->string('email', 200)->nullable();
+            $table->string('mobile', 20)->nullable();
+
             $table->unsignedTinyInteger('identity_number_type')
                 ->nullable()->comment('Nid => 1, Birth Cert => 2, Passport => 3');
 
             $table->string('identity_number', 100)->nullable();
 
-            $table->unsignedTinyInteger('freedom_fighter_info')
-                ->comment('0=>No,1=>Yes')->default(0);
+            $table->unsignedTinyInteger('freedom_fighter_status')
+                ->comment('0 => No, 1 => Yes, 3=> child of a freedom fighter, 4 => grand child of a freedom fighter')
+                ->default(0);
 
             $table->unsignedTinyInteger('physical_disability_status')
                 ->comment('0=>No,1=>Yes')->default(0);
 
-            $table->unsignedMediumInteger("loc_division_id");
-            $table->unsignedMediumInteger("loc_district_id");
-            $table->unsignedMediumInteger("loc_upazila_id")->nullable();
 
-            $table->string("village_or_area", 500)->nullable();
-            $table->string("village_or_area_en", 500)->nullable();
-            $table->string("house_n_road", 500)->nullable();
-            $table->string("house_n_road_en", 500)->nullable();
-            $table->string("zip_or_postal_code", 10)->nullable();
 
             $table->text("bio")->nullable();
             $table->text("bio_en")->nullable();
@@ -81,17 +73,6 @@ class CreateYouthsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('loc_division_id')
-                ->references('id')
-                ->on('loc_divisions')
-                ->onDelete("CASCADE")
-                ->onUpdate("CASCADE");
-
-            $table->foreign('loc_district_id')
-                ->references('id')
-                ->on('loc_districts')
-                ->onDelete("CASCADE")
-                ->onUpdate("CASCADE");
         });
     }
 

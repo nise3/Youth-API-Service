@@ -17,15 +17,15 @@ class CreateCertificationsTable extends Migration
             $table->increments("id");
             $table->unsignedInteger("youth_id");
             $table->string("certification_name", 500);
-            $table->string("certification_name_en", 300)->nullable();
+            $table->string("certification_name_en", 250)->nullable();
             $table->string("institute_name", 500);
-            $table->string("institute_name_en", 300)->nullable();
+            $table->string("institute_name_en", 250)->nullable();
             $table->string("location", 1000)->nullable();
             $table->string("location_en", 500)->nullable();
             $table->date("start_date")->nullable();
             $table->date("end_date")->nullable();
-            $table->string("certificate_file_path", 500);
-            $table->unsignedTinyInteger('row_status')->default(1);
+            $table->string("certificate_file_path", 600)->nullable();
+
             $table->timestamps();
             $table->softDeletes();
 

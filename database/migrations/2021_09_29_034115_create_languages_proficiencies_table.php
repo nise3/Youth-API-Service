@@ -21,7 +21,6 @@ class CreateLanguagesProficienciesTable extends Migration
             $table->unsignedTinyInteger("writing_proficiency_level")->comment("1=>Easy,2=>Not Easy");
             $table->unsignedTinyInteger("speaking_proficiency_level")->comment("1=>Fluently,2=>Not Fluently");
             $table->unsignedTinyInteger("understand_proficiency_level")->comment("1=>Easy,2=>Not Easy");
-            $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();
             $table->softDeletes();
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Traits\Date;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -54,4 +55,11 @@ class Education extends BaseModel
     const RESULT_TYPE_DIVISION = 1;
     const RESULT_TYPE_GRADE_POINT = 2;
 
+    /**
+     * @return BelongsTo
+     */
+    public function youth(): BelongsTo
+    {
+        return $this->belongsTo(Youth::class);
+    }
 }
