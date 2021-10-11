@@ -47,6 +47,7 @@ class YouthProfileService
                 'youths.gender',
                 'youths.email',
                 'youths.mobile',
+                'youths.user_name_type',
                 'youths.date_of_birth',
                 'youths.physical_disability_status',
                 'youths.loc_division_id',
@@ -380,6 +381,19 @@ class YouthProfileService
     {
         $data = $request->all();
 
+        $customMessage = [
+            "password.regex" => [
+                "code" => "",
+                "message" => [
+                    "Have At least one Uppercase letter",
+                    "At least one Lower case letter",
+                    "Also,At least one numeric value",
+                    "And, At least one special character",
+                    "Must be more than 8 characters long"
+                ]
+            ]
+        ];
+
         if (!empty($data["skills"])) {
             $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
         }
@@ -405,11 +419,28 @@ class YouthProfileService
                 "int",
                 Rule::in(BaseModel::GENDER)
             ],
-            "email" => "required|email",
+            "email" => [
+                Rule::requiredIf(function () use ($id) {
+                    if ($id == null)
+                        return true;
+                    else if ($id) {
+                        $youth = Youth::find($id);
+                        return $youth->user_name_type == BaseModel::USER_NAME_TYPE_MOBILE_NUMBER;
+                    }
+                }),
+                "email",
+            ],
             "mobile" => [
-                "required",
+                Rule::requiredIf(function () use ($id) {
+                    if ($id == null)
+                        return true;
+                    else if ($id) {
+                        $youth = Youth::find($id);
+                        return $youth->user_name_type == BaseModel::USER_NAME_TYPE_EMAIL;
+                    }
+                }),
                 "max:11",
-                BaseModel::MOBILE_REGEX
+                BaseModel::MOBILE_REGEX,
             ],
             "date_of_birth" => [
                 Rule::requiredIf(function () use ($id) {
@@ -504,7 +535,7 @@ class YouthProfileService
                 "string"
             ],
         ];
-        return \Illuminate\Support\Facades\Validator::make($data, $rules);
+        return \Illuminate\Support\Facades\Validator::make($data, $rules, $customMessage);
     }
 
 
