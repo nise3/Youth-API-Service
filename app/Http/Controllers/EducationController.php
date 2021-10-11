@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BaseModel;
 use App\Models\Education;
+use App\Models\Skill;
 use App\Models\Youth;
 use Faker\Provider\Uuid;
 use Illuminate\Http\Client\RequestException;
@@ -40,7 +41,7 @@ class EducationController extends Controller
      * Display a listing of the resource.
      * @param Request $request
      * @return Exception|JsonResponse|Throwable
-     * @throws ValidationException
+     * @throws ValidationException|Throwable
      */
     public function getList(Request $request): JsonResponse
     {
@@ -58,6 +59,7 @@ class EducationController extends Controller
     /**
      * @param int $id
      * @return Exception|JsonResponse|Throwable
+     * @throws Throwable
      */
     public function read(int $id): JsonResponse
     {
@@ -73,7 +75,7 @@ class EducationController extends Controller
      * Store a newly created resource in storage.
      * @param Request $request
      * @return Exception|JsonResponse|Throwable
-     * @throws ValidationException
+     * @throws ValidationException|Throwable
      */
     function store(Request $request): JsonResponse
     {
@@ -102,7 +104,7 @@ class EducationController extends Controller
      * @param Request $request
      * @param int $id
      * @return Exception|JsonResponse|Throwable
-     * @throws ValidationException
+     * @throws ValidationException|Throwable
      */
     public function update(Request $request, int $id): JsonResponse
     {
@@ -132,6 +134,7 @@ class EducationController extends Controller
      * Remove the specified resource from storage
      * @param int $id
      * @return Exception|JsonResponse|Throwable
+     * @throws Throwable
      */
     public function destroy(int $id): JsonResponse
     {
@@ -155,9 +158,10 @@ class EducationController extends Controller
 
     /**
      * @param Request $request
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      */
-    public function getTrashedData(Request $request)
+    public function getTrashedData(Request $request): JsonResponse
     {
         try {
             $response = $this->educationService->getTrashedYouthEducationList($request, $this->startTime);
@@ -170,9 +174,9 @@ class EducationController extends Controller
 
     /**
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
      */
-    public function restore(int $id)
+    public function restore(int $id): JsonResponse
     {
         $skill = Skill::onlyTrashed()->findOrFail($id);
         try {
@@ -193,7 +197,8 @@ class EducationController extends Controller
 
     /**
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      */
     public function forceDelete(int $id)
     {

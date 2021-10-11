@@ -34,7 +34,7 @@ class CertificationController extends Controller
     }
 
 
-    public function getList(Request $request)
+    public function getList(Request $request): JsonResponse
     {
         $filter = $this->certificationService->filterValidator($request)->validate();
         try {
@@ -66,7 +66,7 @@ class CertificationController extends Controller
      *
      * @param Request $request
      * @return Exception|JsonResponse|Throwable
-     * @throws ValidationException
+     * @throws ValidationException|Throwable
      */
     public function store(Request $request): JsonResponse
     {
@@ -96,7 +96,7 @@ class CertificationController extends Controller
      * @param Request $request
      * @param int $id
      * @return Exception|JsonResponse|Throwable
-     * @throws ValidationException
+     * @throws ValidationException|Throwable
      */
     public function update(Request $request, int $id): JsonResponse
     {
@@ -123,6 +123,7 @@ class CertificationController extends Controller
      * Remove the specified resource from storage.
      * @param int $id
      * @return Exception|JsonResponse|Throwable
+     * @throws Throwable
      */
     public function destroy(int $id): JsonResponse
     {
