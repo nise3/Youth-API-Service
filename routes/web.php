@@ -31,6 +31,9 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
 
     /** freelance corner */
     $router->get('freelancers', ["as" => "freelancers.get-all-freelancers", "uses" => "FreelanceController@getAllFreelancers"]);
+
+    // data from examinations, boards , edu groups, major or subjects table
+    $router->get('youth-educations-exam-board-edugroup-subject', ["as" => "youth.education.basic.table.info", "uses" => "YouthController@youthEducationBasicInfos"]);
 });
 
 
@@ -49,7 +52,7 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
     $customRouter()->resourceRoute('youth-educations', 'EducationController')->render();
 
     $router->get('youth-profile', ["as" => "youth-profile.get-profile", "uses" => "YouthProfileController@getYouthProfile"]);
-    $router->put('youth-personal-info-update', ["as" => "youth-profile.update", "uses" => "YouthProfileController@youthProfileUpdate"]);
+    $router->put('youth-personal-info-update', ["as" => "youth-profile.update", "uses" => "YouthProfileController@youthProfileInfoUpdate"]);
     $router->put('youth-change-freelance-status', ["as" => "youth-profile.youth-change-freelance-status", "uses" => "YouthProfileController@setFreelanceStatus"]);
 
 });

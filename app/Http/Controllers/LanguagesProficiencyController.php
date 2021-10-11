@@ -72,7 +72,7 @@ class LanguagesProficiencyController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $request['youth_id'] = $request['youth_id'] ?? Auth::id();
+        $request['youth_id'] = Auth::id();
         $validated = $this->languagesProficiencyService->validator($request)->validate();
         try {
             $validated['youth_id'] = $validated['youth_id'] ?? Auth::id();
@@ -102,6 +102,7 @@ class LanguagesProficiencyController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
+        $request['youth_id'] = Auth::id();
         $languageProficiency = LanguagesProficiency::findOrFail($id);
         $validated = $this->languagesProficiencyService->validator($request, $id)->validate();
         try {

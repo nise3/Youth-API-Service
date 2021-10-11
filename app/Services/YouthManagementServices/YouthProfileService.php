@@ -122,6 +122,11 @@ class YouthProfileService
         $youth->fill($data);
         $youth->save();
         $this->assignSkills($youth, $data["skills"]);
+        if ($data['physical_disability_status'] == BaseModel::FALSE) {
+            $this->detachPhysicalDisabilities($youth);
+        } else if ($data['physical_disability_status'] == BaseModel::TRUE) {
+            $this->assignPhysicalDisabilities($youth, $data['physical_disabilities']);
+        }
         return $youth;
     }
 
@@ -146,6 +151,16 @@ class YouthProfileService
         /** Assign skills to Youth */
         $disabilityIds = PhysicalDisability::whereIn("id", $disabilities)->orderBy('id', 'ASC')->pluck('id')->toArray();
         $youth->physicalDisabilities()->sync($disabilityIds);
+
+    }
+
+    /**
+     * @param Youth $youth
+     * @param array $disabilities
+     */
+    private function detachPhysicalDisabilities(Youth $youth)
+    {
+        $youth->physicalDisabilities()->sync([]);
 
     }
 
@@ -400,7 +415,6 @@ class YouthProfileService
         if (!empty($data["physical_disabilities"])) {
             $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
         }
-
         $rules = [
             "user_name_type" => [
                 Rule::requiredIf(function () use ($id) {
@@ -462,24 +476,22 @@ class YouthProfileService
                 "min:1"
             ],
             "physical_disability_status" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
+                "required",
                 "int",
                 Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUS)
             ],
             "physical_disabilities" => [
                 Rule::requiredIf(function () use ($id, $data) {
-                    return ($id == null && $data['physical_disability_status'] == BaseModel::TRUE);
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
                 }),
                 "array",
                 "min:1"
             ],
             "physical_disabilities.*" => [
                 Rule::requiredIf(function () use ($id, $data) {
-                    return ($id == null && $data['physical_disability_status'] == BaseModel::TRUE);
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
                 }),
-                "numeric",
+                "int",
                 "distinct",
                 "min:1",
                 "exists:physical_disabilities,id"

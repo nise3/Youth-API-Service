@@ -129,12 +129,14 @@ class YouthProfileController extends Controller
      * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
-    public function youthProfileUpdate(Request $request): JsonResponse
+    public function youthProfileInfoUpdate(Request $request): JsonResponse
     {
         $id = Auth::id();
         /** @var Youth $youth */
-        $youth = Youth::findOrFail($id);
+        $youth = Youth::findOrFail(Auth::id());
+
         $validated = $this->youthProfileService->youthRegisterValidation($request, $id)->validate();
+
         try {
             $data = $this->youthProfileService->update($youth, $validated);
             $response = [
