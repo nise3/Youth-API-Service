@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Skill;
-
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SkillFactory extends Factory
@@ -15,9 +14,7 @@ class SkillFactory extends Factory
         $title = $this->faker->unique->jobTitle;
         return [
             'title_en' => ucfirst($title),
-            'title' => ucfirst($title),
-            'description' => $this->faker->paragraph(50)
+            'title' => ucfirst($title)
         ];
-
     }
 }

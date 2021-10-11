@@ -12,14 +12,13 @@ use Illuminate\Support\Collection;
  * @package App\Models
  * @property string title_en
  * @property string title
- * @property int | null description
- * @property int row_status
  * @property-read  Collection youths
  */
 class Skill extends BaseModel
 {
-    use SoftDeletes, HasFactory;
+    use HasFactory;
 
+    public $timestamps = false;
     /**
      * @var string[]
      */

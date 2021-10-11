@@ -14,6 +14,7 @@ class SkillSeeder extends Seeder
      */
     public function run()
     {
+        // TODO: enter real skill data instead of using faker
         Skill::factory()->count(20)->create();
     }
 }
