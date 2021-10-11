@@ -178,12 +178,11 @@ class  YouthController extends Controller
     {
         try {
             $info = $this->youthService->getEducationBasicTablesInfos();
-            $response = [
-                '_response_status' => [
-                    "data" => $info,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "query_time" => $this->startTime->diffForHumans(Carbon::now())
-                ]
+
+            $response['data'] = $info;
+            $response['response_status'] = [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
             ];
         } catch (Throwable $e) {
             throw $e;
