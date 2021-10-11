@@ -53,12 +53,13 @@ class AuthServiceProvider extends ServiceProvider
             Log::info("Auth idp user id-->".$idpServerId);
             $youthService = $this->app->make(YouthProfileService::class);
             if($idpServerId){
-                $authUser = $youthService->getAuthYouth($idpServerId ?? null);
+                $authUser = $youthService->getAuthYouth($idpServerId);
+                Log::info("authUser fetch:" . json_encode($authUser));
                 if($authUser){
                     Auth::setUser($authUser);
                 }
             }
-            Log::info("userInfoWithIdpId:" . json_encode($authUser));
+            Log::info("userInfoWithIdpId:" . json_encode(Auth::user()));
 
         }
     }
