@@ -404,12 +404,11 @@ class YouthProfileService
                 "int",
                 Rule::in(BaseModel::GENDER)
             ],
-            "email" => "required|email|unique:youths,email," . $id,
+            "email" => "required|email",
             "mobile" => [
                 "required",
                 "max:11",
                 BaseModel::MOBILE_REGEX,
-                "unique:youths,mobile," . $id
             ],
             "date_of_birth" => [
                 Rule::requiredIf(function () use ($id) {
