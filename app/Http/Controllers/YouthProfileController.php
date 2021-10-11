@@ -68,12 +68,14 @@ class YouthProfileController extends Controller
         $youth = new Youth();
         $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
 
+        $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
+
         DB::beginTransaction();
         try {
             $idpUserPayLoad = [
                 'name' => $validated['first_name'] . " " . $validated["last_name"],
                 'email' => $validated['email'],
-                'username' => $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'],
+                'username' => $validated['username'],
                 'password' => $validated['password'],
                 'user_type' => BaseModel::YOUTH_USER_TYPE,
                 'status' => BaseModel::ROW_STATUS_PENDING,

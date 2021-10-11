@@ -47,6 +47,7 @@ class YouthProfileService
                 'youths.gender',
                 'youths.email',
                 'youths.mobile',
+                'youths.user_name_type',
                 'youths.date_of_birth',
                 'youths.physical_disability_status',
                 'youths.loc_division_id',
@@ -247,11 +248,10 @@ class YouthProfileService
     public function idpUserCreate(array $data)
     {
         $url = clientUrl(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
-
         $client = Http::retry(3)
             ->withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
             ->withHeaders(['Content-Type' => 'application/json'])
-            ->withOptions(['debug' => config("nise3.is_dev_mode"), 'verify' => config("nise3.should_ssl_verify")])
+            ->withOptions(['verify' => config("nise3.should_ssl_verify")])
             ->post($url, [
                 'schemas' => [
                 ],
@@ -379,6 +379,19 @@ class YouthProfileService
     {
         $data = $request->all();
 
+        $customMessage = [
+            "password.regex" => [
+                "code" => "",
+                "message" => [
+                    "Have At least one Uppercase letter",
+                    "At least one Lower case letter",
+                    "Also,At least one numeric value",
+                    "And, At least one special character",
+                    "Must be more than 8 characters long"
+                ]
+            ]
+        ];
+
         if (!empty($data["skills"])) {
             $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
         }
@@ -404,9 +417,26 @@ class YouthProfileService
                 "int",
                 Rule::in(BaseModel::GENDER)
             ],
-            "email" => "required|email",
+            "email" => [
+                Rule::requiredIf(function () use ($id) {
+                    if ($id == null)
+                        return true;
+                    else if ($id) {
+                        $youth = Youth::find($id);
+                        return $youth->user_name_type == BaseModel::USER_NAME_TYPE_MOBILE_NUMBER;
+                    }
+                }),
+                "email",
+            ],
             "mobile" => [
-                "required",
+                Rule::requiredIf(function () use ($id) {
+                    if ($id == null)
+                        return true;
+                    else if ($id) {
+                        $youth = Youth::find($id);
+                        return $youth->user_name_type == BaseModel::USER_NAME_TYPE_EMAIL;
+                    }
+                }),
                 "max:11",
                 BaseModel::MOBILE_REGEX,
             ],
@@ -503,7 +533,7 @@ class YouthProfileService
                 "string"
             ],
         ];
-        return \Illuminate\Support\Facades\Validator::make($data, $rules);
+        return \Illuminate\Support\Facades\Validator::make($data, $rules, $customMessage);
     }
 
 
