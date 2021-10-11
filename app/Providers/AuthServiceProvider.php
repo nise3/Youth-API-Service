@@ -50,7 +50,7 @@ class AuthServiceProvider extends ServiceProvider
 
             //$jwtPayload = $this->decode($token);
             $idpServerId = $this->getIdpServerIdFromToken($token);
-
+            Log::info("Auth idp user id-->".$idpServerId);
             $youthService = $this->app->make(YouthProfileService::class);
             if($idpServerId){
                 $authUser = $youthService->getAuthYouth($idpServerId ?? null);
