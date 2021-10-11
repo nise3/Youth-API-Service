@@ -55,11 +55,14 @@ class CreateYouthsTable extends Migration
             $table->unsignedTinyInteger('physical_disability_status')
                 ->comment('0=>No, 1=>Yes')->default(0);
 
+            $table->unsignedTinyInteger('does_belong_to_ethnic_group')->default(0);
+
             $table->text("bio")->nullable();
             $table->text("bio_en")->nullable();
 
-            $table->string('photo', 300)->nullable();
-            $table->string('cv_path', 300)->nullable();
+            $table->string('photo', 600)->nullable();
+            $table->string('cv_path', 600)->nullable();
+            $table->string('signature_image_path', 600)->nullable();
 
             $table->string("verification_code", 10)->nullable()
                 ->comment('Email Or SMS verification code');

@@ -20,11 +20,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int employment_type_id
  * @property string location
  * @property string|null location_en
- * @property string|null job_description
- * @property string|null job_description_en
+ * @property string|null job_responsibilities
+ * @property string|null job_responsibilities_en
  * @property Carbon start_date
  * @property Carbon end_date
- * @property bool is_currently_work
+ * @property bool is_currently_working
  * @property int row_status
  * @property Carbon created_at
  * @property Carbon updated_at

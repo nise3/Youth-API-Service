@@ -18,8 +18,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null institute_name_en
  * @property string location
  * @property string|null location_en
- * @property string|null job_description
- * @property string|null job_description_en
+ * @property string|null job_responsibilities
+ * @property string|null job_responsibilities_en
  * @property string|null certificate_file_path
  * @property Carbon start_date
  * @property Carbon end_date

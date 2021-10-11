@@ -42,11 +42,11 @@ class JobExperienceService
             'job_experiences.youth_id',
             'job_experiences.location',
             'job_experiences.location_en',
-            'job_experiences.job_description',
-            'job_experiences.job_description_en',
+            'job_experiences.job_responsibilities',
+            'job_experiences.job_responsibilities_en',
             'job_experiences.start_date',
             'job_experiences.end_date',
-            'job_experiences.is_currently_work',
+            'job_experiences.is_currently_working',
             'job_experiences.row_status',
             'job_experiences.created_at',
             'job_experiences.updated_at'
@@ -109,11 +109,11 @@ class JobExperienceService
             'job_experiences.youth_id',
             'job_experiences.location',
             'job_experiences.location_en',
-            'job_experiences.job_description',
-            'job_experiences.job_description_en',
+            'job_experiences.job_responsibilities',
+            'job_experiences.job_responsibilities_en',
             'job_experiences.start_date',
             'job_experiences.end_date',
-            'job_experiences.is_currently_work',
+            'job_experiences.is_currently_working',
             'job_experiences.row_status',
             'job_experiences.created_at',
             'job_experiences.updated_at'
@@ -256,11 +256,11 @@ class JobExperienceService
                 'string',
                 'max:300'
             ],
-            'job_description' => [
+            'job_responsibilities' => [
                 'nullable',
                 'string',
             ],
-            'job_description_en' => [
+            'job_responsibilities_en' => [
                 'nullable',
                 'string',
             ],
@@ -278,7 +278,7 @@ class JobExperienceService
                 'nullable',
                 'after:start_date'
             ],
-            'is_currently_work' => [
+            'is_currently_working' => [
                 'numeric',
                 Rule::in([BaseModel::CURRENTLY_NOT_WORKING, BaseModel::CURRENTLY_WORKING])
             ]

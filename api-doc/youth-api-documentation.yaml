@@ -422,11 +422,11 @@ paths:
                     employment_type_id: 1
                     location: 720 Gina Ways
                     location_en: 8485 Gleason Place
-                    job_description: Pressing Machine Operator
-                    job_description_en: Wind Instrument Repairer
+                    job_responsibilities: Pressing Machine Operator
+                    job_responsibilities_en: Wind Instrument Repairer
                     start_date: '1974-07-03'
                     end_date: '1993-06-06'
-                    is_currently_work: 0
+                    is_currently_working: 0
                     row_status: 1
                     created_at: '2021-08-19T08:55:03.000000Z'
                     updated_at: '2021-08-19T08:55:03.000000Z'
@@ -462,11 +462,11 @@ paths:
                   employment_type_id: 3
                   location: 720 Gina Ways
                   location_en: 8485 Gleason Place
-                  job_description: Pressing Machine Operator
-                  job_description_en: Wind Instrument Repairer
+                  job_responsibilities: Pressing Machine Operator
+                  job_responsibilities_en: Wind Instrument Repairer
                   start_date: '1974-07-03'
                   end_date: '1993-06-06'
-                  is_currently_work: 0
+                  is_currently_working: 0
                   row_status: 1
                   created_at: '2021-08-19T08:55:03.000000Z'
                   updated_at: '2021-08-19T08:55:03.000000Z'
@@ -501,11 +501,11 @@ paths:
                   employment_type_id: 1
                   location: 720 Gina Ways
                   location_en: 8485 Gleason Place
-                  job_description: Pressing Machine Operator
-                  job_description_en: Wind Instrument Repairer
+                  job_responsibilities: Pressing Machine Operator
+                  job_responsibilities_en: Wind Instrument Repairer
                   start_date: '1974-07-03'
                   end_date: '1993-06-06'
-                  is_currently_work: 1
+                  is_currently_working: 1
                   row_status: 1
                   created_at: '2021-07-26T12:08:11.000000Z'
                   updated_at: '2021-07-26T12:08:11.000000Z'
@@ -543,11 +543,11 @@ paths:
                   employment_type_id: 1
                   location: 720 Gina Ways
                   location_en: 8485 Gleason Place
-                  job_description: Pressing Machine Operator
-                  job_description_en: Wind Instrument Repairer
+                  job_responsibilities: Pressing Machine Operator
+                  job_responsibilities_en: Wind Instrument Repairer
                   start_date: '1974-07-03'
                   end_date: '1993-06-06'
-                  is_currently_work: 0
+                  is_currently_working: 0
                   row_status: 1
                   created_at: '2021-07-26T12:08:11.000000Z'
                   updated_at: '2021-07-26T12:08:11.000000Z'
@@ -2068,9 +2068,9 @@ components:
         location_en:
           type: string
           maxLength: 300
-        job_description:
+        job_responsibilities:
           type: string
-        job_description_en:
+        job_responsibilities_en:
           type: string
         start_date:
           type: string
@@ -2079,7 +2079,7 @@ components:
         end_date:
           type: string
           format: date-time
-        is_currently_work:
+        is_currently_working:
           type: integer
           enum:
             - 1

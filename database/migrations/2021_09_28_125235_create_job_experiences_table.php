@@ -24,11 +24,14 @@ class CreateJobExperiencesTable extends Migration
 
             $table->string("location", 600);
             $table->string("location_en", 300)->nullable();
-            $table->text("job_description")->nullable();
-            $table->text("job_description_en")->nullable();
+
+            $table->text("job_responsibilities")->nullable();
+            $table->text("job_responsibilities_en")->nullable();
+
             $table->date("start_date");
             $table->date("end_date")->nullable();
-            $table->unsignedTinyInteger("is_currently_work")
+
+            $table->unsignedTinyInteger("is_currently_working")
                 ->comment("1=>Yes,0=>No")->default(0);
             $table->timestamps();
             $table->softDeletes();
