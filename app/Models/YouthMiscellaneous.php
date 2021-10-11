@@ -12,19 +12,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property int id
  * @property int youth_id
- * @property int address_type
- * @property int loc_division_id
- * @property int loc_district_id
- * @property int loc_upazila_id
- * @property string|null village_n_area
- * @property string|null village_or_area_en
- * @property string|null house_n_road
- * @property string|null house_n_road_en
- * @property string zip_or_postal_code
+ * @property int has_own_family_home
+ * @property int has_own_family_land
+ * @property int number_of_siblings
+ * @property int recommended_by_any_organization
  * @property Carbon created_at
  * @property Carbon updated_at
  */
-class YouthAddress extends BaseModel
+class YouthMiscellaneous extends BaseModel
 {
     use SoftDeletes, HasFactory;
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;

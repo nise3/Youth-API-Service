@@ -22,10 +22,10 @@ class CreateYouthsTable extends Migration
             $table->unsignedTinyInteger("user_name_type")
                 ->comment("1=>Email Type,2=>Mobile Number");
 
-            $table->string('first_name', 500);
-            $table->string('first_name_en', 500)->nullable();
-            $table->string('last_name', 500);
-            $table->string('last_name_en', 500)->nullable();
+            $table->string('first_name', 300);
+            $table->string('first_name_en', 150)->nullable();
+            $table->string('last_name', 300);
+            $table->string('last_name_en', 150)->nullable();
 
             $table->date('date_of_birth');
             $table->unsignedTinyInteger('gender')
@@ -35,9 +35,10 @@ class CreateYouthsTable extends Migration
                 ->comment('1 => Islam, 2 => Hinduism, 3 => Christianity, 4 => Buddhism, 5 => Judaism, 6 => Sikhism, 7 => Ethnic, 8 => Agnostic/Atheist');
 
             $table->unsignedTinyInteger('marital_status')
-                ->comment('1 => single,2 => married,3 => widowed,4 => divorced');
+                ->comment('1 => single, 2 => married, 3 => widowed, 4 => divorced');
 
-            $table->unsignedSmallInteger('nationality')->default(1); /** Coming from nise3 config file */
+            $table->unsignedSmallInteger('nationality')->default(1);
+            /** Coming from nise3 config file */
 
             $table->string('email', 200)->nullable();
             $table->string('mobile', 20)->nullable();

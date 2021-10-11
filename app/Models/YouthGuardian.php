@@ -8,27 +8,29 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * App\Models\YouthAddress
+ * App\Models\YouthGuardian
  *
  * @property int id
  * @property int youth_id
- * @property int address_type
- * @property int loc_division_id
- * @property int loc_district_id
- * @property int loc_upazila_id
- * @property string|null village_n_area
- * @property string|null village_or_area_en
- * @property string|null house_n_road
- * @property string|null house_n_road_en
- * @property string zip_or_postal_code
+ * @property string father_name
+ * @property string|null father_name_en
+ * @property string|null father_nid
+ * @property string|null father_mobile
+ * @property Carbon|null father_date_of_birth
+ * @property string mother_name
+ * @property string mother_name_en
+ * @property string mother_nid
+ * @property string mother_mobile
+ * @property Carbon mother_date_of_birth
  * @property Carbon created_at
  * @property Carbon updated_at
  */
-class YouthAddress extends BaseModel
+class YouthGuardian extends BaseModel
 {
     use SoftDeletes, HasFactory;
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
 
+    protected $dates = ['mother_date_of_birth', 'father_date_of_birth'];
     /**
      * @return BelongsTo
      */

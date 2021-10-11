@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -55,6 +56,7 @@ class Youth extends AuthBaseModel
 
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
 
+    protected $dates = ['date_of_birth'];
 
     protected $hidden = [
         "pivot",
@@ -124,5 +126,29 @@ class Youth extends AuthBaseModel
     public function references(): HasMany
     {
         return $this->hasMany(Reference::class, 'youth_id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function youthAddresses(): HasMany
+    {
+        return $this->hasMany(YouthAddress::class, 'youth_id', 'id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function youthMiscellaneous(): HasOne
+    {
+        return $this->hasOne(YouthMiscellaneous::class);
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function youthGuardian(): HasOne
+    {
+        return $this->hasOne(YouthGuardian::class);
     }
 }
