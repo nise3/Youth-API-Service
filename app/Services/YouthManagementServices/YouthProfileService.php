@@ -428,7 +428,9 @@ class YouthProfileService
                         return $youth->user_name_type == BaseModel::USER_NAME_TYPE_MOBILE_NUMBER;
                     }
                 }),
+                "unique:youths,email," . $id,
                 "email",
+
             ],
             "mobile" => [
                 Rule::requiredIf(function () use ($id) {
@@ -440,7 +442,8 @@ class YouthProfileService
                     }
                 }),
                 "max:11",
-                BaseModel::MOBILE_REGEX,
+                "unique:youths,mobile," . $id,
+                BaseModel::MOBILE_REGEX
             ],
             "date_of_birth" => [
                 Rule::requiredIf(function () use ($id) {
