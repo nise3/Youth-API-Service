@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -33,7 +34,7 @@ class CertificationController extends Controller
     }
 
 
-    public function getList(Request $request)
+    public function getList(Request $request): JsonResponse
     {
         $filter = $this->certificationService->filterValidator($request)->validate();
         try {
@@ -55,7 +56,7 @@ class CertificationController extends Controller
         try {
             $response = $this->certificationService->getOneCertification($id, $this->startTime);
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response);
     }
@@ -65,12 +66,14 @@ class CertificationController extends Controller
      *
      * @param Request $request
      * @return Exception|JsonResponse|Throwable
-     * @throws ValidationException
+     * @throws ValidationException|Throwable
      */
     public function store(Request $request): JsonResponse
     {
+        $request['youth_id'] = $request['youth_id'] ?? Auth::id();
         $validated = $this->certificationService->validator($request)->validate();
         try {
+
             $certification = $this->certificationService->store($validated);
             $response = [
                 'data' => $certification,
@@ -82,7 +85,7 @@ class CertificationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -93,7 +96,7 @@ class CertificationController extends Controller
      * @param Request $request
      * @param int $id
      * @return Exception|JsonResponse|Throwable
-     * @throws ValidationException
+     * @throws ValidationException|Throwable
      */
     public function update(Request $request, int $id): JsonResponse
     {
@@ -111,7 +114,7 @@ class CertificationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -120,6 +123,7 @@ class CertificationController extends Controller
      * Remove the specified resource from storage.
      * @param int $id
      * @return Exception|JsonResponse|Throwable
+     * @throws Throwable
      */
     public function destroy(int $id): JsonResponse
     {
@@ -135,7 +139,7 @@ class CertificationController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }

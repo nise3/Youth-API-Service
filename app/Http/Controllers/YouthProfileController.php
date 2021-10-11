@@ -41,12 +41,12 @@ class YouthProfileController extends Controller
     {
         try {
             $youth = $this->youthProfileService->getYouthProfile();
-            $response =[
+            $response = [
                 "data" => $youth ?: new stdClass(),
                 "_response_status" => [
                     "success" => true,
-                    "code" =>ResponseAlias::HTTP_OK,
-                    "message"=>"Youth profile information",
+                    "code" => ResponseAlias::HTTP_OK,
+                    "message" => "Youth profile information",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
@@ -92,7 +92,7 @@ class YouthProfileController extends Controller
                 $payloadField = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? "email" : "mobile";
                 $sendVeryCodePayLoad[$payloadField] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
 
-                $send_status=$this->youthProfileService->sendVerifyCode($sendVeryCodePayLoad);
+                $send_status = $this->youthProfileService->sendVerifyCode($sendVeryCodePayLoad);
 
                 $response = [
                     'data' => $youth ?? new stdClass(),
@@ -129,7 +129,7 @@ class YouthProfileController extends Controller
      */
     public function youthProfileUpdate(Request $request): JsonResponse
     {
-        $id=Auth::id();
+        $id = Auth::id();
         /** @var Youth $youth */
         $youth = Youth::findOrFail($id);
         $validated = $this->youthProfileService->youthRegisterValidation($request, $id)->validate();
@@ -145,7 +145,7 @@ class YouthProfileController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
@@ -158,15 +158,15 @@ class YouthProfileController extends Controller
      */
     public function setFreelanceStatus(Request $request): JsonResponse
     {
-        $id=Auth::id();
+        $id = Auth::id();
 
         /** @var Youth $youth */
         $youth = Youth::findOrFail($id);
 
-        $validator=$this->youthProfileService->freelanceStatusValidator($request)->validate();
+        $validator = $this->youthProfileService->freelanceStatusValidator($request)->validate();
 
         try {
-            $this->youthProfileService->setFreelanceStatus($youth,$validator);
+            $this->youthProfileService->setFreelanceStatus($youth, $validator);
             $response = [
                 '_response_status' => [
                     "success" => true,
@@ -176,7 +176,7 @@ class YouthProfileController extends Controller
                 ]
             ];
         } catch (Throwable $e) {
-            return $e;
+            throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
@@ -224,6 +224,24 @@ class YouthProfileController extends Controller
             throw $e;
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
+    }
+
+
+    /**
+     * Cv download function
+     */
+    public function youthCvDownload($id)
+    {
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->WriteHTML('
+             <h1>' . 'Youth Name' . '</h1>' .
+            '<p> service_version: ' . 'service_version' . '</p>' .
+            '<p> lumen_version: ' . 'lumen_version' . '</p>' .
+            '<p> ID: ' . $id . '</p>' .
+            '<p> module_list: ' . 'module_list' . '</p>' .
+            '<p> description: <br>' . 'description' . '</p>'
+        );
+        $mpdf->Output('MyPDF.pdf', 'D');
     }
 
 }

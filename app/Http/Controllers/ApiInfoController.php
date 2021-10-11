@@ -25,6 +25,7 @@ class ApiInfoController extends Controller
                 'It is a youth management api service that manages the youths'
             ]
         ];
+
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 }

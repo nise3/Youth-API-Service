@@ -48,306 +48,6 @@
                 ]
             }
         },
-        "/youths": {
-            "get": {
-                "summary": "get_list",
-                "description": " API endpoint to get the list of Youth profile.A successful request response will show 200 HTTP status code",
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/youthRegistration"
-                                },
-                                "example": {
-                                    "data": [
-                                        {
-                                            "id": 1,
-                                            "first_name": "Rahul",
-                                            "last_name": "Das",
-                                            "gender": 1,
-                                            "skills": null,
-                                            "email": "",
-                                            "mobile": "",
-                                            "date_of_birth": "0000-00-00",
-                                            "physical_disability_status": 0,
-                                            "physical_disabilities": null,
-                                            "city": null,
-                                            "zip_or_postal_code": null,
-                                            "bio": null,
-                                            "photo": null,
-                                            "cv_path": null,
-                                            "created_at": null,
-                                            "updated_at": null
-                                        }
-                                    ],
-                                    "_response_status": {
-                                        "success": true,
-                                        "code": 200,
-                                        "started": "12 33 26",
-                                        "finished": "12 33 26"
-                                    },
-                                    "_links": {
-                                        "paginate": []
-                                    },
-                                    "_page": [],
-                                    "_order": "ASC"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "youth"
-                ]
-            }
-        },
-        "/youths/{youthId}": {
-            "get": {
-                "summary": "get one",
-                "description": "API endpoint to get the specified Youth profile.A successful request response will show 200 HTTP status code",
-                "parameters": [
-                    {
-                        "name": "youthId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "get one",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/youthRegistration"
-                                },
-                                "example": {
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "youth"
-                ]
-            }
-        },
-        "/youth-portfolios": {
-            "get": {
-                "summary": "get_list",
-                "description": " API endpoint to get the list of Youth portfolio",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/youth_id"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "get one",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/portfolio"
-                                },
-                                "example": {
-                                    "order": "ASC",
-                                    "data": [
-                                        {
-                                            "id": 4,
-                                            "title": "Geographer",
-                                            "title_en": "Geographer",
-                                            "description": "Vitae molestiae porro blanditiis quaerat quibusdam eveniet qui ",
-                                            "description_en": "Vitae molestiae porro blanditiis quaerat quibusdam eveniet qui",
-                                            "youth_id": 2,
-                                            "row_status": 1,
-                                            "created_at": "2021-10-03T09:55:34.000000Z",
-                                            "updated_at": "2021-10-03T09:55:34.000000Z"
-                                        }
-                                    ],
-                                    "response_status": {
-                                        "success": true,
-                                        "code": 200,
-                                        "query_time": 0
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Portfolios"
-                ]
-            },
-            "post": {
-                "summary": "create",
-                "description": "API endpoint to create a Youth portfolio.A successful request response will show 200 HTTP status code",
-                "requestBody": {
-                    "content": {
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "$ref": "#/components/schemas/portfolio"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/portfolio"
-                                },
-                                "example": {
-                                    "data": {
-                                        "title": "Test",
-                                        "youth_id": "1",
-                                        "updated_at": "2021-09-30T12:23:22.000000Z",
-                                        "created_at": "2021-09-30T12:23:22.000000Z",
-                                        "id": 24
-                                    },
-                                    "_response_status": {
-                                        "success": true,
-                                        "code": 201,
-                                        "message": "Portfolio created successfully",
-                                        "query_time": 0
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Portfolios"
-                ]
-            }
-        },
-        "/youth-portfolios/{portfolioId}": {
-            "get": {
-                "summary": "get one",
-                "description": "API endpoint to get the specified Youth portfolio.A successful request response will show 200 HTTP status code",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/portfolioId"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/portfolio"
-                                },
-                                "example": {
-                                    "data": {
-                                        "title": "Test",
-                                        "youth_id": "1",
-                                        "updated_at": "2021-09-30T12:23:22.000000Z",
-                                        "created_at": "2021-09-30T12:23:22.000000Z",
-                                        "id": 24
-                                    },
-                                    "_response_status": {
-                                        "success": true,
-                                        "code": 201,
-                                        "query_time": 0
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Portfolios"
-                ]
-            },
-            "put": {
-                "summary": "update",
-                "description": "API endpoint to update the specified Youth portfolio.A successful request response will show 200 HTTP status code",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/portfolioId"
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "$ref": "#/components/schemas/portfolio"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/portfolio"
-                                },
-                                "example": {
-                                    "data": {
-                                        "title": "Test",
-                                        "youth_id": "1",
-                                        "updated_at": "2021-09-30T12:23:22.000000Z",
-                                        "created_at": "2021-09-30T12:23:22.000000Z",
-                                        "id": 24
-                                    },
-                                    "_response_status": {
-                                        "success": true,
-                                        "code": 201,
-                                        "message": "Portfolio updated successfully",
-                                        "query_time": 0
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Portfolios"
-                ]
-            },
-            "delete": {
-                "summary": "delete",
-                "description": "API endpoint to delete the Youth profile.A successful request response will show 200 HTTP status code",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/portfolioId"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/youthRegistration"
-                                },
-                                "example": {
-                                    "_response_status": {
-                                        "success": true,
-                                        "code": 200,
-                                        "message": "Portfolio deleted successfully",
-                                        "started": "12 40 05",
-                                        "finished": "12 40 05"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Portfolios"
-                ]
-            }
-        },
         "/skills": {
             "get": {
                 "summary": "get_list",
@@ -593,7 +293,405 @@
                 ]
             }
         },
-        "/youth-job-experience": {
+        "/youths": {
+            "get": {
+                "summary": "get_list",
+                "description": " API endpoint to get the list of Youth profile.A successful request response will show 200 HTTP status code",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthRegistration"
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "first_name": "Rahul",
+                                            "last_name": "Das",
+                                            "gender": 1,
+                                            "skills": null,
+                                            "email": "",
+                                            "mobile": "",
+                                            "date_of_birth": "0000-00-00",
+                                            "physical_disability_status": 0,
+                                            "physical_disabilities": null,
+                                            "city": null,
+                                            "zip_or_postal_code": null,
+                                            "bio": null,
+                                            "photo": null,
+                                            "cv_path": null,
+                                            "created_at": null,
+                                            "updated_at": null
+                                        }
+                                    ],
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "started": "12 33 26",
+                                        "finished": "12 33 26"
+                                    },
+                                    "_links": {
+                                        "paginate": []
+                                    },
+                                    "_page": [],
+                                    "_order": "ASC"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "youth"
+                ]
+            }
+        },
+        "/youths/{youthId}": {
+            "get": {
+                "summary": "get one",
+                "description": "API endpoint to get the specified Youth profile.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "name": "youthId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get one",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthRegistration"
+                                },
+                                "example": {
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "youth"
+                ]
+            }
+        },
+        "/youth-registration": {
+            "post": {
+                "summary": "Youth registration",
+                "description": "API endpoint to register a youth. A successful request response will show 200 HTTP status code ",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/youthRegistration"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "register_youth",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthRegistration"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 1,
+                                        "first_name": "Tellur",
+                                        "last_name": "Rahman",
+                                        "gender": 1,
+                                        "skills": null,
+                                        "email": "sdfg@dom.com",
+                                        "mobile": "01245577498",
+                                        "date_of_birth": "0000-00-00",
+                                        "physical_disability_status": 0,
+                                        "physical_disabilities": null,
+                                        "city": null,
+                                        "zip_or_postal_code": null,
+                                        "bio": null,
+                                        "photo": null,
+                                        "cv_path": null,
+                                        "created_at": "2021-08-19T08:55:03.000000Z",
+                                        "updated_at": "2021-08-19T08:55:03.000000Z"
+                                    },
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Registration"
+                ]
+            }
+        },
+        "/youth-profile": {
+            "get": {
+                "summary": "Get youth profile",
+                "description": "API endpoint to get the youth profile. A successful request response will show 200 HTTP status code ",
+                "responses": {
+                    "200": {
+                        "description": "get youth profile",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthProfile"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 1,
+                                        "first_name": "Tellur",
+                                        "last_name": "Rahman",
+                                        "gender": 1,
+                                        "skills": null,
+                                        "email": "",
+                                        "mobile": "",
+                                        "date_of_birth": "0000-00-00",
+                                        "physical_disability_status": 0,
+                                        "physical_disabilities": null,
+                                        "city": null,
+                                        "zip_or_postal_code": null,
+                                        "bio": null,
+                                        "photo": null,
+                                        "cv_path": null,
+                                        "created_at": null,
+                                        "updated_at": null
+                                    },
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Profile"
+                ]
+            }
+        },
+        "/youth-portfolios": {
+            "get": {
+                "summary": "get_list",
+                "description": " API endpoint to get the list of Youth portfolio",
+                "responses": {
+                    "200": {
+                        "description": "get one",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/portfolio"
+                                },
+                                "example": {
+                                    "order": "ASC",
+                                    "data": [
+                                        {
+                                            "id": 4,
+                                            "title": "Geographer",
+                                            "title_en": "Geographer",
+                                            "description": "Vitae molestiae porro blanditiis quaerat quibusdam eveniet qui ",
+                                            "description_en": "Vitae molestiae porro blanditiis quaerat quibusdam eveniet qui",
+                                            "youth_id": 2,
+                                            "row_status": 1,
+                                            "created_at": "2021-10-03T09:55:34.000000Z",
+                                            "updated_at": "2021-10-03T09:55:34.000000Z"
+                                        }
+                                    ],
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Portfolios"
+                ]
+            },
+            "post": {
+                "summary": "create",
+                "description": "API endpoint to create a Youth portfolio.A successful request response will show 200 HTTP status code",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/portfolio"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/portfolio"
+                                },
+                                "example": {
+                                    "data": {
+                                        "title": "Test",
+                                        "youth_id": "1",
+                                        "updated_at": "2021-09-30T12:23:22.000000Z",
+                                        "created_at": "2021-09-30T12:23:22.000000Z",
+                                        "id": 24
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 201,
+                                        "message": "Portfolio created successfully",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Portfolios"
+                ]
+            }
+        },
+        "/youth-portfolios/{portfolioId}": {
+            "get": {
+                "summary": "get one",
+                "description": "API endpoint to get the specified Youth portfolio.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/portfolioId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/portfolio"
+                                },
+                                "example": {
+                                    "data": {
+                                        "title": "Test",
+                                        "youth_id": "1",
+                                        "updated_at": "2021-09-30T12:23:22.000000Z",
+                                        "created_at": "2021-09-30T12:23:22.000000Z",
+                                        "id": 24
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 201,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Portfolios"
+                ]
+            },
+            "put": {
+                "summary": "update",
+                "description": "API endpoint to update the specified Youth portfolio.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/portfolioId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/portfolio"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/portfolio"
+                                },
+                                "example": {
+                                    "data": {
+                                        "title": "Test",
+                                        "youth_id": "1",
+                                        "updated_at": "2021-09-30T12:23:22.000000Z",
+                                        "created_at": "2021-09-30T12:23:22.000000Z",
+                                        "id": 24
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 201,
+                                        "message": "Portfolio updated successfully",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Portfolios"
+                ]
+            },
+            "delete": {
+                "summary": "delete",
+                "description": "API endpoint to delete the Youth profile.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/portfolioId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthRegistration"
+                                },
+                                "example": {
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Portfolio deleted successfully",
+                                        "started": "12 40 05",
+                                        "finished": "12 40 05"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Portfolios"
+                ]
+            }
+        },
+        "/youth-job-experiences": {
             "get": {
                 "summary": "get_list",
                 "description": "API endpoint to get the list of Job Experiences. A successful request response will show 200 HTTP status code ",
@@ -603,9 +701,6 @@
                     },
                     {
                         "$ref": "#/components/parameters/company_name_bn"
-                    },
-                    {
-                        "$ref": "#/components/parameters/youth_id"
                     },
                     {
                         "$ref": "#/components/parameters/page"
@@ -725,7 +820,7 @@
                 ]
             }
         },
-        "/youth-job-experience/{jobExperienceId}": {
+        "/youth-job-experiences/{jobExperienceId}": {
             "get": {
                 "summary": "get_one",
                 "description": "API endpoint to get a specified Job Experience.A successful request response will show 200 HTTP status code",
@@ -866,109 +961,6 @@
                 },
                 "tags": [
                     "job experience"
-                ]
-            }
-        },
-        "/youth-profile": {
-            "get": {
-                "summary": "Get youth profile",
-                "description": "API endpoint to get the youth profile. A successful request response will show 200 HTTP status code ",
-                "responses": {
-                    "200": {
-                        "description": "get youth profile",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/youthProfile"
-                                },
-                                "example": {
-                                    "data": {
-                                        "id": 1,
-                                        "first_name": "Tellur",
-                                        "last_name": "Rahman",
-                                        "gender": 1,
-                                        "skills": null,
-                                        "email": "",
-                                        "mobile": "",
-                                        "date_of_birth": "0000-00-00",
-                                        "physical_disability_status": 0,
-                                        "physical_disabilities": null,
-                                        "city": null,
-                                        "zip_or_postal_code": null,
-                                        "bio": null,
-                                        "photo": null,
-                                        "cv_path": null,
-                                        "created_at": null,
-                                        "updated_at": null
-                                    },
-                                    "response_status": {
-                                        "success": true,
-                                        "code": 200,
-                                        "query_time": 0
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Youth Profile"
-                ]
-            }
-        },
-        "/youth-registration": {
-            "post": {
-                "summary": "Youth registration",
-                "description": "API endpoint to register a youth. A successful request response will show 200 HTTP status code ",
-                "requestBody": {
-                    "content": {
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "$ref": "#/components/schemas/youthRegistration"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "register_youth",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/youthRegistration"
-                                },
-                                "example": {
-                                    "data": {
-                                        "id": 1,
-                                        "first_name": "Tellur",
-                                        "last_name": "Rahman",
-                                        "gender": 1,
-                                        "skills": null,
-                                        "email": "sdfg@dom.com",
-                                        "mobile": "01245577498",
-                                        "date_of_birth": "0000-00-00",
-                                        "physical_disability_status": 0,
-                                        "physical_disabilities": null,
-                                        "city": null,
-                                        "zip_or_postal_code": null,
-                                        "bio": null,
-                                        "photo": null,
-                                        "cv_path": null,
-                                        "created_at": "2021-08-19T08:55:03.000000Z",
-                                        "updated_at": "2021-08-19T08:55:03.000000Z"
-                                    },
-                                    "response_status": {
-                                        "success": true,
-                                        "code": 200,
-                                        "query_time": 0
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Youth Registration"
                 ]
             }
         },
@@ -1297,9 +1289,6 @@
                         "$ref": "#/components/parameters/page"
                     },
                     {
-                        "$ref": "#/components/parameters/youth_id"
-                    },
-                    {
                         "$ref": "#/components/parameters/page_size"
                     },
                     {
@@ -1568,15 +1557,6 @@
                 "summary": "get_list",
                 "description": "API endpoint to get the list of References.A successful request response will show 200 HTTP status code",
                 "parameters": [
-                    {
-                        "name": "youth_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
                     {
                         "$ref": "#/components/parameters/page"
                     },
@@ -1866,15 +1846,6 @@
                 "summary": "get_list",
                 "description": "API endpoint to get the list of Educations.A successful request response will show 200 HTTP status code",
                 "parameters": [
-                    {
-                        "name": "youth_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
                     {
                         "$ref": "#/components/parameters/page"
                     },

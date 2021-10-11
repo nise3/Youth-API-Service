@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
-use const http\Client\Curl\AUTH_ANY;
 
 class JobExperienceService
 {
@@ -28,7 +27,6 @@ class JobExperienceService
     {
         $companyNameEn = $request['company_name_en'] ?? "";
         $companyNameBn = $request['company_name_bn'] ?? "";
-        $youthId = $request['youth_id'] ?? Auth::id();
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
@@ -54,8 +52,8 @@ class JobExperienceService
             'job_experiences.updated_at'
         ]);
 
-        if (is_numeric($youthId)) {
-            $jobExperienceBuilder->where('job_experiences.youth_id', $youthId);
+        if (is_numeric(Auth::id())) {
+            $jobExperienceBuilder->where('job_experiences.youth_id', Auth::id());
         }
 
         $jobExperienceBuilder->orderBy('job_experiences.id', $order);
@@ -140,7 +138,7 @@ class JobExperienceService
      * @param array $data
      * @return JobExperience
      */
-    public function store(JobExperience $jobExperience,array $data): JobExperience
+    public function store(JobExperience $jobExperience, array $data): JobExperience
     {
         $jobExperience->fill($data);
         $jobExperience->save();
@@ -197,11 +195,6 @@ class JobExperienceService
             'location_en' => 'nullable|max:300|min:2',
             'position' => 'nullable|max:300|min:2',
             'position_en' => 'nullable|max:300|min:2',
-            'youth_id' => [
-              Rule::requiredIf(function (){
-                  return !Auth::id();
-              })
-            ],
             'page_size' => 'numeric|gt:0',
             'order' => [
                 'string',
@@ -272,9 +265,7 @@ class JobExperienceService
                 'string',
             ],
             'youth_id' => [
-                Rule::requiredIf(function (){
-                    return !Auth::id();
-                }),
+                'required',
                 'int',
                 'exists:youths,id'
             ],

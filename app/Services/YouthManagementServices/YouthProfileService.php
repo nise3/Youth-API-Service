@@ -242,18 +242,17 @@ class YouthProfileService
 
     /**
      * @param array $data
-     * @return PromiseInterface|\Illuminate\Http\Client\Response
+     * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
      */
     public function idpUserCreate(array $data)
     {
         $url = clientUrl(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
 
-        $client = Http::retry(3)->withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
-            ->withHeaders([
-                'Content-Type' => 'application/json'
-            ])->withOptions([
-                'verify' => false
-            ])->post($url, [
+        $client = Http::retry(3)
+            ->withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
+            ->withHeaders(['Content-Type' => 'application/json'])
+            ->withOptions(['debug' => config("nise3.is_dev_mode"), 'verify' => config("nise3.should_ssl_verify")])
+            ->post($url, [
                 'schemas' => [
                 ],
                 'name' => [
@@ -263,7 +262,7 @@ class YouthProfileService
                 'userName' => $data['username'],
                 'password' => $data['password'],
                 'userType' => $data['user_type'],
-               // 'active' => $data['status'],
+                // 'active' => $data['status'],
                 'emails' => [
                     0 => [
                         'primary' => true,
@@ -405,12 +404,11 @@ class YouthProfileService
                 "int",
                 Rule::in(BaseModel::GENDER)
             ],
-            "email" => "required|email|unique:youths,email," . $id,
+            "email" => "required|email",
             "mobile" => [
                 "required",
                 "max:11",
                 BaseModel::MOBILE_REGEX,
-                "unique:youths,mobile," . $id
             ],
             "date_of_birth" => [
                 Rule::requiredIf(function () use ($id) {
