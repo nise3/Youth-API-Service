@@ -62,11 +62,27 @@ abstract class BaseModel extends Model
     public const MALE = 1;
     public const FEMALE = 2;
     public const OTHERS = 3;
-    public const GENDER = [
+    public const GENDERS = [
         self::MALE,
         self::FEMALE,
         self::OTHERS
     ];
+
+    /** Marital Statuses */
+    public const MARITAL_STATUS_SINGLE = 1;
+    public const MARITAL_STATUS_MARRIED = 2;
+    public const MARITAL_STATUS_WIDOWED = 3;
+    public const MARITAL_STATUS_DIVORCED = 4;
+
+    /** Religions Mapping  */
+    public const RELIGION_ISLAM = 1;
+    public const RELIGION_HINDUISM = 2;
+    public const RELIGION_CHRISTIANITY = 3;
+    public const RELIGION_BUDDHISM = 4;
+    public const RELIGION_JUDAISM  = 5;
+    public const RELIGION_SIKHISM  = 6;
+    public const RELIGION_ETHNIC  = 7;
+    public const RELIGION_AGNOSTIC_ATHEIST = 8;
 
     /** LanguagesProficiency Level */
     public const EASY = 1;

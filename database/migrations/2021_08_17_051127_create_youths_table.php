@@ -27,13 +27,29 @@ class CreateYouthsTable extends Migration
             $table->string('last_name', 500);
             $table->string('last_name_en', 500)->nullable();
 
-            $table->unsignedTinyInteger('gender')
-                ->comment('1=>male,2=>female,3=>others');
+            $table->date('date_of_birth');
 
             $table->string('email', 191)->unique();
             $table->string('mobile', 20)->unique();
 
-            $table->date('date_of_birth');
+            $table->unsignedTinyInteger('gender')
+                ->comment('1=>male,2=>female,3=>others');
+
+            $table->unsignedTinyInteger('religion')
+                ->comment('1 => Islam, 2 => Hinduism, 3 => Christianity, 4 => Buddhism, 5 => Judaism, 6 => Sikhism, 7 => Ethnic, 8 => Agnostic/Atheist');
+
+            $table->unsignedTinyInteger('marital_status')
+                ->comment('1 => single,2 => married,3 => widowed,4 => divorced');
+
+            $table->unsignedSmallInteger('nationality')->default(1); /** Coming from nise3 config file */
+
+            $table->unsignedTinyInteger('identity_number_type')
+                ->nullable()->comment('Nid => 1, Birth Cert => 2, Passport => 3');
+
+            $table->string('identity_number', 100)->nullable();
+
+            $table->unsignedTinyInteger('freedom_fighter_info')
+                ->comment('0=>No,1=>Yes')->default(0);
 
             $table->unsignedTinyInteger('physical_disability_status')
                 ->comment('0=>No,1=>Yes')->default(0);

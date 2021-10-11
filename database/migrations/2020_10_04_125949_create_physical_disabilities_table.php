@@ -17,7 +17,6 @@ class CreatePhysicalDisabilitiesTable extends Migration
             $table->tinyIncrements("id");
             $table->string("title", 500);
             $table->string("title_en", 250)->nullable();
-            $table->text("description")->nullable();
             $table->unsignedTinyInteger("row_status")->default(1);
             $table->timestamps();
             $table->softDeletes();

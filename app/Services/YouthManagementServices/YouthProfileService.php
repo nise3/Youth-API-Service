@@ -402,7 +402,7 @@ class YouthProfileService
                     return $id == null;
                 }),
                 "int",
-                Rule::in(BaseModel::GENDER)
+                Rule::in(BaseModel::GENDERS)
             ],
             "email" => "required|email|unique:youths,email," . $id,
             "mobile" => [
