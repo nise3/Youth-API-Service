@@ -34,7 +34,7 @@ class JobExperienceService
 
         /** @var Builder $jobExperienceBuilder */
         $jobExperienceBuilder = JobExperience::select([
-            'job_experiences.id11',
+            'job_experiences.id',
             'job_experiences.company_name',
             'job_experiences.company_name_en',
             'job_experiences.position',
