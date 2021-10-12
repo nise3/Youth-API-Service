@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\YouthGuardian;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,6 +25,7 @@ class DatabaseSeeder extends Seeder
             PhysicalDisabilitySeeder::class,
             MajorOrSubjectSeeder::class,
             YouthSeeder::class,
+            GuardianSeeder::class
 //            PortfolioSeeder::class,
 //            JobExperienceSeeder::class,
 //            ReferenceSeeder::class,

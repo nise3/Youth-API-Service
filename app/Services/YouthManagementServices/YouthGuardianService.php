@@ -5,9 +5,6 @@ namespace App\Services\YouthManagementServices;
 
 
 use App\Models\BaseModel;
-use App\Models\Education;
-use App\Models\Examination;
-use App\Models\Youth;
 use App\Models\YouthGuardian;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Validator;
@@ -18,9 +15,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class YouthGuardianService
+ * @package App\Services\YouthManagementServices
+ */
 class YouthGuardianService
 {
 
+    /**
+     * @param array $request
+     * @param Carbon $startTime
+     * @return array
+     */
     public function getGuardianList(array $request, Carbon $startTime): array
     {
         $guardianName = $request['name'] ?? "";
@@ -88,61 +94,31 @@ class YouthGuardianService
      * @param Carbon $startTime
      * @return array
      */
-    public function getOneEducation(int $id, Carbon $startTime): array
+    public function getOneGuardian(int $id, Carbon $startTime): array
     {
-        $educationBuilder = Education::select(
+        $guardianBuilder = YouthGuardian::select(
             [
-                'educations.id',
-                'educations.youth_id',
-                'educations.institute_name',
-                'educations.institute_name_en',
-                'educations.examination_id',
-                'examinations.code as examination_code',
-                'examinations.title_en as examination_title_en',
-                'examinations.title as examination_title',
-                'educations.board_id',
-                'boards.title_en as board_title_en',
-                'boards.title as board_title',
-                'educations.edu_group_id',
-                'edu_groups.code as edu_group_code',
-                'edu_groups.title_en as edu_group_title_en',
-                'edu_groups.title as edu_group_title',
-                'educations.major_or_subject_id',
-                'educations.roll_number',
-                'educations.registration_number',
-                'educations.result_type',
-                'educations.division_type_result',
-                'educations.cgpa_gpa_max_value',
-                'educations.received_cgpa_gpa',
-                'educations.passing_year',
-                'educations.row_status',
-                'educations.created_at',
-                'educations.updated_at',
+                'youth_guardians.id',
+                'youth_guardians.name',
+                'youth_guardians.name_en',
+                'youth_guardians.nid',
+                'youth_guardians.mobile',
+                'youth_guardians.date_of_birth',
+                'youth_guardians.relationship_type',
+                'youth_guardians.relationship_title',
+                'youth_guardians.relationship_title_en',
+                'youth_guardians.created_at',
+                'youth_guardians.updated_at'
             ]
         );
-        $educationBuilder->join('examinations', function ($join) {
-            $join->on('examinations.id', '=', 'educations.examination_id')
-                ->whereNull('examinations.deleted_at');
 
-        });
-        $educationBuilder->join('boards', function ($join) {
-            $join->on('boards.id', '=', 'educations.board_id')
-                ->whereNull('boards.deleted_at');
+        $guardianBuilder->where('youth_guardians.id', $id);
 
-        }
-        );
-        $educationBuilder->join('edu_groups', function ($join) {
-            $join->on('edu_groups.id', '=', 'educations.edu_group_id')
-                ->whereNull('edu_groups.deleted_at');
-
-        });
-        $educationBuilder->where('educations.id', $id);
-
-        /** @var Education $education */
-        $education = $educationBuilder->first();
+        /** @var YouthGuardian $guardian */
+        $guardian = $guardianBuilder->first();
 
         return [
-            "data" => $education ?: [],
+            "data" => $guardian ?: [],
             "_response_status" => [
                 "success" => true,
                 "code" => Response::HTTP_OK,
@@ -153,40 +129,40 @@ class YouthGuardianService
 
     /**
      * @param array $data
-     * @return Education
+     * @return YouthGuardian
      */
-    public function createEducation(array $data): Education
+    public function createGuardian(array $data): YouthGuardian
     {
-        $youthEducation = new Education();
-        $youthEducation->fill($data);
-        $youthEducation->save();
-        return $youthEducation;
+        $youthGuardian = new YouthGuardian();
+        $youthGuardian->fill($data);
+        $youthGuardian->save();
+        return $youthGuardian;
     }
 
     /**
-     * @param Education $youthEducation
+     * @param YouthGuardian $youthGuardian
      * @param array $data
-     * @return Education
+     * @return YouthGuardian
      */
-    public function update(Education $youthEducation, array $data): Education
+    public function update(YouthGuardian $youthGuardian, array $data): YouthGuardian
     {
-        $youthEducation->fill($data);
-        $youthEducation->save();
-        return $youthEducation;
+        $youthGuardian->fill($data);
+        $youthGuardian->save();
+        return $youthGuardian;
     }
 
     /**
-     * @param Education $youthEducation
+     * @param YouthGuardian $youthGuardian
      * @return bool
      */
-    public function destroy(Education $youthEducation): bool
+    public function destroy(YouthGuardian $youthGuardian): bool
     {
-        return $youthEducation->delete();
+        return $youthGuardian->delete();
     }
+
 
     /**
      * @param Request $request
-     * return use Illuminate\Support\Facades\Validator;
      * @param int|null $id
      * @return Validator
      */
@@ -195,8 +171,8 @@ class YouthGuardianService
         $rules = [
             'youth_id' => [
                 'required',
-                'int',
-                'exists:youths,id'
+                'exists:youths,id',
+                'int'
             ],
             "mobile" => [
                 "required",
@@ -227,17 +203,18 @@ class YouthGuardianService
             ],
             'relationship_type' => [
                 'required',
-                Rule::unique(function () use ($request) {
-                    if ($request['relationship_title'] != config('nise3.relationship_types')[5]) {
-                        YouthGuardian::where('youth_id' , $request['youth_id'])
-                        return $request['relationship_title'] == config('nise3.relationship_types')[5];
+                function ($attr, $value, $fail) use ($request,$id) {
+
+                    if ($id == null && $value != BaseModel::RELATIONSHIP_TYPE_OTHER) {
+                        $guardian = YouthGuardian::where('youth_id', $request['youth_id'])->where($attr, $value)->first();
+                        $guardian !=null && $fail($attr." should be unique with this youth id");
                     }
-                }),
+                },
                 'int',
             ],
             'relationship_title' => [
                 Rule::requiredIf(function () use ($request) {
-                    return $request['relationship_title'] == config('nise3.relationship_types')[5];
+                    return $request['relationship_type'] == BaseModel::RELATIONSHIP_TYPE_OTHER;
                 }),
                 'string',
                 'min:1'
@@ -270,8 +247,8 @@ class YouthGuardianService
         }
 
         return \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'page' => 'numeric|gt:0',
-            'pageSize' => 'numeric|gt:0',
+            'page' => 'int|gt:0',
+            'pageSize' => 'int|gt:0',
             'name' => 'nullable|string',
             'name_en' => 'nullable|string',
             'order' => [

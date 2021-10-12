@@ -50,6 +50,7 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
     $customRouter()->resourceRoute('youth-languages-proficiencies', 'LanguagesProficiencyController')->render();
     $customRouter()->resourceRoute('youth-certifications', 'CertificationController')->render();
     $customRouter()->resourceRoute('youth-educations', 'EducationController')->render();
+    $customRouter()->resourceRoute('youth-guardians', 'YouthGuardianController')->render();
 
     $router->get('youth-profile', ["as" => "youth-profile.get-profile", "uses" => "YouthProfileController@getYouthProfile"]);
     $router->put('youth-personal-info-update', ["as" => "youth-profile.update", "uses" => "YouthProfileController@youthProfileInfoUpdate"]);

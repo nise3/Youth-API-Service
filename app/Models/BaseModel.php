@@ -128,4 +128,10 @@ abstract class BaseModel extends Model
     public const ADDRESS_TYPE_PRESENT = 1;
     public const ADDRESS_TYPE_PERMANENT = 2;
 
+    public const  RELATIONSHIP_TYPE_FATHER= 1;
+    public const  RELATIONSHIP_TYPE_MOTHER= 2;
+    public const  RELATIONSHIP_TYPE_UNCLE= 3;
+    public const  RELATIONSHIP_TYPE_AUNT= 4;
+    public const  RELATIONSHIP_TYPE_OTHER= 5;
+
 }
