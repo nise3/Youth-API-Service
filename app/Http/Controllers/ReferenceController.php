@@ -74,7 +74,6 @@ class ReferenceController extends Controller
         $request['youth_id'] = Auth::id();
         $validated = $this->referenceService->validator($request)->validate();
         try {
-            $validated['youth_id'] = $validated['youth_id'] ?? Auth::id();
             $reference = $this->referenceService->store($validated);
             $response = [
                 'data' => $reference,
