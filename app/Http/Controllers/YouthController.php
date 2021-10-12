@@ -168,4 +168,26 @@ class  YouthController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
+    /**
+     * Remove the specified resource from storage
+     * @return Exception|JsonResponse|Throwable
+     * @throws Throwable
+     */
+    // data from examinations, boards , edu groups, major or subjects table
+    public function youthEducationBasicInfos(): JsonResponse
+    {
+        try {
+            $info = $this->youthService->getEducationBasicTablesInfos();
+
+            $response['data'] = $info;
+            $response['response_status'] = [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+            ];
+        } catch (Throwable $e) {
+            throw $e;
+        }
+        return Response::json($response, ResponseAlias::HTTP_OK);
+    }
+
 }

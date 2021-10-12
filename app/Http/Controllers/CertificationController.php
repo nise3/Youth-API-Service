@@ -70,7 +70,7 @@ class CertificationController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $request['youth_id'] = $request['youth_id'] ?? Auth::id();
+        $request['youth_id'] = Auth::id();
         $validated = $this->certificationService->validator($request)->validate();
         try {
 
@@ -100,6 +100,7 @@ class CertificationController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
+        $request['youth_id'] = Auth::id();
         $certification = Certification::findOrFail($id);
         $validated = $this->certificationService->validator($request, $id)->validate();
         try {
