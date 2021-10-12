@@ -19,6 +19,11 @@
             "url": "https://bus.softbd.xyz/devportal/apis"
         }
     ],
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
     "paths": {
         "/": {
             "get": {
@@ -2877,9 +2882,252 @@
                     }
                 }
             }
+        },
+        "/youth-languages-proficiencies": {
+            "get": {
+                "summary": "get_list",
+                "description": "API endpoint to get the list of Language Proficiencies. A successful request response will show 200 HTTP status code ",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page_size"
+                    },
+                    {
+                        "$ref": "#/components/parameters/row_status"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get_list",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "current_page": 1,
+                                    "total_page": 1,
+                                    "page_size": 10,
+                                    "total": 10,
+                                    "order": "ASC",
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "youth_id": 1,
+                                            "language_id": 1,
+                                            "language_title": "বাংলা",
+                                            "language_title_en": "Bengali",
+                                            "lang_code": "bn",
+                                            "reading_proficiency_level": 1,
+                                            "writing_proficiency_level": 2,
+                                            "speaking_proficiency_level": 2,
+                                            "understand_proficiency_level": 1,
+                                            "row_status": 1,
+                                            "created_at": "2021-10-11T12:45:11.000000Z",
+                                            "updated_at": "2021-10-11T12:45:11.000000Z"
+                                        }
+                                    ],
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Language Proficiency"
+                ]
+            },
+            "post": {
+                "summary": "create",
+                "description": "API endpoint to create a Language Proficiency.A successful request response will show 200 HTTP status code",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/languageProficiency"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "create",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "id": 1,
+                                        "youth_id": 1,
+                                        "language_id": 1,
+                                        "language_title": "বাংলা",
+                                        "language_title_en": "Bengali",
+                                        "lang_code": "bn",
+                                        "reading_proficiency_level": 1,
+                                        "writing_proficiency_level": 2,
+                                        "speaking_proficiency_level": 2,
+                                        "understand_proficiency_level": 1,
+                                        "row_status": 1,
+                                        "created_at": "2021-10-11T12:45:11.000000Z",
+                                        "updated_at": "2021-10-11T12:45:11.000000Z"
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 201,
+                                        "message": "Language Proficiency added successfully",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Language Proficiency"
+                ]
+            }
+        },
+        "/youth-languages-proficiencies/{languageProficiencyId}": {
+            "get": {
+                "summary": "get_one",
+                "description": "API endpoint to get a specified Language Proficiency.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/languageProficiencyId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get_one",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "id": 1,
+                                        "youth_id": 1,
+                                        "language_id": 1,
+                                        "language_title": "বাংলা",
+                                        "language_title_en": "Bengali",
+                                        "lang_code": "bn",
+                                        "reading_proficiency_level": 1,
+                                        "writing_proficiency_level": 2,
+                                        "speaking_proficiency_level": 2,
+                                        "understand_proficiency_level": 1,
+                                        "row_status": 1,
+                                        "created_at": "2021-10-11T12:45:11.000000Z",
+                                        "updated_at": "2021-10-11T12:45:11.000000Z"
+                                    },
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Language Proficiency"
+                ]
+            },
+            "put": {
+                "summary": "update",
+                "description": "API endpoint to update the specified Language Proficiency. A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/languageProficiencyId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/languageProficiency"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "update",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "id": 1,
+                                        "youth_id": 1,
+                                        "language_id": 1,
+                                        "language_title": "বাংলা",
+                                        "language_title_en": "Bengali",
+                                        "lang_code": "bn",
+                                        "reading_proficiency_level": 1,
+                                        "writing_proficiency_level": 2,
+                                        "speaking_proficiency_level": 2,
+                                        "understand_proficiency_level": 1,
+                                        "row_status": 1,
+                                        "created_at": "2021-10-11T12:45:11.000000Z",
+                                        "updated_at": "2021-10-11T12:45:11.000000Z"
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Language Proficiency updated successfully.",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Language Proficiency"
+                ]
+            },
+            "delete": {
+                "summary": "delete",
+                "description": "API endpoint to delete the specified Language Proficiency.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/languageProficiencyId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "delete",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Job experience deleted successfully.",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Language Proficiency"
+                ]
+            }
         }
     },
     "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
         "schemas": {
             "Youth": {
                 "type": "object",
@@ -4363,6 +4611,42 @@
                     "result_type",
                     "passing_year"
                 ]
+            },
+            "languageProficiency": {
+                "type": "object",
+                "description": "Provide language Proficiency info",
+                "properties": {
+                    "language_id": {
+                        "type": "integer"
+                    },
+                    "reading_proficiency_level": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 2
+                    },
+                    "writing_proficiency_level": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 2
+                    },
+                    "speaking_proficiency_level": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 2
+                    },
+                    "understand_proficiency_level": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 2
+                    }
+                },
+                "required": [
+                    "language_id",
+                    "reading_proficiency_level",
+                    "writing_proficiency_level",
+                    "speaking_proficiency_level",
+                    "understand_proficiency_level"
+                ]
             }
         },
         "parameters": {
@@ -4525,6 +4809,15 @@
             },
             "jobExperienceId": {
                 "name": "jobExperienceId",
+                "required": true,
+                "in": "path",
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            "languageProficiencyId": {
+                "name": "languageProficiencyId",
                 "required": true,
                 "in": "path",
                 "schema": {
