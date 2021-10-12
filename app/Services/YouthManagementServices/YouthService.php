@@ -252,7 +252,9 @@ class YouthService
             "examinations" => Examination::all(),
             "edu_groups" => EduGroup::all(),
             "boards" => Board::all(),
-            "major_subjects" => MajorOrSubject::all()
+            "major_subjects" => MajorOrSubject::all(),
+            "level_of_education"=>config("nise3.education_levels"),
+            "result"=>config("nise3.exam_degree_results")
         ];
     }
 
