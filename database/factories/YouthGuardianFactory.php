@@ -11,8 +11,12 @@ class YouthGuardianFactory extends Factory
 
     public function definition(): array
     {
-    	return [
-    	    //
-    	];
+        return [
+            'youth_id' => $this->faker->randomElement([1, 2, 3, 4, 5]),
+            'name' => ucfirst($this->faker->name),
+            'name_en' => ucfirst($this->faker->name),
+            'mobile' => $this->faker->numerify('017########')
+
+        ];
     }
 }

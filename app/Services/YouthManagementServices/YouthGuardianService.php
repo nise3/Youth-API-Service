@@ -7,6 +7,7 @@ namespace App\Services\YouthManagementServices;
 use App\Models\BaseModel;
 use App\Models\Education;
 use App\Models\Examination;
+use App\Models\Youth;
 use App\Models\YouthGuardian;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Validator;
@@ -27,7 +28,6 @@ class YouthGuardianService
 
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
-        $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
 
 
@@ -43,61 +43,37 @@ class YouthGuardianService
                 'youth_guardians.relationship_type',
                 'youth_guardians.relationship_title',
                 'youth_guardians.relationship_title_en',
-                'educations.row_status',
-                'educations.created_at',
-                'educations.updated_at',
+                'youth_guardians.created_at',
+                'youth_guardians.updated_at',
             ]
         );
 
         if (is_int(Auth::id())) {
-            $guardianBuilder->where('educations.youth_id', Auth::id());
+            $guardianBuilder->where('youth_guardians.youth_id', Auth::id());
+        }
+        if (!empty($guardianName)) {
+            $guardianBuilder->where('youth_guardians.name', 'like', '%' . $guardianName . '%');
+        }
+        if (!empty($guardianNameEn)) {
+            $guardianBuilder->where('youth_guardians.name_en', 'like', '%' . $guardianNameEn . '%');
         }
 
-        if (!empty($instituteName)) {
-            $educationBuilder->where('educations.institute_name', 'like', '%' . $instituteName . '%');
-        }
-        if (!empty($instituteNameEn)) {
-            $educationBuilder->where('educations.institute_name_en', 'like', '%' . $instituteNameEn . '%');
-        }
-
-        if (!empty($examinationTitleEn)) {
-            $educationBuilder->where('examinations.title_en', 'like', '%' . $examinationTitleEn . '%');
-        }
-        if (!empty($examinationTitleBn)) {
-            $educationBuilder->where('examinations.title', 'like', '%' . $examinationTitleBn . '%');
-        }
-
-        if (!empty($boardTitleEn)) {
-            $educationBuilder->where('boards.title_en', 'like', '%' . $boardTitleEn . '%');
-        }
-        if (!empty($boardTitleBn)) {
-            $educationBuilder->where('boards.title', 'like', '%' . $boardTitleBn . '%');
-        }
-
-        if (!empty($eduGroupTitleEn)) {
-            $educationBuilder->where('edu_groups.title_en', 'like', '%' . $eduGroupTitleEn . '%');
-        }
-        if (!empty($eduGroupTitleBn)) {
-            $educationBuilder->where('edu_groups.title', 'like', '%' . $eduGroupTitleBn . '%');
-        }
-
-
-        /** @var Collection $educations */
+        /** @var Collection $guardians */
 
         if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
-            $educations = $educationBuilder->paginate($pageSize);
-            $paginateData = (object)$educations->toArray();
+            $guardians = $guardianBuilder->paginate($pageSize);
+            $paginateData = (object)$guardians->toArray();
             $response['current_page'] = $paginateData->current_page;
             $response['total_page'] = $paginateData->last_page;
             $response['page_size'] = $paginateData->per_page;
             $response['total'] = $paginateData->total;
         } else {
-            $educations = $educationBuilder->get();
+            $guardians = $guardianBuilder->get();
         }
 
         $response['order'] = $order;
-        $response['data'] = $educations->toArray()['data'] ?? $educations->toArray();
+        $response['data'] = $guardians->toArray()['data'] ?? $guardians->toArray();
         $response['_response_status'] = [
             "success" => true,
             "code" => Response::HTTP_OK,
@@ -210,191 +186,70 @@ class YouthGuardianService
 
     /**
      * @param Request $request
-     * @param Carbon $startTime
-     * @return array
-     */
-    public function getTrashedYouthEducationList(Request $request, Carbon $startTime): array
-    {
-        $titleEn = $request->query('title_en');
-        $titleBn = $request->query('title');
-        $limit = $request->query('limit', 10);
-        $paginate = $request->query('page');
-        $order = !empty($request->query('order')) ? $request->query('order') : 'ASC';
-
-        /** @var Builder $educationBuilder */
-        $educationBuilder = Education::onlyTrashed()->select(
-            [
-                'skills.id as id',
-                'skills.title_en',
-                'skills.title',
-                'skills.row_status',
-                'skills.created_at',
-                'skills.updated_at'
-            ]
-        );
-
-        $educationBuilder->orderBy('skills.id', $order);
-
-        if (!empty($titleEn)) {
-            $educationBuilder->where('skills.title_en', 'like', '%' . $titleEn . '%');
-        } elseif (!empty($titleBn)) {
-            $educationBuilder->where('skills.title', 'like', '%' . $titleBn . '%');
-        }
-
-        /** @var Collection $youthEducations */
-
-        if (!is_null($paginate) || !is_null($limit)) {
-            $limit = $limit ?: 10;
-            $youthEducations = $educationBuilder->paginate($limit);
-            $paginateData = (object)$youthEducations->toArray();
-            $response['current_page'] = $paginateData->current_page;
-            $response['total_page'] = $paginateData->last_page;
-            $response['page_size'] = $paginateData->per_page;
-            $response['total'] = $paginateData->total;
-        } else {
-            $youthEducations = $educationBuilder->get();
-        }
-
-        $response['order'] = $order;
-        $response['data'] = $youthEducations->toArray()['data'] ?? $youthEducations->toArray();
-        $response['_response_status'] = [
-            "success" => true,
-            "code" => Response::HTTP_OK,
-            "query_time" => $startTime->diffInSeconds(Carbon::now())
-        ];
-
-        return $response;
-    }
-
-    /**
-     * @param Education $youthEducation
-     * @return bool
-     */
-    public function restore(Education $youthEducation): bool
-    {
-        return $youthEducation->restore();
-    }
-
-    /**
-     * @param Education $youthEducation
-     * @return bool
-     */
-    public function forceDelete(Education $youthEducation): bool
-    {
-        return $youthEducation->forceDelete();
-    }
-
-    /**
-     * @param Request $request
      * return use Illuminate\Support\Facades\Validator;
      * @param int|null $id
      * @return Validator
      */
     public function validator(Request $request, int $id = null): Validator
     {
-        $customMessage = [
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
-            ],
-            'examination_id.unique' => [
-                'message' => Examination::findOrFail($request->examination_id)->title_en . " examination already added your education list"
-            ]
-        ];
         $rules = [
             'youth_id' => [
                 'required',
                 'int',
                 'exists:youths,id'
             ],
-            'examination_id' => [
-                'required',
-                'integer',
-                'exists:examinations,id',
-                'min:1',
-                'unique_with:educations,youth_id,' . $id
+            "mobile" => [
+                "required",
+                "max:11",
+                BaseModel::MOBILE_REGEX
             ],
-            'institute_name' => [
+            'name' => [
                 'required',
                 'string',
-                'max:400',
+                'max:500',
+                'min:1'
             ],
-            'institute_name_en' => [
+            'name_en' => [
                 'nullable',
                 'string',
-                'max:400',
-            ],
-            'roll_number' => [
-                'required',
-                'string',
-
-            ],
-            'registration_number' => [
-                'required',
-                'string',
-            ],
-            'result_type' => [
-                'required',
-                'integer',
+                'max:250',
                 'min:1'
             ],
-            'passing_year' => [
+            'nid' => [
+                'nullable',
+                'string',
+                'max:30',
+            ],
+            'date_of_birth' => [
+                'nullable',
+                'date',
+
+            ],
+            'relationship_type' => [
                 'required',
-                'integer',
-                'min:1971'
+                Rule::unique(function () use ($request) {
+                    if ($request['relationship_title'] != config('nise3.relationship_types')[5]) {
+                        YouthGuardian::where('youth_id' , $request['youth_id'])
+                        return $request['relationship_title'] == config('nise3.relationship_types')[5];
+                    }
+                }),
+                'int',
             ],
-            'row_status' => [
-                'required_if:' . $id . ',!=,null',
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
+            'relationship_title' => [
+                Rule::requiredIf(function () use ($request) {
+                    return $request['relationship_title'] == config('nise3.relationship_types')[5];
+                }),
+                'string',
+                'min:1'
             ],
+            'relationship_title_en' => [
+                'nullable',
+                'string',
+                'min:1'
+            ]
         ];
-        if ($request->examination_id == Education::EXAMINATION_ID_HONOURS or $request->examination_id == Education::EXAMINATION_ID_PMASTERS or $request->examination_id == Education::EXAMINATION_ID_MASTERS) {
-            $rules['major_or_subject_id'] = [
-                'required',
-                'integer',
-                'exists:major_or_subjects,id',
-            ];
-        } else {
-            $rules['board_id'] = [
-                'required',
-                'integer',
-                'exists:boards,id',
-                'min:1'
-            ];
-        }
 
-        if ($request->result_type == Education::RESULT_TYPE_DIVISION) {
-            $rules['division_type_result'] = [
-                'required',
-                'numeric',
-                'min:1',
-                Rule::in(Education::DIVISION_FIRST_CLASS, Education::DIVISION_SECOND_CLASS, Education::DIVISION_THIRD_CLASS, Education::DIVISION_PASS),
-            ];
-        }
-        if ($request->examination_id == Education::EXAMINATION_ID_SSC or $request->examination_id == Education::EXAMINATION_ID_DAKHIL or $request->examination_id == Education::EXAMINATION_ID_HSC or $request->examination_id == Education::EXAMINATION_ID_ALIM) {
-            $rules['edu_group_id'] = [
-                'required',
-                'integer',
-                'exists:edu_groups,id',
-                'min:1'
-            ];
-        }
-
-        if ($request->result_type == Education::RESULT_TYPE_GRADE_POINT) {
-            $rules['cgpa_gpa_max_value'] = [
-                'required',
-                'numeric',
-                Rule::in([Education::GPA_OUT_OF_FIVE, Education::GPA_OUT_OF_FOUR])
-            ];
-
-            $rules['received_cgpa_gpa'] = [
-                'required',
-                'numeric',
-                'lte:cgpa_gpa_max_value'
-            ];
-        }
-
-        return \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $customMessage);
+        return \Illuminate\Support\Facades\Validator::make($request->all(), $rules);
     }
 
     /**
@@ -407,10 +262,6 @@ class YouthGuardianService
             'order.in' => [
                 'code' => 30000,
                 "message" => 'Order must be within ASC or DESC',
-            ],
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
             ]
         ];
 
@@ -419,17 +270,14 @@ class YouthGuardianService
         }
 
         return \Illuminate\Support\Facades\Validator::make($request->all(), [
-
             'page' => 'numeric|gt:0',
             'pageSize' => 'numeric|gt:0',
+            'name' => 'nullable|string',
+            'name_en' => 'nullable|string',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
-            ],
-            'row_status' => [
-                "numeric",
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
-            ],
+            ]
         ], $customMessage);
     }
 }
