@@ -187,7 +187,8 @@ class LanguagesProficiencyService
             'language_id' => [
                 'required',
                 'int',
-                'exists:languages,id'
+                'exists:languages,id',
+                'unique_with:languages_proficiencies,youth_id,' . $id
             ],
             'reading_proficiency_level' => [
                 'required',

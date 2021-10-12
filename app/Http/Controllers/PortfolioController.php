@@ -81,7 +81,7 @@ class PortfolioController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $request['youth_id'] = $request['youth_id'] ?? Auth::id();
+        $request['youth_id'] = Auth::id();
         $validated = $this->portfolioService->validator($request)->validate();
         try {
             $validated['youth_id'] = $validated['youth_id'] ?? Auth::id();
@@ -112,6 +112,7 @@ class PortfolioController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         $portfolio = Portfolio::findOrFail($id);
+        $request['youth_id'] = Auth::id();
         $validated = $this->portfolioService->validator($request, $id)->validate();
         try {
             $portfolio = $this->portfolioService->update($portfolio, $validated);

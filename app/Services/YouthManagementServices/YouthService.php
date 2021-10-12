@@ -3,10 +3,15 @@
 namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
+use App\Models\Board;
+use App\Models\EduGroup;
+use App\Models\Examination;
+use App\Models\MajorOrSubject;
 use App\Models\Youth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -67,7 +72,7 @@ class YouthService
         );
 
         $youthBuilder->orderBy('youths.id', $order);
-        $youthBuilder->with(["skills", "physicalDisabilities", "jobExperiences","LanguagesProficiencies","certifications","educations","portfolios","references"]);
+        $youthBuilder->with(["skills", "physicalDisabilities", "jobExperiences", "LanguagesProficiencies", "certifications", "educations", "portfolios", "references"]);
 
         if (!empty($firstName)) {
             $youthBuilder->where('youths.first_name', 'like', '%' . $firstName . '%');
@@ -151,7 +156,7 @@ class YouthService
         );
 
         $youthBuilder->where('youths.id', $id);
-        $youthBuilder->with(["skills", "physicalDisabilities", "jobExperiences","LanguagesProficiencies","certifications","educations","portfolios","references"]);
+        $youthBuilder->with(["skills", "physicalDisabilities", "jobExperiences", "LanguagesProficiencies", "certifications", "educations", "portfolios", "references"]);
 
 
         /** @var Youth $youth */
@@ -239,6 +244,16 @@ class YouthService
                 Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
             ],
         ], $customMessage);
+    }
+
+    public function getEducationBasicTablesInfos(): array
+    {
+        return [
+            "examinations" => Examination::all(),
+            "edu_groups" => EduGroup::all(),
+            "boards" => Board::all(),
+            "major_subjects" => MajorOrSubject::all()
+        ];
     }
 
 }

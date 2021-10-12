@@ -47,6 +47,7 @@ class YouthProfileService
                 'youths.gender',
                 'youths.email',
                 'youths.mobile',
+                'youths.user_name_type',
                 'youths.date_of_birth',
                 'youths.physical_disability_status',
                 'youths.loc_division_id',
@@ -121,6 +122,11 @@ class YouthProfileService
         $youth->fill($data);
         $youth->save();
         $this->assignSkills($youth, $data["skills"]);
+        if ($data['physical_disability_status'] == BaseModel::FALSE) {
+            $this->detachPhysicalDisabilities($youth);
+        } else if ($data['physical_disability_status'] == BaseModel::TRUE) {
+            $this->assignPhysicalDisabilities($youth, $data['physical_disabilities']);
+        }
         return $youth;
     }
 
@@ -145,6 +151,16 @@ class YouthProfileService
         /** Assign skills to Youth */
         $disabilityIds = PhysicalDisability::whereIn("id", $disabilities)->orderBy('id', 'ASC')->pluck('id')->toArray();
         $youth->physicalDisabilities()->sync($disabilityIds);
+
+    }
+
+    /**
+     * @param Youth $youth
+     * @param array $disabilities
+     */
+    private function detachPhysicalDisabilities(Youth $youth)
+    {
+        $youth->physicalDisabilities()->sync([]);
 
     }
 
@@ -247,11 +263,12 @@ class YouthProfileService
     public function idpUserCreate(array $data)
     {
         $url = clientUrl(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
-
         $client = Http::retry(3)
             ->withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
-            ->withHeaders(['Content-Type' => 'application/json'])
-            ->withOptions(['debug' => config("nise3.is_dev_mode"), 'verify' => config("nise3.should_ssl_verify")])
+            ->withHeaders([
+                'Content-Type' => 'application/json'
+            ])
+            ->withOptions(['debug' => fopen('php://stderr', 'w'), 'verify' => false])
             ->post($url, [
                 'schemas' => [
                 ],
@@ -379,13 +396,25 @@ class YouthProfileService
     {
         $data = $request->all();
 
+        $customMessage = [
+            "password.regex" => [
+                "code" => "",
+                "message" => [
+                    "Have At least one Uppercase letter",
+                    "At least one Lower case letter",
+                    "Also,At least one numeric value",
+                    "And, At least one special character",
+                    "Must be more than 8 characters long"
+                ]
+            ]
+        ];
+
         if (!empty($data["skills"])) {
             $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
         }
         if (!empty($data["physical_disabilities"])) {
             $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
         }
-
         $rules = [
             "user_name_type" => [
                 Rule::requiredIf(function () use ($id) {
@@ -397,6 +426,8 @@ class YouthProfileService
             "first_name_en" => "nullable|string|min:2|max:500",
             "last_name" => "required|string|min:2|max:500",
             "last_name_en" => "nullable|string|min:2|max:500",
+            "bio" => "nullable|string",
+            "bio_en" => "nullable|string",
             "gender" => [
                 Rule::requiredIf(function () use ($id) {
                     return $id == null;
@@ -404,12 +435,31 @@ class YouthProfileService
                 "int",
                 Rule::in(BaseModel::GENDER)
             ],
-            "email" => "required|email|unique:youths,email," . $id,
+            "email" => [
+                Rule::requiredIf(function () use ($id) {
+                    if ($id == null)
+                        return true;
+                    else if ($id) {
+                        $youth = Youth::find($id);
+                        return $youth->user_name_type == BaseModel::USER_NAME_TYPE_MOBILE_NUMBER;
+                    }
+                }),
+                "unique:youths,email," . $id,
+                "email",
+
+            ],
             "mobile" => [
-                "required",
+                Rule::requiredIf(function () use ($id) {
+                    if ($id == null)
+                        return true;
+                    else if ($id) {
+                        $youth = Youth::find($id);
+                        return $youth->user_name_type == BaseModel::USER_NAME_TYPE_EMAIL;
+                    }
+                }),
                 "max:11",
-                BaseModel::MOBILE_REGEX,
-                "unique:youths,mobile," . $id
+                "unique:youths,mobile," . $id,
+                BaseModel::MOBILE_REGEX
             ],
             "date_of_birth" => [
                 Rule::requiredIf(function () use ($id) {
@@ -431,24 +481,22 @@ class YouthProfileService
                 "min:1"
             ],
             "physical_disability_status" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
+                "required",
                 "int",
                 Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUS)
             ],
             "physical_disabilities" => [
-                Rule::requiredIf(function () use ($id, $request) {
-                    return ($id == null && $request->physical_disability_status == BaseModel::TRUE);
+                Rule::requiredIf(function () use ($id, $data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
                 }),
                 "array",
                 "min:1"
             ],
             "physical_disabilities.*" => [
-                Rule::requiredIf(function () use ($id, $request) {
-                    return ($id == null && $request->physical_disability_status == BaseModel::TRUE);
+                Rule::requiredIf(function () use ($id, $data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
                 }),
-                "numeric",
+                "int",
                 "distinct",
                 "min:1",
                 "exists:physical_disabilities,id"
@@ -497,6 +545,14 @@ class YouthProfileService
                 "nullable",
                 "string"
             ],
+            "house_n_road" => [
+                "nullable",
+                "string"
+            ],
+            "house_n_road_en" => [
+                "nullable",
+                "string"
+            ],
             "zip_or_postal_code" => [
                 Rule::requiredIf(function () use ($id) {
                     return $id != null;
@@ -504,7 +560,7 @@ class YouthProfileService
                 "string"
             ],
         ];
-        return \Illuminate\Support\Facades\Validator::make($data, $rules);
+        return \Illuminate\Support\Facades\Validator::make($data, $rules, $customMessage);
     }
 
 

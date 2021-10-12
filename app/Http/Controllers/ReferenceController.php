@@ -71,10 +71,9 @@ class ReferenceController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $request['youth_id'] = $request['youth_id'] ?? Auth::id();
+        $request['youth_id'] = Auth::id();
         $validated = $this->referenceService->validator($request)->validate();
         try {
-            $validated['youth_id'] = $validated['youth_id'] ?? Auth::id();
             $reference = $this->referenceService->store($validated);
             $response = [
                 'data' => $reference,
@@ -102,6 +101,7 @@ class ReferenceController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         $reference = Reference::findOrFail($id);
+        $request['youth_id'] = Auth::id();
         $validated = $this->referenceService->validator($request, $id)->validate();
         try {
             $reference = $this->referenceService->update($reference, $validated);

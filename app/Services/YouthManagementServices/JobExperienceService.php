@@ -113,6 +113,7 @@ class JobExperienceService
             'job_experiences.job_description_en',
             'job_experiences.start_date',
             'job_experiences.end_date',
+            'job_experiences.employment_type_id',
             'job_experiences.is_currently_work',
             'job_experiences.row_status',
             'job_experiences.created_at',
