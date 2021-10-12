@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Models\Youth;
 use App\Services\YouthManagementServices\YouthProfileService;
-use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -48,14 +47,18 @@ class AuthServiceProvider extends ServiceProvider
             //$header = explode(" ", $token);
             $token = trim(str_replace('Bearer', '', $token));
 
-            $jwtPayload = $this->decode($token);
-
+            //$jwtPayload = $this->decode($token);
+            $idpServerId = $this->getIdpServerIdFromToken($token);
+            Log::info("Auth idp user id-->".$idpServerId);
             $youthService = $this->app->make(YouthProfileService::class);
-            $authUser = $youthService->getAuthYouth($jwtPayload->sub ?? null);
-            if($authUser){
-                Auth::setUser($authUser);
+            if($idpServerId){
+                $authUser = $youthService->getAuthYouth($idpServerId);
+                Log::info("authUser fetch:" . json_encode($authUser));
+                if($authUser){
+                    Auth::setUser($authUser);
+                }
             }
-            Log::info("userInfoWithIdpId:" . json_encode($authUser));
+            Log::info("userInfoWithIdpId:" . json_encode(Auth::user()));
 
         }
     }
@@ -71,6 +74,7 @@ class AuthServiceProvider extends ServiceProvider
 
         $header = json_decode(base64_decode($header));
         $claims = json_decode(base64_decode($claims));
+
         $signature = json_decode(base64_decode($signature));
         $key =$this->getJwtKey();
 
@@ -81,6 +85,19 @@ class AuthServiceProvider extends ServiceProvider
         }
 
         return $claims;
+    }
+
+    private function getIdpServerIdFromToken($data, $verify = false)
+    {
+        $sections = explode('.', $data);
+        if (count($sections) < 3) {
+            throw new \Exception('Invalid number of sections of Tokens (<3)');
+        }
+
+        list($header, $claims, $signature) = $sections;
+        preg_match("/['\"]sub['\"]:['\"](.*?)['\"][,]/", base64_decode($claims), $matches);
+
+        return count($matches)>1 ? $matches[1] : "";
     }
 
     protected function getJwtKey()

@@ -110,7 +110,7 @@ class EducationController extends Controller
     {
 
         $education = Education::findOrFail($id);
-
+        $request['youth_id'] = Auth::id();
         $validated = $this->educationService->validator($request, $id)->validate();
 
         try {

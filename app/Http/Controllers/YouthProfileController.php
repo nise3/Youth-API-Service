@@ -68,12 +68,14 @@ class YouthProfileController extends Controller
         $youth = new Youth();
         $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
 
+        $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
+
         DB::beginTransaction();
         try {
             $idpUserPayLoad = [
                 'name' => $validated['first_name'] . " " . $validated["last_name"],
                 'email' => $validated['email'],
-                'username' => $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'],
+                'username' => $validated['username'],
                 'password' => $validated['password'],
                 'user_type' => BaseModel::YOUTH_USER_TYPE,
                 'status' => BaseModel::ROW_STATUS_PENDING,
@@ -127,12 +129,14 @@ class YouthProfileController extends Controller
      * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
-    public function youthProfileUpdate(Request $request): JsonResponse
+    public function youthProfileInfoUpdate(Request $request): JsonResponse
     {
         $id = Auth::id();
         /** @var Youth $youth */
-        $youth = Youth::findOrFail($id);
+        $youth = Youth::findOrFail(Auth::id());
+
         $validated = $this->youthProfileService->youthRegisterValidation($request, $id)->validate();
+
         try {
             $data = $this->youthProfileService->update($youth, $validated);
             $response = [

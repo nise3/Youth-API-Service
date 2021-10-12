@@ -79,9 +79,9 @@ class JobExperienceController extends Controller
     public function store(Request $request): JsonResponse
     {
         $jobExperience = new JobExperience();
+        $request['youth_id'] = Auth::id();
         $validated = $this->jobExperienceService->validator($request)->validate();
         try {
-            $validated['youth_id'] = $validated['youth_id'] ?? Auth::id();
             $jobExperience = $this->jobExperienceService->store($jobExperience, $validated);
             $response = [
                 'data' => $jobExperience,
@@ -108,6 +108,7 @@ class JobExperienceController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         $jobExperience = JobExperience::findOrFail($id);
+        $request['youth_id'] = Auth::id();
         $validated = $this->jobExperienceService->validator($request, $id)->validate();
         try {
             $jobExperience = $this->jobExperienceService->update($jobExperience, $validated);
