@@ -17,17 +17,14 @@ class CreateYouthGuardiansTable extends Migration
 
             $table->increments('id');
             $table->unsignedInteger('youth_id');
-            $table->string('father_name', 500);
-            $table->string('father_name_en', 250)->nullable();
-            $table->string('father_nid', 30)->nullable();
-            $table->string('father_mobile', 20)->nullable();
-            $table->date('father_date_of_birth')->nullable();
-
-            $table->string('mother_name', 500);
-            $table->string('mother_name_en', 250)->nullable();
-            $table->string('mother_nid', 30)->nullable();
-            $table->string('mother_mobile', 20)->nullable();
-            $table->date('mother_date_of_birth')->nullable();
+            $table->string('name', 500);
+            $table->string('name_en', 250)->nullable();
+            $table->string('nid', 30)->nullable();
+            $table->string('mobile', 20)->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->unsignedTinyInteger('relationship_type')->comment("1 => Father, 2 => Mother, 3 => Uncle, 4=> Aunt, 5=>Other");
+            $table->string('relationship_title')->nullable();
+            $table->string('relationship_title_en')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

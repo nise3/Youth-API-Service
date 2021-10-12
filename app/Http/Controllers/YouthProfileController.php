@@ -97,7 +97,7 @@ class YouthProfileController extends Controller
                 'user_type' => BaseModel::YOUTH_USER_TYPE,
                 'active' => BaseModel::ROW_STATUS_PENDING,
             ];
-
+            //dd(isset($validated['loc_upazila_id']));
             $httpClient = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
             if ($httpClient->json("id")) {
                 Log::info("Youth create for idp user--->".$httpClient->json("id")."----->email-->".$validated['email']);
@@ -113,10 +113,13 @@ class YouthProfileController extends Controller
                 $addressData['address_type'] = BaseModel::ADDRESS_TYPE_PRESENT;
                 $addressData['loc_division_id'] = $validated['loc_division_id'];
                 $addressData['loc_district_id'] = $validated['loc_district_id'];
-                $addressData['loc_upazila_id'] = $validated['loc_upazila_id'];
-                $addressData['village_or_area'] = $validated['village_or_area'];
-                $addressData['village_or_area_en'] = $validated['village_or_area_en'];
+                $addressData['loc_upazila_id'] = isset($validated['loc_upazila_id']) ? $validated['loc_upazila_id'] : null;
+                $addressData['village_or_area'] = isset($validated['village_or_area']) ? $validated['village_or_area'] : null;
+                $addressData['village_or_area_en'] = isset($validated['village_or_area_en'])?$validated['village_or_area_en']: null;
+                $addressData['zip_or_postal_code'] = isset($validated['zip_or_postal_code'])?$validated['zip_or_postal_code']: null;
                 $address = $this->youthAddressService->store($addressData);
+
+                Log::info("Youth user address create for user");
 
                 /** @var  $sendVeryCodePayLoad */
                 $sendVeryCodePayLoad["code"] = $validated['verification_code'];

@@ -56,14 +56,14 @@ if (!function_exists("idpUserErrorMessage")) {
     /**
      * @param $exception
      */
-    function idUserErrorMessage($exception): array
+    function idpUserErrorMessage($exception): array
     {
         $statusCode = $exception->getCode();
         $errors = [
             '_response_status' => [
                 'success' => false,
                 'code' => ResponseAlias::HTTP_INTERNAL_SERVER_ERROR,
-                "message" => "Idp User unknown error",
+                "message" => "Idp server Internal Server Error",
                 "query_time" => 0
             ]
         ];
