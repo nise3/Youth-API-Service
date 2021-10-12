@@ -125,4 +125,7 @@ abstract class BaseModel extends Model
 
     public const DEFAULT_PAGE_SIZE = 10;
 
+    public const ADDRESS_TYPE_PRESENT = 1;
+    public const ADDRESS_TYPE_PERMANENT = 2;
+
 }

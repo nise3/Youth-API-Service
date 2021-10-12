@@ -268,7 +268,7 @@ class YouthProfileService
             ->withHeaders([
                 'Content-Type' => 'application/json'
             ])
-            ->withOptions(['debug' => fopen('php://stderr', 'w'), 'verify' => false])
+            ->withOptions(['verify' => false])
             ->post($url, [
                 'schemas' => [
                 ],
@@ -279,7 +279,7 @@ class YouthProfileService
                 'userName' => $data['username'],
                 'password' => $data['password'],
                 'userType' => $data['user_type'],
-                // 'active' => $data['status'],
+                'active' => $data['active'],
                 'emails' => [
                     0 => [
                         'primary' => true,
@@ -392,7 +392,7 @@ class YouthProfileService
         return \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $customMessage);
     }
 
-    public function youthRegisterValidation(Request $request, int $id = null): Validator
+    public function youthRegisterOrUpdateValidation(Request $request, int $id = null): Validator
     {
         $data = $request->all();
 
@@ -521,12 +521,16 @@ class YouthProfileService
                 BaseModel::PASSWORD_MAX_LENGTH,
             ],
             "loc_division_id" => [
-                "required",
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
                 "exists:loc_divisions,id",
                 "int"
             ],
             "loc_district_id" => [
-                "required",
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
                 "exists:loc_districts,id",
                 "int"
             ],
@@ -544,9 +548,7 @@ class YouthProfileService
                 "string"
             ],
             "zip_or_postal_code" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id != null;
-                }),
+                "nullable",
                 "string"
             ],
         ];

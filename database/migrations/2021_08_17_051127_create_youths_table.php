@@ -31,10 +31,10 @@ class CreateYouthsTable extends Migration
             $table->unsignedTinyInteger('gender')
                 ->comment('1=>male,2=>female,3=>others');
 
-            $table->unsignedTinyInteger('religion')
+            $table->unsignedTinyInteger('religion')->nullable()
                 ->comment('1 => Islam, 2 => Hinduism, 3 => Christianity, 4 => Buddhism, 5 => Judaism, 6 => Sikhism, 7 => Ethnic, 8 => Agnostic/Atheist');
 
-            $table->unsignedTinyInteger('marital_status')
+            $table->unsignedTinyInteger('marital_status')->nullable()
                 ->comment('1 => single, 2 => married, 3 => widowed, 4 => divorced');
 
             $table->unsignedSmallInteger('nationality')->default(1);
