@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BaseModel;
 use App\Models\Youth;
+use App\Services\YouthManagementServices\YouthAddressService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Exception;
@@ -23,13 +24,29 @@ class YouthProfileController extends Controller
 {
 
 
+    /**
+     * @var YouthProfileService
+     */
     public YouthProfileService $youthProfileService;
+    /**
+     * @var YouthAddressService
+     */
+    public YouthAddressService $youthAddressService;
+    /**
+     * @var Carbon
+     */
     private Carbon $startTime;
 
 
-    public function __construct(YouthProfileService $youthProfileService)
+    /**
+     * YouthProfileController constructor.
+     * @param YouthProfileService $youthProfileService
+     * @param YouthAddressService $youthAddressService
+     */
+    public function __construct(YouthProfileService $youthProfileService, YouthAddressService $youthAddressService)
     {
         $this->youthProfileService = $youthProfileService;
+        $this->youthAddressService = $youthAddressService;
         $this->startTime = Carbon::now();
     }
 
@@ -66,26 +83,40 @@ class YouthProfileController extends Controller
     function youthRegistration(Request $request): JsonResponse
     {
         $youth = new Youth();
-        $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
+        $validated = $this->youthProfileService->youthRegisterOrUpdateValidation($request)->validate();
+
+        $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
 
         DB::beginTransaction();
         try {
             $idpUserPayLoad = [
                 'name' => $validated['first_name'] . " " . $validated["last_name"],
                 'email' => $validated['email'],
-                'username' => $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'],
+                'username' => $validated['username'],
                 'password' => $validated['password'],
                 'user_type' => BaseModel::YOUTH_USER_TYPE,
-                'status' => BaseModel::ROW_STATUS_PENDING,
+                'active' => BaseModel::ROW_STATUS_PENDING,
             ];
 
             $httpClient = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
             if ($httpClient->json("id")) {
+                Log::info("Youth create for idp user--->".$httpClient->json("id")."----->email-->".$validated['email']);
                 $validated['idp_user_id'] = $httpClient->json("id");
                 $validated["verification_code"] = $this->youthProfileService->generateCode();
                 $validated['verification_code_sent_at'] = Carbon::now();
                 $validated['row_status'] = BaseModel::ROW_STATUS_PENDING;
                 $youth = $this->youthProfileService->store($youth, $validated);
+
+                Log::info("Youth user create in db----->email-->".$validated['email']);
+
+                $addressData['youth_id'] = $youth->id;
+                $addressData['address_type'] = BaseModel::ADDRESS_TYPE_PRESENT;
+                $addressData['loc_division_id'] = $validated['loc_division_id'];
+                $addressData['loc_district_id'] = $validated['loc_district_id'];
+                $addressData['loc_upazila_id'] = $validated['loc_upazila_id'];
+                $addressData['village_or_area'] = $validated['village_or_area'];
+                $addressData['village_or_area_en'] = $validated['village_or_area_en'];
+                $address = $this->youthAddressService->store($addressData);
 
                 /** @var  $sendVeryCodePayLoad */
                 $sendVeryCodePayLoad["code"] = $validated['verification_code'];
@@ -127,12 +158,14 @@ class YouthProfileController extends Controller
      * @return Exception|JsonResponse|Throwable
      * @throws ValidationException
      */
-    public function youthProfileUpdate(Request $request): JsonResponse
+    public function youthProfileInfoUpdate(Request $request): JsonResponse
     {
         $id = Auth::id();
         /** @var Youth $youth */
-        $youth = Youth::findOrFail($id);
-        $validated = $this->youthProfileService->youthRegisterValidation($request, $id)->validate();
+        $youth = Youth::findOrFail(Auth::id());
+
+        $validated = $this->youthProfileService->youthRegisterOrUpdateValidation($request, $id)->validate();
+
         try {
             $data = $this->youthProfileService->update($youth, $validated);
             $response = [
@@ -206,6 +239,12 @@ class YouthProfileController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Throwable
+     * @throws ValidationException
+     */
     public function resendVerificationCode(Request $request): JsonResponse
     {
         $validated = $this->youthProfileService->resendCodeValidator($request)->validate();

@@ -88,6 +88,7 @@ abstract class BaseModel extends Model
 
     public const MOBILE_REGEX = 'regex: /^(01[3-9]\d{8})$/';
 
+
     /** Password Validation Rules */
 
     /** Password Regex
@@ -123,5 +124,8 @@ abstract class BaseModel extends Model
     public const CURRENTLY_NOT_WORKING = 0;
 
     public const DEFAULT_PAGE_SIZE = 10;
+
+    public const ADDRESS_TYPE_PRESENT = 1;
+    public const ADDRESS_TYPE_PERMANENT = 2;
 
 }

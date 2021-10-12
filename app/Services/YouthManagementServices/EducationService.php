@@ -280,13 +280,9 @@ class EducationService
                 'skills.id as id',
                 'skills.title_en',
                 'skills.title',
-                'skills.description',
-                'skills.description_en',
                 'skills.row_status',
                 'skills.created_at',
-                'skills.updated_at',
-                'skills.created_by',
-                'skills.updated_by',
+                'skills.updated_at'
             ]
         );
 

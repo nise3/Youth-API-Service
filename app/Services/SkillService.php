@@ -39,13 +39,9 @@ class SkillService
                 'skills.id',
                 'skills.title',
                 'skills.title_en',
-                'skills.description',
-                'skills.description_en',
                 'skills.row_status',
                 'skills.created_at',
-                'skills.updated_at',
-                'skills.created_by',
-                'skills.updated_by',
+                'skills.updated_at'
             ]
         );
         $skillBuilder->orderBy('skills.id', $order);
@@ -98,13 +94,9 @@ class SkillService
                 'skills.id',
                 'skills.title',
                 'skills.title_en',
-                'skills.description',
-                'skills.description_en',
                 'skills.row_status',
                 'skills.created_at',
-                'skills.updated_at',
-                'skills.created_by',
-                'skills.updated_by',
+                'skills.updated_at'
             ]
         );
 
@@ -172,16 +164,12 @@ class SkillService
         /** @var Builder $skillBuilder */
         $skillBuilder = Skill::onlyTrashed()->select(
             [
-                'skills.id as id',
+                'skills.id',
                 'skills.title',
                 'skills.title_en',
-                'skills.description',
-                'skills.description_en',
                 'skills.row_status',
                 'skills.created_at',
-                'skills.updated_at',
-                'skills.created_by',
-                'skills.updated_by',
+                'skills.updated_at'
             ]
         );
 
@@ -262,14 +250,6 @@ class SkillService
                 'string',
                 'max: 400',
                 'min:2'
-            ],
-            'description' => [
-                'nullable',
-                'string',
-            ],
-            'description_en' => [
-                'nullable',
-                'string',
             ],
             'row_status' => [
                 'required_if:' . $id . ',!=,null',
