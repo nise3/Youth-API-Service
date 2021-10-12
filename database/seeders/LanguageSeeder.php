@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Language;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class LanguageSeeder extends Seeder
 {
@@ -12,11 +14,11 @@ class LanguageSeeder extends Seeder
      *
      * @return void
      */
-
-
     public function run()
     {
-        $languages =[
+        Schema::disableForeignKeyConstraints();
+        DB::table('languages')->truncate();
+        $languages = [
             [
                 "lang_code" => "bn",
                 "title" => "বাংলা",
@@ -39,5 +41,6 @@ class LanguageSeeder extends Seeder
             ]
         ];
         Language::insert($languages);
+        Schema::enableForeignKeyConstraints();
     }
 }
