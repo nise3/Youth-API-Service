@@ -1,5 +1,5 @@
 {
-    "openapi": "3.0.3",
+    "openapi": "3.0.0",
     "info": {
         "title": "Youth Management Service",
         "description": "Youth Management Service",
@@ -7,16 +7,10 @@
     },
     "servers": [
         {
+            "url": "https://youth.bus-staging.softbdltd.com/api/v1"
+        },
+        {
             "url": "http://localhost:8000/api/v1"
-        },
-        {
-            "url": "http://localhost:8001/api/v1"
-        },
-        {
-            "url": "http://localhost:8002/api/v1"
-        },
-        {
-            "url": "https://bus.softbd.xyz/devportal/apis"
         }
     ],
     "paths": {

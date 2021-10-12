@@ -6,16 +6,14 @@ use App\Helpers\Classes\CustomRouter;
 use Laravel\Lumen\Routing\Router;
 
 
-$router->get('/', function () {
-    return "Call api youth success";
-});
-
-
 $customRouter = function (string $as = '') use ($router) {
     $custom = new CustomRouter($router);
     return $custom->as($as);
 };
 
+$router->get('/', function () use ($router) {
+    return $router->app->version();
+});
 
 $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($router, $customRouter) {
     $router->get('/', ['as' => 'api-info', 'uses' => 'ApiInfoController@apiInfo']);
