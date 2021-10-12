@@ -23,8 +23,6 @@ class YouthFactory extends Factory
             'gender' => $this->faker->randomElement([1, 2]),
             'mobile' => $this->faker->numerify('017########'),
             'email' => $email,
-            'loc_division_id' => 1,
-            'loc_district_id' => 1,
             'row_status' => 1
         ];
     }
