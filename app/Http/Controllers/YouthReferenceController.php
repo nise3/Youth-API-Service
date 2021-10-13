@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Portfolio;
-use App\Services\YouthManagementServices\PortfolioService;
+use App\Models\Reference;
+use App\Services\YouthManagementServices\YouthReferenceService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -14,42 +14,30 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
-/**
- * Class PortfolioController
- * @package App\Http\Controllers
- */
-class PortfolioController extends Controller
+class YouthReferenceController extends Controller
 {
-    /**
-     * @var PortfolioService
-     */
-    public PortfolioService $portfolioService;
-    /**
-     * @var Carbon
-     */
+
+    public YouthReferenceService $referenceService;
     private Carbon $startTime;
 
-
-    /**
-     * PortfolioController constructor.
-     * @param PortfolioService $portfolioService
-     */
-    public function __construct(PortfolioService $portfolioService)
+    public function __construct(YouthReferenceService $referenceService)
     {
-        $this->portfolioService = $portfolioService;
+        $this->referenceService = $referenceService;
         $this->startTime = Carbon::now();
     }
 
+
     /**
      * @param Request $request
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      * @throws ValidationException
      */
-    public function getList(Request $request)
+    public function getList(Request $request): JsonResponse
     {
-        $filter = $this->portfolioService->filterValidator($request)->validate();
+        $filter = $this->referenceService->filterValidator($request)->validate();
         try {
-            $response = $this->portfolioService->getAllPortfolios($filter, $this->startTime);
+            $response = $this->referenceService->getReferenceList($filter, $this->startTime);
         } catch (Throwable $e) {
             throw $e;
         }
@@ -61,11 +49,12 @@ class PortfolioController extends Controller
      *
      * @param int $id
      * @return Exception|JsonResponse|Throwable
+     * @throws Throwable
      */
     public function read(int $id): JsonResponse
     {
         try {
-            $response = $this->portfolioService->getOnePortfolio($id, $this->startTime);
+            $response = $this->referenceService->getOneReference($id, $this->startTime);
         } catch (Throwable $e) {
             throw $e;
         }
@@ -82,16 +71,15 @@ class PortfolioController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request['youth_id'] = Auth::id();
-        $validated = $this->portfolioService->validator($request)->validate();
+        $validated = $this->referenceService->validator($request)->validate();
         try {
-            $validated['youth_id'] = $validated['youth_id'] ?? Auth::id();
-            $portfolio = $this->portfolioService->store($validated);
+            $reference = $this->referenceService->store($validated);
             $response = [
-                'data' => $portfolio,
+                'data' => $reference,
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "Portfolio added successfully",
+                    "message" => "Reference added successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
@@ -111,17 +99,17 @@ class PortfolioController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $portfolio = Portfolio::findOrFail($id);
+        $reference = Reference::findOrFail($id);
         $request['youth_id'] = Auth::id();
-        $validated = $this->portfolioService->validator($request, $id)->validate();
+        $validated = $this->referenceService->validator($request, $id)->validate();
         try {
-            $portfolio = $this->portfolioService->update($portfolio, $validated);
+            $reference = $this->referenceService->update($reference, $validated);
             $response = [
-                'data' => $portfolio,
+                'data' => $reference,
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Portfolio updated successfully",
+                    "message" => "Reference updated successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];
@@ -138,14 +126,14 @@ class PortfolioController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $portfolio = Portfolio::findOrFail($id);
+        $reference = Reference::findOrFail($id);
         try {
-            $this->portfolioService->destroy($portfolio);
+            $this->referenceService->destroy($reference);
             $response = [
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Portfolio deleted successfully",
+                    "message" => "Reference deleted successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];

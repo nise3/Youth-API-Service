@@ -22,8 +22,6 @@ use App\Services\YouthManagementServices\YouthProfileService;
 
 class YouthProfileController extends Controller
 {
-
-
     /**
      * @var YouthProfileService
      */

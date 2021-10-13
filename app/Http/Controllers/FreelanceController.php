@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\YouthManagementServices\FreelanceService;
-use App\Services\YouthManagementServices\JobExperienceService;
+use App\Services\YouthManagementServices\YouthJobExperienceService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;

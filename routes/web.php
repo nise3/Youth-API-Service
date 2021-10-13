@@ -44,11 +44,11 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
 
 //youth profile info/update group
 $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"], function () use ($router, $customRouter) {
-    $customRouter()->resourceRoute('youth-portfolios', 'PortfolioController')->render();
-    $customRouter()->resourceRoute('youth-job-experiences', 'JobExperienceController')->render();
-    $customRouter()->resourceRoute('youth-references', 'ReferenceController')->render();
-    $customRouter()->resourceRoute('youth-languages-proficiencies', 'LanguagesProficiencyController')->render();
-    $customRouter()->resourceRoute('youth-certifications', 'CertificationController')->render();
+    $customRouter()->resourceRoute('youth-portfolios', 'YouthPortfolioController')->render();
+    $customRouter()->resourceRoute('youth-job-experiences', 'YouthJobExperienceController')->render();
+    $customRouter()->resourceRoute('youth-references', 'YouthReferenceController')->render();
+    $customRouter()->resourceRoute('youth-languages-proficiencies', 'YouthLanguagesProficiencyController')->render();
+    $customRouter()->resourceRoute('youth-certifications', 'YouthCertificationController')->render();
     $customRouter()->resourceRoute('youth-educations', 'EducationController')->render();
     $customRouter()->resourceRoute('youth-guardians', 'YouthGuardianController')->render();
 

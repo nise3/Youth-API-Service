@@ -64,6 +64,7 @@ class YouthProfileService
                 'youths.house_n_road',
                 'youths.house_n_road_en',
                 'youths.zip_or_postal_code',
+                'youths.is_freelance_profile',
                 'youths.bio',
                 'youths.bio_en',
                 'youths.photo',
