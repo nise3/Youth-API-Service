@@ -1793,7 +1793,7 @@
         },
         "/youth-profile-verification": {
             "post": {
-                "summary": "Youth profile verification",
+                "summary": "Youth Approval by OTP Verification",
                 "description": "API endpoint to verify a youth profile. A successful request response will show 200 HTTP status code ",
                 "parameters": [
                     {
