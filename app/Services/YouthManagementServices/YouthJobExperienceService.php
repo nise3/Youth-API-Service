@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
-class YouthJobExperienceService
+class JobExperienceService
 {
     /**
      * @param array $request
@@ -25,10 +25,11 @@ class YouthJobExperienceService
 
     public function getAllJobExperiences(array $request, Carbon $startTime): array
     {
-        $companyName = $request['company_name'] ?? "";
         $companyNameEn = $request['company_name_en'] ?? "";
+        $companyNameBn = $request['company_name_bn'] ?? "";
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
+        $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
 
         /** @var Builder $jobExperienceBuilder */
@@ -41,32 +42,36 @@ class YouthJobExperienceService
             'job_experiences.youth_id',
             'job_experiences.location',
             'job_experiences.location_en',
-            'job_experiences.job_responsibilities',
-            'job_experiences.job_responsibilities_en',
+            'job_experiences.job_description',
+            'job_experiences.job_description_en',
             'job_experiences.start_date',
             'job_experiences.end_date',
-            'job_experiences.is_currently_working',
+            'job_experiences.is_currently_work',
+            'job_experiences.row_status',
             'job_experiences.created_at',
             'job_experiences.updated_at'
         ]);
 
-        if (is_int(Auth::id())) {
+        if (is_numeric(Auth::id())) {
             $jobExperienceBuilder->where('job_experiences.youth_id', Auth::id());
         }
 
         $jobExperienceBuilder->orderBy('job_experiences.id', $order);
 
-        if (!empty($companyName)) {
-            $jobExperienceBuilder->where('job_experiences.company_name', 'like', '%' . $companyName . '%');
+        if (is_numeric($rowStatus)) {
+            $jobExperienceBuilder->where('job_experiences.row_status', $rowStatus);
         }
         if (!empty($companyNameEn)) {
             $jobExperienceBuilder->where('job_experiences.company_name_en', 'like', '%' . $companyNameEn . '%');
+        }
+        if (!empty($companyNameBn)) {
+            $jobExperienceBuilder->where('job_experiences.company_name_bn', 'like', '%' . $companyNameBn . '%');
         }
 
         /** @var Collection $jobExperiences */
 
         if (is_numeric($paginate) || is_numeric($pageSize)) {
-            $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
+            $pageSize = $pageSize ?: 10;
             $jobExperiences = $jobExperienceBuilder->paginate($pageSize);
             $paginateData = (object)$jobExperiences->toArray();
             $response['current_page'] = $paginateData->current_page;
@@ -104,11 +109,13 @@ class YouthJobExperienceService
             'job_experiences.youth_id',
             'job_experiences.location',
             'job_experiences.location_en',
-            'job_experiences.job_responsibilities',
-            'job_experiences.job_responsibilities_en',
+            'job_experiences.job_description',
+            'job_experiences.job_description_en',
             'job_experiences.start_date',
             'job_experiences.end_date',
-            'job_experiences.is_currently_working',
+            'job_experiences.employment_type_id',
+            'job_experiences.is_currently_work',
+            'job_experiences.row_status',
             'job_experiences.created_at',
             'job_experiences.updated_at'
         ]);
@@ -170,6 +177,10 @@ class YouthJobExperienceService
             'order.in' => [
                 'code' => 30000,
                 "message" => 'Order must be either ASC or DESC',
+            ],
+            'row_status.in' => [
+                'code' => 30000,
+                'message' => 'Row status must be within 1 or 0'
             ]
         ];
 
@@ -189,7 +200,11 @@ class YouthJobExperienceService
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
-            ]
+            ],
+            'row_status' => [
+                "numeric",
+                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
+            ],
         ], $customMessage);
     }
 
@@ -200,6 +215,12 @@ class YouthJobExperienceService
      */
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
+        $customMessage = [
+            'row_status.in' => [
+                'code' => 30000,
+                'message' => 'Row status must be either 1 or 0'
+            ]
+        ];
         $rules = [
             'company_name' => [
                 'required',
@@ -236,18 +257,18 @@ class YouthJobExperienceService
                 'string',
                 'max:300'
             ],
-            'job_responsibilities' => [
+            'job_description' => [
                 'nullable',
                 'string',
             ],
-            'job_responsibilities_en' => [
+            'job_description_en' => [
                 'nullable',
                 'string',
             ],
             'youth_id' => [
                 'required',
-                'exists:youths,id',
-                'int'
+                'int',
+                'exists:youths,id'
             ],
             'start_date' => [
                 'date',
@@ -258,11 +279,11 @@ class YouthJobExperienceService
                 'nullable',
                 'after:start_date'
             ],
-            'is_currently_working' => [
-                'int',
+            'is_currently_work' => [
+                'numeric',
                 Rule::in([BaseModel::CURRENTLY_NOT_WORKING, BaseModel::CURRENTLY_WORKING])
             ]
         ];
-        return Validator::make($request->all(), $rules);
+        return Validator::make($request->all(), $rules, $customMessage);
     }
 }

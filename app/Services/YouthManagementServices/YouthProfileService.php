@@ -427,6 +427,8 @@ class YouthProfileService
             "first_name_en" => "nullable|string|min:2|max:500",
             "last_name" => "required|string|min:2|max:500",
             "last_name_en" => "nullable|string|min:2|max:500",
+            "bio" => "nullable|string",
+            "bio_en" => "nullable|string",
             "gender" => [
                 Rule::requiredIf(function () use ($id) {
                     return $id == null;
@@ -545,6 +547,14 @@ class YouthProfileService
                 "string"
             ],
             "village_or_area_en" => [
+                "nullable",
+                "string"
+            ],
+            "house_n_road" => [
+                "nullable",
+                "string"
+            ],
+            "house_n_road_en" => [
                 "nullable",
                 "string"
             ],

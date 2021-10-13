@@ -197,6 +197,18 @@ class YouthReferenceService
                 'max:150',
                 'min:2'
             ],
+            'referrer_organization_name' => [
+                'required',
+                'string',
+                'max:600',
+                'min:2'
+            ],
+            'referrer_organization_name_en' => [
+                'nullable',
+                'string',
+                'max:150',
+                'min:2'
+            ],
             'referrer_designation' => [
                 'required',
                 'string',
