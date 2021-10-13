@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LanguagesProficiency;
-use App\Services\YouthManagementServices\LanguagesProficiencyService;
+use App\Services\YouthManagementServices\YouthLanguagesProficiencyService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -14,15 +14,15 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
-class LanguagesProficiencyController extends Controller
+class YouthLanguagesProficiencyController extends Controller
 {
 
-    public LanguagesProficiencyService $languagesProficiencyService;
+    public YouthLanguagesProficiencyService $languagesProficiencyService;
 
     private Carbon $startTime;
 
 
-    public function __construct(LanguagesProficiencyService $languagesProficiencyService)
+    public function __construct(YouthLanguagesProficiencyService $languagesProficiencyService)
     {
         $this->languagesProficiencyService = $languagesProficiencyService;
         $this->startTime = Carbon::now();
@@ -75,7 +75,6 @@ class LanguagesProficiencyController extends Controller
         $request['youth_id'] = Auth::id();
         $validated = $this->languagesProficiencyService->validator($request)->validate();
         try {
-            $validated['youth_id'] = $validated['youth_id'] ?? Auth::id();
             $languageProficiency = $this->languagesProficiencyService->store($validated);
             $response = [
                 'data' => $languageProficiency,

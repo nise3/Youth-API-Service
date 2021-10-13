@@ -18,7 +18,6 @@ class CreateMajorOrSubjectsTable extends Migration
             $table->char('code', 20);
             $table->string("title_en", 250);
             $table->string("title", 500);
-//            $table->text("description")->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

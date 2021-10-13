@@ -4,7 +4,6 @@ namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
 use App\Models\Certification;
-use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -14,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
-class CertificationService
+class YouthCertificationService
 {
     /**
      * @param array $request
@@ -26,8 +25,7 @@ class CertificationService
     {
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
-        $rowStatus = $request['row_status'] ?? "";
-        $order = $request['order'] ?? "ASC";
+        $order = $request['order'] ?? BaseModel::ROW_ORDER_ASC;
 
         /** @var Builder $certificationBuilder */
         $certificationBuilder = Certification::select([
@@ -42,25 +40,21 @@ class CertificationService
             'certifications.start_date',
             'certifications.end_date',
             'certifications.certificate_file_path',
-            'certifications.row_status',
             'certifications.created_at',
             'certifications.updated_at'
         ]);
 
-        if (is_numeric(Auth::id())) {
+        if (is_int(Auth::id())) {
             $certificationBuilder->where('certifications.youth_id', Auth::id());
         }
 
         $certificationBuilder->orderBy('certifications.id', $order);
 
-        if (is_numeric($rowStatus)) {
-            $certificationBuilder->where('certifications.row_status', $rowStatus);
-        }
 
         /** @var Collection $certifications */
 
-        if (is_numeric($paginate) || is_numeric($pageSize)) {
-            $pageSize = $pageSize ?: 10;
+        if (is_int($paginate) || is_int($pageSize)) {
+            $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $certifications = $certificationBuilder->paginate($pageSize);
             $paginateData = (object)$certifications->toArray();
             $response['current_page'] = $paginateData->current_page;
@@ -101,7 +95,6 @@ class CertificationService
             'certifications.start_date',
             'certifications.end_date',
             'certifications.certificate_file_path',
-            'certifications.row_status',
             'certifications.created_at',
             'certifications.updated_at'
         ]);
@@ -163,10 +156,6 @@ class CertificationService
             'order.in' => [
                 'code' => 30000,
                 "message" => 'Order must be either ASC or DESC',
-            ],
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
             ]
         ];
 
@@ -175,16 +164,12 @@ class CertificationService
         }
 
         return Validator::make($request->all(), [
-            'page' => 'numeric|gt:0',
-            'page_size' => 'numeric|gt:0',
+            'page' => 'int|gt:0',
+            'page_size' => 'int|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
-            ],
-            'row_status' => [
-                "numeric",
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
-            ],
+            ]
         ], $customMessage);
     }
 
@@ -195,12 +180,6 @@ class CertificationService
      */
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
-        $customMessage = [
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be either 1 or 0'
-            ]
-        ];
         $rules = [
             'certification_name' => [
                 'required',
@@ -246,22 +225,18 @@ class CertificationService
             ],
             'youth_id' => [
                 'required',
-                'int',
                 'min:1',
-                'exists:youths,id'
+                'exists:youths,id',
+                'int'
             ],
             'certificate_file_path' => [
                 'nullable',
                 'string',
                 'max:500',
                 'required'
-            ],
-            'row_status' => [
-                'required_if:' . $id . ',!=,null',
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
-            ],
+            ]
         ];
-        return Validator::make($request->all(), $rules, $customMessage);
+        return Validator::make($request->all(), $rules);
     }
 
 }

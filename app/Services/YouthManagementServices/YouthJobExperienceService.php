@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
-class JobExperienceService
+class YouthJobExperienceService
 {
     /**
      * @param array $request
@@ -25,11 +25,10 @@ class JobExperienceService
 
     public function getAllJobExperiences(array $request, Carbon $startTime): array
     {
+        $companyName = $request['company_name'] ?? "";
         $companyNameEn = $request['company_name_en'] ?? "";
-        $companyNameBn = $request['company_name_bn'] ?? "";
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
-        $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
 
         /** @var Builder $jobExperienceBuilder */
@@ -47,31 +46,27 @@ class JobExperienceService
             'job_experiences.start_date',
             'job_experiences.end_date',
             'job_experiences.is_currently_working',
-            'job_experiences.row_status',
             'job_experiences.created_at',
             'job_experiences.updated_at'
         ]);
 
-        if (is_numeric(Auth::id())) {
+        if (is_int(Auth::id())) {
             $jobExperienceBuilder->where('job_experiences.youth_id', Auth::id());
         }
 
         $jobExperienceBuilder->orderBy('job_experiences.id', $order);
 
-        if (is_numeric($rowStatus)) {
-            $jobExperienceBuilder->where('job_experiences.row_status', $rowStatus);
+        if (!empty($companyName)) {
+            $jobExperienceBuilder->where('job_experiences.company_name', 'like', '%' . $companyName . '%');
         }
         if (!empty($companyNameEn)) {
             $jobExperienceBuilder->where('job_experiences.company_name_en', 'like', '%' . $companyNameEn . '%');
-        }
-        if (!empty($companyNameBn)) {
-            $jobExperienceBuilder->where('job_experiences.company_name_bn', 'like', '%' . $companyNameBn . '%');
         }
 
         /** @var Collection $jobExperiences */
 
         if (is_numeric($paginate) || is_numeric($pageSize)) {
-            $pageSize = $pageSize ?: 10;
+            $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $jobExperiences = $jobExperienceBuilder->paginate($pageSize);
             $paginateData = (object)$jobExperiences->toArray();
             $response['current_page'] = $paginateData->current_page;
@@ -114,7 +109,6 @@ class JobExperienceService
             'job_experiences.start_date',
             'job_experiences.end_date',
             'job_experiences.is_currently_working',
-            'job_experiences.row_status',
             'job_experiences.created_at',
             'job_experiences.updated_at'
         ]);
@@ -176,10 +170,6 @@ class JobExperienceService
             'order.in' => [
                 'code' => 30000,
                 "message" => 'Order must be either ASC or DESC',
-            ],
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
             ]
         ];
 
@@ -199,11 +189,7 @@ class JobExperienceService
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
-            ],
-            'row_status' => [
-                "numeric",
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
-            ],
+            ]
         ], $customMessage);
     }
 
@@ -214,12 +200,6 @@ class JobExperienceService
      */
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
-        $customMessage = [
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be either 1 or 0'
-            ]
-        ];
         $rules = [
             'company_name' => [
                 'required',
@@ -266,8 +246,8 @@ class JobExperienceService
             ],
             'youth_id' => [
                 'required',
-                'int',
-                'exists:youths,id'
+                'exists:youths,id',
+                'int'
             ],
             'start_date' => [
                 'date',
@@ -279,10 +259,10 @@ class JobExperienceService
                 'after:start_date'
             ],
             'is_currently_working' => [
-                'numeric',
+                'int',
                 Rule::in([BaseModel::CURRENTLY_NOT_WORKING, BaseModel::CURRENTLY_WORKING])
             ]
         ];
-        return Validator::make($request->all(), $rules, $customMessage);
+        return Validator::make($request->all(), $rules);
     }
 }

@@ -38,6 +38,13 @@ return [
         '3' => ['en' => 'Pakistani', 'bn' => 'Pakistani'],
         '4' => ['en' => 'Nepali', 'bn' => 'Nepali'],
     ],
+    'relationship_types' => [
+        '1' => "Father",
+        '2' => "Mother",
+        '3' => "Uncle",
+        '4' => "Aunt",
+        '5' => "Other",
+    ],
     'education_levels' => [
         1 => ['en' => 'PSC/5 Pass', 'bn' => 'PSC/5 Pass'],
         2 => ['en' => 'JSC/JDC/8 Pass', 'bn' => 'JSC/JDC/8 Pass'],

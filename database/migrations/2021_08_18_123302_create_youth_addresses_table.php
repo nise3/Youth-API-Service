@@ -24,7 +24,7 @@ class CreateYouthAddressesTable extends Migration
             $table->unsignedMediumInteger("loc_district_id");
             $table->unsignedMediumInteger("loc_upazila_id")->nullable();
 
-            $table->string("village_n_area", 500)->nullable();
+            $table->string("village_or_area", 500)->nullable();
             $table->string("village_or_area_en", 250)->nullable();
 
             $table->string("house_n_road", 500)->nullable();

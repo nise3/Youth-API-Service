@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
             MajorOrSubjectSeeder::class,
             YouthSeeder::class,
             EducationLevelSeeder::class,
-            ExamDegreeSeeder::class
+            ExamDegreeSeeder::class,
+            GuardianSeeder::class
 //            PortfolioSeeder::class,
 //            JobExperienceSeeder::class,
 //            ReferenceSeeder::class,

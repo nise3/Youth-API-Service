@@ -40,9 +40,6 @@ class YouthSeeder extends Seeder
             ->has(
                 Reference::factory()->count(2), 'references'
             )
-            ->has(
-                Skill::factory()->count(2), 'skills'
-            )
             ->create();
     }
 }

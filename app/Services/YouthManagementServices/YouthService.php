@@ -148,8 +148,6 @@ class YouthService
                 'youths.verification_code',
                 'youths.verification_code_sent_at',
                 'youths.verification_code_verified_at',
-
-
                 'youths.row_status',
                 'youths.created_at',
                 'youths.updated_at',

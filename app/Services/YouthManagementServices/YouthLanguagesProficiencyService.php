@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
-class LanguagesProficiencyService
+class YouthLanguagesProficiencyService
 {
     /**
      * @param array $request
@@ -25,10 +25,8 @@ class LanguagesProficiencyService
 
     public function getLanguagesProficiencyList(array $request, Carbon $startTime): array
     {
-        $youthId = $request['youth_id'] ?? Auth::id();
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
-        $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
 
         /** @var Builder $languageProficiencyBuilder */
@@ -43,32 +41,26 @@ class LanguagesProficiencyService
             'languages_proficiencies.writing_proficiency_level',
             'languages_proficiencies.speaking_proficiency_level',
             'languages_proficiencies.understand_proficiency_level',
-            'languages_proficiencies.row_status',
             'languages_proficiencies.created_at',
             'languages_proficiencies.updated_at'
         ]);
         $languageProficiencyBuilder->orderBy('languages_proficiencies.id', $order);
 
-        $languageProficiencyBuilder->join('languages', function ($join) use ($rowStatus) {
+        $languageProficiencyBuilder->join('languages', function ($join) {
             $join->on('languages_proficiencies.language_id', '=', 'languages.id')
-                ->whereNull('languages.deleted_at');
-            if (is_numeric($rowStatus)) {
-                $join->where('languages.row_status', $rowStatus);
-            }
+                ->whereNull('languages.deleted_at')
+                ->where('languages.row_status', BaseModel::ROW_STATUS_ACTIVE);
+
         });
 
-        if (is_numeric($youthId)) {
-            $languageProficiencyBuilder->where('languages_proficiencies.youth_id', $youthId);
-        }
-
-        if (is_numeric($rowStatus)) {
-            $languageProficiencyBuilder->where('languages_proficiencies.row_status', $rowStatus);
+        if (is_int(Auth::id())) {
+            $languageProficiencyBuilder->where('languages_proficiencies.youth_id', Auth::id());
         }
 
         /** @var Collection $languagesProficiencies */
 
         if (is_numeric($paginate) || is_numeric($pageSize)) {
-            $pageSize = $pageSize ?: 10;
+            $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $languagesProficiencies = $languageProficiencyBuilder->paginate($pageSize);
             $paginateData = (object)$languagesProficiencies->toArray();
             $response['current_page'] = $paginateData->current_page;
@@ -108,13 +100,13 @@ class LanguagesProficiencyService
             'languages_proficiencies.writing_proficiency_level',
             'languages_proficiencies.speaking_proficiency_level',
             'languages_proficiencies.understand_proficiency_level',
-            'languages_proficiencies.row_status',
             'languages_proficiencies.created_at',
             'languages_proficiencies.updated_at'
         ]);
         $languageProficiencyBuilder->join('languages', function ($join) {
             $join->on('languages_proficiencies.language_id', '=', 'languages.id')
-                ->whereNull('languages.deleted_at');
+                ->whereNull('languages.deleted_at')
+                ->where('languages.row_status', BaseModel::ROW_STATUS_ACTIVE);
         });
         $languageProficiencyBuilder->where('languages_proficiencies.id', $id);
 
@@ -172,22 +164,16 @@ class LanguagesProficiencyService
      */
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
-        $customMessage = [
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be either 1 or 0'
-            ]
-        ];
         $rules = [
             'youth_id' => [
                 'required',
+                'exists:youths,id',
                 'int',
-                'exists:youths,id'
             ],
             'language_id' => [
                 'required',
+                'exists:languages,id',
                 'int',
-                'exists:languages,id'
             ],
             'reading_proficiency_level' => [
                 'required',
@@ -213,12 +199,8 @@ class LanguagesProficiencyService
                 'min:1',
                 'max:2'
             ],
-            'row_status' => [
-                'required_if:' . $id . ',!=,null',
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
-            ]
         ];
-        return Validator::make($request->all(), $rules, $customMessage);
+        return Validator::make($request->all(), $rules);
     }
 
     /**
@@ -231,10 +213,6 @@ class LanguagesProficiencyService
             'order.in' => [
                 'code' => 30000,
                 "message" => 'Order must be either ASC or DESC',
-            ],
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
             ]
         ];
 
@@ -248,11 +226,7 @@ class LanguagesProficiencyService
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
-            ],
-            'row_status' => [
-                "numeric",
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
-            ],
+            ]
         ], $customMessage);
     }
 }

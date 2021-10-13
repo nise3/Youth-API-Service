@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  *
  */
-class ReferenceService
+class YouthReferenceService
 {
     /**
      * @param array $request
@@ -28,7 +28,6 @@ class ReferenceService
     {
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
-        $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
 
         /** @var  Builder $referenceBuilder */
@@ -49,24 +48,19 @@ class ReferenceService
             'references.referrer_mobile',
             'references.referrer_relation',
             'references.referrer_relation_en',
-            'references.row_status',
             'references.created_at',
             'references.updated_at',
         ]);
         $referenceBuilder->orderBy('references.id', $order);
 
-        if (is_numeric(Auth::id())) {
+        if (is_int(Auth::id())) {
             $referenceBuilder->where('references.youth_id', Auth::id());
-        }
-
-        if (is_numeric($rowStatus)) {
-            $referenceBuilder->where('references.row_status', $rowStatus);
         }
 
         /** @var Collection $references */
 
         if (is_numeric($paginate) || is_numeric($pageSize)) {
-            $pageSize = $pageSize ?: 10;
+            $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $references = $referenceBuilder->paginate($pageSize);
             $paginateData = (object)$references->toArray();
             $response['current_page'] = $paginateData->current_page;
@@ -112,7 +106,6 @@ class ReferenceService
             'references.referrer_mobile',
             'references.referrer_relation',
             'references.referrer_relation_en',
-            'references.row_status',
             'references.created_at',
             'references.updated_at',
         ]);
@@ -174,12 +167,6 @@ class ReferenceService
      */
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
-        $customMessage = [
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
-            ]
-        ];
         $rules = [
             'youth_id' => [
                 'required',
@@ -250,13 +237,9 @@ class ReferenceService
             'referrer_relation_en' => [
                 'nullable',
                 'string',
-            ],
-            'row_status' => [
-                'required_if:' . $id . ',!=,null',
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
             ]
         ];
-        return Validator::make($request->all(), $rules, $customMessage);
+        return Validator::make($request->all(), $rules);
     }
 
     /**
@@ -268,11 +251,7 @@ class ReferenceService
         $customMessage = [
             'order.in' => [
                 'code' => 30000,
-                "message" => 'Order must be within ASC or DESC',
-            ],
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
+                "message" => 'Order must be either ASC or DESC',
             ]
         ];
 
@@ -286,11 +265,7 @@ class ReferenceService
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
-            ],
-            'row_status' => [
-                "numeric",
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
-            ],
+            ]
         ], $customMessage);
     }
 

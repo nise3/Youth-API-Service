@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JobExperience;
-use App\Services\YouthManagementServices\JobExperienceService;
+use App\Services\YouthManagementServices\YouthJobExperienceService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -14,12 +14,12 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
-class JobExperienceController extends Controller
+class YouthJobExperienceController extends Controller
 {
     /**
-     * @var JobExperienceService
+     * @var YouthJobExperienceService
      */
-    public JobExperienceService $jobExperienceService;
+    public YouthJobExperienceService $jobExperienceService;
     /**
      * @var Carbon
      */
@@ -27,10 +27,10 @@ class JobExperienceController extends Controller
 
 
     /**
-     * JobExperienceController constructor.
-     * @param JobExperienceService $jobExperienceService
+     * YouthJobExperienceController constructor.
+     * @param YouthJobExperienceService $jobExperienceService
      */
-    public function __construct(JobExperienceService $jobExperienceService)
+    public function __construct(YouthJobExperienceService $jobExperienceService)
     {
         $this->jobExperienceService = $jobExperienceService;
         $this->startTime = Carbon::now();
@@ -107,8 +107,8 @@ class JobExperienceController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $jobExperience = JobExperience::findOrFail($id);
         $request['youth_id'] = Auth::id();
+        $jobExperience = JobExperience::findOrFail($id);
         $validated = $this->jobExperienceService->validator($request, $id)->validate();
         try {
             $jobExperience = $this->jobExperienceService->update($jobExperience, $validated);
