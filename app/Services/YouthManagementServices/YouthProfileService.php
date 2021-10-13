@@ -278,10 +278,10 @@ class YouthProfileService
                     'familyName' => $data['name'],
                     'givenName' => $data['name']
                 ],
+//                'active' => $data['active'],
                 'userName' => $data['username'],
                 'password' => $data['password'],
                 'userType' => $data['user_type'],
-//                'active' => $data['active'],
                 'emails' => [
                     0 => [
                         'primary' => true,
@@ -290,6 +290,7 @@ class YouthProfileService
                     ]
                 ],
             ]);
+
 
         Log::channel('idp_user')->info('idp_user_payload', $data);
         Log::channel('idp_user')->info('idp_user_info', $client->json());
