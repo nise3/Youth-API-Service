@@ -23,7 +23,7 @@ return [
     ],
     "idp_server" => [
         "local" => "",
-        "dev" => "https://is.local:9453/scim2/Users",
-        "prod" => "https://identity.bus.softbd.xyz/scim2/Users"
+        "dev" => "https://identity.bus-staging.softbdltd.com/scim2/Users", //https://is.local:9453/scim2/Users",
+        "prod" => "https://identity.bus-staging.softbdltd.com/scim2/Users"
     ]
 ];

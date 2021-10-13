@@ -84,7 +84,6 @@ class YouthProfileController extends Controller
         $validated = $this->youthProfileService->youthRegisterOrUpdateValidation($request)->validate();
 
         $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
-
         DB::beginTransaction();
         try {
             $idpUserPayLoad = [

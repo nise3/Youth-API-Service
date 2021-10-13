@@ -263,6 +263,7 @@ class YouthProfileService
      */
     public function idpUserCreate(array $data)
     {
+
         $url = clientUrl(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
         $client = Http::retry(3)
             ->withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
@@ -280,7 +281,7 @@ class YouthProfileService
                 'userName' => $data['username'],
                 'password' => $data['password'],
                 'userType' => $data['user_type'],
-                'active' => $data['active'],
+//                'active' => $data['active'],
                 'emails' => [
                     0 => [
                         'primary' => true,
