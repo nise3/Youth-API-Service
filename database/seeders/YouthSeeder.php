@@ -10,6 +10,7 @@ use App\Models\Portfolio;
 use App\Models\Reference;
 use App\Models\Skill;
 use App\Models\Youth;
+use App\Models\YouthEducation;
 use Illuminate\Database\Seeder;
 
 class YouthSeeder extends Seeder
@@ -23,7 +24,7 @@ class YouthSeeder extends Seeder
     {
         Youth::factory()->count(20)
             ->has(
-                Education::factory()->count(2), 'educations'
+                YouthEducation::factory(), 'youthEducations'
             )
             ->has(
                 JobExperience::factory()->count(1), 'jobExperiences'

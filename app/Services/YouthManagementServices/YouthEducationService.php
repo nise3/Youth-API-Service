@@ -5,6 +5,7 @@ namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
 use App\Models\EducationLevel;
+use App\Models\ExamDegree;
 use App\Models\Examination;
 use App\Models\Education;
 use App\Models\YouthEducation;
@@ -23,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Class YouthProfileService
  * @package App\Services\YouthManagementServices
  */
-class EducationService
+class YouthEducationService
 {
     /**
      * @param array $request
@@ -40,7 +41,6 @@ class EducationService
         $boardTitleBn = $request['board_title'] ?? "";
         $eduGroupTitleEn = $request['edu_group_title_en'] ?? "";
         $eduGroupTitleBn = $request['edu_group_title'] ?? "";
-
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
@@ -48,45 +48,62 @@ class EducationService
 
 
         /** @var Builder $educationBuilder */
-        $educationBuilder = Education::select(
+        $educationBuilder = YouthEducation::select(
             [
-                'educations.id',
-                'educations.youth_id',
-                'educations.institute_name',
-                'educations.institute_name_en',
-                'educations.examination_id',
-                'examinations.code as examination_code',
-                'examinations.title_en as examination_title_en',
-                'examinations.title as examination_title',
-                'educations.board_id',
-                'boards.title_en as board_title_en',
-                'boards.title as board_title',
-                'educations.edu_group_id',
+                'youth_educations.id',
+                'youth_educations.youth_id',
+                'youth_educations.education_level_id',
+                'education_levels.title as education_level_title',
+                'education_levels.title_en as education_level_title_en',
+                'youth_educations.exam_degree_id',
+                'exam_degrees.code as exam_degree_code',
+                'exam_degrees.title_en as exam_degree_title_en',
+                'exam_degrees.title as exam_degree_title',
+                'youth_educations.exam_degree_name',
+                'youth_educations.exam_degree_name_en',
+                'youth_educations.major_or_concentration',
+                'youth_educations.major_or_concentration_en',
+                'youth_educations.edu_group_id',
                 'edu_groups.code as edu_group_code',
                 'edu_groups.title_en as edu_group_title_en',
                 'edu_groups.title as edu_group_title',
-                'educations.major_or_subject_id',
-                'educations.roll_number',
-                'educations.registration_number',
-                'educations.result_type',
-                'educations.division_type_result',
-                'educations.cgpa_gpa_max_value',
-                'educations.received_cgpa_gpa',
-                'educations.passing_year',
-                'educations.row_status',
-                'educations.created_at',
-                'educations.updated_at',
+                'youth_educations.board_id',
+                'boards.title_en as board_title_en',
+                'boards.title as board_title',
+                'youth_educations.institute_name',
+                'youth_educations.institute_name_en',
+                'youth_educations.is_foreign_institute',
+                'youth_educations.foreign_institute_country_id',
+                'youth_educations.result',
+                'youth_educations.marks_in_percentage',
+                'youth_educations.cgpa_scale',
+                'youth_educations.cgpa',
+                'youth_educations.year_of_passing',
+                'youth_educations.duration',
+                'youth_educations.achievements',
+                'youth_educations.achievements',
+                'youth_educations.achievements_en',
+                'youth_educations.created_at',
+                'youth_educations.updated_at',
             ]
         );
-        $educationBuilder->join('examinations', function ($join) use ($rowStatus) {
-            $join->on('examinations.id', '=', 'educations.examination_id')
-                ->whereNull('examinations.deleted_at');
+        $educationBuilder->join('education_levels', function ($join) use ($rowStatus) {
+            $join->on('education_levels.id', '=', 'youth_educations.education_level_id')
+                ->whereNull('education_levels.deleted_at');
             if (is_numeric($rowStatus)) {
-                $join->where('examinations.row_status', $rowStatus);
+                $join->where('education_levels.row_status', $rowStatus);
+            }
+        });
+
+        $educationBuilder->join('exam_degrees', function ($join) use ($rowStatus) {
+            $join->on('exam_degrees.id', '=', 'youth_educations.exam_degree_id')
+                ->whereNull('exam_degrees.deleted_at');
+            if (is_numeric($rowStatus)) {
+                $join->where('exam_degrees.row_status', $rowStatus);
             }
         });
         $educationBuilder->join('boards', function ($join) use ($rowStatus) {
-            $join->on('boards.id', '=', 'educations.board_id')
+            $join->on('boards.id', '=', 'youth_educations.board_id')
                 ->whereNull('boards.deleted_at');
             if (is_numeric($rowStatus)) {
                 $join->where('boards.row_status', $rowStatus);
@@ -94,26 +111,26 @@ class EducationService
         }
         );
         $educationBuilder->join('edu_groups', function ($join) use ($rowStatus) {
-            $join->on('edu_groups.id', '=', 'educations.edu_group_id')
+            $join->on('edu_groups.id', '=', 'youth_educations.edu_group_id')
                 ->whereNull('edu_groups.deleted_at');
             if (is_numeric($rowStatus)) {
                 $join->where('edu_groups.row_status', $rowStatus);
             }
         });
-        $educationBuilder->orderBy('educations.id', $order);
+        $educationBuilder->orderBy('youth_educations.id', $order);
 
         if (is_numeric($rowStatus)) {
-            $educationBuilder->where('educations.row_status', $rowStatus);
+            $educationBuilder->where('youth_educations.row_status', $rowStatus);
         }
         if (is_numeric(Auth::id())) {
-            $educationBuilder->where('educations.youth_id', Auth::id());
+            $educationBuilder->where('youth_educations.youth_id', Auth::id());
         }
 
         if (!empty($instituteName)) {
-            $educationBuilder->where('educations.institute_name', 'like', '%' . $instituteName . '%');
+            $educationBuilder->where('youth_educations.institute_name', 'like', '%' . $instituteName . '%');
         }
         if (!empty($instituteNameEn)) {
-            $educationBuilder->where('educations.institute_name_en', 'like', '%' . $instituteNameEn . '%');
+            $educationBuilder->where('youth_educations.institute_name_en', 'like', '%' . $instituteNameEn . '%');
         }
 
         if (!empty($examinationTitleEn)) {
@@ -137,23 +154,24 @@ class EducationService
             $educationBuilder->where('edu_groups.title', 'like', '%' . $eduGroupTitleBn . '%');
         }
 
+        $educationBuilder->where("youth_educations.youth_id", Auth::id());
 
-        /** @var Collection $educations */
+        /** @var Collection $youth_educations */
 
         if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
-            $educations = $educationBuilder->paginate($pageSize);
-            $paginateData = (object)$educations->toArray();
+            $youth_educations = $educationBuilder->paginate($pageSize);
+            $paginateData = (object)$youth_educations->toArray();
             $response['current_page'] = $paginateData->current_page;
             $response['total_page'] = $paginateData->last_page;
             $response['page_size'] = $paginateData->per_page;
             $response['total'] = $paginateData->total;
         } else {
-            $educations = $educationBuilder->get();
+            $youth_educations = $educationBuilder->get();
         }
 
         $response['order'] = $order;
-        $response['data'] = $educations->toArray()['data'] ?? $educations->toArray();
+        $response['data'] = $youth_educations->toArray()['data'] ?? $youth_educations->toArray();
         $response['_response_status'] = [
             "success" => true,
             "code" => Response::HTTP_OK,
@@ -170,56 +188,67 @@ class EducationService
      */
     public function getOneEducation(int $id, Carbon $startTime): array
     {
-        $educationBuilder = Education::select(
+        /** @var Builder $educationBuilder */
+        $educationBuilder = YouthEducation::select(
             [
-                'educations.id',
-                'educations.youth_id',
-                'educations.institute_name',
-                'educations.institute_name_en',
-                'educations.examination_id',
-                'examinations.code as examination_code',
-                'examinations.title_en as examination_title_en',
-                'examinations.title as examination_title',
-                'educations.board_id',
-                'boards.title_en as board_title_en',
-                'boards.title as board_title',
-                'educations.edu_group_id',
+                'youth_educations.id',
+                'youth_educations.youth_id',
+                'youth_educations.education_level_id',
+                'education_levels.title as education_level_title',
+                'education_levels.title_en as education_level_title_en',
+                'youth_educations.exam_degree_id',
+                'exam_degrees.code as exam_degree_code',
+                'exam_degrees.title_en as exam_degree_title_en',
+                'exam_degrees.title as exam_degree_title',
+                'youth_educations.exam_degree_name',
+                'youth_educations.exam_degree_name_en',
+                'youth_educations.major_or_concentration',
+                'youth_educations.major_or_concentration_en',
+                'youth_educations.edu_group_id',
                 'edu_groups.code as edu_group_code',
                 'edu_groups.title_en as edu_group_title_en',
                 'edu_groups.title as edu_group_title',
-                'educations.major_or_subject_id',
-                'educations.roll_number',
-                'educations.registration_number',
-                'educations.result_type',
-                'educations.division_type_result',
-                'educations.cgpa_gpa_max_value',
-                'educations.received_cgpa_gpa',
-                'educations.passing_year',
-                'educations.row_status',
-                'educations.created_at',
-                'educations.updated_at',
+                'youth_educations.board_id',
+                'boards.title_en as board_title_en',
+                'boards.title as board_title',
+                'youth_educations.institute_name',
+                'youth_educations.institute_name_en',
+                'youth_educations.is_foreign_institute',
+                'youth_educations.foreign_institute_country_id',
+                'youth_educations.result',
+                'youth_educations.marks_in_percentage',
+                'youth_educations.cgpa_scale',
+                'youth_educations.cgpa',
+                'youth_educations.year_of_passing',
+                'youth_educations.duration',
+                'youth_educations.achievements',
+                'youth_educations.achievements',
+                'youth_educations.achievements_en',
+                'youth_educations.created_at',
+                'youth_educations.updated_at',
             ]
         );
-        $educationBuilder->join('examinations', function ($join) {
-            $join->on('examinations.id', '=', 'educations.examination_id')
-                ->whereNull('examinations.deleted_at');
+        $educationBuilder->join('education_levels', function ($join) {
+            $join->on('education_levels.id', '=', 'youth_educations.education_level_id')
+                ->whereNull('education_levels.deleted_at');
+        });
 
+        $educationBuilder->join('exam_degrees', function ($join) {
+            $join->on('exam_degrees.id', '=', 'youth_educations.exam_degree_id')
+                ->whereNull('exam_degrees.deleted_at');
         });
         $educationBuilder->join('boards', function ($join) {
-            $join->on('boards.id', '=', 'educations.board_id')
+            $join->on('boards.id', '=', 'youth_educations.board_id')
                 ->whereNull('boards.deleted_at');
 
         }
         );
         $educationBuilder->join('edu_groups', function ($join) {
-            $join->on('edu_groups.id', '=', 'educations.edu_group_id')
+            $join->on('edu_groups.id', '=', 'youth_educations.edu_group_id')
                 ->whereNull('edu_groups.deleted_at');
-
         });
-        $educationBuilder->where('educations.id', $id);
 
-        /** @var Education $education */
-        $education = $educationBuilder->first();
+        $education = $educationBuilder->where("youth_educations.id", $id)->first();
 
         return [
             "data" => $education ?: [],
@@ -233,7 +262,7 @@ class EducationService
 
     /**
      * @param array $data
-     * @return Education
+     * @return YouthEducation
      */
     public function createEducation(YouthEducation $youthEducation, array $data): YouthEducation
     {
@@ -243,11 +272,11 @@ class EducationService
     }
 
     /**
-     * @param Education $youthEducation
+     * @param YouthEducation $youthEducation
      * @param array $data
-     * @return Education
+     * @return YouthEducation
      */
-    public function update(Education $youthEducation, array $data): Education
+    public function update(YouthEducation $youthEducation, array $data): YouthEducation
     {
         $youthEducation->fill($data);
         $youthEducation->save();
@@ -255,91 +284,13 @@ class EducationService
     }
 
     /**
-     * @param Education $youthEducation
+     * @param YouthEducation $youthEducation
      * @return bool
      */
-    public function destroy(Education $youthEducation): bool
+    public function destroy(YouthEducation $youthEducation): bool
     {
         return $youthEducation->delete();
     }
-
-    /**
-     * @param Request $request
-     * @param Carbon $startTime
-     * @return array
-     */
-    public function getTrashedYouthEducationList(Request $request, Carbon $startTime): array
-    {
-        $titleEn = $request->query('title_en');
-        $titleBn = $request->query('title');
-        $limit = $request->query('limit', 10);
-        $paginate = $request->query('page');
-        $order = !empty($request->query('order')) ? $request->query('order') : 'ASC';
-
-        /** @var Builder $educationBuilder */
-        $educationBuilder = Education::onlyTrashed()->select(
-            [
-                'skills.id as id',
-                'skills.title_en',
-                'skills.title',
-                'skills.row_status',
-                'skills.created_at',
-                'skills.updated_at'
-            ]
-        );
-
-        $educationBuilder->orderBy('skills.id', $order);
-
-        if (!empty($titleEn)) {
-            $educationBuilder->where('skills.title_en', 'like', '%' . $titleEn . '%');
-        } elseif (!empty($titleBn)) {
-            $educationBuilder->where('skills.title', 'like', '%' . $titleBn . '%');
-        }
-
-        /** @var Collection $youthEducations */
-
-        if (!is_null($paginate) || !is_null($limit)) {
-            $limit = $limit ?: 10;
-            $youthEducations = $educationBuilder->paginate($limit);
-            $paginateData = (object)$youthEducations->toArray();
-            $response['current_page'] = $paginateData->current_page;
-            $response['total_page'] = $paginateData->last_page;
-            $response['page_size'] = $paginateData->per_page;
-            $response['total'] = $paginateData->total;
-        } else {
-            $youthEducations = $educationBuilder->get();
-        }
-
-        $response['order'] = $order;
-        $response['data'] = $youthEducations->toArray()['data'] ?? $youthEducations->toArray();
-        $response['_response_status'] = [
-            "success" => true,
-            "code" => Response::HTTP_OK,
-            "query_time" => $startTime->diffInSeconds(Carbon::now())
-        ];
-
-        return $response;
-    }
-
-    /**
-     * @param Education $youthEducation
-     * @return bool
-     */
-    public function restore(Education $youthEducation): bool
-    {
-        return $youthEducation->restore();
-    }
-
-    /**
-     * @param Education $youthEducation
-     * @return bool
-     */
-    public function forceDelete(Education $youthEducation): bool
-    {
-        return $youthEducation->forceDelete();
-    }
-
-
 
     /**
      * @param Request $request
@@ -366,8 +317,8 @@ class EducationService
                 Rule::requiredIf(function () use ($request) {
                     return $this->getRequiredStatus(YouthEducation::DEGREE, $request->education_level_id);
                 }),
+                Rule::in(ExamDegree::where("education_level_id", $request->education_level_id)->pluck('id')->toArray()),
                 'min:1',
-                'exists:exam_degrees,id',
                 'unique_with:youth_educations,youth_id,' . $id,
                 'integer'
 
@@ -397,7 +348,7 @@ class EducationService
                     return $this->getRequiredStatus(YouthEducation::EDU_GROUP, $request->education_level_id);
                 }),
                 'exists:edu_groups,id',
-                'unique_with:youth_educations,youth_id,' . $id,
+                'unique_with:youth_educations,exam_degree_id,' . $id,
                 "integer"
             ],
             'board_id' => [
@@ -405,7 +356,7 @@ class EducationService
                     return $this->getRequiredStatus(YouthEducation::BOARD, $request->education_level_id);
                 }),
                 'exists:boards,id',
-                'unique_with:youth_educations,youth_id,' . $id,
+//                'unique_with:youth_educations,exam_degree_id,' . $id,
                 "integer"
             ],
             'institute_name' => [
@@ -566,6 +517,7 @@ class EducationService
 
         }
     }
+
     /**
      * @param string|null $modelName
      * @param int $id

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\YouthEducation;
+use App\Services\YouthManagementServices\YouthEducationService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -12,20 +13,19 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
-use App\Services\YouthManagementServices\EducationService;
 
 
 class EducationController extends Controller
 {
 
 
-    public EducationService $educationService;
+    public YouthEducationService $youthEducationService;
     private Carbon $startTime;
 
 
-    public function __construct(EducationService $educationService)
+    public function __construct(YouthEducationService $youthEducationService)
     {
-        $this->educationService = $educationService;
+        $this->youthEducationService = $youthEducationService;
         $this->startTime = Carbon::now();
     }
 
@@ -38,9 +38,9 @@ class EducationController extends Controller
     public function getList(Request $request): JsonResponse
     {
 
-        $filter = $this->educationService->filterValidator($request)->validate();
+        $filter = $this->youthEducationService->filterValidator($request)->validate();
         try {
-            $response = $this->educationService->getEducationList($filter, $this->startTime);
+            $response = $this->youthEducationService->getEducationList($filter, $this->startTime);
         } catch (Throwable $e) {
             throw $e;
         }
@@ -56,7 +56,7 @@ class EducationController extends Controller
     public function read(int $id): JsonResponse
     {
         try {
-            $response = $this->educationService->getOneEducation($id, $this->startTime);
+            $response = $this->youthEducationService->getOneEducation($id, $this->startTime);
         } catch (Throwable $e) {
             throw $e;
         }
@@ -73,9 +73,9 @@ class EducationController extends Controller
     {
         $youthEducation = new YouthEducation();
         $request['youth_id'] = $request['youth_id'] ?? Auth::id();
-        $validated = $this->educationService->validator($request)->validate();
+        $validated = $this->youthEducationService->validator($request)->validate();
         try {
-            $data = $this->educationService->createEducation($youthEducation, $validated);
+            $data = $this->youthEducationService->createEducation($youthEducation, $validated);
             $response = [
                 'data' => $data,
                 '_response_status' => [
@@ -103,10 +103,10 @@ class EducationController extends Controller
 
         $education = YouthEducation::findOrFail($id);
         $request['youth_id'] = Auth::id();
-        $validated = $this->educationService->validator($request, $id)->validate();
+        $validated = $this->youthEducationService->validator($request, $id)->validate();
 
         try {
-            $data = $this->educationService->update($education, $validated);
+            $data = $this->youthEducationService->update($education, $validated);
             $response = [
                 'data' => $data ?: null,
                 '_response_status' => [
@@ -133,7 +133,7 @@ class EducationController extends Controller
         $education = YouthEducation::findOrFail($id);
 
         try {
-            $this->educationService->destroy($education);
+            $this->youthEducationService->destroy($education);
             $response = [
                 '_response_status' => [
                     "success" => true,

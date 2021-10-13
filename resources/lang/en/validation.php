@@ -376,6 +376,10 @@ return [
         'code' => 61000,
         'message' => 'The :attribute has already been taken.',
     ],
+    'unique_with'=>[
+        'code' => 52000,
+        'message' =>'This combination of :fields already exists.'
+    ],
     'uploaded' => [
         'code' => 62000,
         'message' => 'The :attribute failed to upload.',

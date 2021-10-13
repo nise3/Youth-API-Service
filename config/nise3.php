@@ -60,49 +60,49 @@ return [
             'id'=>1,
             'code'=>BaseModel::FIRST_DIVISION,
             'title_en' => 'First Division/Class',
-            'title_bn' => 'First Division/Class'
+            'title' => 'First Division/Class'
         ],
         2=>[
             'id'=>2,
             'code'=>BaseModel::SECOND_DIVISION,
             'title_en' => 'Second  Division/Class',
-            'title_bn' => 'Second  Division/Class'
+            'title' => 'Second  Division/Class'
         ],
         3=>[
             'id'=>3,
             'code'=>BaseModel::THIRD_DIVISION,
             'title_en' => 'Third Division/Class',
-            'title_bn' => 'Third Division/Class'
+            'title' => 'Third Division/Class'
         ],
         4=>[
             'id'=>4,
             'code'=>BaseModel::GRADE,
             'title_en' => 'Grade',
-            'title_bn' => 'Grade'
+            'title' => 'Grade'
         ],
         5=>[
             'id'=>5,
             'code'=>BaseModel::APPEARED,
             'title_en' => 'Appeared',
-            'title_bn' => 'Appeared'
+            'title' => 'Appeared'
         ],
         6=>[
             'id'=>6,
             'code'=>BaseModel::ENROLLED,
             'title_en' => 'Enrolled',
-            'title_bn' => 'Enrolled'
+            'title' => 'Enrolled'
         ],
         7=>[
             'id'=>7,
             'code'=>BaseModel::AWARDED,
             'title_en' => 'Awarded',
-            'title_bn' => 'Awarded'
+            'title' => 'Awarded'
         ],
         8=>[
             'id'=>8,
             'code'=>BaseModel::DO_NOT_MENTION,
             'title_en' => 'Do Not Mention',
-            'title_bn' => 'Do Not Mention'
+            'title' => 'Do Not Mention'
         ],
         9=>[
             'id'=>9,

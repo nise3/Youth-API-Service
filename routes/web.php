@@ -4,6 +4,7 @@
 
 use App\Helpers\Classes\CustomRouter;
 use App\Models\EducationLevel;
+use App\Models\ExamDegree;
 use Laravel\Lumen\Routing\Router;
 
 
@@ -60,6 +61,6 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
 });
 
 $router->get("code",function (){
-   return array_keys(config("nise3.exam_degree_results"));
+   return ExamDegree::where("education_level_id",2)->pluck('id');
 });
 
