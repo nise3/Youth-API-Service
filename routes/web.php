@@ -3,6 +3,7 @@
 /** @var Router $router */
 
 use App\Helpers\Classes\CustomRouter;
+use App\Models\EducationLevel;
 use Laravel\Lumen\Routing\Router;
 
 
@@ -55,5 +56,9 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
     $router->put('youth-personal-info-update', ["as" => "youth-profile.update", "uses" => "YouthProfileController@youthProfileInfoUpdate"]);
     $router->put('youth-change-freelance-status', ["as" => "youth-profile.youth-change-freelance-status", "uses" => "YouthProfileController@setFreelanceStatus"]);
 
+});
+
+$router->get("code",function (){
+   return array_keys(config("nise3.exam_degree_results"));
 });
 

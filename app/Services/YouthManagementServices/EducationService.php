@@ -4,12 +4,15 @@
 namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
+use App\Models\EducationLevel;
 use App\Models\Examination;
 use App\Models\Education;
+use App\Models\YouthEducation;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -232,9 +235,8 @@ class EducationService
      * @param array $data
      * @return Education
      */
-    public function createEducation(array $data): Education
+    public function createEducation(YouthEducation $youthEducation, array $data): YouthEducation
     {
-        $youthEducation = new Education();
         $youthEducation->fill($data);
         $youthEducation->save();
         return $youthEducation;
@@ -341,6 +343,8 @@ class EducationService
         return $youthEducation->forceDelete();
     }
 
+
+
     /**
      * @param Request $request
      * return use Illuminate\Support\Facades\Validator;
@@ -349,27 +353,64 @@ class EducationService
      */
     public function validator(Request $request, int $id = null): Validator
     {
-        $customMessage = [
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
-            ],
-            'examination_id.unique' => [
-                'message' => Examination::findOrFail($request->examination_id)->title_en . " examination already added your education list"
-            ]
-        ];
         $rules = [
             'youth_id' => [
                 'required',
-                'int',
-                'exists:youths,id'
+                'exists:youths,id',
+                'int'
             ],
-            'examination_id' => [
+            'education_level_id' => [
                 'required',
-                'integer',
-                'exists:examinations,id',
                 'min:1',
-                'unique_with:educations,youth_id,' . $id
+                'exists:education_levels,id',
+                'unique_with:youth_educations,youth_id,' . $id,
+                'integer'
+            ],
+            "exam_degree_id" => [
+                Rule::requiredIf(function () use ($request) {
+                    return $this->getRequiredStatus(YouthEducation::DEGREE, $request->education_level_id);
+                }),
+                'min:1',
+                'exists:exam_degrees,id',
+                'unique_with:youth_educations,youth_id,' . $id,
+                'integer'
+
+            ],
+            "exam_degree_name" => [
+                Rule::requiredIf(function () use ($request) {
+                    return $this->getRequiredStatus(YouthEducation::EXAM_DEGREE_NAME, $request->education_level_id);
+                }),
+                "string"
+            ],
+            "exam_degree_name_en" => [
+                "nullable",
+                "string"
+            ],
+            "major_or_concentration" => [
+                Rule::requiredIf(function () use ($request) {
+                    return $this->getRequiredStatus(YouthEducation::MAJOR, $request->education_level_id);
+                }),
+                "string"
+            ],
+            "major_or_concentration_en" => [
+                "nullable",
+                "string"
+            ],
+            "edu_group_id" => [
+                Rule::requiredIf(function () use ($request) {
+                    return $this->getRequiredStatus(YouthEducation::EDU_GROUP, $request->education_level_id);
+                }),
+                'exists:edu_groups,id',
+                'unique_with:youth_educations,youth_id,' . $id,
+                "integer"
+            ],
+            'board_id' => [
+                Rule::requiredIf(function () use ($request) {
+                    return $this->getRequiredStatus(YouthEducation::BOARD, $request->education_level_id);
+                }),
+                'exists:boards,id',
+                'unique_with:youth_educations,youth_id,' . $id,
+                "integer"
             ],
             'institute_name' => [
                 'required',
@@ -381,77 +422,62 @@ class EducationService
                 'string',
                 'max:400',
             ],
-            'roll_number' => [
+            "is_foreign_institute" => [
                 'required',
-                'string',
+                'integer',
+                Rule::in([BaseModel::TRUE, BaseModel::FALSE])
+            ],
+            "foreign_institute_country_id" => [
+                Rule::requiredIf(function () use ($request) {
+                    return BaseModel::TRUE == $request->is_foreign_institute;
+                }),
+                "integer"
+            ],
+            "result" => [
+                "required",
+                "integer",
+                Rule::in(array_keys(config("nise3.exam_degree_results")))
+            ],
+            'marks_in_percentage' => [
+                Rule::requiredIf(function () use ($request) {
+                    return $this->getRequiredStatus(YouthEducation::BOARD, $request->result);
+                }),
+                "numeric"
+            ],
+            "cgpa_scale" => [
+                Rule::requiredIf(function () use ($request) {
+                    return $this->getRequiredStatus(YouthEducation::SCALE, $request->result);
+                }),
+                Rule::in([YouthEducation::GPA_OUT_OF_FOUR, YouthEducation::GPA_OUT_OF_FIVE]),
+                "integer"
+            ],
+            'cgpa' => [
+                Rule::requiredIf(function () use ($request) {
+                    return $this->getRequiredStatus(YouthEducation::CGPA, $request->result);
+                }),
+                'numeric'
+            ],
+            'year_of_passing' => [
+                Rule::requiredIf(function () use ($request) {
+                    return $this->getRequiredStatus(YouthEducation::YEAR_OF_PASS, $request->result);
+                }),
+                'string'
+            ],
+            "duration" => [
+                "nullable",
+                "integer"
+            ],
+            "achievements" => [
+                "nullable",
+                "string"
+            ],
+            "achievements_en" => [
+                "nullable",
+                "string"
+            ]
 
-            ],
-            'registration_number' => [
-                'required',
-                'string',
-            ],
-            'result_type' => [
-                'required',
-                'integer',
-                'min:1'
-            ],
-            'passing_year' => [
-                'required',
-                'integer',
-                'min:1971'
-            ],
-            'row_status' => [
-                'required_if:' . $id . ',!=,null',
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
-            ],
         ];
-        if ($request->examination_id == Education::EXAMINATION_ID_HONOURS or $request->examination_id == Education::EXAMINATION_ID_PMASTERS or $request->examination_id == Education::EXAMINATION_ID_MASTERS) {
-            $rules['major_or_subject_id'] = [
-                'required',
-                'integer',
-                'exists:major_or_subjects,id',
-            ];
-        } else {
-            $rules['board_id'] = [
-                'required',
-                'integer',
-                'exists:boards,id',
-                'min:1'
-            ];
-        }
-
-        if ($request->result_type == Education::RESULT_TYPE_DIVISION) {
-            $rules['division_type_result'] = [
-                'required',
-                'numeric',
-                'min:1',
-                Rule::in(Education::DIVISION_FIRST_CLASS, Education::DIVISION_SECOND_CLASS, Education::DIVISION_THIRD_CLASS, Education::DIVISION_PASS),
-            ];
-        }
-        if ($request->examination_id == Education::EXAMINATION_ID_SSC or $request->examination_id == Education::EXAMINATION_ID_DAKHIL or $request->examination_id == Education::EXAMINATION_ID_HSC or $request->examination_id == Education::EXAMINATION_ID_ALIM) {
-            $rules['edu_group_id'] = [
-                'required',
-                'integer',
-                'exists:edu_groups,id',
-                'min:1'
-            ];
-        }
-
-        if ($request->result_type == Education::RESULT_TYPE_GRADE_POINT) {
-            $rules['cgpa_gpa_max_value'] = [
-                'required',
-                'numeric',
-                Rule::in([Education::GPA_OUT_OF_FIVE, Education::GPA_OUT_OF_FOUR])
-            ];
-
-            $rules['received_cgpa_gpa'] = [
-                'required',
-                'numeric',
-                'lte:cgpa_gpa_max_value'
-            ];
-        }
-
-        return \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $customMessage);
+        return \Illuminate\Support\Facades\Validator::make($request->all(), $rules);
     }
 
     /**
@@ -488,5 +514,75 @@ class EducationService
                 Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
             ],
         ], $customMessage);
+    }
+
+    /**
+     * @param string $key
+     * @param int $id
+     * @return bool
+     */
+    private function getRequiredStatus(string $key, int $id): bool
+    {
+        switch ($key) {
+            /** Validation Rule Based On YouthEducation Level */
+            case YouthEducation::DEGREE:
+            {
+                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [BaseModel::PSC_5_PASS, BaseModel::JSC_JDC_8_PASS, BaseModel::SECONDARY, BaseModel::HIGHER_SECONDARY, BaseModel::DIPLOMA, BaseModel::BACHELOR, BaseModel::MASTERS]);
+            }
+            case YouthEducation::BOARD:
+            {
+                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [BaseModel::PSC_5_PASS, BaseModel::JSC_JDC_8_PASS, BaseModel::SECONDARY, BaseModel::HIGHER_SECONDARY]);
+            }
+            case YouthEducation::MAJOR:
+            {
+                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [BaseModel::SECONDARY, BaseModel::HIGHER_SECONDARY, BaseModel::DIPLOMA, BaseModel::BACHELOR, BaseModel::MASTERS]);
+            }
+            case YouthEducation::EXAM_DEGREE_NAME:
+            {
+                return $this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id) == BaseModel::PHD;
+            }
+            case YouthEducation::EDU_GROUP:
+            {
+                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [BaseModel::SECONDARY, BaseModel::HIGHER_SECONDARY]);
+            }
+            /** Validation Rule Based On Result Type */
+            case YouthEducation::MARKS:
+            {
+                return in_array($this->getCodeById(YouthEducation::RESULT_TRIGGER, $id), [BaseModel::FIRST_DIVISION, BaseModel::SECOND_DIVISION, BaseModel::THIRD_DIVISION]);
+            }
+            case YouthEducation::SCALE:
+            case YouthEducation::CGPA:
+            {
+                return $this->getCodeById(YouthEducation::RESULT_TRIGGER, $id) == BaseModel::GRADE;
+            }
+            case YouthEducation::YEAR_OF_PASS:
+            {
+                return in_array($this->getCodeById(YouthEducation::RESULT_TRIGGER, $id), [BaseModel::GRADE, BaseModel::ENROLLED, BaseModel::AWARDED, BaseModel::PASS]);
+            }
+            case YouthEducation::EXPECTED_YEAR_OF_EXPERIENCE:
+            {
+                return $this->getCodeById(YouthEducation::RESULT_TRIGGER, $id) == BaseModel::APPEARED;
+            }
+            default:
+            {
+                return false;
+            }
+
+        }
+    }
+    /**
+     * @param string|null $modelName
+     * @param int $id
+     * @return string
+     */
+    public function getCodeById(string $modelName, int $id): string
+    {
+        if ($modelName == YouthEducation::EDUCATION_LEVEL_TRIGGER) {
+            $educationLevelCode = EducationLevel::where('id', $id)->first();
+            $code = $educationLevelCode->code ?? "";
+        } else {
+            $code = config("nise3.exam_degree_results." . $id . ".code");
+        }
+        return $code ?? "";
     }
 }

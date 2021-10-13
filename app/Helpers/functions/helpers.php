@@ -1,6 +1,10 @@
 <?php
 
+use App\Models\BaseModel;
+use App\Models\YouthEducation;
+use App\Services\YouthManagementServices\EducationService;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\App;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 if (!function_exists("clientUrl")) {
@@ -69,9 +73,9 @@ if (!function_exists("idpUserErrorMessage")) {
         ];
 
         switch ($statusCode) {
-            case ResponseAlias::HTTP_CONFLICT:
+            case ResponseAlias::HTTP_UNPROCESSABLE_ENTITY:
             {
-                $errors['_response_status']['code'] = ResponseAlias::HTTP_CONFLICT;
+                $errors['_response_status']['code'] = ResponseAlias::HTTP_UNPROCESSABLE_ENTITY;
                 $errors['_response_status']['message'] = "Username already exists in IDP";
                 return $errors;
             }
@@ -100,3 +104,4 @@ if (!function_exists("idpUserErrorMessage")) {
         }
     }
 }
+

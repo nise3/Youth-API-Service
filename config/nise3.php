@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\BaseModel;
+
 return [
     "is_dev_mode" => env("IS_DEVELOPMENT_MOOD", true),
     "should_ssl_verify" => env("IS_SSL_VERIFY", false),
@@ -47,14 +49,60 @@ return [
         8 => ['en' => 'PhD', 'bn' => 'PhD'],
     ],
     'exam_degree_results' => [
-        '1' => ['en' => 'First Division/Class', 'bn' => 'First Division/Class'],
-        '2' => ['en' => 'Second  Division/Class', 'bn' => 'Second  Division/Class'],
-        '3' => ['en' => 'Third Division/Class', 'bn' => 'Third Division/Class'],
-        '4' => ['en' => 'Grade', 'bn' => 'Grade'],
-        '5' => ['en' => 'Appeared', 'bn' => 'Appeared'],
-        '6' => ['en' => 'Enrolled', 'bn' => 'Enrolled'],
-        '7' => ['en' => 'Awarded', 'bn' => 'Awarded'],
-        '8' => ['en' => 'Do Not Mention', 'bn' => 'Do Not Mention'],
-        '9' => ['en' => 'Pass', 'bn' => 'Pass'],
+        1=>[
+            'id'=>1,
+            'code'=>BaseModel::FIRST_DIVISION,
+            'title_en' => 'First Division/Class',
+            'title_bn' => 'First Division/Class'
+        ],
+        2=>[
+            'id'=>2,
+            'code'=>BaseModel::SECOND_DIVISION,
+            'title_en' => 'Second  Division/Class',
+            'title_bn' => 'Second  Division/Class'
+        ],
+        3=>[
+            'id'=>3,
+            'code'=>BaseModel::THIRD_DIVISION,
+            'title_en' => 'Third Division/Class',
+            'title_bn' => 'Third Division/Class'
+        ],
+        4=>[
+            'id'=>4,
+            'code'=>BaseModel::GRADE,
+            'title_en' => 'Grade',
+            'title_bn' => 'Grade'
+        ],
+        5=>[
+            'id'=>5,
+            'code'=>BaseModel::APPEARED,
+            'title_en' => 'Appeared',
+            'title_bn' => 'Appeared'
+        ],
+        6=>[
+            'id'=>6,
+            'code'=>BaseModel::ENROLLED,
+            'title_en' => 'Enrolled',
+            'title_bn' => 'Enrolled'
+        ],
+        7=>[
+            'id'=>7,
+            'code'=>BaseModel::AWARDED,
+            'title_en' => 'Awarded',
+            'title_bn' => 'Awarded'
+        ],
+        8=>[
+            'id'=>8,
+            'code'=>BaseModel::DO_NOT_MENTION,
+            'title_en' => 'Do Not Mention',
+            'title_bn' => 'Do Not Mention'
+        ],
+        9=>[
+            'id'=>9,
+            'code'=>BaseModel::PASS,
+            'title_en' => 'Pass',
+            'title_bn' => 'Pass'
+        ],
+
     ]
 ];

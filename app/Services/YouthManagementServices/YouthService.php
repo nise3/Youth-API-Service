@@ -4,6 +4,7 @@ namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
 use App\Models\Board;
+use App\Models\EducationLevel;
 use App\Models\EduGroup;
 use App\Models\Examination;
 use App\Models\MajorOrSubject;
@@ -253,7 +254,7 @@ class YouthService
             "edu_groups" => EduGroup::all(),
             "boards" => Board::all(),
             "major_subjects" => MajorOrSubject::all(),
-            "level_of_education"=>config("nise3.education_levels"),
+            "education_level_with_degrees"=>EducationLevel::with('examDegrees')->get(),
             "result"=>config("nise3.exam_degree_results")
         ];
     }

@@ -2,22 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BaseModel;
-use App\Models\Education;
-use App\Models\Skill;
-use App\Models\Youth;
-use Faker\Provider\Uuid;
-use Illuminate\Http\Client\RequestException;
-use Illuminate\Http\Request;
+use App\Models\YouthEducation;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
-use stdClass;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 use App\Services\YouthManagementServices\EducationService;
@@ -79,17 +71,17 @@ class EducationController extends Controller
      */
     function store(Request $request): JsonResponse
     {
+        $youthEducation = new YouthEducation();
         $request['youth_id'] = $request['youth_id'] ?? Auth::id();
         $validated = $this->educationService->validator($request)->validate();
         try {
-            $validated['youth_id'] = $validated['youth_id'] ?? Auth::id();
-            $data = $this->educationService->createEducation($validated);
+            $data = $this->educationService->createEducation($youthEducation, $validated);
             $response = [
-                'data' => $data ?: null,
+                'data' => $data,
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "Education added successfully",
+                    "message" => "YouthEducation added successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
@@ -109,7 +101,7 @@ class EducationController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
 
-        $education = Education::findOrFail($id);
+        $education = YouthEducation::findOrFail($id);
         $request['youth_id'] = Auth::id();
         $validated = $this->educationService->validator($request, $id)->validate();
 
@@ -120,7 +112,7 @@ class EducationController extends Controller
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Education updated successfully",
+                    "message" => "YouthEducation updated successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
@@ -138,7 +130,7 @@ class EducationController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $education = Education::findOrFail($id);
+        $education = YouthEducation::findOrFail($id);
 
         try {
             $this->educationService->destroy($education);
@@ -146,7 +138,7 @@ class EducationController extends Controller
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Education deleted successfully",
+                    "message" => "YouthEducation deleted successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
@@ -155,69 +147,5 @@ class EducationController extends Controller
         }
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
-
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     * @throws Throwable
-     */
-    public function getTrashedData(Request $request): JsonResponse
-    {
-        try {
-            $response = $this->educationService->getTrashedYouthEducationList($request, $this->startTime);
-        } catch (Throwable $e) {
-            throw $e;
-        }
-        return Response::json($response);
-    }
-
-
-    /**
-     * @param int $id
-     * @return JsonResponse
-     */
-    public function restore(int $id): JsonResponse
-    {
-        $skill = Skill::onlyTrashed()->findOrFail($id);
-        try {
-            $this->educationService->restore($skill);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Skill restored successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
-        return Response::json($response, ResponseAlias::HTTP_OK);
-    }
-
-    /**
-     * @param int $id
-     * @return JsonResponse
-     * @throws Throwable
-     */
-    public function forceDelete(int $id)
-    {
-        $skill = Skill::onlyTrashed()->findOrFail($id);
-        try {
-            $this->educationService->forceDelete($skill);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Skill permanently deleted successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
-        return Response::json($response, ResponseAlias::HTTP_OK);
-    }
-
 
 }

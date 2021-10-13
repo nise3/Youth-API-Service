@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
             PhysicalDisabilitySeeder::class,
             MajorOrSubjectSeeder::class,
             YouthSeeder::class,
+            EducationLevelSeeder::class,
+            ExamDegreeSeeder::class
 //            PortfolioSeeder::class,
 //            JobExperienceSeeder::class,
 //            ReferenceSeeder::class,

@@ -169,11 +169,11 @@ class  YouthController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage
+     * data from examinations, boards , edu groups, major or subjects table
      * @return Exception|JsonResponse|Throwable
      * @throws Throwable
      */
-    // data from examinations, boards , edu groups, major or subjects table
+
     public function youthEducationBasicInfos(): JsonResponse
     {
         try {
@@ -183,6 +183,8 @@ class  YouthController extends Controller
             $response['response_status'] = [
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK,
+                "message" => "List of educational information",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
             ];
         } catch (Throwable $e) {
             throw $e;
