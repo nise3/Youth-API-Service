@@ -74,9 +74,9 @@ class YouthProfileController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return Exception|JsonResponse|Throwable
-     * @throws ValidationException
+     * @return JsonResponse
      * @throws Throwable
+     * @throws ValidationException
      */
     function youthRegistration(Request $request): JsonResponse
     {
@@ -155,7 +155,8 @@ class YouthProfileController extends Controller
 
     /**
      * @param Request $request
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      * @throws ValidationException
      */
     public function youthProfileInfoUpdate(Request $request): JsonResponse
@@ -186,7 +187,8 @@ class YouthProfileController extends Controller
     /**
      * Remove the specified resource from storage
      * @param Request $request
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      * @throws ValidationException
      */
     public function setFreelanceStatus(Request $request): JsonResponse
@@ -216,7 +218,7 @@ class YouthProfileController extends Controller
 
     /**
      * @param Request $request
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
      * @throws Throwable
      * @throws ValidationException
      */

@@ -261,7 +261,7 @@ class YouthProfileService
      * @param array $data
      * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
      */
-    public function idpUserCreate(array $data)
+    public function idpUserCreate(array $data): \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
     {
         $url = clientUrl(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
         $client = Http::withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
