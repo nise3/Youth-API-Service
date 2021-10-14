@@ -10,7 +10,7 @@
             "url": "https://youth.bus-staging.softbdltd.com/api/v1"
         },
         {
-            "url": "http://localhost:8000/api/v1"
+            "url": "http://localhost:8002/api/v1"
         }
     ],
     "security": [
@@ -2456,39 +2456,44 @@
                         "description": "success",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Education"
-                                },
                                 "example": {
                                     "order": "ASC",
                                     "data": [
                                         {
-                                            "id": 1,
+                                            "id": 21,
                                             "youth_id": 1,
-                                            "institute_name": "Ondricka, Casper and Tromp",
-                                            "institute_name_en": "Ondricka, Casper and Tromp",
-                                            "examination_id": 3,
-                                            "examination_code": "SSC",
-                                            "examination_title_en": "SSC/Equivalent",
-                                            "examination_title": "এসএসসি/সমমান",
-                                            "board_id": 8,
-                                            "board_title_en": "Rajshahi",
-                                            "board_title": "রাজশাহী",
+                                            "education_level_id": 1,
+                                            "education_level_title": "PSC/5 Pass",
+                                            "education_level_title_en": "PSC/5 Pass",
+                                            "exam_degree_id": 1,
+                                            "exam_degree_code": "PSC",
+                                            "exam_degree_title_en": "PSC",
+                                            "exam_degree_title": "পিএসসি",
+                                            "exam_degree_name": "PhD",
+                                            "exam_degree_name_en": "wifgvuwbjhkef",
+                                            "major_or_concentration": "omukkkkkkk",
+                                            "major_or_concentration_en": "omukkkkkkk",
                                             "edu_group_id": 2,
                                             "edu_group_code": "Humanities",
                                             "edu_group_title_en": "Arts and Humanities",
                                             "edu_group_title": "মানবিক",
-                                            "major_or_subject_id": null,
-                                            "roll_number": "210381657639",
-                                            "registration_number": "932081741473",
-                                            "result_type": 2,
-                                            "division_type_result": null,
-                                            "cgpa_gpa_max_value": 5,
-                                            "received_cgpa_gpa": 2.1,
-                                            "passing_year": 1989,
-                                            "row_status": 1,
-                                            "created_at": "2021-10-06T07:06:47.000000Z",
-                                            "updated_at": "2021-10-06T07:06:47.000000Z"
+                                            "board_id": 2,
+                                            "board_title_en": "Chittagong",
+                                            "board_title": "চট্টগ্রাম",
+                                            "institute_name": "axdfghjhgfdfg",
+                                            "institute_name_en": "defergherg",
+                                            "is_foreign_institute": 1,
+                                            "foreign_institute_country_id": 2,
+                                            "result": "Second  Division/Class",
+                                            "marks_in_percentage": 1,
+                                            "cgpa_scale": 5,
+                                            "cgpa": 4,
+                                            "year_of_passing": 1990,
+                                            "duration": null,
+                                            "achievements": "ILAEUF",
+                                            "achievements_en": null,
+                                            "created_at": "2021-10-14T08:29:45.000000Z",
+                                            "updated_at": "2021-10-14T08:36:11.000000Z"
                                         }
                                     ],
                                     "response_status": {
@@ -2527,32 +2532,40 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 1,
+                                        "id": 21,
                                         "youth_id": 1,
-                                        "institute_name": "Ondricka, Casper and Tromp",
-                                        "institute_name_en": "Ondricka, Casper and Tromp",
-                                        "examination_id": 3,
-                                        "examination_code": "SSC",
-                                        "examination_title_en": "SSC/Equivalent",
-                                        "examination_title": "এসএসসি/সমমান",
-                                        "board_id": 8,
-                                        "board_title_en": "Rajshahi",
-                                        "board_title": "রাজশাহী",
-                                        "edu_group_id": 2,
-                                        "edu_group_code": "Humanities",
-                                        "edu_group_title_en": "Arts and Humanities",
-                                        "edu_group_title": "মানবিক",
-                                        "major_or_subject_id": null,
-                                        "roll_number": "210381657639",
-                                        "registration_number": "932081741473",
-                                        "result_type": 2,
-                                        "division_type_result": null,
-                                        "cgpa_gpa_max_value": 5,
-                                        "received_cgpa_gpa": 2.1,
-                                        "passing_year": 1989,
-                                        "row_status": 1,
-                                        "created_at": "2021-10-06T07:06:47.000000Z",
-                                        "updated_at": "2021-10-06T07:06:47.000000Z"
+                                        "education_level_id": 1,
+                                        "education_level_title": "PSC/5 Pass",
+                                        "education_level_title_en": "PSC/5 Pass",
+                                        "exam_degree_id": 1,
+                                        "exam_degree_code": "PSC",
+                                        "exam_degree_title_en": "PSC",
+                                        "exam_degree_title": "পিএসসি",
+                                        "exam_degree_name": "sdefrtg",
+                                        "exam_degree_name_en": null,
+                                        "major_or_concentration": "Biology",
+                                        "major_or_concentration_en": "Biology",
+                                        "edu_group_id": 1,
+                                        "edu_group_code": "Science",
+                                        "edu_group_title_en": "Science",
+                                        "edu_group_title": "বিজ্ঞান",
+                                        "board_id": 1,
+                                        "board_title_en": "Barisal",
+                                        "board_title": "বরিশাল",
+                                        "institute_name": "B A F Shaheen",
+                                        "institute_name_en": null,
+                                        "is_foreign_institute": 0,
+                                        "foreign_institute_country_id": 1,
+                                        "result": "Second  Division/Class",
+                                        "marks_in_percentage": 1,
+                                        "cgpa_scale": 4,
+                                        "cgpa": 1,
+                                        "year_of_passing": 2010,
+                                        "duration": null,
+                                        "achievements": null,
+                                        "achievements_en": null,
+                                        "created_at": "2021-10-14T08:29:45.000000Z",
+                                        "updated_at": "2021-10-14T08:29:45.000000Z"
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -2595,32 +2608,40 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 1,
+                                        "id": 21,
                                         "youth_id": 1,
-                                        "institute_name": "Ondricka, Casper and Tromp",
-                                        "institute_name_en": "Ondricka, Casper and Tromp",
-                                        "examination_id": 3,
-                                        "examination_code": "SSC",
-                                        "examination_title_en": "SSC/Equivalent",
-                                        "examination_title": "এসএসসি/সমমান",
-                                        "board_id": 8,
-                                        "board_title_en": "Rajshahi",
-                                        "board_title": "রাজশাহী",
-                                        "edu_group_id": 2,
-                                        "edu_group_code": "Humanities",
-                                        "edu_group_title_en": "Arts and Humanities",
-                                        "edu_group_title": "মানবিক",
-                                        "major_or_subject_id": null,
-                                        "roll_number": "210381657639",
-                                        "registration_number": "932081741473",
-                                        "result_type": 2,
-                                        "division_type_result": null,
-                                        "cgpa_gpa_max_value": 5,
-                                        "received_cgpa_gpa": 2.1,
-                                        "passing_year": 1989,
-                                        "row_status": 1,
-                                        "created_at": "2021-10-06T07:06:47.000000Z",
-                                        "updated_at": "2021-10-06T07:06:47.000000Z"
+                                        "education_level_id": 1,
+                                        "education_level_title": "PSC/5 Pass",
+                                        "education_level_title_en": "PSC/5 Pass",
+                                        "exam_degree_id": 1,
+                                        "exam_degree_code": "PSC",
+                                        "exam_degree_title_en": "PSC",
+                                        "exam_degree_title": "পিএসসি",
+                                        "exam_degree_name": "sdefrtg",
+                                        "exam_degree_name_en": null,
+                                        "major_or_concentration": "Biology",
+                                        "major_or_concentration_en": "Biology",
+                                        "edu_group_id": 1,
+                                        "edu_group_code": "Science",
+                                        "edu_group_title_en": "Science",
+                                        "edu_group_title": "বিজ্ঞান",
+                                        "board_id": 1,
+                                        "board_title_en": "Barisal",
+                                        "board_title": "বরিশাল",
+                                        "institute_name": "B A F Shaheen",
+                                        "institute_name_en": null,
+                                        "is_foreign_institute": 0,
+                                        "foreign_institute_country_id": 1,
+                                        "result": "Second  Division/Class",
+                                        "marks_in_percentage": 1,
+                                        "cgpa_scale": 4,
+                                        "cgpa": 1,
+                                        "year_of_passing": 2010,
+                                        "duration": null,
+                                        "achievements": null,
+                                        "achievements_en": null,
+                                        "created_at": "2021-10-14T08:29:45.000000Z",
+                                        "updated_at": "2021-10-14T08:29:45.000000Z"
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -2669,32 +2690,40 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 1,
+                                        "id": 21,
                                         "youth_id": 1,
-                                        "institute_name": "Ondricka, Casper and Tromp",
-                                        "institute_name_en": "Ondricka, Casper and Tromp",
-                                        "examination_id": 3,
-                                        "examination_code": "SSC",
-                                        "examination_title_en": "SSC/Equivalent",
-                                        "examination_title": "এসএসসি/সমমান",
-                                        "board_id": 8,
-                                        "board_title_en": "Rajshahi",
-                                        "board_title": "রাজশাহী",
-                                        "edu_group_id": 2,
-                                        "edu_group_code": "Humanities",
-                                        "edu_group_title_en": "Arts and Humanities",
-                                        "edu_group_title": "মানবিক",
-                                        "major_or_subject_id": null,
-                                        "roll_number": "210381657639",
-                                        "registration_number": "932081741473",
-                                        "result_type": 2,
-                                        "division_type_result": null,
-                                        "cgpa_gpa_max_value": 5,
-                                        "received_cgpa_gpa": 2.1,
-                                        "passing_year": 1989,
-                                        "row_status": 1,
-                                        "created_at": "2021-10-06T07:06:47.000000Z",
-                                        "updated_at": "2021-10-06T07:06:47.000000Z"
+                                        "education_level_id": 1,
+                                        "education_level_title": "PSC/5 Pass",
+                                        "education_level_title_en": "PSC/5 Pass",
+                                        "exam_degree_id": 1,
+                                        "exam_degree_code": "PSC",
+                                        "exam_degree_title_en": "PSC",
+                                        "exam_degree_title": "পিএসসি",
+                                        "exam_degree_name": "sdefrtg",
+                                        "exam_degree_name_en": null,
+                                        "major_or_concentration": "Biology",
+                                        "major_or_concentration_en": "Biology",
+                                        "edu_group_id": 1,
+                                        "edu_group_code": "Science",
+                                        "edu_group_title_en": "Science",
+                                        "edu_group_title": "বিজ্ঞান",
+                                        "board_id": 1,
+                                        "board_title_en": "Barisal",
+                                        "board_title": "বরিশাল",
+                                        "institute_name": "B A F Shaheen",
+                                        "institute_name_en": null,
+                                        "is_foreign_institute": 0,
+                                        "foreign_institute_country_id": 1,
+                                        "result": "Second  Division/Class",
+                                        "marks_in_percentage": 1,
+                                        "cgpa_scale": 4,
+                                        "cgpa": 1,
+                                        "year_of_passing": 2010,
+                                        "duration": null,
+                                        "achievements": null,
+                                        "achievements_en": null,
+                                        "created_at": "2021-10-14T08:29:45.000000Z",
+                                        "updated_at": "2021-10-14T08:29:45.000000Z"
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -4510,13 +4539,39 @@
                 "type": "object",
                 "description": "Provide educational info of a youth",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
                     "youth_id": {
                         "type": "integer",
                         "example": 1
+                    },
+                    "education_level_id": {
+                        "type": "integer",
+                        "description": "ID of PSC, JSC, Secondary, Higher Secondary, Diploma, Honors, Masters, PhD"
+                    },
+                    "exam_degree_id": {
+                        "type": "integer",
+                        "description": "Depends upon Education Level. If Education level has at least one degree then this field is required"
+                    },
+                    "exam_degree_name": {
+                        "type": "string",
+                        "description": "Depends upon Education Level. If Education level has no degree then this field is required. (Ex: PhD Education level)"
+                    },
+                    "exam_degree_name_en": {
+                        "type": "string"
+                    },
+                    "major_or_concentration": {
+                        "type": "string",
+                        "description": "Only required for Secondary, Higher Secondary, Diploma, Bachelor, Masters"
+                    },
+                    "major_or_concentration_en": {
+                        "type": "string"
+                    },
+                    "edu_group_id": {
+                        "type": "integer",
+                        "description": "Only for Secondary, Higher Secondary. '1 => Science, 2 => Commerce, 3 => Arts (Only for Secondary, Higher Secondary)"
+                    },
+                    "board_id": {
+                        "type": "integer",
+                        "description": "Only for PSC, JSC, SSC, HSC etc"
                     },
                     "institute_name": {
                         "type": "string",
@@ -4526,84 +4581,43 @@
                         "type": "string",
                         "maxLength": 400
                     },
-                    "examination_id": {
-                        "type": "integer",
-                        "description": "PSC, JSC, SSC, HSC, Degree, B.Sc. (Pass), Honours, Preliminary Masters, Masters etc"
+                    "is_foreign_institute": {
+                        "type": "integer"
                     },
-                    "board_id": {
-                        "type": "integer",
-                        "description": "Only for PSC, JSC, SSC, HSC etc"
+                    "foreign_institute_country_id": {
+                        "type": "integer"
                     },
-                    "edu_group_id": {
-                        "type": "integer",
-                        "description": "'1 => Science, 2 => Commerce, 3 => Arts (Only for PSC, JSC, SSC, HSC, Degree)"
+                    "result": {
+                        "type": "integer"
                     },
-                    "major_or_subject_id": {
-                        "type": "integer",
-                        "description": "'Only for Honours/Masters'"
+                    "marks_in_percentage": {
+                        "type": "integer"
                     },
-                    "roll_number": {
-                        "type": "string",
-                        "maxLength": 100
+                    "cgpa_scale": {
+                        "type": "integer"
                     },
-                    "registration_number": {
-                        "type": "string",
-                        "maxLength": 100
+                    "cgpa": {
+                        "type": "integer"
                     },
-                    "result_type": {
-                        "type": "integer",
-                        "description": "1 => Division, 2 => Grade point"
+                    "year_of_passing": {
+                        "type": "string"
                     },
-                    "division_type_result": {
-                        "type": "integer",
-                        "description": "1 => 1st Class, 2 => 2nd Class, 3 => 3rd Class"
+                    "duration": {
+                        "type": "integer"
                     },
-                    "cgpa_gpa_max_value": {
-                        "type": "integer",
-                        "description": "floating point number"
+                    "achievements": {
+                        "type": "string"
                     },
-                    "received_cgpa_gpa": {
-                        "type": "integer",
-                        "description": "floating point number"
-                    },
-                    "passing_year": {
-                        "type": "integer",
-                        "format": "year",
-                        "example": 2015
-                    },
-                    "row_status": {
-                        "type": "integer",
-                        "description": "activation status",
-                        "enum": [
-                            1,
-                            0
-                        ],
-                        "example": 1
-                    },
-                    "deleted_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
+                    "achievements_en": {
+                        "type": "string"
                     }
                 },
                 "required": [
                     "youth_id",
-                    "examination_id",
-                    "roll_number",
+                    "education_level_id",
                     "institute_name",
-                    "registration_number",
-                    "result_type",
-                    "passing_year"
+                    "is_foreign_institute",
+                    "result"
                 ]
             },
             "languageProficiency": {
