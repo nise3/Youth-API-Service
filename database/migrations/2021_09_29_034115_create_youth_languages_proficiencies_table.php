@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLanguagesProficienciesTable extends Migration
+class CreateYouthLanguagesProficienciesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateLanguagesProficienciesTable extends Migration
      */
     public function up()
     {
-        Schema::create('languages_proficiencies', function (Blueprint $table) {
+        Schema::create('youth_languages_proficiencies', function (Blueprint $table) {
             $table->increments("id");
             $table->unsignedInteger("youth_id");
             $table->unsignedTinyInteger("language_id");
@@ -45,6 +45,6 @@ class CreateLanguagesProficienciesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('languages');
+        Schema::dropIfExists('youth_languages_proficiencies');
     }
 }

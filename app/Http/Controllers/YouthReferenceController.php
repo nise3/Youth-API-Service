@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Reference;
+use App\Models\YouthReference;
 use App\Services\YouthManagementServices\YouthReferenceService;
 use Carbon\Carbon;
 use Exception;
@@ -79,7 +79,7 @@ class YouthReferenceController extends Controller
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "Reference added successfully",
+                    "message" => "YouthReference added successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
@@ -99,7 +99,7 @@ class YouthReferenceController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $reference = Reference::findOrFail($id);
+        $reference = YouthReference::findOrFail($id);
         $request['youth_id'] = Auth::id();
         $validated = $this->referenceService->validator($request, $id)->validate();
         try {
@@ -109,7 +109,7 @@ class YouthReferenceController extends Controller
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Reference updated successfully",
+                    "message" => "YouthReference updated successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];
@@ -126,14 +126,14 @@ class YouthReferenceController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $reference = Reference::findOrFail($id);
+        $reference = YouthReference::findOrFail($id);
         try {
             $this->referenceService->destroy($reference);
             $response = [
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Reference deleted successfully",
+                    "message" => "YouthReference deleted successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];

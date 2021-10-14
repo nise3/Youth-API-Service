@@ -8,20 +8,25 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * App\Models\LanguagesProficiency
+ * App\Models\YouthCertification
  *
  * @property int id
  * @property int youth_id
- * @property int language_id
- * @property int reading_proficiency_level
- * @property int writing_proficiency_level
- * @property int speaking_proficiency_level
- * @property int understand_proficiency_level
- * @property int row_status
+ * @property string certification_name
+ * @property string|null certification_name_en
+ * @property string institute_name
+ * @property string|null institute_name_en
+ * @property string location
+ * @property string|null location_en
+ * @property string|null job_responsibilities
+ * @property string|null job_responsibilities_en
+ * @property string|null certificate_file_path
+ * @property Carbon start_date
+ * @property Carbon end_date
  * @property Carbon created_at
  * @property Carbon updated_at
  */
-class LanguagesProficiency extends BaseModel
+class YouthCertification extends BaseModel
 {
     use SoftDeletes, HasFactory;
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;

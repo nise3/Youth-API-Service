@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * App\Models\Role
+ * App\Models\YouthReference
  *
  * @property int id
  * @property int youth_id
@@ -26,11 +26,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string referrer_mobile
  * @property string referrer_relation
  * @property string|null referrer_relation_en
- * @property int row_status
  * @property Carbon created_at
  * @property Carbon updated_at
  */
-class Reference extends BaseModel
+class YouthReference extends BaseModel
 {
     use SoftDeletes, HasFactory;
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;

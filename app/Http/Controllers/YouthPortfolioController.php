@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Portfolio;
+use App\Models\YouthPortfolio;
 use App\Services\YouthManagementServices\YouthPortfolioService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -91,7 +91,7 @@ class YouthPortfolioController extends Controller
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "Portfolio added successfully",
+                    "message" => "YouthPortfolio added successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
@@ -112,7 +112,7 @@ class YouthPortfolioController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $portfolio = Portfolio::findOrFail($id);
+        $portfolio = YouthPortfolio::findOrFail($id);
         $request['youth_id'] = Auth::id();
         $validated = $this->portfolioService->validator($request, $id)->validate();
         try {
@@ -122,7 +122,7 @@ class YouthPortfolioController extends Controller
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Portfolio updated successfully",
+                    "message" => "YouthPortfolio updated successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];
@@ -140,14 +140,14 @@ class YouthPortfolioController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $portfolio = Portfolio::findOrFail($id);
+        $portfolio = YouthPortfolio::findOrFail($id);
         try {
             $this->portfolioService->destroy($portfolio);
             $response = [
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Portfolio deleted successfully",
+                    "message" => "YouthPortfolio deleted successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];

@@ -3,7 +3,7 @@
 namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
-use App\Models\Reference;
+use App\Models\YouthReference;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -31,7 +31,7 @@ class YouthReferenceService
         $order = $request['order'] ?? "ASC";
 
         /** @var  Builder $referenceBuilder */
-        $referenceBuilder = Reference::select([
+        $referenceBuilder = YouthReference::select([
             'references.id',
             'references.youth_id',
             'references.referrer_first_name',
@@ -89,7 +89,7 @@ class YouthReferenceService
     public function getOneReference(int $id, Carbon $startTime): array
     {
         /** @var  Builder $referenceBuilder */
-        $referenceBuilder = Reference::select([
+        $referenceBuilder = YouthReference::select([
             'references.id',
             'references.youth_id',
             'references.referrer_first_name',
@@ -111,7 +111,7 @@ class YouthReferenceService
         ]);
         $referenceBuilder->where('references.id', $id);
 
-        /** @var Reference $reference */
+        /** @var YouthReference $reference */
         $reference = $referenceBuilder->first();
 
         return [
@@ -127,11 +127,11 @@ class YouthReferenceService
 
     /**
      * @param array $data
-     * @return Reference
+     * @return YouthReference
      */
-    public function store(array $data): Reference
+    public function store(array $data): YouthReference
     {
-        $reference = new Reference();
+        $reference = new YouthReference();
         $reference->fill($data);
         $reference->save();
         return $reference;
@@ -139,11 +139,11 @@ class YouthReferenceService
 
 
     /**
-     * @param Reference $reference
+     * @param YouthReference $reference
      * @param array $data
-     * @return Reference
+     * @return YouthReference
      */
-    public function update(Reference $reference, array $data): Reference
+    public function update(YouthReference $reference, array $data): YouthReference
     {
         $reference->fill($data);
         $reference->save();
@@ -152,10 +152,10 @@ class YouthReferenceService
 
 
     /**
-     * @param Reference $reference
+     * @param YouthReference $reference
      * @return bool
      */
-    public function destroy(Reference $reference): bool
+    public function destroy(YouthReference $reference): bool
     {
         return $reference->delete();
     }

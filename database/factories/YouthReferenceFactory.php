@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Reference;
+use App\Models\YouthReference;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ReferenceFactory extends Factory
+class YouthReferenceFactory extends Factory
 {
 
-    protected $model = Reference::class;
+    protected $model = YouthReference::class;
 
     public function definition(): array
     {

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateJobExperiencesTable extends Migration
+class CreateYouthJobExperiencesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateJobExperiencesTable extends Migration
      */
     public function up()
     {
-        Schema::create('job_experiences', function (Blueprint $table) {
+        Schema::create('youth_job_experiences', function (Blueprint $table) {
             $table->increments("id");
             $table->unsignedInteger("youth_id");
             $table->unsignedTinyInteger("employment_type_id");
@@ -57,6 +57,6 @@ class CreateJobExperiencesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('job_experiences');
+        Schema::dropIfExists('youth_job_experiences');
     }
 }

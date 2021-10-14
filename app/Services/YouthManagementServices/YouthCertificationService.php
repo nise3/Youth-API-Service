@@ -3,7 +3,7 @@
 namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
-use App\Models\Certification;
+use App\Models\YouthCertification;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -28,7 +28,7 @@ class YouthCertificationService
         $order = $request['order'] ?? BaseModel::ROW_ORDER_ASC;
 
         /** @var Builder $certificationBuilder */
-        $certificationBuilder = Certification::select([
+        $certificationBuilder = YouthCertification::select([
             'certifications.id',
             'certifications.youth_id',
             'certifications.certification_name',
@@ -83,7 +83,7 @@ class YouthCertificationService
     public function getOneCertification(int $id, Carbon $startTime): array
     {
         /** @var Builder $certificationBuilder */
-        $certificationBuilder = Certification::select([
+        $certificationBuilder = YouthCertification::select([
             'certifications.id',
             'certifications.youth_id',
             'certifications.certification_name',
@@ -100,7 +100,7 @@ class YouthCertificationService
         ]);
         $certificationBuilder->where('certifications.id', $id);
 
-        /** @var Certification $certification */
+        /** @var YouthCertification $certification */
         $certification = $certificationBuilder->first();
 
         return [
@@ -115,22 +115,22 @@ class YouthCertificationService
 
     /**
      * @param array $data
-     * @return certification
+     * @return YouthCertification
      */
-    public function store(array $data): Certification
+    public function store(array $data): YouthCertification
     {
-        $certification = new Certification();
+        $certification = new YouthCertification();
         $certification->fill($data);
         $certification->save();
         return $certification;
     }
 
     /**
-     * @param Certification $certification
+     * @param YouthCertification $certification
      * @param array $data
-     * @return Certification
+     * @return YouthCertification
      */
-    public function update(Certification $certification, array $data): Certification
+    public function update(YouthCertification $certification, array $data): YouthCertification
     {
         $certification->fill($data);
         $certification->save();
@@ -138,10 +138,10 @@ class YouthCertificationService
     }
 
     /**
-     * @param Certification $certification
+     * @param YouthCertification $certification
      * @return bool
      */
-    public function destroy(Certification $certification): bool
+    public function destroy(YouthCertification $certification): bool
     {
         return $certification->delete();
     }

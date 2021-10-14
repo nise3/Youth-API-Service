@@ -82,7 +82,7 @@ abstract class BaseModel extends Model
     public const RELIGION_ETHNIC = 7;
     public const RELIGION_AGNOSTIC_ATHEIST = 8;
 
-    /** LanguagesProficiency Level */
+    /** YouthLanguagesProficiency Level */
     public const EASY = 1;
     public const NOT_EASY = 0;
     public const FLUENTLY = 1;

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
 
-class EducationController extends Controller
+class YouthEducationController extends Controller
 {
 
 

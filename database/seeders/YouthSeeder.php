@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Certification;
+use App\Models\YouthCertification;
 use App\Models\Education;
-use App\Models\JobExperience;
-use App\Models\LanguagesProficiency;
-use App\Models\Portfolio;
-use App\Models\Reference;
+use App\Models\YouthJobExperience;
+use App\Models\YouthLanguagesProficiency;
+use App\Models\YouthPortfolio;
+use App\Models\YouthReference;
 use App\Models\Skill;
 use App\Models\Youth;
 use App\Models\YouthEducation;
@@ -27,19 +27,19 @@ class YouthSeeder extends Seeder
                 YouthEducation::factory(), 'youthEducations'
             )
             ->has(
-                JobExperience::factory()->count(1), 'jobExperiences'
+                YouthJobExperience::factory()->count(1), 'jobExperiences'
             )
             ->has(
-                LanguagesProficiency::factory()->count(2), 'LanguagesProficiencies'
+                YouthLanguagesProficiency::factory()->count(2), 'LanguagesProficiencies'
             )
             ->has(
-                Portfolio::factory()->count(5), 'portfolios'
+                YouthPortfolio::factory()->count(5), 'portfolios'
             )
             ->has(
-                Certification::factory()->count(2), 'certifications'
+                YouthCertification::factory()->count(2), 'certifications'
             )
             ->has(
-                Reference::factory()->count(2), 'references'
+                YouthReference::factory()->count(2), 'references'
             )
             ->create();
     }

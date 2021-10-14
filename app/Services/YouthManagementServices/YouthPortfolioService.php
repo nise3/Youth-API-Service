@@ -4,7 +4,7 @@
 namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
-use App\Models\Portfolio;
+use App\Models\YouthPortfolio;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -31,7 +31,7 @@ class YouthPortfolioService
         $order = $request['order'] ?? "ASC";
 
         /** @var Builder $portfolioBuilder */
-        $portfolioBuilder = Portfolio::select([
+        $portfolioBuilder = YouthPortfolio::select([
             'portfolios.id',
             'portfolios.title',
             'portfolios.title_en',
@@ -89,7 +89,7 @@ class YouthPortfolioService
     public function getOnePortfolio(int $id, Carbon $startTime): array
     {
         /** @var Builder $portfolioBuilder */
-        $portfolioBuilder = Portfolio::select([
+        $portfolioBuilder = YouthPortfolio::select([
             'portfolios.id',
             'portfolios.title',
             'portfolios.title_en',
@@ -102,7 +102,7 @@ class YouthPortfolioService
         ]);
         $portfolioBuilder->where('portfolios.id', $id);
 
-        /** @var Portfolio $portfolio */
+        /** @var YouthPortfolio $portfolio */
         $portfolio = $portfolioBuilder->first();
 
         return [
@@ -118,22 +118,22 @@ class YouthPortfolioService
 
     /**
      * @param array $data
-     * @return Portfolio
+     * @return YouthPortfolio
      */
-    public function store(array $data): Portfolio
+    public function store(array $data): YouthPortfolio
     {
-        $portfolio = new Portfolio();
+        $portfolio = new YouthPortfolio();
         $portfolio->fill($data);
         $portfolio->save();
         return $portfolio;
     }
 
     /**
-     * @param Portfolio $portfolio
+     * @param YouthPortfolio $portfolio
      * @param array $data
-     * @return Portfolio
+     * @return YouthPortfolio
      */
-    public function update(Portfolio $portfolio, array $data): Portfolio
+    public function update(YouthPortfolio $portfolio, array $data): YouthPortfolio
     {
         $portfolio->fill($data);
         $portfolio->save();
@@ -141,10 +141,10 @@ class YouthPortfolioService
     }
 
     /**
-     * @param Portfolio $portfolio
+     * @param YouthPortfolio $portfolio
      * @return bool
      */
-    public function destroy(Portfolio $portfolio): bool
+    public function destroy(YouthPortfolio $portfolio): bool
     {
         return $portfolio->delete();
     }

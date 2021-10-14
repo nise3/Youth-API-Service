@@ -85,7 +85,7 @@ class Youth extends AuthBaseModel
      */
     public function jobExperiences(): HasMany
     {
-        return $this->hasMany(JobExperience::class, 'youth_id', 'id');
+        return $this->hasMany(YouthJobExperience::class, 'youth_id', 'id');
     }
 
     /**
@@ -93,7 +93,7 @@ class Youth extends AuthBaseModel
      */
     public function LanguagesProficiencies(): HasMany
     {
-        return $this->hasMany(LanguagesProficiency::class, 'youth_id', 'id');
+        return $this->hasMany(YouthLanguagesProficiency::class, 'youth_id', 'id');
     }
 
     /**
@@ -101,7 +101,7 @@ class Youth extends AuthBaseModel
      */
     public function certifications(): HasMany
     {
-        return $this->hasMany(Certification::class, 'youth_id', 'id');
+        return $this->hasMany(YouthCertification::class, 'youth_id', 'id');
     }
 
     /**
@@ -125,7 +125,7 @@ class Youth extends AuthBaseModel
      */
     public function portfolios(): HasMany
     {
-        return $this->hasMany(Portfolio::class, 'youth_id', 'id');
+        return $this->hasMany(YouthPortfolio::class, 'youth_id', 'id');
     }
 
     /**
@@ -133,7 +133,7 @@ class Youth extends AuthBaseModel
      */
     public function references(): HasMany
     {
-        return $this->hasMany(Reference::class, 'youth_id', 'id');
+        return $this->hasMany(YouthReference::class, 'youth_id', 'id');
     }
 
     /**

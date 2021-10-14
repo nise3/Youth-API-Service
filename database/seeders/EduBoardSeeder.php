@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Board;
+use App\Models\EduBoard;
 use Illuminate\Database\Seeder;
 
-class BoardSeeder extends Seeder
+class EduBoardSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -57,6 +57,6 @@ class BoardSeeder extends Seeder
             ],
         ];
 
-        Board::insert($boardName);
+        EduBoard::insert($boardName);
     }
 }

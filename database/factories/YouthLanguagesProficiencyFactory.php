@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\LanguagesProficiency;
+use App\Models\YouthLanguagesProficiency;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class LanguagesProficiencyFactory extends Factory
+class YouthLanguagesProficiencyFactory extends Factory
 {
-    protected $model = LanguagesProficiency::class;
+    protected $model = YouthLanguagesProficiency::class;
 
     public function definition(): array
     {
