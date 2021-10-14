@@ -1793,7 +1793,7 @@
         },
         "/youth-profile-verification": {
             "post": {
-                "summary": "Youth Approval by OTP Verification",
+                "summary": "Youth profile verification",
                 "description": "API endpoint to verify a youth profile. A successful request response will show 200 HTTP status code ",
                 "parameters": [
                     {
@@ -2982,7 +2982,7 @@
                     }
                 },
                 "tags": [
-                    "Language Proficiency"
+                    "Language Proficiency..."
                 ]
             }
         },
@@ -3027,7 +3027,7 @@
                     }
                 },
                 "tags": [
-                    "Language Proficiency"
+                    "Language Proficiency...."
                 ]
             },
             "put": {
@@ -3110,6 +3110,117 @@
                 },
                 "tags": [
                     "Language Proficiency"
+                ]
+            }
+        },
+        "/youth-guardians": {
+            "get": {
+                "description": "Get all guardians of",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "The name of guardian returned",
+                        "schema": {
+                            "type": "string",
+                            "default": "",
+                            "example": "Donald"
+                        }
+                    },
+                    {
+                        "name": "name_en",
+                        "in": "query",
+                        "description": "The name of guardian returned in English",
+                        "schema": {
+                            "type": "string",
+                            "default": "",
+                            "example": "Donald"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "The pages to return employee info",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 10,
+                            "maximum": 20,
+                            "example": 15
+                        }
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "description": "The name of guardian returned",
+                        "schema": {
+                            "type": "string",
+                            "default": "",
+                            "example": "ASC"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "MODELING EMPLOYEE",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 4
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Ryan Pinkman"
+                                            },
+                                            "name_en": {
+                                                "type": "string",
+                                                "example": "Ryan Pinkman2"
+                                            },
+                                            "nid": {
+                                                "type": "string",
+                                                "example": "1aas345-poiu989-ssv56@@er5"
+                                            },
+                                            "mobile": {
+                                                "type": "string",
+                                                "example": 909876612
+                                            },
+                                            "date_of_birth": {
+                                                "type": "string",
+                                                "example": "12/12/1987"
+                                            },
+                                            "relationship_type": {
+                                                "type": "string",
+                                                "example": "parent"
+                                            },
+                                            "relationship_title": {
+                                                "type": "string",
+                                                "example": "father"
+                                            },
+                                            "relationship_title_en": {
+                                                "type": "string",
+                                                "example": "father"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "example": "12/12/1987"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "example": "12/12/1987"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth-Guardians"
                 ]
             }
         }
@@ -4822,5 +4933,3 @@
         }
     }
 }
-
-
