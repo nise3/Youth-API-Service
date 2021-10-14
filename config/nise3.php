@@ -56,57 +56,57 @@ return [
         8 => ['en' => 'PhD', 'bn' => 'PhD'],
     ],
     'exam_degree_results' => [
-        1=>[
-            'id'=>1,
-            'code'=>BaseModel::FIRST_DIVISION,
+        1 => [
+            'id' => 1,
+            'code' => BaseModel::FIRST_DIVISION,
             'title_en' => 'First Division/Class',
             'title' => 'First Division/Class'
         ],
-        2=>[
-            'id'=>2,
-            'code'=>BaseModel::SECOND_DIVISION,
+        2 => [
+            'id' => 2,
+            'code' => BaseModel::SECOND_DIVISION,
             'title_en' => 'Second  Division/Class',
             'title' => 'Second  Division/Class'
         ],
-        3=>[
-            'id'=>3,
-            'code'=>BaseModel::THIRD_DIVISION,
+        3 => [
+            'id' => 3,
+            'code' => BaseModel::THIRD_DIVISION,
             'title_en' => 'Third Division/Class',
             'title' => 'Third Division/Class'
         ],
-        4=>[
-            'id'=>4,
-            'code'=>BaseModel::GRADE,
+        4 => [
+            'id' => 4,
+            'code' => BaseModel::GRADE,
             'title_en' => 'Grade',
             'title' => 'Grade'
         ],
-        5=>[
-            'id'=>5,
-            'code'=>BaseModel::APPEARED,
+        5 => [
+            'id' => 5,
+            'code' => BaseModel::APPEARED,
             'title_en' => 'Appeared',
             'title' => 'Appeared'
         ],
-        6=>[
-            'id'=>6,
-            'code'=>BaseModel::ENROLLED,
+        6 => [
+            'id' => 6,
+            'code' => BaseModel::ENROLLED,
             'title_en' => 'Enrolled',
             'title' => 'Enrolled'
         ],
-        7=>[
-            'id'=>7,
-            'code'=>BaseModel::AWARDED,
+        7 => [
+            'id' => 7,
+            'code' => BaseModel::AWARDED,
             'title_en' => 'Awarded',
             'title' => 'Awarded'
         ],
-        8=>[
-            'id'=>8,
-            'code'=>BaseModel::DO_NOT_MENTION,
+        8 => [
+            'id' => 8,
+            'code' => BaseModel::DO_NOT_MENTION,
             'title_en' => 'Do Not Mention',
             'title' => 'Do Not Mention'
         ],
-        9=>[
-            'id'=>9,
-            'code'=>BaseModel::PASS,
+        9 => [
+            'id' => 9,
+            'code' => BaseModel::PASS,
             'title_en' => 'Pass',
             'title_bn' => 'Pass'
         ],
