@@ -103,7 +103,13 @@ class Youth extends AuthBaseModel
     {
         return $this->hasMany(Certification::class, 'youth_id', 'id');
     }
-
+    /**
+     * @return HasMany
+     */
+    public function educations(): HasMany
+    {
+        return $this->hasMany(Education::class, 'youth_id', 'id');
+    }
     /**
      * @return HasMany
      */
