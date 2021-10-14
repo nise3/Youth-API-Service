@@ -20,7 +20,10 @@ $router->get('/', function () use ($router) {
 $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($router, $customRouter) {
     $router->get('/', ['as' => 'api-info', 'uses' => 'ApiInfoController@apiInfo']);
     $customRouter()->resourceRoute('skills', 'SkillController')->render();
-    $customRouter()->resourceRoute('youths', 'YouthController')->render();
+
+    $router->get('youths', ["as" => "youth.get-list", "uses" => "YouthProfileController@getList"]);
+    $router->get('youths/{id}', ["as" => "youth.read", "uses" => "YouthProfileController@read"]);
+    $router->get('youth-educations-exam-board-edugroup-subject', ["as" => "youth.education.basic.table.info", "uses" => "YouthController@youthEducationBasicInfos"]);
 
     /** youth registration */
     $router->post('youth-registration', ["as" => "youth.registration", "uses" => "YouthProfileController@youthRegistration"]);
@@ -33,7 +36,7 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     $router->get('freelancers', ["as" => "freelancers.get-all-freelancers", "uses" => "FreelanceController@getAllFreelancers"]);
 
     // data from examinations, boards , edu groups, major or subjects table
-    $router->get('youth-educations-exam-board-edugroup-subject', ["as" => "youth.education.basic.table.info", "uses" => "YouthController@youthEducationBasicInfos"]);
+
 });
 
 
