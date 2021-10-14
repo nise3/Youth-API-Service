@@ -33,6 +33,8 @@ class YouthService
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
+        $skills = $request['skills'] ?? "";
+        dd($skills);
 
         /** @var Builder $youthBuilder */
 
@@ -237,6 +239,10 @@ class YouthService
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
+            ],
+            'skills' => [
+                'array',
+                'nullable'
             ],
             'row_status' => [
                 "numeric",
