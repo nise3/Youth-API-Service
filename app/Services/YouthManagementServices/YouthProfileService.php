@@ -291,7 +291,6 @@ class YouthProfileService
                 ]
             ]);
 
-
         Log::channel('idp_user')->info('idp_user_payload', $data);
         Log::channel('idp_user')->info('idp_user_info', $client->json());
 
