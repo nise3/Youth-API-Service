@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int level_of_education
  * @property int exam_degree_id
  * @property int|null edu_group_id
- * @property int|null board_id
+ * @property int|null edu_board_id
  * @property int|null is_foreign_institute
  * @property int|null foreign_institute_country_id
  * @property int result
@@ -37,13 +37,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class YouthEducation extends BaseModel
 {
     use SoftDeletes, HasFactory;
+
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
 
-    protected $table="youth_educations";
+    protected $table = "youth_educations";
 
     public function getResultAttribute($value)
     {
-        return config("nise3.exam_degree_results.".$value.".title");
+        return config("nise3.exam_degree_results." . $value . ".title");
     }
 
 
@@ -52,20 +53,20 @@ class YouthEducation extends BaseModel
     const GPA_OUT_OF_FOUR = 4;
 
     /** Education Attributes Key */
-    public const DEGREE="DEGREE";
-    public const BOARD="BOARD";
-    public const MAJOR="MAJOR";
-    public const EXAM_DEGREE_NAME="EXAM_DEGREE_NAME";
-    public const MARKS="MARKS";
-    public const CGPA="CGPA";
-    public const SCALE="SCALE";
-    public const YEAR_OF_PASS="YEAR_OF_PASS";
-    public const EXPECTED_YEAR_OF_EXPERIENCE="EXPECTED_YEAR_OF_EXPERIENCE";
-    public const EDU_GROUP="EDU_GROUP";
+    public const DEGREE = "DEGREE";
+    public const BOARD = "BOARD";
+    public const MAJOR = "MAJOR";
+    public const EXAM_DEGREE_NAME = "EXAM_DEGREE_NAME";
+    public const MARKS = "MARKS";
+    public const CGPA = "CGPA";
+    public const SCALE = "SCALE";
+    public const YEAR_OF_PASS = "YEAR_OF_PASS";
+    public const EXPECTED_YEAR_OF_EXPERIENCE = "EXPECTED_YEAR_OF_EXPERIENCE";
+    public const EDU_GROUP = "EDU_GROUP";
 
     /** Trigger Flag For Education Form Validation */
-    public const EDUCATION_LEVEL_TRIGGER="EDUCATION_LEVEL";
-    public const RESULT_TRIGGER="RESULT";
+    public const EDUCATION_LEVEL_TRIGGER = "EDUCATION_LEVEL";
+    public const RESULT_TRIGGER = "RESULT";
 
     /**
      * @return BelongsTo

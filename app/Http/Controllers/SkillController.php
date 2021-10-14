@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Skill;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
@@ -43,7 +42,8 @@ class SkillController extends Controller
     /**
      * Display a listing of the resource.
      * @param Request $request
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      * @throws ValidationException
      */
     public function getList(Request $request): JsonResponse
@@ -51,31 +51,36 @@ class SkillController extends Controller
         $filter = $this->skillService->filterValidator($request)->validate();
         try {
             $response = $this->skillService->getSkillList($filter, $this->startTime);
+            return Response::json($response);
+
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response);
+
     }
 
 
     /**
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      */
     public function read(int $id): JsonResponse
     {
         try {
             $response = $this->skillService->getOneSkill($id, $this->startTime);
+            return Response::json($response);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response);
+
     }
 
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      * @throws ValidationException
      */
     function store(Request $request): JsonResponse
@@ -92,17 +97,19 @@ class SkillController extends Controller
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
+            return Response::json($response, ResponseAlias::HTTP_CREATED);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_CREATED);
+
     }
 
     /**
      * Update the specified resource in storage
      * @param Request $request
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      * @throws ValidationException
      */
     public function update(Request $request, int $id): JsonResponse
@@ -121,16 +128,17 @@ class SkillController extends Controller
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
+            return Response::json($response, ResponseAlias::HTTP_CREATED);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
     /**
      * Remove the specified resource from storage
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      */
     public function destroy(int $id): JsonResponse
     {
@@ -146,30 +154,34 @@ class SkillController extends Controller
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
+            return Response::json($response, ResponseAlias::HTTP_OK);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**
      * @param Request $request
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      */
-    public function getTrashedData(Request $request)
+    public function getTrashedData(Request $request): JsonResponse
     {
         try {
             $response = $this->skillService->getTrashedSkillList($request, $this->startTime);
+
+            return Response::json($response);
+
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response);
     }
 
 
     /**
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      */
     public function restore(int $id)
     {
@@ -184,17 +196,19 @@ class SkillController extends Controller
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
+            return Response::json($response, ResponseAlias::HTTP_OK);
+
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      */
-    public function forceDelete(int $id)
+    public function forceDelete(int $id): JsonResponse
     {
         $skill = Skill::onlyTrashed()->findOrFail($id);
         try {
@@ -207,9 +221,10 @@ class SkillController extends Controller
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
+
+            return Response::json($response, ResponseAlias::HTTP_OK);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 }

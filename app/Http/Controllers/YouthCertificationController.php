@@ -47,10 +47,11 @@ class YouthCertificationController extends Controller
         $filter = $this->certificationService->filterValidator($request)->validate();
         try {
             $response = $this->certificationService->getAllCertifications($filter, $this->startTime);
+            return Response::json($response);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response);
+
     }
 
 
@@ -63,10 +64,11 @@ class YouthCertificationController extends Controller
     {
         try {
             $response = $this->certificationService->getOneCertification($id, $this->startTime);
+            return Response::json($response);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response);
+
     }
 
 
@@ -91,10 +93,11 @@ class YouthCertificationController extends Controller
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
+            return Response::json($response, ResponseAlias::HTTP_CREATED);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_CREATED);
+
     }
 
 
@@ -121,10 +124,11 @@ class YouthCertificationController extends Controller
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];
+            return Response::json($response, ResponseAlias::HTTP_CREATED);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_CREATED);
+
     }
 
 
@@ -146,9 +150,10 @@ class YouthCertificationController extends Controller
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];
+            return Response::json($response, ResponseAlias::HTTP_OK);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_OK);
+
     }
 }
