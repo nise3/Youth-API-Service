@@ -2206,11 +2206,6 @@ paths:
                   query_time: 0
       tags:
         - Language Proficiency...
-
-
-
-
-
   /youth-languages-proficiencies/{languageProficiencyId}:
     get:
       summary: get_one
@@ -2298,7 +2293,6 @@ paths:
                   query_time: 0
       tags:
         - Language Proficiency
-
   /youth-guardians:
     get:
       description: Get all guardians of
@@ -2343,7 +2337,6 @@ paths:
                   $ref: '#/components/schemas/youthGuardianProp'
       tags:
         - Youth Guardians
-
     post:
       summary: Add a new guardian
       requestBody:
@@ -2358,7 +2351,8 @@ paths:
           description: Created
       tags:
         - Youth Guardians
-  '/youth-guardians/{guardiansId}':
+
+  /youth-guardians/{guardiansId}:
     get:
       description: Obtain info about a specific youth guardian
       parameters:
@@ -2376,6 +2370,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/youthGuardianProp'
+      tags:
+        - Youth Guardians
+    put:
+      summary: Add a new pet
+      parameters:
+        - name: guardiansId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: int64
+            example: 1
+      requestBody:
+        description: Creating a new guardian
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/youthGuardianProp'
+      responses:
+        '200':
+          description: Updated
+      tags:
+        - Youth Guardians
+    delete:
+      summary: delete
+      description: API endpoint to delete the specified guardian record.A successful request response will show 200 HTTP status code
+      parameters:
+        - name: guardiansId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: int64
+      responses:
+        '200':
+          description: delete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/youthGuardianProp'
+              example:
+                _response_status:
+                  success: true
+                  code: 200
+                  message: guardian record deleted successfully.
+                  query_time: 0
       tags:
         - Youth Guardians
 components:
@@ -2402,7 +2442,7 @@ components:
           example: 1aas345-poiu989-ssv56@@er5
         mobile:
           type: string
-          example: 0909876612
+          example: '0909876612'
         date_of_birth:
           type: string
           example: 12/12/1987
