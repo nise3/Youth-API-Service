@@ -2332,7 +2332,6 @@ paths:
             type: string
             default: ''
             example: ASC
-
       responses:
         '200':
           description: MODELING EMPLOYEE
@@ -2341,16 +2340,29 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref : '#/components/schemas/youthGuardianProp'
+                  $ref: '#/components/schemas/youthGuardianProp'
       tags:
-        - Youth-Guardians
+        - Youth Guardians
 
-
-  /youth-guardians/{id}:
+    post:
+      summary: Add a new guardian
+      requestBody:
+        description: Creating a new guardian
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/youthGuardianProp'
+      responses:
+        '200':
+          description: Created
+      tags:
+        - Youth Guardians
+  '/youth-guardians/{guardiansId}':
     get:
       description: Obtain info about a specific youth guardian
       parameters:
-        - name: id
+        - name: guardiansId
           in: path
           required: true
           description: The Id of the employee
@@ -2363,7 +2375,9 @@ paths:
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/youthGuardianProp'
+                $ref: '#/components/schemas/youthGuardianProp'
+      tags:
+        - Youth Guardians
 components:
   securitySchemes:
     bearerAuth:
