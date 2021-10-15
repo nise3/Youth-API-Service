@@ -397,6 +397,9 @@ class YouthProfileService
     public function youthRegisterOrUpdateValidation(Request $request, int $id = null): Validator
     {
         $data = $request->all();
+        Log::info("Anisssss");
+        Log::info(json_encode($data));
+        Log::info("Anisssss endddd");
 
         $customMessage = [
             "password.regex" => [
