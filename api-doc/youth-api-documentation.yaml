@@ -2293,6 +2293,210 @@ paths:
                   query_time: 0
       tags:
         - Language Proficiency
+  /youth-guardians:
+    get:
+      summary: get_list
+      description: 'API endpoint to get the list of Yoth guardians. A successful request response will show 200 HTTP status code '
+
+      parameters:
+        - $ref: '#/components/parameters/name'
+        - $ref: '#/components/parameters/name_en'
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/order'
+      responses:
+        '200':
+          description: MODELING EMPLOYEE
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/youthGuardianProp'
+      tags:
+        - Youth Guardians
+    post:
+      summary: create
+      description: API endpoint to create a new guardian.A successful request response will show 200 HTTP status code
+      requestBody:
+        description: Creating a new guardian
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/youthGuardianProp'
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              # schema:
+              #   $ref: '#/components/schemas/youthGuardianProp'
+              example:
+                data:
+                  id:
+                    type: integer
+                    example: 4
+
+                  name:
+                    type: string
+                    example: Ryan Pinkman
+
+                  name_en:
+                    type: string
+                    example: Ryan Pinkman2
+
+                  nid:
+                    type: string
+                    example: 1aas345-poiu989-ssv56@@er5
+
+                  mobile:
+                    type: string
+                    example: '0909876612'
+
+                  date_of_birth:
+                    type: string
+                    example: 12/12/1987
+
+                  relationship_type:
+                    type: string
+                    example: parent
+
+                  relationship_title:
+                    type: string
+                    example: father
+                  relationship_title_en:
+                    type: string
+                    example: father
+
+                  updated_at: '2021-08-22T11:25:13.000000Z'
+                  created_at: '2021-08-22T11:25:13.000000Z'
+
+                _response_status:
+                  success: true
+                  code: 201
+                  message: guardian added successfully
+                  query_time: 0
+      tags:
+        - Youth Guardians
+  /youth-guardians/{guardiansId}:
+    get:
+
+      summary: get_one
+      description: API endpoint to get a specified youth guardian.A successful request response will show 200 HTTP status code
+      parameters:
+        - name: guardiansId
+          in: path
+          required: true
+          description: The Id of the employee
+          schema:
+            type: integer
+            example: 12
+      responses:
+        '200':
+          description: successfull
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/youthGuardianProp'
+
+      tags:
+        - Youth Guardians
+    put:
+
+      summary: update
+      description: API endpoint to update the specified youth guardian. A successful request response will show 200 HTTP status code
+      parameters:
+        - name: guardiansId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: int64
+            example: 1
+      requestBody:
+        description: Creating a new guardian
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/youthGuardianProp'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              example:
+                data:
+                  id:
+                    type: integer
+                    example: 4
+
+                  name:
+                    type: string
+                    example: Ryan Pinkman
+
+                  name_en:
+                    type: string
+                    example: Ryan Pinkman2
+
+                  nid:
+                    type: string
+                    example: 1aas345-poiu989-ssv56@@er5
+
+                  mobile:
+                    type: string
+                    example: '0909876612'
+
+                  date_of_birth:
+                    type: string
+                    example: 12/12/1987
+
+                  relationship_type:
+                    type: string
+                    example: parent
+
+                  relationship_title:
+                    type: string
+                    example: father
+                  relationship_title_en:
+                    type: string
+                    example: father
+
+                  updated_at: '2021-08-22T11:25:13.000000Z'
+                  created_at: '2021-08-22T11:25:13.000000Z'
+
+                _response_status:
+                  success: true
+                  code: 201
+                  message: guardian updated successfully
+                  query_time: 0
+
+      tags:
+        - Youth Guardians
+    delete:
+      summary: delete
+      description: API endpoint to delete the specified guardian record.A successful request response will show 200 HTTP status code
+      parameters:
+        - name: guardiansId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: int64
+      responses:
+        '200':
+          description: delete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/youthGuardianProp'
+              example:
+                _response_status:
+                  success: true
+                  code: 200
+                  message: guardian record deleted successfully.
+                  query_time: 0
+      tags:
+        - Youth Guardians
 components:
   securitySchemes:
     bearerAuth:
@@ -2300,6 +2504,45 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    youthGuardianProp:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 4
+          readOnly: true
+        name:
+          type: string
+          example: Ryan Pinkman
+        name_en:
+          type: string
+          example: Ryan Pinkman2
+        nid:
+          type: string
+          example: 1aas345-poiu989-ssv56@@er5
+        mobile:
+          type: string
+          example: '0909876612'
+        date_of_birth:
+          type: string
+          example: 12/12/1987
+        relationship_type:
+          type: integer
+          example: 1
+        relationship_title:
+          type: string
+          example: father
+        relationship_title_en:
+          type: string
+          example: father
+        created_at:
+          type: string
+          example: 12/12/1987
+          readOnly: true
+        updated_at:
+          type: string
+          example: 12/12/1987
+          readOnly: true
     Youth:
       type: object
       description: Provide Youth Profile Information
@@ -3416,6 +3659,14 @@ components:
         - speaking_proficiency_level
         - understand_proficiency_level
   parameters:
+    name:
+      name: name
+      in: query
+      description: The name of guardian returned
+      schema:
+        type: string
+        default: ''
+        example: Donald
     skillId:
       name: skillId
       in: path

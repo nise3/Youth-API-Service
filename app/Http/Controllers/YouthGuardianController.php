@@ -32,6 +32,7 @@ class YouthGuardianController extends Controller
         $filter = $this->youthGuardianService->filterValidator($request)->validate();
         try {
             $response = $this->youthGuardianService->getGuardianList($filter, $this->startTime);
+
         } catch (Throwable $e) {
             throw $e;
         }
