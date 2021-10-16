@@ -2205,7 +2205,7 @@ paths:
                   message: Language Proficiency added successfully
                   query_time: 0
       tags:
-        - Language Proficiency...
+        - Language Proficiency
   /youth-languages-proficiencies/{languageProficiencyId}:
     get:
       summary: get_one
@@ -2237,7 +2237,7 @@ paths:
                   code: 200
                   query_time: 0
       tags:
-        - Language Proficiency....
+        - Language Proficiency
     put:
       summary: update
       description: API endpoint to update the specified Language Proficiency. A successful request response will show 200 HTTP status code
@@ -2295,37 +2295,14 @@ paths:
         - Language Proficiency
   /youth-guardians:
     get:
-      description: Get all guardians of
+      summary: get_list
+      description: 'API endpoint to get the list of Yoth guardians. A successful request response will show 200 HTTP status code '
+
       parameters:
-        - name: name
-          in: query
-          description: The name of guardian returned
-          schema:
-            type: string
-            default: ''
-            example: Donald
-        - name: name_en
-          in: query
-          description: The name of guardian returned in English
-          schema:
-            type: string
-            default: ''
-            example: Donald
-        - name: page_size
-          in: query
-          description: The pages to return employee info
-          schema:
-            type: integer
-            minimum: 10
-            maximum: 20
-            example: 15
-        - name: order
-          in: query
-          description: The name of guardian returned
-          schema:
-            type: string
-            default: ''
-            example: ASC
+        - $ref: '#/components/parameters/name'
+        - $ref: '#/components/parameters/name_en'
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/order'
       responses:
         '200':
           description: MODELING EMPLOYEE
@@ -2338,23 +2315,74 @@ paths:
       tags:
         - Youth Guardians
     post:
-      summary: Add a new guardian
+      summary: create
+      description: API endpoint to create a new guardian.A successful request response will show 200 HTTP status code
       requestBody:
         description: Creating a new guardian
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/youthGuardianProp'
       responses:
         '200':
           description: Created
+          content:
+            application/json:
+              # schema:
+              #   $ref: '#/components/schemas/youthGuardianProp'
+              example:
+                data:
+                  id:
+                    type: integer
+                    example: 4
+
+                  name:
+                    type: string
+                    example: Ryan Pinkman
+
+                  name_en:
+                    type: string
+                    example: Ryan Pinkman2
+
+                  nid:
+                    type: string
+                    example: 1aas345-poiu989-ssv56@@er5
+
+                  mobile:
+                    type: string
+                    example: '0909876612'
+
+                  date_of_birth:
+                    type: string
+                    example: 12/12/1987
+
+                  relationship_type:
+                    type: string
+                    example: parent
+
+                  relationship_title:
+                    type: string
+                    example: father
+                  relationship_title_en:
+                    type: string
+                    example: father
+
+                  updated_at: '2021-08-22T11:25:13.000000Z'
+                  created_at: '2021-08-22T11:25:13.000000Z'
+
+                _response_status:
+                  success: true
+                  code: 201
+                  message: guardian added successfully
+                  query_time: 0
       tags:
         - Youth Guardians
-
   /youth-guardians/{guardiansId}:
     get:
-      description: Obtain info about a specific youth guardian
+
+      summary: get_one
+      description: API endpoint to get a specified youth guardian.A successful request response will show 200 HTTP status code
       parameters:
         - name: guardiansId
           in: path
@@ -2370,10 +2398,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/youthGuardianProp'
+
       tags:
         - Youth Guardians
     put:
-      summary: Add a new pet
+
+      summary: update
+      description: API endpoint to update the specified youth guardian. A successful request response will show 200 HTTP status code
       parameters:
         - name: guardiansId
           in: path
@@ -2391,6 +2422,54 @@ paths:
       responses:
         '200':
           description: Updated
+          content:
+            application/json:
+              example:
+                data:
+                  id:
+                    type: integer
+                    example: 4
+
+                  name:
+                    type: string
+                    example: Ryan Pinkman
+
+                  name_en:
+                    type: string
+                    example: Ryan Pinkman2
+
+                  nid:
+                    type: string
+                    example: 1aas345-poiu989-ssv56@@er5
+
+                  mobile:
+                    type: string
+                    example: '0909876612'
+
+                  date_of_birth:
+                    type: string
+                    example: 12/12/1987
+
+                  relationship_type:
+                    type: string
+                    example: parent
+
+                  relationship_title:
+                    type: string
+                    example: father
+                  relationship_title_en:
+                    type: string
+                    example: father
+
+                  updated_at: '2021-08-22T11:25:13.000000Z'
+                  created_at: '2021-08-22T11:25:13.000000Z'
+
+                _response_status:
+                  success: true
+                  code: 201
+                  message: guardian updated successfully
+                  query_time: 0
+
       tags:
         - Youth Guardians
     delete:
@@ -2431,6 +2510,7 @@ components:
         id:
           type: integer
           example: 4
+          readOnly: true
         name:
           type: string
           example: Ryan Pinkman
@@ -2447,8 +2527,8 @@ components:
           type: string
           example: 12/12/1987
         relationship_type:
-          type: string
-          example: parent
+          type: integer
+          example: 1
         relationship_title:
           type: string
           example: father
@@ -2458,9 +2538,11 @@ components:
         created_at:
           type: string
           example: 12/12/1987
+          readOnly: true
         updated_at:
           type: string
           example: 12/12/1987
+          readOnly: true
     Youth:
       type: object
       description: Provide Youth Profile Information
@@ -3577,6 +3659,14 @@ components:
         - speaking_proficiency_level
         - understand_proficiency_level
   parameters:
+    name:
+      name: name
+      in: query
+      description: The name of guardian returned
+      schema:
+        type: string
+        default: ''
+        example: Donald
     skillId:
       name: skillId
       in: path
