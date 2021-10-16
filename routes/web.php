@@ -3,7 +3,6 @@
 /** @var Router $router */
 
 use App\Helpers\Classes\CustomRouter;
-use App\Models\EducationLevel;
 use App\Models\ExamDegree;
 use Laravel\Lumen\Routing\Router;
 
@@ -20,7 +19,10 @@ $router->get('/', function () use ($router) {
 $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($router, $customRouter) {
     $router->get('/', ['as' => 'api-info', 'uses' => 'ApiInfoController@apiInfo']);
     $customRouter()->resourceRoute('skills', 'SkillController')->render();
-    $customRouter()->resourceRoute('youths', 'YouthController')->render();
+
+    $router->get('youths', ["as" => "youth.get-list", "uses" => "YouthProfileController@getList"]);
+    $router->get('youths/{id}', ["as" => "youth.read", "uses" => "YouthProfileController@read"]);
+    $router->get('youth-educations-exam-board-edugroup-subject', ["as" => "youth.education.basic.table.info", "uses" => "YouthController@youthEducationBasicInfos"]);
 
     /** youth registration */
     $router->post('youth-registration', ["as" => "youth.registration", "uses" => "YouthProfileController@youthRegistration"]);
@@ -30,17 +32,16 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     $router->post('youth-resend-verification-code', ["as" => "youth-profile.youth-resend-verify-code", "uses" => "YouthProfileController@resendVerificationCode"]);
 
     /** freelance corner */
-    $router->get('freelancers', ["as" => "freelancers.get-all-freelancers", "uses" => "FreelanceController@getAllFreelancers"]);
+    $router->get('freelancers', ["as" => "freelancers.get-all-freelancers", "uses" => "YouthFreelanceController@getAllFreelancers"]);
 
     // data from examinations, boards , edu groups, major or subjects table
-    $router->get('youth-educations-exam-board-edugroup-subject', ["as" => "youth.education.basic.table.info", "uses" => "YouthController@youthEducationBasicInfos"]);
-});
-
 
     /**
      * Cv download corner
-    */
+     */
     $router->post('youth-cv-download/{id}', ["as" => "youth.cv-download", "uses" => "YouthProfileController@youthCvDownload"]);
+});
+
 
 //youth profile info/update group
 $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"], function () use ($router, $customRouter) {
@@ -49,7 +50,7 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
     $customRouter()->resourceRoute('youth-references', 'YouthReferenceController')->render();
     $customRouter()->resourceRoute('youth-languages-proficiencies', 'YouthLanguagesProficiencyController')->render();
     $customRouter()->resourceRoute('youth-certifications', 'YouthCertificationController')->render();
-    $customRouter()->resourceRoute('youth-educations', 'EducationController')->render();
+    $customRouter()->resourceRoute('youth-educations', 'YouthEducationController')->render();
     $customRouter()->resourceRoute('youth-guardians', 'YouthGuardianController')->render();
 
     $router->get('youth-profile', ["as" => "youth-profile.get-profile", "uses" => "YouthProfileController@getYouthProfile"]);
@@ -58,7 +59,7 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
 
 });
 
-$router->get("code",function (){
-   return ExamDegree::where("education_level_id",2)->pluck('id');
+$router->get("code", function () {
+    return ExamDegree::where("education_level_id", 2)->pluck('id');
 });
 

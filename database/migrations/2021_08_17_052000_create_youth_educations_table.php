@@ -30,7 +30,7 @@ class CreateYouthEducationsTable extends Migration
             $table->string('major_or_concentration_en', 400)->nullable();
 
             $table->unsignedTinyInteger('edu_group_id')->nullable();
-            $table->unsignedTinyInteger('board_id')->nullable();
+            $table->unsignedTinyInteger('edu_board_id')->nullable();
 
             $table->string("institute_name", 800);
             $table->string("institute_name_en", 400)->nullable();

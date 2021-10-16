@@ -5,7 +5,7 @@ namespace App\Services\YouthManagementServices;
 
 
 use App\Models\BaseModel;
-use App\Models\LanguagesProficiency;
+use App\Models\YouthLanguagesProficiency;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
-class LanguagesProficiencyService
+class YouthLanguagesProficiencyService
 {
     /**
      * @param array $request
@@ -32,7 +32,7 @@ class LanguagesProficiencyService
         $order = $request['order'] ?? "ASC";
 
         /** @var Builder $languageProficiencyBuilder */
-        $languageProficiencyBuilder = LanguagesProficiency::select([
+        $languageProficiencyBuilder = YouthLanguagesProficiency::select([
             'languages_proficiencies.id',
             'languages_proficiencies.youth_id',
             'languages_proficiencies.language_id',
@@ -97,7 +97,7 @@ class LanguagesProficiencyService
     public function getOneLanguagesProficiency(int $id, Carbon $startTime): array
     {
         /** @var Builder $languageBuilder */
-        $languageProficiencyBuilder = LanguagesProficiency::select([
+        $languageProficiencyBuilder = YouthLanguagesProficiency::select([
             'languages_proficiencies.id',
             'languages_proficiencies.youth_id',
             'languages_proficiencies.language_id',
@@ -134,22 +134,22 @@ class LanguagesProficiencyService
 
     /**
      * @param array $data
-     * @return LanguagesProficiency
+     * @return YouthLanguagesProficiency
      */
-    public function store(array $data): LanguagesProficiency
+    public function store(array $data): YouthLanguagesProficiency
     {
-        $languagesProficiency = new LanguagesProficiency();
+        $languagesProficiency = new YouthLanguagesProficiency();
         $languagesProficiency->fill($data);
         $languagesProficiency->save();
         return $languagesProficiency;
     }
 
     /**
-     * @param LanguagesProficiency $languagesProficiency
+     * @param YouthLanguagesProficiency $languagesProficiency
      * @param array $data
-     * @return LanguagesProficiency
+     * @return YouthLanguagesProficiency
      */
-    public function update(LanguagesProficiency $languagesProficiency, array $data): LanguagesProficiency
+    public function update(YouthLanguagesProficiency $languagesProficiency, array $data): YouthLanguagesProficiency
     {
         $languagesProficiency->fill($data);
         $languagesProficiency->save();
@@ -157,10 +157,10 @@ class LanguagesProficiencyService
     }
 
     /**
-     * @param LanguagesProficiency $languagesProficiency
+     * @param YouthLanguagesProficiency $languagesProficiency
      * @return bool
      */
-    public function destroy(LanguagesProficiency $languagesProficiency): bool
+    public function destroy(YouthLanguagesProficiency $languagesProficiency): bool
     {
         return $languagesProficiency->delete();
     }

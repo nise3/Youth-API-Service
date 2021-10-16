@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\YouthEducation;
 use App\Services\YouthManagementServices\YouthEducationService;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
 
-class EducationController extends Controller
+class YouthEducationController extends Controller
 {
 
 
@@ -32,8 +31,9 @@ class EducationController extends Controller
     /**
      * Display a listing of the resource.
      * @param Request $request
-     * @return Exception|JsonResponse|Throwable
-     * @throws ValidationException|Throwable
+     * @return JsonResponse
+     * @throws Throwable
+     * @throws ValidationException
      */
     public function getList(Request $request): JsonResponse
     {
@@ -41,33 +41,36 @@ class EducationController extends Controller
         $filter = $this->youthEducationService->filterValidator($request)->validate();
         try {
             $response = $this->youthEducationService->getEducationList($filter, $this->startTime);
+            return Response::json($response);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response);
+
     }
 
 
     /**
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
      * @throws Throwable
      */
     public function read(int $id): JsonResponse
     {
         try {
             $response = $this->youthEducationService->getOneEducation($id, $this->startTime);
+            return Response::json($response);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response);
+
     }
 
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return Exception|JsonResponse|Throwable
-     * @throws ValidationException|Throwable
+     * @return JsonResponse
+     * @throws Throwable
+     * @throws ValidationException
      */
     function store(Request $request): JsonResponse
     {
@@ -85,18 +88,20 @@ class EducationController extends Controller
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
+            return Response::json($response, ResponseAlias::HTTP_CREATED);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_CREATED);
+
     }
 
     /**
      * Update the specified resource in storage
      * @param Request $request
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
-     * @throws ValidationException|Throwable
+     * @return JsonResponse
+     * @throws Throwable
+     * @throws ValidationException
      */
     public function update(Request $request, int $id): JsonResponse
     {
@@ -116,16 +121,17 @@ class EducationController extends Controller
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
+            return Response::json($response, ResponseAlias::HTTP_CREATED);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_CREATED);
+
     }
 
     /**
      * Remove the specified resource from storage
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
      * @throws Throwable
      */
     public function destroy(int $id): JsonResponse
@@ -142,10 +148,11 @@ class EducationController extends Controller
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
+            return Response::json($response, ResponseAlias::HTTP_OK);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_OK);
+
     }
 
 }

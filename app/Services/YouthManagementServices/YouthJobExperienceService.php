@@ -5,7 +5,7 @@ namespace App\Services\YouthManagementServices;
 
 
 use App\Models\BaseModel;
-use App\Models\JobExperience;
+use App\Models\YouthJobExperience;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
-class JobExperienceService
+class YouthJobExperienceService
 {
     /**
      * @param array $request
@@ -33,7 +33,7 @@ class JobExperienceService
         $order = $request['order'] ?? "ASC";
 
         /** @var Builder $jobExperienceBuilder */
-        $jobExperienceBuilder = JobExperience::select([
+        $jobExperienceBuilder = YouthJobExperience::select([
             'job_experiences.id',
             'job_experiences.company_name',
             'job_experiences.company_name_en',
@@ -100,7 +100,7 @@ class JobExperienceService
     public function getOneJobExperience(int $id, Carbon $startTime): array
     {
         /** @var Builder $jobExperienceBuilder */
-        $jobExperienceBuilder = JobExperience::select([
+        $jobExperienceBuilder = YouthJobExperience::select([
             'job_experiences.id',
             'job_experiences.company_name',
             'job_experiences.company_name_en',
@@ -121,7 +121,7 @@ class JobExperienceService
         ]);
         $jobExperienceBuilder->where('job_experiences.id', $id);
 
-        /** @var JobExperience $jobExperience */
+        /** @var YouthJobExperience $jobExperience */
         $jobExperience = $jobExperienceBuilder->first();
 
         return [
@@ -137,9 +137,9 @@ class JobExperienceService
 
     /**
      * @param array $data
-     * @return JobExperience
+     * @return YouthJobExperience
      */
-    public function store(JobExperience $jobExperience, array $data): JobExperience
+    public function store(YouthJobExperience $jobExperience, array $data): YouthJobExperience
     {
         $jobExperience->fill($data);
         $jobExperience->save();
@@ -147,11 +147,11 @@ class JobExperienceService
     }
 
     /**
-     * @param JobExperience $jobExperience
+     * @param YouthJobExperience $jobExperience
      * @param array $data
-     * @return JobExperience
+     * @return YouthJobExperience
      */
-    public function update(JobExperience $jobExperience, array $data): JobExperience
+    public function update(YouthJobExperience $jobExperience, array $data): YouthJobExperience
     {
         $jobExperience->fill($data);
         $jobExperience->save();
@@ -159,10 +159,10 @@ class JobExperienceService
     }
 
     /**
-     * @param JobExperience $jobExperience
+     * @param YouthJobExperience $jobExperience
      * @return bool
      */
-    public function destroy(JobExperience $jobExperience): bool
+    public function destroy(YouthJobExperience $jobExperience): bool
     {
         return $jobExperience->delete();
     }

@@ -3,12 +3,12 @@
 namespace Database\Factories;
 
 
-use App\Models\Certification;
+use App\Models\YouthCertification;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class CertificationFactory extends Factory
+class YouthCertificationFactory extends Factory
 {
-    protected $model = Certification::class;
+    protected $model = YouthCertification::class;
 
     public function definition(): array
     {

@@ -6,14 +6,11 @@ namespace App\Services\YouthManagementServices;
 use App\Models\BaseModel;
 use App\Models\EducationLevel;
 use App\Models\ExamDegree;
-use App\Models\Examination;
-use App\Models\Education;
 use App\Models\YouthEducation;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -67,9 +64,9 @@ class YouthEducationService
                 'edu_groups.code as edu_group_code',
                 'edu_groups.title_en as edu_group_title_en',
                 'edu_groups.title as edu_group_title',
-                'youth_educations.board_id',
-                'boards.title_en as board_title_en',
-                'boards.title as board_title',
+                'youth_educations.edu_board_id',
+                'edu_boards.title_en as board_title_en',
+                'edu_boards.title as board_title',
                 'youth_educations.institute_name',
                 'youth_educations.institute_name_en',
                 'youth_educations.is_foreign_institute',
@@ -102,26 +99,18 @@ class YouthEducationService
                 $join->where('exam_degrees.row_status', $rowStatus);
             }
         });
-        $educationBuilder->join('boards', function ($join) use ($rowStatus) {
-            $join->on('boards.id', '=', 'youth_educations.board_id')
-                ->whereNull('boards.deleted_at');
-            if (is_numeric($rowStatus)) {
-                $join->where('boards.row_status', $rowStatus);
-            }
-        }
-        );
-        $educationBuilder->join('edu_groups', function ($join) use ($rowStatus) {
+        $educationBuilder->join('edu_boards', function ($join) {
+            $join->on('edu_boards.id', '=', 'youth_educations.edu_board_id')
+                ->whereNull('edu_boards.deleted_at');
+        });
+
+        $educationBuilder->join('edu_groups', function ($join) {
             $join->on('edu_groups.id', '=', 'youth_educations.edu_group_id')
                 ->whereNull('edu_groups.deleted_at');
-            if (is_numeric($rowStatus)) {
-                $join->where('edu_groups.row_status', $rowStatus);
-            }
         });
         $educationBuilder->orderBy('youth_educations.id', $order);
 
-        if (is_numeric($rowStatus)) {
-            $educationBuilder->where('youth_educations.row_status', $rowStatus);
-        }
+
         if (is_numeric(Auth::id())) {
             $educationBuilder->where('youth_educations.youth_id', Auth::id());
         }
@@ -141,10 +130,10 @@ class YouthEducationService
         }
 
         if (!empty($boardTitleEn)) {
-            $educationBuilder->where('boards.title_en', 'like', '%' . $boardTitleEn . '%');
+            $educationBuilder->where('edu_boards.title_en', 'like', '%' . $boardTitleEn . '%');
         }
         if (!empty($boardTitleBn)) {
-            $educationBuilder->where('boards.title', 'like', '%' . $boardTitleBn . '%');
+            $educationBuilder->where('edu_boards.title', 'like', '%' . $boardTitleBn . '%');
         }
 
         if (!empty($eduGroupTitleEn)) {
@@ -208,9 +197,9 @@ class YouthEducationService
                 'edu_groups.code as edu_group_code',
                 'edu_groups.title_en as edu_group_title_en',
                 'edu_groups.title as edu_group_title',
-                'youth_educations.board_id',
-                'boards.title_en as board_title_en',
-                'boards.title as board_title',
+                'youth_educations.edu_board_id',
+                'edu_boards.title_en as board_title_en',
+                'edu_boards.title as board_title',
                 'youth_educations.institute_name',
                 'youth_educations.institute_name_en',
                 'youth_educations.is_foreign_institute',
@@ -237,10 +226,9 @@ class YouthEducationService
             $join->on('exam_degrees.id', '=', 'youth_educations.exam_degree_id')
                 ->whereNull('exam_degrees.deleted_at');
         });
-        $educationBuilder->join('boards', function ($join) {
-            $join->on('boards.id', '=', 'youth_educations.board_id')
-                ->whereNull('boards.deleted_at');
-
+        $educationBuilder->join('edu_boards', function ($join) {
+            $join->on('edu_boards.id', '=', 'youth_educations.edu_board_id')
+                ->whereNull('edu_boards.deleted_at');
         }
         );
         $educationBuilder->join('edu_groups', function ($join) {
@@ -261,6 +249,7 @@ class YouthEducationService
     }
 
     /**
+     * @param YouthEducation $youthEducation
      * @param array $data
      * @return YouthEducation
      */
@@ -351,18 +340,18 @@ class YouthEducationService
                 'unique_with:youth_educations,exam_degree_id,' . $id,
                 "integer"
             ],
-            'board_id' => [
+            'edu_board_id' => [
                 Rule::requiredIf(function () use ($request) {
                     return $this->getRequiredStatus(YouthEducation::BOARD, $request->education_level_id);
                 }),
-                'exists:boards,id',
+                'exists:edu_boards,id',
 //                'unique_with:youth_educations,exam_degree_id,' . $id,
                 "integer"
             ],
             'institute_name' => [
                 'required',
                 'string',
-                'max:400',
+                'max:800',
             ],
             'institute_name_en' => [
                 'nullable',
@@ -437,10 +426,6 @@ class YouthEducationService
             'order.in' => [
                 'code' => 30000,
                 "message" => 'Order must be within ASC or DESC',
-            ],
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
             ]
         ];
 
@@ -455,11 +440,7 @@ class YouthEducationService
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
-            ],
-            'row_status' => [
-                "numeric",
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
-            ],
+            ]
         ], $customMessage);
     }
 
@@ -519,7 +500,7 @@ class YouthEducationService
     }
 
     /**
-     * @param string|null $modelName
+     * @param string $modelName
      * @param int $id
      * @return string
      */

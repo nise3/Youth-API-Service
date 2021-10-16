@@ -15,7 +15,8 @@ class CreateEducationLevelsTable extends Migration
     {
         Schema::create('education_levels', function (Blueprint $table) {
             $table->mediumIncrements("id");
-            $table->string("code",20)->comment('1=> PSC/5 Pass, 2=> JSC/JDC/8 Pass, 3=> Secondary, 4=> Higher Secondary, 5=> Diploma, 6=> Bachelor/Honors, 7=> Masters, 8=> PhD');
+            $table->string("code",20)
+                ->comment('1=> PSC/5 Pass, 2=> JSC/JDC/8 Pass, 3=> Secondary, 4=> Higher Secondary, 5=> Diploma, 6=> Bachelor/Honors, 7=> Masters, 8=> PhD');
             $table->string("title_en", 250);
             $table->string("title", 500);
             $table->unsignedTinyInteger("row_status")->default(1);

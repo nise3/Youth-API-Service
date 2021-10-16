@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JobExperience;
+use App\Models\YouthJobExperience;
 use App\Services\YouthManagementServices\YouthJobExperienceService;
 use Carbon\Carbon;
 use Exception;
@@ -78,7 +78,7 @@ class YouthJobExperienceController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $jobExperience = new JobExperience();
+        $jobExperience = new YouthJobExperience();
         $request['youth_id'] = Auth::id();
         $validated = $this->jobExperienceService->validator($request)->validate();
         try {
@@ -108,7 +108,7 @@ class YouthJobExperienceController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         $request['youth_id'] = Auth::id();
-        $jobExperience = JobExperience::findOrFail($id);
+        $jobExperience = YouthJobExperience::findOrFail($id);
         $validated = $this->jobExperienceService->validator($request, $id)->validate();
         try {
             $jobExperience = $this->jobExperienceService->update($jobExperience, $validated);
@@ -134,7 +134,7 @@ class YouthJobExperienceController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $jobExperience = JobExperience::findOrFail($id);
+        $jobExperience = YouthJobExperience::findOrFail($id);
         try {
             $this->jobExperienceService->destroy($jobExperience);
             $response = [

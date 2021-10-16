@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Throwable;
 
-class FreelanceController extends Controller
+class YouthFreelanceController extends Controller
 {
 
 
@@ -23,7 +23,7 @@ class FreelanceController extends Controller
     private Carbon $startTime;
 
     /**
-     * FreelanceController constructor.
+     * YouthFreelanceController constructor.
      * @param FreelanceService $freelanceService
      */
     public function __construct(FreelanceService $freelanceService)

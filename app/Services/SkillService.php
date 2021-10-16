@@ -93,10 +93,7 @@ class SkillService
             [
                 'skills.id',
                 'skills.title',
-                'skills.title_en',
-                'skills.row_status',
-                'skills.created_at',
-                'skills.updated_at'
+                'skills.title_en'
             ]
         );
 
@@ -166,10 +163,7 @@ class SkillService
             [
                 'skills.id',
                 'skills.title',
-                'skills.title_en',
-                'skills.row_status',
-                'skills.created_at',
-                'skills.updated_at'
+                'skills.title_en'
             ]
         );
 
@@ -250,11 +244,7 @@ class SkillService
                 'string',
                 'max: 400',
                 'min:2'
-            ],
-            'row_status' => [
-                'required_if:' . $id . ',!=,null',
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
-            ],
+            ]
         ];
         return Validator::make($request->all(), $rules, $customMessage);
     }
@@ -269,10 +259,6 @@ class SkillService
             'order.in' => [
                 'code' => 30000,
                 "message" => 'Order must be within ASC or DESC',
-            ],
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
             ]
         ];
 
@@ -281,18 +267,14 @@ class SkillService
         }
 
         return Validator::make($request->all(), [
-            'title_en' => 'nullable|max:191|min:2',
+            'title_en' => 'nullable|max:200|min:2',
             'title' => 'nullable|max:400|min:2',
-            'page' => 'numeric|gt:0',
-            '$pageSize' => 'numeric|gt:0',
+            'page' => 'integer|gt:0',
+            'pageSize' => 'integer|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
-            ],
-            'row_status' => [
-                "numeric",
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
-            ],
+            ]
         ], $customMessage);
     }
 }

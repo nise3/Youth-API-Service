@@ -909,7 +909,7 @@ paths:
                 _response_status:
                   success: true
                   code: 201
-                  message: Portfolio created successfully
+                  message: YouthPortfolio created successfully
                   query_time: 0
       tags:
         - Portfolios
@@ -966,7 +966,7 @@ paths:
                 _response_status:
                   success: true
                   code: 201
-                  message: Portfolio updated successfully
+                  message: YouthPortfolio updated successfully
                   query_time: 0
       tags:
         - Portfolios
@@ -986,7 +986,7 @@ paths:
                 _response_status:
                   success: true
                   code: 200
-                  message: Portfolio deleted successfully
+                  message: YouthPortfolio deleted successfully
                   started: 12 40 05
                   finished: 12 40 05
       tags:
@@ -1429,7 +1429,7 @@ paths:
                   code: 200
                   query_time: 0
       tags:
-        - Certification
+        - YouthCertification
     post:
       summary: create
       description: API endpoint to create a certification.A successful request response will show 200 HTTP status code
@@ -1467,7 +1467,7 @@ paths:
                   message: Certificate added successfully
                   query_time: 0
       tags:
-        - Certification
+        - YouthCertification
   /youth-certifications/{certificationId}:
     get:
       summary: get_one
@@ -1507,7 +1507,7 @@ paths:
                   code: 200
                   query_time: 0
       tags:
-        - Certification
+        - YouthCertification
     put:
       summary: update
       description: API endpoint to update the specified Certificate. A successful request response will show 200 HTTP status code
@@ -1551,7 +1551,7 @@ paths:
                   message: Certificate updated successfully.
                   query_time: 0
       tags:
-        - Certification
+        - YouthCertification
     delete:
       summary: delete
       description: API endpoint to delete the specified Certificate.A successful request response will show 200 HTTP status code
@@ -1576,7 +1576,7 @@ paths:
                   message: Certificate deleted successfully.
                   query_time: 0
       tags:
-        - Certification
+        - YouthCertification
   /youth-references:
     get:
       summary: get_list
@@ -1624,10 +1624,10 @@ paths:
                   code: 200
                   query_time: 0
       tags:
-        - Reference
+        - YouthReference
     post:
       summary: create
-      description: API endpoint to create a Reference.A successful request response will show 200 HTTP status code
+      description: API endpoint to create a YouthReference.A successful request response will show 200 HTTP status code
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -1668,14 +1668,14 @@ paths:
                 _response_status:
                   success: true
                   code: 201
-                  message: Reference added successfully
+                  message: YouthReference added successfully
                   query_time: 0
       tags:
-        - Reference
+        - YouthReference
   /youth-references/{youthReferenceId}:
     get:
       summary: get_one
-      description: API endpoint to get a specified Reference.A successful request response will show 200 HTTP status code
+      description: API endpoint to get a specified YouthReference.A successful request response will show 200 HTTP status code
       parameters:
         - name: youthReferenceId
           in: path
@@ -1720,10 +1720,10 @@ paths:
                   code: 200
                   query_time: 0
       tags:
-        - Reference
+        - YouthReference
     put:
       summary: update
-      description: API endpoint to update the specified Reference. A successful request response will show 200 HTTP status code
+      description: API endpoint to update the specified YouthReference. A successful request response will show 200 HTTP status code
       parameters:
         - name: youthReferenceId
           in: path
@@ -1771,13 +1771,13 @@ paths:
                 _response_status:
                   success: true
                   code: 201
-                  message: Reference updated successfully
+                  message: YouthReference updated successfully
                   query_time: 0
       tags:
-        - Reference
+        - YouthReference
     delete:
       summary: delete
-      description: API endpoint to delete the specified Reference.A successful request response will show 200 HTTP status code
+      description: API endpoint to delete the specified YouthReference.A successful request response will show 200 HTTP status code
       parameters:
         - name: youthReferenceId
           in: path
@@ -1799,7 +1799,7 @@ paths:
                   message: Referene deleted successfully.
                   query_time: 0
       tags:
-        - Reference
+        - YouthReference
   /youth-educations:
     get:
       summary: get_list
@@ -2038,7 +2038,7 @@ paths:
   /youth-educations-exam-board-edugroup-subject:
     get:
       tags:
-        - Youth Educations Exam Board Education-group Major Subject
+        - Youth Educations Exam EduBoard Education-group Major Subject
       summary: Find youth educations exam board edugroup subject
       description: API endpoint to get the educations exam board edugroup subject. A successful request response will show 200 HTTP status code
       responses:

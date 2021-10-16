@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LanguagesProficiency;
+use App\Models\YouthLanguagesProficiency;
 use App\Services\YouthManagementServices\YouthLanguagesProficiencyService;
 use Carbon\Carbon;
 use Exception;
@@ -81,7 +81,7 @@ class YouthLanguagesProficiencyController extends Controller
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "LanguagesProficiency added successfully",
+                    "message" => "YouthLanguagesProficiency added successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
@@ -102,7 +102,7 @@ class YouthLanguagesProficiencyController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         $request['youth_id'] = Auth::id();
-        $languageProficiency = LanguagesProficiency::findOrFail($id);
+        $languageProficiency = YouthLanguagesProficiency::findOrFail($id);
         $validated = $this->languagesProficiencyService->validator($request, $id)->validate();
         try {
             $language = $this->languagesProficiencyService->update($languageProficiency, $validated);
@@ -111,7 +111,7 @@ class YouthLanguagesProficiencyController extends Controller
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "LanguagesProficiency updated successfully",
+                    "message" => "YouthLanguagesProficiency updated successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];
@@ -129,14 +129,14 @@ class YouthLanguagesProficiencyController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $languageProficiency = LanguagesProficiency::findOrFail($id);
+        $languageProficiency = YouthLanguagesProficiency::findOrFail($id);
         try {
             $this->languagesProficiencyService->destroy($languageProficiency);
             $response = [
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
-                    "message" => "LanguagesProficiency deleted successfully",
+                    "message" => "YouthLanguagesProficiency deleted successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];

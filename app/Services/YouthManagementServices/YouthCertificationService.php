@@ -3,7 +3,7 @@
 namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
-use App\Models\Certification;
+use App\Models\YouthCertification;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -28,27 +28,27 @@ class YouthCertificationService
         $order = $request['order'] ?? BaseModel::ROW_ORDER_ASC;
 
         /** @var Builder $certificationBuilder */
-        $certificationBuilder = Certification::select([
-            'certifications.id',
-            'certifications.youth_id',
-            'certifications.certification_name',
-            'certifications.certification_name_en',
-            'certifications.institute_name',
-            'certifications.institute_name_en',
-            'certifications.location',
-            'certifications.location_en',
-            'certifications.start_date',
-            'certifications.end_date',
-            'certifications.certificate_file_path',
-            'certifications.created_at',
-            'certifications.updated_at'
+        $certificationBuilder = YouthCertification::select([
+            'youth_certifications.id',
+            'youth_certifications.youth_id',
+            'youth_certifications.certification_name',
+            'youth_certifications.certification_name_en',
+            'youth_certifications.institute_name',
+            'youth_certifications.institute_name_en',
+            'youth_certifications.location',
+            'youth_certifications.location_en',
+            'youth_certifications.start_date',
+            'youth_certifications.end_date',
+            'youth_certifications.certificate_file_path',
+            'youth_certifications.created_at',
+            'youth_certifications.updated_at'
         ]);
 
         if (is_int(Auth::id())) {
-            $certificationBuilder->where('certifications.youth_id', Auth::id());
+            $certificationBuilder->where('youth_certifications.youth_id', Auth::id());
         }
 
-        $certificationBuilder->orderBy('certifications.id', $order);
+        $certificationBuilder->orderBy('youth_certifications.id', $order);
 
 
         /** @var Collection $certifications */
@@ -83,24 +83,24 @@ class YouthCertificationService
     public function getOneCertification(int $id, Carbon $startTime): array
     {
         /** @var Builder $certificationBuilder */
-        $certificationBuilder = Certification::select([
-            'certifications.id',
-            'certifications.youth_id',
-            'certifications.certification_name',
-            'certifications.certification_name_en',
-            'certifications.institute_name',
-            'certifications.institute_name_en',
-            'certifications.location',
-            'certifications.location_en',
-            'certifications.start_date',
-            'certifications.end_date',
-            'certifications.certificate_file_path',
-            'certifications.created_at',
-            'certifications.updated_at'
+        $certificationBuilder = YouthCertification::select([
+            'youth_certifications.id',
+            'youth_certifications.youth_id',
+            'youth_certifications.certification_name',
+            'youth_certifications.certification_name_en',
+            'youth_certifications.institute_name',
+            'youth_certifications.institute_name_en',
+            'youth_certifications.location',
+            'youth_certifications.location_en',
+            'youth_certifications.start_date',
+            'youth_certifications.end_date',
+            'youth_certifications.certificate_file_path',
+            'youth_certifications.created_at',
+            'youth_certifications.updated_at'
         ]);
-        $certificationBuilder->where('certifications.id', $id);
+        $certificationBuilder->where('youth_certifications.id', $id);
 
-        /** @var Certification $certification */
+        /** @var YouthCertification $certification */
         $certification = $certificationBuilder->first();
 
         return [
@@ -115,22 +115,22 @@ class YouthCertificationService
 
     /**
      * @param array $data
-     * @return certification
+     * @return YouthCertification
      */
-    public function store(array $data): Certification
+    public function store(array $data): YouthCertification
     {
-        $certification = new Certification();
+        $certification = new YouthCertification();
         $certification->fill($data);
         $certification->save();
         return $certification;
     }
 
     /**
-     * @param Certification $certification
+     * @param YouthCertification $certification
      * @param array $data
-     * @return Certification
+     * @return YouthCertification
      */
-    public function update(Certification $certification, array $data): Certification
+    public function update(YouthCertification $certification, array $data): YouthCertification
     {
         $certification->fill($data);
         $certification->save();
@@ -138,10 +138,10 @@ class YouthCertificationService
     }
 
     /**
-     * @param Certification $certification
+     * @param YouthCertification $certification
      * @return bool
      */
-    public function destroy(Certification $certification): bool
+    public function destroy(YouthCertification $certification): bool
     {
         return $certification->delete();
     }
@@ -184,7 +184,7 @@ class YouthCertificationService
             'certification_name' => [
                 'required',
                 'string',
-                'max:300'
+                'max:600'
             ],
             'certification_name_en' => [
                 'nullable',
@@ -194,7 +194,7 @@ class YouthCertificationService
             'institute_name' => [
                 'required',
                 'string',
-                'max:300'
+                'max:600'
             ],
             'institute_name_en' => [
                 'nullable',
@@ -204,12 +204,12 @@ class YouthCertificationService
             'location' => [
                 'required',
                 'string',
-                'max:300'
+                'max:1000'
             ],
             'location_en' => [
                 'nullable',
                 'string',
-                'max:300'
+                'max:500'
             ],
             'start_date' => [
                 'date',
@@ -232,8 +232,7 @@ class YouthCertificationService
             'certificate_file_path' => [
                 'nullable',
                 'string',
-                'max:500',
-                'required'
+                'max:600'
             ]
         ];
         return Validator::make($request->all(), $rules);

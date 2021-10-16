@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\LanguagesProficiency;
+use App\Models\YouthLanguagesProficiency;
 use Illuminate\Database\Seeder;
 
-class YouthLanguageSeeder extends Seeder
+class YouthLanguageProficiencySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class YouthLanguageSeeder extends Seeder
      */
     public function run()
     {
-        LanguagesProficiency::factory()->count(20)->create();
+        YouthLanguagesProficiency::factory()->count(20)->create();
     }
 }

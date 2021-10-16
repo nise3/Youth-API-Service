@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Certification;
+use App\Models\YouthCertification;
 use App\Services\YouthManagementServices\YouthCertificationService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -47,10 +47,11 @@ class YouthCertificationController extends Controller
         $filter = $this->certificationService->filterValidator($request)->validate();
         try {
             $response = $this->certificationService->getAllCertifications($filter, $this->startTime);
+            return Response::json($response);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response);
+
     }
 
 
@@ -63,10 +64,11 @@ class YouthCertificationController extends Controller
     {
         try {
             $response = $this->certificationService->getOneCertification($id, $this->startTime);
+            return Response::json($response);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response);
+
     }
 
 
@@ -87,14 +89,15 @@ class YouthCertificationController extends Controller
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "Certification added successfully",
+                    "message" => "YouthCertification added successfully",
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now())
                 ]
             ];
+            return Response::json($response, ResponseAlias::HTTP_CREATED);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_CREATED);
+
     }
 
 
@@ -108,7 +111,7 @@ class YouthCertificationController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         $request['youth_id'] = Auth::id();
-        $certification = Certification::findOrFail($id);
+        $certification = YouthCertification::findOrFail($id);
         $validated = $this->certificationService->validator($request, $id)->validate();
         try {
             $certification = $this->certificationService->update($certification, $validated);
@@ -121,10 +124,11 @@ class YouthCertificationController extends Controller
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];
+            return Response::json($response, ResponseAlias::HTTP_CREATED);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_CREATED);
+
     }
 
 
@@ -135,7 +139,7 @@ class YouthCertificationController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $certification = Certification::findOrFail($id);
+        $certification = YouthCertification::findOrFail($id);
         try {
             $this->certificationService->destroy($certification);
             $response = [
@@ -146,9 +150,10 @@ class YouthCertificationController extends Controller
                     "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                 ]
             ];
+            return Response::json($response, ResponseAlias::HTTP_OK);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_OK);
+
     }
 }

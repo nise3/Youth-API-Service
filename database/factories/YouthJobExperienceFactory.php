@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\JobExperience;
+use App\Models\YouthJobExperience;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class JobExperienceFactory extends Factory
+class YouthJobExperienceFactory extends Factory
 {
-    protected $model = JobExperience::class;
+    protected $model = YouthJobExperience::class;
 
     public function definition(): array
     {
