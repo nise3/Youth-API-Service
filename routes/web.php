@@ -20,8 +20,8 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     $router->get('/', ['as' => 'api-info', 'uses' => 'ApiInfoController@apiInfo']);
     $customRouter()->resourceRoute('skills', 'SkillController')->render();
 
-    $router->get('youths', ["as" => "youth.get-list", "uses" => "YouthProfileController@getList"]);
-    $router->get('youths/{id}', ["as" => "youth.read", "uses" => "YouthProfileController@read"]);
+    $router->get('youths', ["as" => "youth.get-list", "uses" => "YouthController@getList"]);
+    $router->get('youths/{id}', ["as" => "youth.read", "uses" => "YouthController@read"]);
     $router->get('youth-educations-exam-board-edugroup-subject', ["as" => "youth.education.basic.table.info", "uses" => "YouthController@youthEducationBasicInfos"]);
 
     /** youth registration */

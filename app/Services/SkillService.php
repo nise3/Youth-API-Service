@@ -38,10 +38,7 @@ class SkillService
             [
                 'skills.id',
                 'skills.title',
-                'skills.title_en',
-                'skills.row_status',
-                'skills.created_at',
-                'skills.updated_at'
+                'skills.title_en'
             ]
         );
         $skillBuilder->orderBy('skills.id', $order);

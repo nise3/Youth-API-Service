@@ -49,7 +49,7 @@
         },
         "/skills": {
             "get": {
-                "summary": "get_list",
+                "summary": "Get skill list",
                 "description": "API endpoint to get the list of Skills.A successful request response will show 200 HTTP status code",
                 "parameters": [
                     {
@@ -88,25 +88,18 @@
                                     "data": [
                                         {
                                             "id": 1,
-                                            "title_en": "Heavy Equipment Mechanic",
-                                            "title": "Heavy Equipment Mechanic",
-                                            "description": "Sed omnis nemo sint consequatur qui quia maiores. Est non labore et. Dolorum sapiente dolorum earum cupiditate. Qui velit nam sequi hic est quisquam. Mollitia enim dicta iure consequatur. Nam aut non est maxime aspernatur. Quidem cumque eius numquam eos repellendus. Eum reprehenderit ullam et ut voluptatem natus quia. Voluptas voluptatibus cupiditate distinctio minima enim. Eaque nihil qui qui delectus. Modi sed aut soluta qui. Numquam veniam fuga a veniam ea eligendi. Hic odit illo nihil ab. Sapiente et sit ut at nulla qui nostrum. Eaque ea qui aut iusto quaerat quae non est. Eum et ex et aut a aut. Debitis repellat ex omnis aut quisquam magnam sequi maxime. Repudiandae laborum eum harum enim optio vero. Sunt et voluptatem aut architecto natus a fuga. Et odit magni dicta accusamus molestiae culpa eaque. Esse doloremque quasi ipsam ea dolorem aut. Esse non adipisci quod omnis nisi magni. Et ea corrupti minus consequatur quo molestiae. Sunt quisquam et voluptatibus omnis voluptas at eum. Iure asperiores doloribus id. Laudantium optio error aut ut ratione et nulla. Consequatur officiis odio et eos. Illo porro in nulla et consequatur id. Molestiae reprehenderit dicta nihil omnis. Qui debitis incidunt quis eum dolorum. Qui illo quas vero aut eum. Aperiam et eum voluptas autem recusandae quis. Delectus enim voluptatibus qui hic et. Quidem dolores possimus omnis eveniet voluptatibus. Quam possimus suscipit occaecati commodi architecto. Harum tempora minima id voluptatem expedita aliquam. Repudiandae ut minima dolorum alias fugiat officiis repudiandae. Ratione corrupti tempore et doloribus aut doloribus quasi quidem. Praesentium soluta et debitis eaque voluptatem architecto corporis. Aut laudantium harum sed. Dolores optio impedit a animi veniam illum. Qui expedita praesentium ut nam dolores distinctio. Ipsum rerum aliquid aliquam eligendi vel a. Debitis magnam rem adipisci non qui. Iure reprehenderit a id deserunt eligendi qui incidunt velit. Sint aut et ea sapiente optio impedit autem. Quasi enim ea recusandae omnis mollitia consequuntur ipsam. Doloremque incidunt facere quisquam est aut voluptatem. Aut labore autem id omnis.",
-                                            "row_status": 1,
-                                            "created_at": "2021-08-19T08:55:03.000000Z",
-                                            "updated_at": "2021-08-19T08:55:03.000000Z",
-                                            "created_by": null,
-                                            "updated_by": null
+                                            "title": "টেকনিকাল রাইটিং",
+                                            "title_en": "Technical Writing"
                                         },
                                         {
                                             "id": 2,
-                                            "title_en": "Logging Supervisor",
-                                            "title": "Logging Supervisor",
-                                            "description": "Quasi unde necessitatibus ut sequi est adipisci. Accusamus in sit deserunt voluptate. Sunt aspernatur architecto delectus. Incidunt sit voluptatem qui cum autem eum ut. Voluptatem eos et consequatur optio sit. Eveniet excepturi accusantium ipsum. Est nihil delectus at et. Saepe totam ipsa laboriosam tenetur. Et voluptate aut fugit error voluptate. Est dolorem sapiente dolore asperiores amet. Nemo dolor rerum eveniet voluptatem cumque et. Quidem qui corrupti vero repellat sunt. Non vel consequatur rerum deleniti voluptas. Impedit architecto libero et suscipit. Eveniet est dolorem qui. Ea eum nobis enim sed. Nulla cupiditate vero cupiditate non reprehenderit error. Quo quae quod velit enim ratione deserunt. Qui et numquam qui et quo maxime veniam sit. Rerum expedita occaecati sed in saepe et et. Et consequatur repudiandae quia. Mollitia nulla consequatur omnis. Doloremque optio ipsum cumque unde nisi. Quod molestiae quos quia nulla officiis. Dolore impedit sit architecto laboriosam. Sint nisi dolore ut enim. Sit non quae qui nesciunt temporibus a. Inventore odio non harum reiciendis. Vero eligendi sequi deserunt consequatur non velit. Voluptatem quia veritatis voluptatem ipsum odio dolorem. Fuga voluptates consectetur magni rerum. Accusantium assumenda atque magnam temporibus a placeat laudantium. Reprehenderit ut consequuntur magnam praesentium. Distinctio nobis aliquid optio. Iure est tempore officia quas recusandae hic quisquam. Soluta aut aut delectus maxime tenetur porro. Qui dolor maiores veritatis odio tenetur et. Voluptatem omnis velit eos similique perferendis ut. Temporibus dolore aut ex hic quisquam. Sequi quo optio quasi qui facere eius. Sint sint voluptas qui culpa tempora qui eveniet. Vero laborum labore et quod nulla ut. Quis iste qui a dolor dolorum nulla possimus. Illum necessitatibus maiores ad voluptatem possimus. Blanditiis eaque ut ut maxime eius autem occaecati. Quibusdam nihil sint non dolores vel quia. Eos facilis doloremque eligendi deleniti id. Esse qui velit praesentium quaerat qui a accusamus. Perspiciatis excepturi harum deleniti in doloremque est dolorum ipsa. In molestiae corrupti quo quos corporis aut. Aut necessitatibus temporibus non natus blanditiis iste. Maiores aut quod praesentium deserunt error deserunt in. Earum iusto autem asperiores tenetur unde. Libero ipsa corporis commodi atque incidunt. Ratione qui ea ab doloremque porro aut cupiditate sit. Et fugiat ad nihil officia.",
-                                            "row_status": 1,
-                                            "created_at": "2021-08-19T08:55:03.000000Z",
-                                            "updated_at": "2021-08-19T08:55:03.000000Z",
-                                            "created_by": null,
-                                            "updated_by": null
+                                            "title": "প্রজেক্ট ম্যানেজমেন্ট",
+                                            "title_en": "Project Management"
+                                        },
+                                        {
+                                            "id": 3,
+                                            "title": "কম্পিউটার প্রোগ্রামিং",
+                                            "title_en": "Computer Programming"
                                         }
                                     ],
                                     "response_status": {
@@ -117,6 +110,16 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
                     }
                 },
                 "tags": [
@@ -124,7 +127,7 @@
                 ]
             },
             "post": {
-                "summary": "create",
+                "summary": "Create a skill",
                 "description": "API endpoint to create a Skill.A successful request response will show 200 HTTP status code",
                 "requestBody": {
                     "content": {
@@ -145,12 +148,9 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "title_en": "abc",
-                                        "title": "abc",
-                                        "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
-                                        "updated_at": "2021-08-22T11:25:13.000000Z",
-                                        "created_at": "2021-08-22T11:25:13.000000Z",
-                                        "id": 6
+                                        "title_en": null,
+                                        "title": "Native title rtfertfgtqerfg",
+                                        "id": 27
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -158,6 +158,16 @@
                                         "message": "Skill added successfully",
                                         "query_time": 0
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -170,7 +180,7 @@
         },
         "/skills/{skillId}": {
             "get": {
-                "summary": "get_one",
+                "summary": "Get one skill details",
                 "description": "API endpoint to get a specified Skill.A successful request response will show 200 HTTP status code",
                 "parameters": [
                     {
@@ -188,18 +198,24 @@
                                 "example": {
                                     "data": {
                                         "id": 1,
-                                        "title_en": "Corporate management",
-                                        "title": "কর্পোরেট ব্যবস্থাপনা",
-                                        "description": null,
-                                        "row_status": 1,
-                                        "created_at": "2021-07-26T12:08:11.000000Z",
-                                        "updated_at": "2021-07-26T12:08:11.000000Z"
+                                        "title": "টেকনিকাল রাইটিং",
+                                        "title_en": "Technical Writing"
                                     },
                                     "response_status": {
                                         "success": true,
                                         "code": 200,
                                         "query_time": 0
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -210,7 +226,7 @@
                 ]
             },
             "put": {
-                "summary": "update",
+                "summary": "Update one skill",
                 "description": "API endpoint to update the specified Skill. A successful request response will show 200 HTTP status code",
                 "parameters": [
                     {
@@ -237,12 +253,9 @@
                                 "example": {
                                     "data": {
                                         "id": 1,
-                                        "title_en": "Corporate management",
-                                        "title": "কর্পোরেট ব্যবস্থাপনা",
-                                        "description": null,
-                                        "row_status": 1,
-                                        "created_at": "2021-07-26T12:08:11.000000Z",
-                                        "updated_at": "2021-07-26T12:08:11.000000Z"
+                                        "title": "Updated title",
+                                        "title_en": "updated title in en",
+                                        "deleted_at": null
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -253,6 +266,16 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
                     }
                 },
                 "tags": [
@@ -260,7 +283,7 @@
                 ]
             },
             "delete": {
-                "summary": "delete",
+                "summary": "Delete one skill",
                 "description": "API endpoint to delete the specified Skill.A successful request response will show 200 HTTP status code",
                 "parameters": [
                     {
@@ -285,6 +308,16 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
                     }
                 },
                 "tags": [
@@ -294,7 +327,7 @@
         },
         "/youths": {
             "get": {
-                "summary": "get_list",
+                "summary": "Get youth list",
                 "description": " API endpoint to get the list of Youth profile.A successful request response will show 200 HTTP status code",
                 "responses": {
                     "200": {
@@ -4078,11 +4111,6 @@
                 "type": "object",
                 "description": "provide skills",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "description": "Primary Key",
-                        "readOnly": true
-                    },
                     "title_en": {
                         "type": "string",
                         "description": "title in English",
@@ -4095,43 +4123,6 @@
                         "minLength": 2,
                         "maxLength": 600,
                         "example": "Native title"
-                    },
-                    "description": {
-                        "type": "string",
-                        "description": "Details of a skill",
-                        "maximum": 5000,
-                        "minimum": 2
-                    },
-                    "description_en": {
-                        "type": "string",
-                        "description": "Details of a skill in english",
-                        "maximum": 5000,
-                        "minimum": 2
-                    },
-                    "row_status": {
-                        "type": "integer",
-                        "description": "Activation status .1 => active ,0=>inactive",
-                        "enum": [
-                            0,
-                            1
-                        ],
-                        "default": 1
-                    },
-                    "created_by": {
-                        "type": "integer",
-                        "description": "Creator"
-                    },
-                    "updated_by": {
-                        "type": "integer",
-                        "description": "Modifier"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time"
                     }
                 },
                 "required": [
@@ -4977,6 +4968,33 @@
                     "speaking_proficiency_level",
                     "understand_proficiency_level"
                 ]
+            },
+            "ErrorResponse": {
+                "type": "object",
+                "description": "Error response",
+                "properties": {
+                    "_response_status": {
+                        "type": "object",
+                        "description": "Error response",
+                        "properties": {
+                            "success": {
+                                "type": "boolean",
+                                "example": false
+                            },
+                            "code": {
+                                "type": "integer",
+                                "example": 400
+                            },
+                            "message": {
+                                "type": "string",
+                                "example": "Invalid Request Format"
+                            },
+                            "query_time": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
             }
         },
         "parameters": {

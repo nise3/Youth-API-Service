@@ -12,6 +12,7 @@ class YouthLanguagesProficiencyFactory extends Factory
     public function definition(): array
     {
         return [
+            'youth_id' => $this->faker->randomElement([1, 2, 3, 4, 5]),
             'language_id' => $this->faker->numberBetween(1, 3),
             'reading_proficiency_level' => $this->faker->randomElement([1, 2]),
             'writing_proficiency_level' => $this->faker->randomElement([1, 2]),
