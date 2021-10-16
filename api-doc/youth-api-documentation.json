@@ -10,7 +10,7 @@
             "url": "https://youth.bus-staging.softbdltd.com/api/v1"
         },
         {
-            "url": "http://localhost:8002/api/v1"
+            "url": "http://localhost:8000/api/v1"
         }
     ],
     "security": [
@@ -49,7 +49,7 @@
         },
         "/skills": {
             "get": {
-                "summary": "Get skill list",
+                "summary": "get_list",
                 "description": "API endpoint to get the list of Skills.A successful request response will show 200 HTTP status code",
                 "parameters": [
                     {
@@ -88,18 +88,25 @@
                                     "data": [
                                         {
                                             "id": 1,
-                                            "title": "টেকনিকাল রাইটিং",
-                                            "title_en": "Technical Writing"
+                                            "title_en": "Heavy Equipment Mechanic",
+                                            "title": "Heavy Equipment Mechanic",
+                                            "description": "Sed omnis nemo sint consequatur qui quia maiores. Est non labore et. Dolorum sapiente dolorum earum cupiditate. Qui velit nam sequi hic est quisquam. Mollitia enim dicta iure consequatur. Nam aut non est maxime aspernatur. Quidem cumque eius numquam eos repellendus. Eum reprehenderit ullam et ut voluptatem natus quia. Voluptas voluptatibus cupiditate distinctio minima enim. Eaque nihil qui qui delectus. Modi sed aut soluta qui. Numquam veniam fuga a veniam ea eligendi. Hic odit illo nihil ab. Sapiente et sit ut at nulla qui nostrum. Eaque ea qui aut iusto quaerat quae non est. Eum et ex et aut a aut. Debitis repellat ex omnis aut quisquam magnam sequi maxime. Repudiandae laborum eum harum enim optio vero. Sunt et voluptatem aut architecto natus a fuga. Et odit magni dicta accusamus molestiae culpa eaque. Esse doloremque quasi ipsam ea dolorem aut. Esse non adipisci quod omnis nisi magni. Et ea corrupti minus consequatur quo molestiae. Sunt quisquam et voluptatibus omnis voluptas at eum. Iure asperiores doloribus id. Laudantium optio error aut ut ratione et nulla. Consequatur officiis odio et eos. Illo porro in nulla et consequatur id. Molestiae reprehenderit dicta nihil omnis. Qui debitis incidunt quis eum dolorum. Qui illo quas vero aut eum. Aperiam et eum voluptas autem recusandae quis. Delectus enim voluptatibus qui hic et. Quidem dolores possimus omnis eveniet voluptatibus. Quam possimus suscipit occaecati commodi architecto. Harum tempora minima id voluptatem expedita aliquam. Repudiandae ut minima dolorum alias fugiat officiis repudiandae. Ratione corrupti tempore et doloribus aut doloribus quasi quidem. Praesentium soluta et debitis eaque voluptatem architecto corporis. Aut laudantium harum sed. Dolores optio impedit a animi veniam illum. Qui expedita praesentium ut nam dolores distinctio. Ipsum rerum aliquid aliquam eligendi vel a. Debitis magnam rem adipisci non qui. Iure reprehenderit a id deserunt eligendi qui incidunt velit. Sint aut et ea sapiente optio impedit autem. Quasi enim ea recusandae omnis mollitia consequuntur ipsam. Doloremque incidunt facere quisquam est aut voluptatem. Aut labore autem id omnis.",
+                                            "row_status": 1,
+                                            "created_at": "2021-08-19T08:55:03.000000Z",
+                                            "updated_at": "2021-08-19T08:55:03.000000Z",
+                                            "created_by": null,
+                                            "updated_by": null
                                         },
                                         {
                                             "id": 2,
-                                            "title": "প্রজেক্ট ম্যানেজমেন্ট",
-                                            "title_en": "Project Management"
-                                        },
-                                        {
-                                            "id": 3,
-                                            "title": "কম্পিউটার প্রোগ্রামিং",
-                                            "title_en": "Computer Programming"
+                                            "title_en": "Logging Supervisor",
+                                            "title": "Logging Supervisor",
+                                            "description": "Quasi unde necessitatibus ut sequi est adipisci. Accusamus in sit deserunt voluptate. Sunt aspernatur architecto delectus. Incidunt sit voluptatem qui cum autem eum ut. Voluptatem eos et consequatur optio sit. Eveniet excepturi accusantium ipsum. Est nihil delectus at et. Saepe totam ipsa laboriosam tenetur. Et voluptate aut fugit error voluptate. Est dolorem sapiente dolore asperiores amet. Nemo dolor rerum eveniet voluptatem cumque et. Quidem qui corrupti vero repellat sunt. Non vel consequatur rerum deleniti voluptas. Impedit architecto libero et suscipit. Eveniet est dolorem qui. Ea eum nobis enim sed. Nulla cupiditate vero cupiditate non reprehenderit error. Quo quae quod velit enim ratione deserunt. Qui et numquam qui et quo maxime veniam sit. Rerum expedita occaecati sed in saepe et et. Et consequatur repudiandae quia. Mollitia nulla consequatur omnis. Doloremque optio ipsum cumque unde nisi. Quod molestiae quos quia nulla officiis. Dolore impedit sit architecto laboriosam. Sint nisi dolore ut enim. Sit non quae qui nesciunt temporibus a. Inventore odio non harum reiciendis. Vero eligendi sequi deserunt consequatur non velit. Voluptatem quia veritatis voluptatem ipsum odio dolorem. Fuga voluptates consectetur magni rerum. Accusantium assumenda atque magnam temporibus a placeat laudantium. Reprehenderit ut consequuntur magnam praesentium. Distinctio nobis aliquid optio. Iure est tempore officia quas recusandae hic quisquam. Soluta aut aut delectus maxime tenetur porro. Qui dolor maiores veritatis odio tenetur et. Voluptatem omnis velit eos similique perferendis ut. Temporibus dolore aut ex hic quisquam. Sequi quo optio quasi qui facere eius. Sint sint voluptas qui culpa tempora qui eveniet. Vero laborum labore et quod nulla ut. Quis iste qui a dolor dolorum nulla possimus. Illum necessitatibus maiores ad voluptatem possimus. Blanditiis eaque ut ut maxime eius autem occaecati. Quibusdam nihil sint non dolores vel quia. Eos facilis doloremque eligendi deleniti id. Esse qui velit praesentium quaerat qui a accusamus. Perspiciatis excepturi harum deleniti in doloremque est dolorum ipsa. In molestiae corrupti quo quos corporis aut. Aut necessitatibus temporibus non natus blanditiis iste. Maiores aut quod praesentium deserunt error deserunt in. Earum iusto autem asperiores tenetur unde. Libero ipsa corporis commodi atque incidunt. Ratione qui ea ab doloremque porro aut cupiditate sit. Et fugiat ad nihil officia.",
+                                            "row_status": 1,
+                                            "created_at": "2021-08-19T08:55:03.000000Z",
+                                            "updated_at": "2021-08-19T08:55:03.000000Z",
+                                            "created_by": null,
+                                            "updated_by": null
                                         }
                                     ],
                                     "response_status": {
@@ -110,16 +117,6 @@
                                 }
                             }
                         }
-                    },
-                    "400": {
-                        "description": "Invalid Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
                     }
                 },
                 "tags": [
@@ -127,7 +124,7 @@
                 ]
             },
             "post": {
-                "summary": "Create a skill",
+                "summary": "create",
                 "description": "API endpoint to create a Skill.A successful request response will show 200 HTTP status code",
                 "requestBody": {
                     "content": {
@@ -148,9 +145,12 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "title_en": null,
-                                        "title": "Native title rtfertfgtqerfg",
-                                        "id": 27
+                                        "title_en": "abc",
+                                        "title": "abc",
+                                        "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
+                                        "updated_at": "2021-08-22T11:25:13.000000Z",
+                                        "created_at": "2021-08-22T11:25:13.000000Z",
+                                        "id": 6
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -158,16 +158,6 @@
                                         "message": "Skill added successfully",
                                         "query_time": 0
                                     }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -180,7 +170,7 @@
         },
         "/skills/{skillId}": {
             "get": {
-                "summary": "Get one skill details",
+                "summary": "get_one",
                 "description": "API endpoint to get a specified Skill.A successful request response will show 200 HTTP status code",
                 "parameters": [
                     {
@@ -198,24 +188,18 @@
                                 "example": {
                                     "data": {
                                         "id": 1,
-                                        "title": "টেকনিকাল রাইটিং",
-                                        "title_en": "Technical Writing"
+                                        "title_en": "Corporate management",
+                                        "title": "কর্পোরেট ব্যবস্থাপনা",
+                                        "description": null,
+                                        "row_status": 1,
+                                        "created_at": "2021-07-26T12:08:11.000000Z",
+                                        "updated_at": "2021-07-26T12:08:11.000000Z"
                                     },
                                     "response_status": {
                                         "success": true,
                                         "code": 200,
                                         "query_time": 0
                                     }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -226,7 +210,7 @@
                 ]
             },
             "put": {
-                "summary": "Update one skill",
+                "summary": "update",
                 "description": "API endpoint to update the specified Skill. A successful request response will show 200 HTTP status code",
                 "parameters": [
                     {
@@ -253,9 +237,12 @@
                                 "example": {
                                     "data": {
                                         "id": 1,
-                                        "title": "Updated title",
-                                        "title_en": "updated title in en",
-                                        "deleted_at": null
+                                        "title_en": "Corporate management",
+                                        "title": "কর্পোরেট ব্যবস্থাপনা",
+                                        "description": null,
+                                        "row_status": 1,
+                                        "created_at": "2021-07-26T12:08:11.000000Z",
+                                        "updated_at": "2021-07-26T12:08:11.000000Z"
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -266,16 +253,6 @@
                                 }
                             }
                         }
-                    },
-                    "400": {
-                        "description": "Invalid Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
                     }
                 },
                 "tags": [
@@ -283,7 +260,7 @@
                 ]
             },
             "delete": {
-                "summary": "Delete one skill",
+                "summary": "delete",
                 "description": "API endpoint to delete the specified Skill.A successful request response will show 200 HTTP status code",
                 "parameters": [
                     {
@@ -308,16 +285,6 @@
                                 }
                             }
                         }
-                    },
-                    "400": {
-                        "description": "Invalid Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
                     }
                 },
                 "tags": [
@@ -327,7 +294,7 @@
         },
         "/youths": {
             "get": {
-                "summary": "Get youth list",
+                "summary": "get_list",
                 "description": " API endpoint to get the list of Youth profile.A successful request response will show 200 HTTP status code",
                 "responses": {
                     "200": {
@@ -2489,44 +2456,39 @@
                         "description": "success",
                         "content": {
                             "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Education"
+                                },
                                 "example": {
                                     "order": "ASC",
                                     "data": [
                                         {
-                                            "id": 21,
+                                            "id": 1,
                                             "youth_id": 1,
-                                            "education_level_id": 1,
-                                            "education_level_title": "PSC/5 Pass",
-                                            "education_level_title_en": "PSC/5 Pass",
-                                            "exam_degree_id": 1,
-                                            "exam_degree_code": "PSC",
-                                            "exam_degree_title_en": "PSC",
-                                            "exam_degree_title": "পিএসসি",
-                                            "exam_degree_name": "PhD",
-                                            "exam_degree_name_en": "wifgvuwbjhkef",
-                                            "major_or_concentration": "omukkkkkkk",
-                                            "major_or_concentration_en": "omukkkkkkk",
+                                            "institute_name": "Ondricka, Casper and Tromp",
+                                            "institute_name_en": "Ondricka, Casper and Tromp",
+                                            "examination_id": 3,
+                                            "examination_code": "SSC",
+                                            "examination_title_en": "SSC/Equivalent",
+                                            "examination_title": "এসএসসি/সমমান",
+                                            "board_id": 8,
+                                            "board_title_en": "Rajshahi",
+                                            "board_title": "রাজশাহী",
                                             "edu_group_id": 2,
                                             "edu_group_code": "Humanities",
                                             "edu_group_title_en": "Arts and Humanities",
                                             "edu_group_title": "মানবিক",
-                                            "board_id": 2,
-                                            "board_title_en": "Chittagong",
-                                            "board_title": "চট্টগ্রাম",
-                                            "institute_name": "axdfghjhgfdfg",
-                                            "institute_name_en": "defergherg",
-                                            "is_foreign_institute": 1,
-                                            "foreign_institute_country_id": 2,
-                                            "result": "Second  Division/Class",
-                                            "marks_in_percentage": 1,
-                                            "cgpa_scale": 5,
-                                            "cgpa": 4,
-                                            "year_of_passing": 1990,
-                                            "duration": null,
-                                            "achievements": "ILAEUF",
-                                            "achievements_en": null,
-                                            "created_at": "2021-10-14T08:29:45.000000Z",
-                                            "updated_at": "2021-10-14T08:36:11.000000Z"
+                                            "major_or_subject_id": null,
+                                            "roll_number": "210381657639",
+                                            "registration_number": "932081741473",
+                                            "result_type": 2,
+                                            "division_type_result": null,
+                                            "cgpa_gpa_max_value": 5,
+                                            "received_cgpa_gpa": 2.1,
+                                            "passing_year": 1989,
+                                            "row_status": 1,
+                                            "created_at": "2021-10-06T07:06:47.000000Z",
+                                            "updated_at": "2021-10-06T07:06:47.000000Z"
                                         }
                                     ],
                                     "response_status": {
@@ -2565,40 +2527,32 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 21,
+                                        "id": 1,
                                         "youth_id": 1,
-                                        "education_level_id": 1,
-                                        "education_level_title": "PSC/5 Pass",
-                                        "education_level_title_en": "PSC/5 Pass",
-                                        "exam_degree_id": 1,
-                                        "exam_degree_code": "PSC",
-                                        "exam_degree_title_en": "PSC",
-                                        "exam_degree_title": "পিএসসি",
-                                        "exam_degree_name": "sdefrtg",
-                                        "exam_degree_name_en": null,
-                                        "major_or_concentration": "Biology",
-                                        "major_or_concentration_en": "Biology",
-                                        "edu_group_id": 1,
-                                        "edu_group_code": "Science",
-                                        "edu_group_title_en": "Science",
-                                        "edu_group_title": "বিজ্ঞান",
-                                        "board_id": 1,
-                                        "board_title_en": "Barisal",
-                                        "board_title": "বরিশাল",
-                                        "institute_name": "B A F Shaheen",
-                                        "institute_name_en": null,
-                                        "is_foreign_institute": 0,
-                                        "foreign_institute_country_id": 1,
-                                        "result": "Second  Division/Class",
-                                        "marks_in_percentage": 1,
-                                        "cgpa_scale": 4,
-                                        "cgpa": 1,
-                                        "year_of_passing": 2010,
-                                        "duration": null,
-                                        "achievements": null,
-                                        "achievements_en": null,
-                                        "created_at": "2021-10-14T08:29:45.000000Z",
-                                        "updated_at": "2021-10-14T08:29:45.000000Z"
+                                        "institute_name": "Ondricka, Casper and Tromp",
+                                        "institute_name_en": "Ondricka, Casper and Tromp",
+                                        "examination_id": 3,
+                                        "examination_code": "SSC",
+                                        "examination_title_en": "SSC/Equivalent",
+                                        "examination_title": "এসএসসি/সমমান",
+                                        "board_id": 8,
+                                        "board_title_en": "Rajshahi",
+                                        "board_title": "রাজশাহী",
+                                        "edu_group_id": 2,
+                                        "edu_group_code": "Humanities",
+                                        "edu_group_title_en": "Arts and Humanities",
+                                        "edu_group_title": "মানবিক",
+                                        "major_or_subject_id": null,
+                                        "roll_number": "210381657639",
+                                        "registration_number": "932081741473",
+                                        "result_type": 2,
+                                        "division_type_result": null,
+                                        "cgpa_gpa_max_value": 5,
+                                        "received_cgpa_gpa": 2.1,
+                                        "passing_year": 1989,
+                                        "row_status": 1,
+                                        "created_at": "2021-10-06T07:06:47.000000Z",
+                                        "updated_at": "2021-10-06T07:06:47.000000Z"
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -2641,40 +2595,32 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 21,
+                                        "id": 1,
                                         "youth_id": 1,
-                                        "education_level_id": 1,
-                                        "education_level_title": "PSC/5 Pass",
-                                        "education_level_title_en": "PSC/5 Pass",
-                                        "exam_degree_id": 1,
-                                        "exam_degree_code": "PSC",
-                                        "exam_degree_title_en": "PSC",
-                                        "exam_degree_title": "পিএসসি",
-                                        "exam_degree_name": "sdefrtg",
-                                        "exam_degree_name_en": null,
-                                        "major_or_concentration": "Biology",
-                                        "major_or_concentration_en": "Biology",
-                                        "edu_group_id": 1,
-                                        "edu_group_code": "Science",
-                                        "edu_group_title_en": "Science",
-                                        "edu_group_title": "বিজ্ঞান",
-                                        "board_id": 1,
-                                        "board_title_en": "Barisal",
-                                        "board_title": "বরিশাল",
-                                        "institute_name": "B A F Shaheen",
-                                        "institute_name_en": null,
-                                        "is_foreign_institute": 0,
-                                        "foreign_institute_country_id": 1,
-                                        "result": "Second  Division/Class",
-                                        "marks_in_percentage": 1,
-                                        "cgpa_scale": 4,
-                                        "cgpa": 1,
-                                        "year_of_passing": 2010,
-                                        "duration": null,
-                                        "achievements": null,
-                                        "achievements_en": null,
-                                        "created_at": "2021-10-14T08:29:45.000000Z",
-                                        "updated_at": "2021-10-14T08:29:45.000000Z"
+                                        "institute_name": "Ondricka, Casper and Tromp",
+                                        "institute_name_en": "Ondricka, Casper and Tromp",
+                                        "examination_id": 3,
+                                        "examination_code": "SSC",
+                                        "examination_title_en": "SSC/Equivalent",
+                                        "examination_title": "এসএসসি/সমমান",
+                                        "board_id": 8,
+                                        "board_title_en": "Rajshahi",
+                                        "board_title": "রাজশাহী",
+                                        "edu_group_id": 2,
+                                        "edu_group_code": "Humanities",
+                                        "edu_group_title_en": "Arts and Humanities",
+                                        "edu_group_title": "মানবিক",
+                                        "major_or_subject_id": null,
+                                        "roll_number": "210381657639",
+                                        "registration_number": "932081741473",
+                                        "result_type": 2,
+                                        "division_type_result": null,
+                                        "cgpa_gpa_max_value": 5,
+                                        "received_cgpa_gpa": 2.1,
+                                        "passing_year": 1989,
+                                        "row_status": 1,
+                                        "created_at": "2021-10-06T07:06:47.000000Z",
+                                        "updated_at": "2021-10-06T07:06:47.000000Z"
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -2723,40 +2669,32 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 21,
+                                        "id": 1,
                                         "youth_id": 1,
-                                        "education_level_id": 1,
-                                        "education_level_title": "PSC/5 Pass",
-                                        "education_level_title_en": "PSC/5 Pass",
-                                        "exam_degree_id": 1,
-                                        "exam_degree_code": "PSC",
-                                        "exam_degree_title_en": "PSC",
-                                        "exam_degree_title": "পিএসসি",
-                                        "exam_degree_name": "sdefrtg",
-                                        "exam_degree_name_en": null,
-                                        "major_or_concentration": "Biology",
-                                        "major_or_concentration_en": "Biology",
-                                        "edu_group_id": 1,
-                                        "edu_group_code": "Science",
-                                        "edu_group_title_en": "Science",
-                                        "edu_group_title": "বিজ্ঞান",
-                                        "board_id": 1,
-                                        "board_title_en": "Barisal",
-                                        "board_title": "বরিশাল",
-                                        "institute_name": "B A F Shaheen",
-                                        "institute_name_en": null,
-                                        "is_foreign_institute": 0,
-                                        "foreign_institute_country_id": 1,
-                                        "result": "Second  Division/Class",
-                                        "marks_in_percentage": 1,
-                                        "cgpa_scale": 4,
-                                        "cgpa": 1,
-                                        "year_of_passing": 2010,
-                                        "duration": null,
-                                        "achievements": null,
-                                        "achievements_en": null,
-                                        "created_at": "2021-10-14T08:29:45.000000Z",
-                                        "updated_at": "2021-10-14T08:29:45.000000Z"
+                                        "institute_name": "Ondricka, Casper and Tromp",
+                                        "institute_name_en": "Ondricka, Casper and Tromp",
+                                        "examination_id": 3,
+                                        "examination_code": "SSC",
+                                        "examination_title_en": "SSC/Equivalent",
+                                        "examination_title": "এসএসসি/সমমান",
+                                        "board_id": 8,
+                                        "board_title_en": "Rajshahi",
+                                        "board_title": "রাজশাহী",
+                                        "edu_group_id": 2,
+                                        "edu_group_code": "Humanities",
+                                        "edu_group_title_en": "Arts and Humanities",
+                                        "edu_group_title": "মানবিক",
+                                        "major_or_subject_id": null,
+                                        "roll_number": "210381657639",
+                                        "registration_number": "932081741473",
+                                        "result_type": 2,
+                                        "division_type_result": null,
+                                        "cgpa_gpa_max_value": 5,
+                                        "received_cgpa_gpa": 2.1,
+                                        "passing_year": 1989,
+                                        "row_status": 1,
+                                        "created_at": "2021-10-06T07:06:47.000000Z",
+                                        "updated_at": "2021-10-06T07:06:47.000000Z"
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -3231,46 +3169,23 @@
                         "description": "Created",
                         "content": {
                             "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthGuardianProp"
+                                },
                                 "example": {
                                     "data": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 4
-                                        },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Ryan Pinkman"
-                                        },
-                                        "name_en": {
-                                            "type": "string",
-                                            "example": "Ryan Pinkman2"
-                                        },
-                                        "nid": {
-                                            "type": "string",
-                                            "example": "1aas345-poiu989-ssv56@@er5"
-                                        },
-                                        "mobile": {
-                                            "type": "string",
-                                            "example": "0909876612"
-                                        },
-                                        "date_of_birth": {
-                                            "type": "string",
-                                            "example": "12/12/1987"
-                                        },
-                                        "relationship_type": {
-                                            "type": "string",
-                                            "example": "parent"
-                                        },
-                                        "relationship_title": {
-                                            "type": "string",
-                                            "example": "father"
-                                        },
-                                        "relationship_title_en": {
-                                            "type": "string",
-                                            "example": "father"
-                                        },
-                                        "updated_at": "2021-08-22T11:25:13.000000Z",
-                                        "created_at": "2021-08-22T11:25:13.000000Z"
+                                        "id": 5,
+                                        "youth_id": 1,
+                                        "name": "Boucher",
+                                        "name_en": "Mr Boucher",
+                                        "nid": "1aas345-poiu989-ssv56@@er5",
+                                        "mobile": "086423467",
+                                        "date_of_birth": "12/12/1912",
+                                        "relationship_type": 2,
+                                        "relationship_title": "father",
+                                        "relationship_title_en": "father",
+                                        "created_at": "12/12/1987",
+                                        "updated_at": "12/12/1987"
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -3311,6 +3226,27 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/youthGuardianProp"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 12,
+                                        "name": "Janiya Rolfson",
+                                        "name_en": "Antoinette McGlynn II",
+                                        "nid": 1212121,
+                                        "mobile": "01776539732",
+                                        "date_of_birth": "12/12/1987",
+                                        "relationship_type": 1,
+                                        "relationship_title": "uncle",
+                                        "relationship_title_en": "uncle",
+                                        "created_at": "12/12/1987",
+                                        "updated_at": "12/12/1987"
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 201,
+                                        "message": "guardian added successfully",
+                                        "query_time": 0
+                                    }
                                 }
                             }
                         }
@@ -3338,7 +3274,7 @@
                 "requestBody": {
                     "description": "Creating a new guardian",
                     "content": {
-                        "application/json": {
+                        "application/x-www-form-urlencoded": {
                             "schema": {
                                 "$ref": "#/components/schemas/youthGuardianProp"
                             }
@@ -3352,44 +3288,19 @@
                             "application/json": {
                                 "example": {
                                     "data": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 4
-                                        },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Ryan Pinkman"
-                                        },
-                                        "name_en": {
-                                            "type": "string",
-                                            "example": "Ryan Pinkman2"
-                                        },
-                                        "nid": {
-                                            "type": "string",
-                                            "example": "1aas345-poiu989-ssv56@@er5"
-                                        },
-                                        "mobile": {
-                                            "type": "string",
-                                            "example": "0909876612"
-                                        },
-                                        "date_of_birth": {
-                                            "type": "string",
-                                            "example": "12/12/1987"
-                                        },
-                                        "relationship_type": {
-                                            "type": "string",
-                                            "example": "parent"
-                                        },
-                                        "relationship_title": {
-                                            "type": "string",
-                                            "example": "father"
-                                        },
-                                        "relationship_title_en": {
-                                            "type": "string",
-                                            "example": "father"
-                                        },
-                                        "updated_at": "2021-08-22T11:25:13.000000Z",
-                                        "created_at": "2021-08-22T11:25:13.000000Z"
+                                        "id": 12,
+                                        "youth_id": 23,
+                                        "name": "Janiya Rolfson",
+                                        "name_en": "Antoinette McGlynn II",
+                                        "nid": 1212121,
+                                        "mobile": "01776539732",
+                                        "date_of_birth": "12/12/1987",
+                                        "relationship_type": 1,
+                                        "relationship_title": "uncle",
+                                        "relationship_title_en": "uncle",
+                                        "created_at": "12/12/1987",
+                                        "updated_at": "12/12/1987",
+                                        "deleted_at": "12/12/1987"
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -3416,7 +3327,8 @@
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "format": "int64"
+                            "format": "int64",
+                            "example": 12
                         }
                     }
                 ],
@@ -3463,6 +3375,10 @@
                         "example": 4,
                         "readOnly": true
                     },
+                    "youth_id": {
+                        "type": "integer",
+                        "example": 4
+                    },
                     "name": {
                         "type": "string",
                         "example": "Ryan Pinkman"
@@ -3477,7 +3393,7 @@
                     },
                     "mobile": {
                         "type": "string",
-                        "example": "0909876612"
+                        "example": "01714556677"
                     },
                     "date_of_birth": {
                         "type": "string",
@@ -4111,6 +4027,11 @@
                 "type": "object",
                 "description": "provide skills",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "Primary Key",
+                        "readOnly": true
+                    },
                     "title_en": {
                         "type": "string",
                         "description": "title in English",
@@ -4123,6 +4044,43 @@
                         "minLength": 2,
                         "maxLength": 600,
                         "example": "Native title"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Details of a skill",
+                        "maximum": 5000,
+                        "minimum": 2
+                    },
+                    "description_en": {
+                        "type": "string",
+                        "description": "Details of a skill in english",
+                        "maximum": 5000,
+                        "minimum": 2
+                    },
+                    "row_status": {
+                        "type": "integer",
+                        "description": "Activation status .1 => active ,0=>inactive",
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "default": 1
+                    },
+                    "created_by": {
+                        "type": "integer",
+                        "description": "Creator"
+                    },
+                    "updated_by": {
+                        "type": "integer",
+                        "description": "Modifier"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
                     }
                 },
                 "required": [
@@ -4852,39 +4810,13 @@
                 "type": "object",
                 "description": "Provide educational info of a youth",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
                     "youth_id": {
                         "type": "integer",
                         "example": 1
-                    },
-                    "education_level_id": {
-                        "type": "integer",
-                        "description": "ID of PSC, JSC, Secondary, Higher Secondary, Diploma, Honors, Masters, PhD"
-                    },
-                    "exam_degree_id": {
-                        "type": "integer",
-                        "description": "Depends upon Education Level. If Education level has at least one degree then this field is required"
-                    },
-                    "exam_degree_name": {
-                        "type": "string",
-                        "description": "Depends upon Education Level. If Education level has no degree then this field is required. (Ex: PhD Education level)"
-                    },
-                    "exam_degree_name_en": {
-                        "type": "string"
-                    },
-                    "major_or_concentration": {
-                        "type": "string",
-                        "description": "Only required for Secondary, Higher Secondary, Diploma, Bachelor, Masters"
-                    },
-                    "major_or_concentration_en": {
-                        "type": "string"
-                    },
-                    "edu_group_id": {
-                        "type": "integer",
-                        "description": "Only for Secondary, Higher Secondary. '1 => Science, 2 => Commerce, 3 => Arts (Only for Secondary, Higher Secondary)"
-                    },
-                    "board_id": {
-                        "type": "integer",
-                        "description": "Only for PSC, JSC, SSC, HSC etc"
                     },
                     "institute_name": {
                         "type": "string",
@@ -4894,43 +4826,84 @@
                         "type": "string",
                         "maxLength": 400
                     },
-                    "is_foreign_institute": {
-                        "type": "integer"
+                    "examination_id": {
+                        "type": "integer",
+                        "description": "PSC, JSC, SSC, HSC, Degree, B.Sc. (Pass), Honours, Preliminary Masters, Masters etc"
                     },
-                    "foreign_institute_country_id": {
-                        "type": "integer"
+                    "board_id": {
+                        "type": "integer",
+                        "description": "Only for PSC, JSC, SSC, HSC etc"
                     },
-                    "result": {
-                        "type": "integer"
+                    "edu_group_id": {
+                        "type": "integer",
+                        "description": "'1 => Science, 2 => Commerce, 3 => Arts (Only for PSC, JSC, SSC, HSC, Degree)"
                     },
-                    "marks_in_percentage": {
-                        "type": "integer"
+                    "major_or_subject_id": {
+                        "type": "integer",
+                        "description": "'Only for Honours/Masters'"
                     },
-                    "cgpa_scale": {
-                        "type": "integer"
+                    "roll_number": {
+                        "type": "string",
+                        "maxLength": 100
                     },
-                    "cgpa": {
-                        "type": "integer"
+                    "registration_number": {
+                        "type": "string",
+                        "maxLength": 100
                     },
-                    "year_of_passing": {
-                        "type": "string"
+                    "result_type": {
+                        "type": "integer",
+                        "description": "1 => Division, 2 => Grade point"
                     },
-                    "duration": {
-                        "type": "integer"
+                    "division_type_result": {
+                        "type": "integer",
+                        "description": "1 => 1st Class, 2 => 2nd Class, 3 => 3rd Class"
                     },
-                    "achievements": {
-                        "type": "string"
+                    "cgpa_gpa_max_value": {
+                        "type": "integer",
+                        "description": "floating point number"
                     },
-                    "achievements_en": {
-                        "type": "string"
+                    "received_cgpa_gpa": {
+                        "type": "integer",
+                        "description": "floating point number"
+                    },
+                    "passing_year": {
+                        "type": "integer",
+                        "format": "year",
+                        "example": 2015
+                    },
+                    "row_status": {
+                        "type": "integer",
+                        "description": "activation status",
+                        "enum": [
+                            1,
+                            0
+                        ],
+                        "example": 1
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
                     }
                 },
                 "required": [
                     "youth_id",
-                    "education_level_id",
+                    "examination_id",
+                    "roll_number",
                     "institute_name",
-                    "is_foreign_institute",
-                    "result"
+                    "registration_number",
+                    "result_type",
+                    "passing_year"
                 ]
             },
             "languageProficiency": {
@@ -4968,33 +4941,6 @@
                     "speaking_proficiency_level",
                     "understand_proficiency_level"
                 ]
-            },
-            "ErrorResponse": {
-                "type": "object",
-                "description": "Error response",
-                "properties": {
-                    "_response_status": {
-                        "type": "object",
-                        "description": "Error response",
-                        "properties": {
-                            "success": {
-                                "type": "boolean",
-                                "example": false
-                            },
-                            "code": {
-                                "type": "integer",
-                                "example": 400
-                            },
-                            "message": {
-                                "type": "string",
-                                "example": "Invalid Request Format"
-                            },
-                            "query_time": {
-                                "type": "integer"
-                            }
-                        }
-                    }
-                }
             }
         },
         "parameters": {

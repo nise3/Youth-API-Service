@@ -909,7 +909,7 @@ paths:
                 _response_status:
                   success: true
                   code: 201
-                  message: YouthPortfolio created successfully
+                  message: Portfolio created successfully
                   query_time: 0
       tags:
         - Portfolios
@@ -966,7 +966,7 @@ paths:
                 _response_status:
                   success: true
                   code: 201
-                  message: YouthPortfolio updated successfully
+                  message: Portfolio updated successfully
                   query_time: 0
       tags:
         - Portfolios
@@ -986,7 +986,7 @@ paths:
                 _response_status:
                   success: true
                   code: 200
-                  message: YouthPortfolio deleted successfully
+                  message: Portfolio deleted successfully
                   started: 12 40 05
                   finished: 12 40 05
       tags:
@@ -1429,7 +1429,7 @@ paths:
                   code: 200
                   query_time: 0
       tags:
-        - YouthCertification
+        - Certification
     post:
       summary: create
       description: API endpoint to create a certification.A successful request response will show 200 HTTP status code
@@ -1467,7 +1467,7 @@ paths:
                   message: Certificate added successfully
                   query_time: 0
       tags:
-        - YouthCertification
+        - Certification
   /youth-certifications/{certificationId}:
     get:
       summary: get_one
@@ -1507,7 +1507,7 @@ paths:
                   code: 200
                   query_time: 0
       tags:
-        - YouthCertification
+        - Certification
     put:
       summary: update
       description: API endpoint to update the specified Certificate. A successful request response will show 200 HTTP status code
@@ -1551,7 +1551,7 @@ paths:
                   message: Certificate updated successfully.
                   query_time: 0
       tags:
-        - YouthCertification
+        - Certification
     delete:
       summary: delete
       description: API endpoint to delete the specified Certificate.A successful request response will show 200 HTTP status code
@@ -1576,7 +1576,7 @@ paths:
                   message: Certificate deleted successfully.
                   query_time: 0
       tags:
-        - YouthCertification
+        - Certification
   /youth-references:
     get:
       summary: get_list
@@ -1624,10 +1624,10 @@ paths:
                   code: 200
                   query_time: 0
       tags:
-        - YouthReference
+        - Reference
     post:
       summary: create
-      description: API endpoint to create a YouthReference.A successful request response will show 200 HTTP status code
+      description: API endpoint to create a Reference.A successful request response will show 200 HTTP status code
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -1668,14 +1668,14 @@ paths:
                 _response_status:
                   success: true
                   code: 201
-                  message: YouthReference added successfully
+                  message: Reference added successfully
                   query_time: 0
       tags:
-        - YouthReference
+        - Reference
   /youth-references/{youthReferenceId}:
     get:
       summary: get_one
-      description: API endpoint to get a specified YouthReference.A successful request response will show 200 HTTP status code
+      description: API endpoint to get a specified Reference.A successful request response will show 200 HTTP status code
       parameters:
         - name: youthReferenceId
           in: path
@@ -1720,10 +1720,10 @@ paths:
                   code: 200
                   query_time: 0
       tags:
-        - YouthReference
+        - Reference
     put:
       summary: update
-      description: API endpoint to update the specified YouthReference. A successful request response will show 200 HTTP status code
+      description: API endpoint to update the specified Reference. A successful request response will show 200 HTTP status code
       parameters:
         - name: youthReferenceId
           in: path
@@ -1771,13 +1771,13 @@ paths:
                 _response_status:
                   success: true
                   code: 201
-                  message: YouthReference updated successfully
+                  message: Reference updated successfully
                   query_time: 0
       tags:
-        - YouthReference
+        - Reference
     delete:
       summary: delete
-      description: API endpoint to delete the specified YouthReference.A successful request response will show 200 HTTP status code
+      description: API endpoint to delete the specified Reference.A successful request response will show 200 HTTP status code
       parameters:
         - name: youthReferenceId
           in: path
@@ -1799,7 +1799,7 @@ paths:
                   message: Referene deleted successfully.
                   query_time: 0
       tags:
-        - YouthReference
+        - Reference
   /youth-educations:
     get:
       summary: get_list
@@ -2038,7 +2038,7 @@ paths:
   /youth-educations-exam-board-edugroup-subject:
     get:
       tags:
-        - Youth Educations Exam EduBoard Education-group Major Subject
+        - Youth Educations Exam Board Education-group Major Subject
       summary: Find youth educations exam board edugroup subject
       description: API endpoint to get the educations exam board edugroup subject. A successful request response will show 200 HTTP status code
       responses:
@@ -2297,7 +2297,6 @@ paths:
     get:
       summary: get_list
       description: 'API endpoint to get the list of Yoth guardians. A successful request response will show 200 HTTP status code '
-
       parameters:
         - $ref: '#/components/parameters/name'
         - $ref: '#/components/parameters/name_en'
@@ -2329,48 +2328,22 @@ paths:
           description: Created
           content:
             application/json:
-              # schema:
-              #   $ref: '#/components/schemas/youthGuardianProp'
+              schema:
+                $ref: '#/components/schemas/youthGuardianProp'
               example:
                 data:
-                  id:
-                    type: integer
-                    example: 4
-
-                  name:
-                    type: string
-                    example: Ryan Pinkman
-
-                  name_en:
-                    type: string
-                    example: Ryan Pinkman2
-
-                  nid:
-                    type: string
-                    example: 1aas345-poiu989-ssv56@@er5
-
-                  mobile:
-                    type: string
-                    example: '0909876612'
-
-                  date_of_birth:
-                    type: string
-                    example: 12/12/1987
-
-                  relationship_type:
-                    type: string
-                    example: parent
-
-                  relationship_title:
-                    type: string
-                    example: father
-                  relationship_title_en:
-                    type: string
-                    example: father
-
-                  updated_at: '2021-08-22T11:25:13.000000Z'
-                  created_at: '2021-08-22T11:25:13.000000Z'
-
+                  id: 5
+                  youth_id: 1
+                  name: Boucher
+                  name_en: Mr Boucher
+                  nid: 1aas345-poiu989-ssv56@@er5
+                  mobile: '086423467'
+                  date_of_birth: 12/12/1912
+                  relationship_type: 2
+                  relationship_title: father
+                  relationship_title_en: father
+                  created_at: 12/12/1987
+                  updated_at: 12/12/1987
                 _response_status:
                   success: true
                   code: 201
@@ -2380,7 +2353,6 @@ paths:
         - Youth Guardians
   /youth-guardians/{guardiansId}:
     get:
-
       summary: get_one
       description: API endpoint to get a specified youth guardian.A successful request response will show 200 HTTP status code
       parameters:
@@ -2398,11 +2370,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/youthGuardianProp'
-
+              example:
+                data:
+                  id: 12
+                  name: Janiya Rolfson
+                  name_en: Antoinette McGlynn II
+                  nid: 1212121
+                  mobile: '01776539732'
+                  date_of_birth: 12/12/1987
+                  relationship_type: 1
+                  relationship_title: uncle
+                  relationship_title_en: uncle
+                  created_at: 12/12/1987
+                  updated_at: 12/12/1987
+                _response_status:
+                  success: true
+                  code: 201
+                  message: guardian added successfully
+                  query_time: 0
       tags:
         - Youth Guardians
     put:
-
       summary: update
       description: API endpoint to update the specified youth guardian. A successful request response will show 200 HTTP status code
       parameters:
@@ -2416,7 +2404,7 @@ paths:
       requestBody:
         description: Creating a new guardian
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/youthGuardianProp'
       responses:
@@ -2426,50 +2414,24 @@ paths:
             application/json:
               example:
                 data:
-                  id:
-                    type: integer
-                    example: 4
-
-                  name:
-                    type: string
-                    example: Ryan Pinkman
-
-                  name_en:
-                    type: string
-                    example: Ryan Pinkman2
-
-                  nid:
-                    type: string
-                    example: 1aas345-poiu989-ssv56@@er5
-
-                  mobile:
-                    type: string
-                    example: '0909876612'
-
-                  date_of_birth:
-                    type: string
-                    example: 12/12/1987
-
-                  relationship_type:
-                    type: string
-                    example: parent
-
-                  relationship_title:
-                    type: string
-                    example: father
-                  relationship_title_en:
-                    type: string
-                    example: father
-
-                  updated_at: '2021-08-22T11:25:13.000000Z'
-                  created_at: '2021-08-22T11:25:13.000000Z'
-
+                  id: 12
+                  youth_id: 23
+                  name: Janiya Rolfson
+                  name_en: Antoinette McGlynn II
+                  nid: 1212121
+                  mobile: '01776539732'
+                  date_of_birth: 12/12/1987
+                  relationship_type: 1
+                  relationship_title: uncle
+                  relationship_title_en: uncle
+                  created_at: 12/12/1987
+                  updated_at: 12/12/1987
+                  deleted_at: 12/12/1987
                 _response_status:
                   success: true
                   code: 201
                   message: guardian updated successfully
                   query_time: 0
-
       tags:
         - Youth Guardians
     delete:
@@ -2482,6 +2444,7 @@ paths:
           schema:
             type: string
             format: int64
+            example: 12
       responses:
         '200':
           description: delete
@@ -2511,6 +2474,9 @@ components:
           type: integer
           example: 4
           readOnly: true
+        youth_id:
+          type: integer
+          example: 4
         name:
           type: string
           example: Ryan Pinkman
@@ -2522,7 +2488,7 @@ components:
           example: 1aas345-poiu989-ssv56@@er5
         mobile:
           type: string
-          example: '0909876612'
+          example: '01714556677'
         date_of_birth:
           type: string
           example: 12/12/1987
