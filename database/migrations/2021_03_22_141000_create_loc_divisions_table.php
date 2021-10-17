@@ -19,6 +19,7 @@ class CreateLocDivisionsTable extends Migration {
 			$table->string('title_en');
 			$table->string('title', 500);
 			$table->char('bbs_code', 4)->nullable();
+            $table->softDeletes();
 		});
 	}
 

@@ -75,14 +75,18 @@ class YouthService
         $youthBuilder->orderBy('youths.id', $order);
 
         $youthBuilder->leftjoin('loc_divisions', function ($join) {
-            $join->on('youths.loc_division_id', '=', 'loc_divisions.id');
+            $join->on('youths.loc_division_id', '=', 'loc_divisions.id')
+                ->whereNull('loc_divisions.deleted_at');
         });
-        $youthBuilder->leftjoin('loc_districts', function ($join) {
-            $join->on('youths.loc_district_id', '=', 'loc_districts.id');
-        });
-        $youthBuilder->leftjoin('loc_upazilas', function ($join) {
-            $join->on('youths.loc_upazila_id', '=', 'loc_upazilas.id');
 
+        $youthBuilder->leftjoin('loc_districts', function ($join) {
+            $join->on('youths.loc_district_id', '=', 'loc_districts.id')
+                ->whereNull('loc_districts.deleted_at');
+        });
+
+        $youthBuilder->leftjoin('loc_upazilas', function ($join) {
+            $join->on('youths.loc_upazila_id', '=', 'loc_upazilas.id')
+                ->whereNull('loc_upazilas.deleted_at');
         });
 
         if (!empty($firstName)) {
@@ -176,16 +180,18 @@ class YouthService
         );
 
         $youthBuilder->leftjoin('loc_divisions', function ($join) {
-            $join->on('youths.loc_division_id', '=', 'loc_divisions.id');
+            $join->on('youths.loc_division_id', '=', 'loc_divisions.id')
+                ->whereNull('loc_divisions.deleted_at');
         });
 
         $youthBuilder->leftjoin('loc_districts', function ($join) {
-            $join->on('youths.loc_district_id', '=', 'loc_districts.id');
+            $join->on('youths.loc_district_id', '=', 'loc_districts.id')
+                ->whereNull('loc_districts.deleted_at');
         });
 
         $youthBuilder->leftjoin('loc_upazilas', function ($join) {
-            $join->on('youths.loc_upazila_id', '=', 'loc_upazilas.id');
-
+            $join->on('youths.loc_upazila_id', '=', 'loc_upazilas.id')
+            ->whereNull('loc_upazilas.deleted_at');
         });
 
         $youthBuilder->where('youths.id', $id);
