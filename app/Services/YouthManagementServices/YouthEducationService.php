@@ -78,7 +78,6 @@ class YouthEducationService
                 'youth_educations.year_of_passing',
                 'youth_educations.duration',
                 'youth_educations.achievements',
-                'youth_educations.achievements',
                 'youth_educations.achievements_en',
                 'youth_educations.created_at',
                 'youth_educations.updated_at',
@@ -211,7 +210,6 @@ class YouthEducationService
                 'youth_educations.year_of_passing',
                 'youth_educations.duration',
                 'youth_educations.achievements',
-                'youth_educations.achievements',
                 'youth_educations.achievements_en',
                 'youth_educations.created_at',
                 'youth_educations.updated_at',
@@ -290,11 +288,6 @@ class YouthEducationService
     public function validator(Request $request, int $id = null): Validator
     {
         $rules = [
-            'youth_id' => [
-                'required',
-                'exists:youths,id',
-                'int'
-            ],
             'education_level_id' => [
                 'required',
                 'min:1',
@@ -435,8 +428,8 @@ class YouthEducationService
 
         return \Illuminate\Support\Facades\Validator::make($request->all(), [
 
-            'page' => 'numeric|gt:0',
-            'pageSize' => 'numeric|gt:0',
+            'page' => 'integer|gt:0',
+            'pageSize' => 'integer|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
