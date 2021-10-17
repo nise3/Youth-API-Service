@@ -270,38 +270,50 @@ class YouthProfileService
     public function idpUserCreate(array $data): \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
     {
         $url = clientUrl(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
+        $payload = $this->prepareIdpPayload($data);
         $client = Http::withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
             ->withHeaders([
                 'Content-Type' => 'application/json'
             ])
             ->withOptions([
-                'verify' => config("nise3.should_ssl_verify")
+                'verify' => false
             ])
-            ->post($url, [
-                'schemas' => [
-                    "urn:ietf:params:scim:schemas:core:2.0:User",
-                    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
-                ],
-                'name' => [
-                    'familyName' => $data['name'],
-                    'givenName' => $data['name']
-                ],
-//                'active' => $data['active'],
-                'organization' => $data['name'],
-                'userName' => $data['username'],
-                'password' => $data['password'],
-                'userType' => $data['user_type'],
-                'country' => 'BD',
-                'emails' => [
-                    0 => 'y_' . $data['username'] . '@youth.nise3.com'
-                ]
-            ]);
+            ->post($url, $payload);
 
-        Log::channel('idp_user')->info('idp_user_payload', $data);
-        Log::channel('idp_user')->info('idp_user_info', $client->json());
+        Log::channel('idp_user')->info('idp_user_payload', $payload);
+        Log::channel('idp_user')->debug( $client->json() );
 
         return $client;
 
+    }
+
+    private function prepareIdpPayload($data){
+        $userEmailNo =  trim($data['username']);
+        $cleanUserName =  trim($data['username']);
+        if(!str_contains($userEmailNo, '@')){
+            $userEmailNo = 'y_' . $data['username'] . '@youth.nise3.com';
+        }else{
+            $cleanUserName =  str_replace('@', '', $cleanUserName);
+        }
+        return [
+            'schemas' => [
+                "urn:ietf:params:scim:schemas:core:2.0:User",
+                "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+            ],
+            'name' => [
+                'familyName' => $data['name'],
+                'givenName' => $data['name']
+            ],
+            'active' => (string) $data['active'],
+            'organization' => $data['name'],
+            'userName' =>$cleanUserName,
+            'password' => $data['password'],
+            'userType' => $data['user_type'],
+            'country' => 'BD',
+            'emails' => [
+                0 => $userEmailNo
+            ]
+        ];
     }
 
     /**
