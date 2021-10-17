@@ -17,7 +17,7 @@ class CreateYouthAddressesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('youth_id');
             $table->unsignedTinyInteger('address_type')
-                ->comment('1 => Present, 2 => Permanent')
+                ->comment('1 => Present, 2 => Permanent, 3=> Others')
                 ->default(1);
 
             $table->unsignedMediumInteger("loc_division_id");

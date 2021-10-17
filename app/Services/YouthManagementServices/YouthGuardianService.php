@@ -169,11 +169,6 @@ class YouthGuardianService
     public function validator(Request $request, int $id = null): Validator
     {
         $rules = [
-            'youth_id' => [
-                'required',
-                'exists:youths,id',
-                'int'
-            ],
             "mobile" => [
                 "required",
                 "max:11",

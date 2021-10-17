@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -168,11 +167,6 @@ class YouthReferenceService
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
         $rules = [
-            'youth_id' => [
-                'required',
-                'int',
-                'exists:youths,id'
-            ],
             'referrer_first_name' => [
                 'required',
                 'string',

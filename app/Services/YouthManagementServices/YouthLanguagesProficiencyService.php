@@ -106,6 +106,7 @@ class YouthLanguagesProficiencyService
             $join->on('languages_proficiencies.language_id', '=', 'languages.id')
                 ->whereNull('languages.deleted_at');
         });
+
         $languageProficiencyBuilder->where('languages_proficiencies.id', $id);
 
         /** @var $languageProficiency $language */
@@ -165,11 +166,6 @@ class YouthLanguagesProficiencyService
         $customMessage = [];
 
         $rules = [
-            'youth_id' => [
-                'required',
-                'int',
-                'exists:youths,id'
-            ],
             'language_id' => [
                 'required',
                 'int',
