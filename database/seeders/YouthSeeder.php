@@ -27,19 +27,19 @@ class YouthSeeder extends Seeder
                 YouthEducation::factory(), 'youthEducations'
             )
             ->has(
-                YouthJobExperience::factory()->count(1), 'jobExperiences'
+                YouthJobExperience::factory()->count(1), 'youthJobExperiences'
             )
             ->has(
-                YouthLanguagesProficiency::factory()->count(2), 'LanguagesProficiencies'
+                YouthLanguagesProficiency::factory()->count(2), 'youthLanguagesProficiencies'
             )
             ->has(
-                YouthPortfolio::factory()->count(5), 'portfolios'
+                YouthPortfolio::factory()->count(5), 'youthPortfolios'
             )
             ->has(
-                YouthCertification::factory()->count(2), 'certifications'
+                YouthCertification::factory()->count(2), 'youthCertifications'
             )
             ->has(
-                YouthReference::factory()->count(2), 'references'
+                YouthReference::factory()->count(2), 'youthReferences'
             )
             ->create();
     }

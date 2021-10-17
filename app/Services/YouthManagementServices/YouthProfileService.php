@@ -40,36 +40,43 @@ class YouthProfileService
         /** @var Builder $youthProfileBuilder */
         $youthProfileBuilder = Youth::select(
             [
-                'youths.id as id',
+                'youths.id',
+                'youths.idp_user_id',
+                'youths.username',
+                'youths.user_name_type',
                 'youths.first_name',
                 'youths.first_name_en',
                 'youths.last_name',
                 'youths.last_name_en',
+                'youths.loc_division_id',
+                'loc_divisions.title as division_title',
+                'loc_divisions.title_en as division_title_en',
+                'youths.loc_district_id',
+                'loc_districts.title as district_title',
+                'loc_districts.title_en as district_title_en',
+                'youths.loc_upazila_id',
+                'loc_upazilas.title as upazila_title',
+                'loc_upazilas.title_en as upazila_title_en',
                 'youths.gender',
+                'youths.religion',
+                'youths.marital_status',
+                'youths.nationality',
                 'youths.email',
                 'youths.mobile',
-                'youths.user_name_type',
+                'youths.identity_number_type',
+                'youths.identity_number',
                 'youths.date_of_birth',
+                'youths.freedom_fighter_status',
                 'youths.physical_disability_status',
-                'youths.loc_division_id',
-                'loc_divisions.title_en as loc_division_title_en',
-                'loc_divisions.title as loc_division_title',
-                'youths.loc_district_id',
-                'loc_districts.title_en as loc_district_title_en',
-                'loc_districts.title as loc_district_title',
-                'youths.loc_upazila_id',
-                'loc_upazilas.title_en as loc_upazila_title_en',
-                'loc_upazilas.title as loc_upazila_title',
-                'youths.village_or_area',
-                'youths.village_or_area_en',
-                'youths.house_n_road',
-                'youths.house_n_road_en',
-                'youths.zip_or_postal_code',
-                'youths.is_freelance_profile',
+                'youths.does_belong_to_ethnic_group',
                 'youths.bio',
                 'youths.bio_en',
                 'youths.photo',
-                'youths.cv_path'
+                'youths.cv_path',
+                'youths.signature_image_path',
+                'youths.row_status',
+                'youths.created_at',
+                'youths.updated_at',
             ]
         );
 
@@ -93,13 +100,14 @@ class YouthProfileService
 
         });
 
-        $youthProfileBuilder->with(["physicalDisabilities", "LanguagesProficiencies", "skills", "educations", "jobExperiences", "certifications", "portfolios"]);
+        $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences", "youthCertifications", "youthPortfolios"]);
         $youthProfileBuilder->where('youths.id', '=', Auth::id());
         return $youthProfileBuilder->first();
 
     }
 
     /**
+     * @param Youth $youth
      * @param array $data
      * @return Youth
      */
@@ -168,6 +176,7 @@ class YouthProfileService
 
     /**
      * @param Youth $youth
+     * @param array $data
      * @return bool
      */
     public function setFreelanceStatus(Youth $youth, array $data): bool
