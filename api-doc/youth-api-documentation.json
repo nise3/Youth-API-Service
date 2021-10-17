@@ -305,6 +305,7 @@
                                     "$ref": "#/components/schemas/youthResponse"
                                 },
                                 "example": {
+                                    "order": "ASC",
                                     "data": [
                                         {
                                             "id": 1,
@@ -315,33 +316,117 @@
                                             "last_name": "Liliane McClure V",
                                             "last_name_en": null,
                                             "gender": 2,
+                                            "religion": 1,
+                                            "upazila_title": null,
+                                            "upazila_title_en": null,
                                             "email": "enola.skiles@example.net",
                                             "mobile": "01754994292",
+                                            "nationality": 1,
+                                            "identity_number": null,
+                                            "identity_number_type": null,
+                                            "marital_status": null,
                                             "date_of_birth": "0000-00-00",
                                             "physical_disability_status": 0,
                                             "loc_division_id": 1,
+                                            "division_title": null,
+                                            "division_title_en": null,
                                             "loc_district_id": 1,
+                                            "district_title": null,
+                                            "district_title_en": null,
                                             "loc_upazila_id": null,
-                                            "village_or_area": null,
-                                            "village_or_area_en": null,
-                                            "house_n_road": null,
-                                            "house_n_road_en": null,
-                                            "zip_or_postal_code": null,
+                                            "does_belong_to_ethnic_group": 0,
+                                            "freedom_fighter_status": 0,
+                                            "photo": null,
+                                            "cv_path": null,
+                                            "row_status": 1,
+                                            "created_at": "2021-10-10T07:23:58.000000Z",
+                                            "updated_at": "2021-10-10T07:23:58.000000Z"
+                                        }
+                                    ],
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "started": "12 33 26",
+                                        "finished": "12 33 26"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "youth"
+                ]
+            }
+        },
+        "/youths/{youthId}": {
+            "get": {
+                "summary": "get one",
+                "description": "API endpoint to get the specified Youth profile.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "name": "youthId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get one",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthResponse"
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "username": "lorena28@example.org",
+                                            "user_name_type": 1,
+                                            "first_name": "Maximilian Parisian III",
+                                            "first_name_en": null,
+                                            "last_name": "Maximilian Parisian III",
+                                            "last_name_en": null,
+                                            "loc_division_id": null,
+                                            "division_title": null,
+                                            "division_title_en": null,
+                                            "loc_district_id": null,
+                                            "district_title": null,
+                                            "district_title_en": null,
+                                            "loc_upazila_id": null,
+                                            "upazila_title": null,
+                                            "upazila_title_en": null,
+                                            "gender": 1,
+                                            "religion": null,
+                                            "marital_status": null,
+                                            "nationality": 1,
+                                            "email": "lorena28@example.org",
+                                            "mobile": "01749761462",
+                                            "identity_number_type": null,
+                                            "identity_number": null,
+                                            "date_of_birth": "-000001-11-30T00:00:00.000000Z",
+                                            "freedom_fighter_status": 0,
+                                            "physical_disability_status": 0,
+                                            "does_belong_to_ethnic_group": 0,
                                             "bio": null,
                                             "bio_en": null,
                                             "photo": null,
                                             "cv_path": null,
-                                            "verification_code_sent_at": null,
-                                            "verification_code_verified_at": null,
+                                            "signature_image_path": null,
                                             "row_status": 1,
-                                            "created_at": "2021-10-10T07:23:58.000000Z",
-                                            "updated_at": "2021-10-10T07:23:58.000000Z",
+                                            "created_at": "2021-10-17T06:26:04.000000Z",
+                                            "updated_at": "2021-10-17T06:26:04.000000Z",
                                             "skills": [
                                                 {
                                                     "id": 21,
                                                     "title": "Payroll Clerk",
                                                     "title_en": "Payroll Clerk",
-                                                    "description": "Dolor quia cumque vero et quia vitae. Et amet qui eius aut. Iure officia ipsam fugiat.",
+                                                    "description": "Doloribus omnis ut ducimus perferendis. Tempore dignissimos atque at modi voluptatem aut. Voluptas quia veniam iusto deserunt aut corporis sunt. Alias temporibus quisquam quae est quia rem. Alias assumenda nobis velit sed unde molestiae. Et non nostrum hic minus eos omnis. Esse quae saepe suscipit ipsam perferendis. Praesentium qui incidunt aspernatur quasi ipsum. Eveniet nihil aperiam aut molestiae aut. Officia sit voluptatem nobis voluptate labore. Dicta voluptatibus dolorem sint et expedita. Nihil dolorem fuga ratione et dignissimos. Est rerum aut enim. Quis doloribus et neque dolores corrupti rem dolores recusandae. Similique est voluptatem et minus suscipit et iste qui. Dolor nulla rerum cum porro explicabo velit. Tenetur incidunt natus id esse. Ut sequi quod non molestiae ratione nihil. Placeat voluptatum porro velit quod accusantium velit placeat. Eos aut voluptatem id at quia cumque esse ratione. Voluptatibus omnis ut rerum ut fugiat. Adipisci qui et consectetur voluptas corrupti et autem. Odio deleniti quod mollitia placeat et. Alias voluptate ipsum eveniet fugit dolor temporibus voluptatem et. Praesentium ut non assumenda est ut. Fuga tempore officiis inventore mollitia. Maxime tenetur magnam et et dolores hic aliquid. Eveniet nostrum minima ducimus et molestiae ratione. Vero sit distinctio officiis magnam. Quaerat eius praesentium quasi et sint. Totam aut illum vel velit. Inventore accusamus at est incidunt nulla. Eius a esse molestiae modi. Eius cupiditate iusto fugiat nemo est cum. Ea ab neque nobis sit quia ullam eligendi. Sint molestias vel et suscipit qui pariatur autem. Est explicabo ut est voluptatem a corrupti quia. Qui voluptas voluptatibus amet aut repellendus omnis. Ipsa veritatis dolor consectetur qui dolore cum. Omnis reiciendis quos qui cumque. Ipsum minima fugit repudiandae maiores eum veritatis omnis. Aperiam dolorem ad eum eius vel. Repellat et voluptates nihil amet ad. Maxime vel ipsa laborum nobis ab doloribus. Et voluptas ducimus perspiciatis dicta. Est dolores cum et nostrum libero adipisci. Sed blanditiis eum quia beatae odit. Accusamus nam voluptatem molestias voluptatum dignissimos. Voluptatibus et sunt maiores iste inventore doloribus. Explicabo iure fugit quod corporis excepturi reprehenderit. Quis ut esse sed similique. Quis consequatur impedit fugiat neque. Voluptatem aut aut molestiae molestias qui fugiat. Et assumenda quae repudiandae sit natus. Quis vitae quaerat perspiciatis est odio sunt. Autem sed vero cumque consequatur cumque sit. Porro vel amet totam minus eveniet. Nobis quia cumque vero et quia vitae. Et amet qui eius aut. Iure officia ipsam fugiat.",
                                                     "description_en": null,
                                                     "row_status": 1,
                                                     "created_by": null,
@@ -354,148 +439,189 @@
                                                     "id": 22,
                                                     "title": "Sound Engineering Technician",
                                                     "title_en": "Sound Engineering Technician",
-                                                    "description": "Suolorum delectus nemo aliquam corrupti corporis.",
+                                                    "description": "Sunt quo enim autem possimus alias qui sit cum. Esse quo expedita ipsam temporibus veritatis laborum. Omnis hic necessitatibus alias ullam dolor nostrum. Voluptatem quis consequatur et modi cumque aut. Aut quasi consequatur expedita commodi quaerat pariatur id rerum. Corporis hic aperiam delectus quia. Dolore eaque aut atque non. Ipsum iusto qui at vitae et et alias. Inventore et neque sequi saepe non accusantium ipsa. Omnis quia error at dolor nisi. Culpa eius qui a harum. Distinctio nostrum est et velit. Sint sapiente voluptas consectetur. Rerum a eos et modi atque doloribus facilis. Reprehenderit illo maxime porro architecto. Minus odit nobis vero omnis nihil quae. Qui nihil a esse unde omnis corporis. Quibusdam modi nihil ducimus enim vero voluptatem. Et et nisi excepturi autem omnis ex. Corporis qui autem dolorem autem. Beatae sunt eos voluptatibus qui quam. Repudiandae quae dolores quaerat voluptas minus omnis. Aperiam qui mollitia eos. Labore et dolores maiores quidem sint. Eius autem unde architecto quaerat possimus molestiae. Voluptas officia officia neque corrupti voluptatem laboriosam. Ullam totam error eos dolor velit rerum voluptatum laborum. Fugiat repudiandae quae fugit. Qui officiis illum dolorem recusandae. Doloribus voluptas officia qui. Atque et neque temporibus itaque ea aut explicabo voluptatem. Et hic error sint nemo nam maxime quasi. Qui sequi magni eum omnis officiis doloremque exercitationem. Non aut sint amet consequatur. Vel omnis aut cumque optio porro. Iure quis dolores aut natus commodi non necessitatibus. Molestiae dolor et nostrum nostrum et. Sed id quia aliquid id tempora. Nisi aliquam et sed totam voluptas. Eveniet sit esse qui sint deserunt porro sit. Ipsa a quidem placeat aut expedita. Vel sint sit necessitatibus rerum. Eos sit vel iure. Molestiae error qui non quo beatae nihil numquam. Nostrum quaerat ut qui id occaecati. Quibusdam quam qui architecto natus quia omnis ipsa. Cupiditate sed vitae quam blanditiis nihil error doloremque. Voluptas voluptate accusamus ut dolores voluptate exercitationem nostrum. Quo hic ad error. Autem et mollitia voluptatum repudiandae corporis totam dolore. Dolor ut tempore est voluptas aut. Aut ea eligendi rem qui ipsa reprehenderit alias. Quis harum nobis alias voluptatem delectus est. Modi dolor omnis excepturi. Nihil rerum eaque excepturi repellat sint. Sint voluptatem voluptas nihil sint iusto. Iste eos aut a expedita quos vel. Modi qui minima soluta aut vitae. Exercitationem et beatae neque qui necessitatibus. Distinctio sed dolor sit ut in totam nihil. Dolorum delectus nemo aliquam corrupti corporis.",
                                                     "description_en": null,
                                                     "row_status": 1,
                                                     "created_by": null,
                                                     "updated_by": null,
                                                     "deleted_at": null,
                                                     "created_at": "2021-10-10T07:23:59.000000Z",
-                                                    "updated_at": "2021-10-10T07:23:59.000000Z"
+                                                    "updated_at": "2021-10-10T07:23:59.000000Z",
+                                                    "physical_disabilities": [],
+                                                    "youth_job_experiences": [
+                                                        {
+                                                            "id": 1,
+                                                            "youth_id": 1,
+                                                            "employment_type_id": 1,
+                                                            "company_name": "Grant LLC",
+                                                            "company_name_en": "Grant LLC",
+                                                            "position": "Personal Care Worker",
+                                                            "position_en": "Personal Care Worker",
+                                                            "location": "5050 Ernie Vista Suite 466",
+                                                            "location_en": "5050 Ernie Vista Suite 466",
+                                                            "job_responsibilities": "Warehouse",
+                                                            "job_responsibilities_en": "Warehouse",
+                                                            "start_date": "2020-09-30",
+                                                            "end_date": "1988-10-10",
+                                                            "is_currently_working": 0,
+                                                            "created_at": "2021-10-17T06:26:04.000000Z",
+                                                            "updated_at": "2021-10-17T06:26:04.000000Z",
+                                                            "deleted_at": null
+                                                        },
+                                                        {
+                                                            "id": 1,
+                                                            "youth_id": 1,
+                                                            "employment_type_id": 1,
+                                                            "company_name": "Grant LLC",
+                                                            "company_name_en": "Grant LLC",
+                                                            "position": "Personal Care Worker",
+                                                            "position_en": "Personal Care Worker",
+                                                            "location": "5050 Ernie Vista Suite 466",
+                                                            "location_en": "5050 Ernie Vista Suite 466",
+                                                            "job_responsibilities": "Warehouse",
+                                                            "job_responsibilities_en": "Warehouse",
+                                                            "start_date": "2020-09-30",
+                                                            "end_date": "1988-10-10",
+                                                            "is_currently_working": 0,
+                                                            "created_at": "2021-10-17T06:26:04.000000Z",
+                                                            "updated_at": "2021-10-17T06:26:04.000000Z",
+                                                            "deleted_at": null
+                                                        }
+                                                    ]
                                                 }
                                             ],
                                             "physical_disabilities": [],
-                                            "job_experiences": [
+                                            "youth_languages_proficiencies": [
                                                 {
                                                     "id": 1,
                                                     "youth_id": 1,
-                                                    "company_name": "Blanda, Carter and Collins",
-                                                    "company_name_en": "Blanda, Carter and Collins",
-                                                    "position": "Compacting Machine Operator",
-                                                    "position_en": "Compacting Machine Operator",
                                                     "employment_type_id": 1,
-                                                    "location": "6623 Hyatt Avenue",
-                                                    "location_en": "6623 Hyatt Avenue",
-                                                    "job_description": "Architecture Teacher",
-                                                    "job_description_en": "Architecture Teacher",
-                                                    "start_date": "2012-05-21",
-                                                    "end_date": "1974-11-21",
-                                                    "is_currently_work": 0,
-                                                    "row_status": 1,
-                                                    "created_at": "2021-10-10T07:23:59.000000Z",
-                                                    "updated_at": "2021-10-10T07:23:59.000000Z",
-                                                    "deleted_at": null
-                                                }
-                                            ],
-                                            "languages_proficiencies": [
-                                                {
-                                                    "id": 1,
-                                                    "youth_id": 1,
-                                                    "language_id": 3,
-                                                    "reading_proficiency_level": 1,
-                                                    "writing_proficiency_level": 1,
-                                                    "speaking_proficiency_level": 2,
-                                                    "understand_proficiency_level": 2,
-                                                    "row_status": 1,
-                                                    "created_at": "2021-10-10T07:23:59.000000Z",
-                                                    "updated_at": "2021-10-10T07:23:59.000000Z",
+                                                    "company_name": "Grant LLC",
+                                                    "company_name_en": "Grant LLC",
+                                                    "position": "Personal Care Worker",
+                                                    "position_en": "Personal Care Worker",
+                                                    "location": "5050 Ernie Vista Suite 466",
+                                                    "location_en": "5050 Ernie Vista Suite 466",
+                                                    "job_responsibilities": "Warehouse",
+                                                    "job_responsibilities_en": "Warehouse",
+                                                    "start_date": "2020-09-30T00:00:00.000000Z",
+                                                    "end_date": "1988-10-10T00:00:00.000000Z",
+                                                    "is_currently_working": 0,
+                                                    "created_at": "2021-10-17T06:26:04.000000Z",
+                                                    "updated_at": "2021-10-17T06:26:04.000000Z",
                                                     "deleted_at": null
                                                 },
                                                 {
                                                     "id": 2,
-                                                    "youth_id": 1,
-                                                    "language_id": 2,
-                                                    "reading_proficiency_level": 2,
-                                                    "writing_proficiency_level": 2,
-                                                    "speaking_proficiency_level": 2,
-                                                    "understand_proficiency_level": 1,
-                                                    "row_status": 1,
-                                                    "created_at": "2021-10-10T07:23:59.000000Z",
-                                                    "updated_at": "2021-10-10T07:23:59.000000Z",
+                                                    "youth_id": 22,
+                                                    "employment_type_id": 1,
+                                                    "company_name": "Grant LLC",
+                                                    "company_name_en": "Grant LLC",
+                                                    "position": "Personal Care Worker",
+                                                    "position_en": "Personal Care Worker",
+                                                    "location": "5050 Ernie Vista Suite 466",
+                                                    "location_en": "5050 Ernie Vista Suite 466",
+                                                    "job_responsibilities": "Warehouse",
+                                                    "job_responsibilities_en": "Warehouse",
+                                                    "start_date": "2020-09-30T00:00:00.000000Z",
+                                                    "end_date": "1988-10-10T00:00:00.000000Z",
+                                                    "is_currently_working": 0,
+                                                    "created_at": "2021-10-17T06:26:04.000000Z",
+                                                    "updated_at": "2021-10-17T06:26:04.000000Z",
                                                     "deleted_at": null
                                                 }
                                             ],
-                                            "certifications": [
+                                            "youth_certifications": [
                                                 {
                                                     "id": 1,
                                                     "youth_id": 1,
-                                                    "certification_name": "Delpha Corwin",
-                                                    "certification_name_en": "Delpha Corwin",
-                                                    "institute_name": "Prof. Darian Bode II",
-                                                    "institute_name_en": "Prof. Darian Bode II",
-                                                    "location": "6155 Yundt Wall",
-                                                    "location_en": "841 Amparo Haven",
-                                                    "start_date": "2013-04-19",
-                                                    "end_date": "2013-04-20",
-                                                    "certificate_file_path": "Delpha Corwin",
-                                                    "row_status": 1,
-                                                    "created_at": "2021-10-10T07:23:59.000000Z",
-                                                    "updated_at": "2021-10-10T07:23:59.000000Z",
+                                                    "certification_name": "Dr. Donny Hegmann",
+                                                    "certification_name_en": "Dr. Donny Hegmann",
+                                                    "institute_name": "Mrs. Maia Stehr PhD",
+                                                    "institute_name_en": "Mrs. Maia Stehr PhD",
+                                                    "location": "3135 Alvis Street Suite 782",
+                                                    "location_en": "34241 Leffler Cliff Suite 685",
+                                                    "start_date": "2020-02-13T00:00:00.000000Z",
+                                                    "end_date": "2020-02-14T00:00:00.000000Z",
+                                                    "certificate_file_path": "Dr. Donny Hegmann",
+                                                    "created_at": "2021-10-17T06:26:04.000000Z",
+                                                    "updated_at": "2021-10-17T06:26:04.000000Z",
                                                     "deleted_at": null
                                                 },
                                                 {
-                                                    "id": 2,
-                                                    "youth_id": 1,
-                                                    "certification_name": "Jayda Homenick",
-                                                    "certification_name_en": "Jayda Homenick",
-                                                    "institute_name": "Makenna Kovacek",
-                                                    "institute_name_en": "Makenna Kovacek",
-                                                    "location": "8161 Kub Unions",
-                                                    "location_en": "225 Kaylin Expressway Suite 497",
-                                                    "start_date": "2005-12-15",
-                                                    "end_date": "2005-12-16",
-                                                    "certificate_file_path": "Jayda Homenick",
-                                                    "row_status": 1,
-                                                    "created_at": "2021-10-10T07:23:59.000000Z",
-                                                    "updated_at": "2021-10-10T07:23:59.000000Z",
+                                                    "id": 33,
+                                                    "youth_id": 55,
+                                                    "certification_name": "Dr. Donny Hegmann",
+                                                    "certification_name_en": "Dr. Donny Hegmann",
+                                                    "institute_name": "Mrs. Maia Stehr PhD",
+                                                    "institute_name_en": "Mrs. Maia Stehr PhD",
+                                                    "location": "3135 Alvis Street Suite 782",
+                                                    "location_en": "34241 Leffler Cliff Suite 685",
+                                                    "start_date": "2020-02-13T00:00:00.000000Z",
+                                                    "end_date": "2020-02-14T00:00:00.000000Z",
+                                                    "certificate_file_path": "Dr. Donny Hegmann",
+                                                    "created_at": "2021-10-17T06:26:04.000000Z",
+                                                    "updated_at": "2021-10-17T06:26:04.000000Z",
                                                     "deleted_at": null
                                                 }
                                             ],
-                                            "educations": [
+                                            "youth_educations": [
                                                 {
                                                     "id": 1,
                                                     "youth_id": 1,
-                                                    "institute_name": "D'Amore-Hickle",
-                                                    "institute_name_en": "D'Amore-Hickle",
-                                                    "examination_id": 1,
-                                                    "board_id": 2,
-                                                    "edu_group_id": 3,
-                                                    "major_or_subject_id": null,
-                                                    "roll_number": "620562875479",
-                                                    "registration_number": "263591251176",
-                                                    "result_type": 2,
-                                                    "division_type_result": null,
-                                                    "cgpa_gpa_max_value": 5,
-                                                    "received_cgpa_gpa": 3.51,
-                                                    "passing_year": 1996,
-                                                    "row_status": 1,
-                                                    "created_at": "2021-10-10T07:23:59.000000Z",
-                                                    "updated_at": "2021-10-10T07:23:59.000000Z",
+                                                    "education_level_id": 0,
+                                                    "exam_degree_id": null,
+                                                    "exam_degree_name": null,
+                                                    "exam_degree_name_en": null,
+                                                    "major_or_concentration": null,
+                                                    "major_or_concentration_en": null,
+                                                    "edu_group_id": null,
+                                                    "edu_board_id": null,
+                                                    "institute_name": "",
+                                                    "institute_name_en": null,
+                                                    "is_foreign_institute": 0,
+                                                    "foreign_institute_country_id": null,
+                                                    "result": null,
+                                                    "marks_in_percentage": null,
+                                                    "cgpa_scale": null,
+                                                    "cgpa": null,
+                                                    "year_of_passing": 0,
+                                                    "duration": null,
+                                                    "achievements": null,
+                                                    "achievements_en": null,
+                                                    "created_at": "2021-10-17T06:26:04.000000Z",
+                                                    "updated_at": "2021-10-17T06:26:04.000000Z",
                                                     "deleted_at": null
                                                 },
                                                 {
-                                                    "id": 2,
-                                                    "youth_id": 1,
-                                                    "institute_name": "Waelchi, Kovacek and Graham",
-                                                    "institute_name_en": "Waelchi, Kovacek and Graham",
-                                                    "examination_id": 1,
-                                                    "board_id": 2,
-                                                    "edu_group_id": 3,
-                                                    "major_or_subject_id": null,
-                                                    "roll_number": "099409455641",
-                                                    "registration_number": "526647233800",
-                                                    "result_type": 2,
-                                                    "division_type_result": null,
-                                                    "cgpa_gpa_max_value": 5,
-                                                    "received_cgpa_gpa": 4.67,
-                                                    "passing_year": 1987,
-                                                    "row_status": 1,
-                                                    "created_at": "2021-10-10T07:23:59.000000Z",
-                                                    "updated_at": "2021-10-10T07:23:59.000000Z",
+                                                    "id": 22,
+                                                    "youth_id": 5,
+                                                    "education_level_id": 0,
+                                                    "exam_degree_id": null,
+                                                    "exam_degree_name": null,
+                                                    "exam_degree_name_en": null,
+                                                    "major_or_concentration": null,
+                                                    "major_or_concentration_en": null,
+                                                    "edu_group_id": null,
+                                                    "edu_board_id": null,
+                                                    "institute_name": "",
+                                                    "institute_name_en": null,
+                                                    "is_foreign_institute": 0,
+                                                    "foreign_institute_country_id": null,
+                                                    "result": null,
+                                                    "marks_in_percentage": null,
+                                                    "cgpa_scale": null,
+                                                    "cgpa": null,
+                                                    "year_of_passing": 0,
+                                                    "duration": null,
+                                                    "achievements": null,
+                                                    "achievements_en": null,
+                                                    "created_at": "2021-10-17T06:26:04.000000Z",
+                                                    "updated_at": "2021-10-17T06:26:04.000000Z",
                                                     "deleted_at": null
                                                 }
                                             ],
-                                            "portfolios": [
+                                            "youth_portfolios": [
                                                 {
                                                     "id": 1,
                                                     "youth_id": 1,
@@ -553,8 +679,8 @@
                                                     "youth_id": 1,
                                                     "title": "Occupational Health Safety Technician",
                                                     "title_en": "Occupational Health Safety Technician",
-                                                    "description": "Aspernatur eligendi hic velqunt dqecati sed reprehenderit sint et ratione est dicta deleniti iusto cum.",
-                                                    "description_en": "Aspernatur eligendi hic vel sit qui conseqvel deserunt occaecati sed reprehenderit sint et ratione est dicta deleniti iusto cum.",
+                                                    "description": "Aspernatur eligendi hic vel sit qui consequuntur quae qui sint ut libero ad qui velit amet eum unde ut velit commodi cupiditate quisquam voluptatem consequatur natus sequi saepe sed inventore at ut a in voluptatem numquam qui nulla aliquid voluptates expedita eius nesciunt deserunt recusandae porro rerum accusamus aut in earum sed dicta exercitationem qui iure omnis totam qui itaque vel eos blanditiis corporis qui ut quod et consequatur et corrupti dolorem ut sed vel deserunt occaecati sed reprehenderit sint et ratione est dicta deleniti iusto cum.",
+                                                    "description_en": "Aspernatur eligendi hic vel sit qui consequuntur quae qui sint ut libero ad qui velit amet eum unde ut velit commodi cupiditate quisquam voluptatem consequatur natus sequi saepe sed inventore at ut a in voluptatem numquam qui nulla aliquid voluptates expedita eius nesciunt deserunt recusandae porro rerum accusamus aut in earum sed dicta exercitationem qui iure omnis totam qui itaque vel eos blanditiis corporis qui ut quod et consequatur et corrupti dolorem ut sed vel deserunt occaecati sed reprehenderit sint et ratione est dicta deleniti iusto cum.",
                                                     "file_path": "C:\\Users\\HP\\AppData\\Local\\Temp\\fakC111.tmp",
                                                     "row_status": 1,
                                                     "created_at": "2021-10-10T07:23:59.000000Z",
@@ -562,7 +688,7 @@
                                                     "deleted_at": null
                                                 }
                                             ],
-                                            "references": [
+                                            "youth_references": [
                                                 {
                                                     "id": 1,
                                                     "youth_id": 1,
@@ -610,354 +736,6 @@
                                             ]
                                         }
                                     ],
-                                    "_response_status": {
-                                        "success": true,
-                                        "code": 200,
-                                        "started": "12 33 26",
-                                        "finished": "12 33 26"
-                                    },
-                                    "_links": {
-                                        "paginate": []
-                                    },
-                                    "_page": [],
-                                    "_order": "ASC"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "youth"
-                ]
-            }
-        },
-        "/youths/{youthId}": {
-            "get": {
-                "summary": "get one",
-                "description": "API endpoint to get the specified Youth profile.A successful request response will show 200 HTTP status code",
-                "parameters": [
-                    {
-                        "name": "youthId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "get one",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/youthResponse"
-                                },
-                                "example": {
-                                    "data": {
-                                        "id": 1,
-                                        "username": "enola.skiles@example.net",
-                                        "user_name_type": 1,
-                                        "first_name": "Liliane McClure V",
-                                        "first_name_en": null,
-                                        "last_name": "Liliane McClure V",
-                                        "last_name_en": null,
-                                        "gender": 2,
-                                        "email": "enola.skiles@example.net",
-                                        "mobile": "01754994292",
-                                        "date_of_birth": "0000-00-00",
-                                        "physical_disability_status": 0,
-                                        "loc_division_id": 1,
-                                        "loc_district_id": 1,
-                                        "loc_upazila_id": null,
-                                        "village_or_area": null,
-                                        "village_or_area_en": null,
-                                        "house_n_road": null,
-                                        "house_n_road_en": null,
-                                        "zip_or_postal_code": null,
-                                        "bio": null,
-                                        "bio_en": null,
-                                        "photo": null,
-                                        "cv_path": null,
-                                        "verification_code_sent_at": null,
-                                        "verification_code_verified_at": null,
-                                        "row_status": 1,
-                                        "created_at": "2021-10-10T07:23:58.000000Z",
-                                        "updated_at": "2021-10-10T07:23:58.000000Z",
-                                        "skills": [
-                                            {
-                                                "id": 21,
-                                                "title": "Payroll Clerk",
-                                                "title_en": "Payroll Clerk",
-                                                "description": "Doloribus omnis ut ducimus perferendis. Tempore dignissimos atque at modi voluptatem aut. Voluptas quia veniam iusto deserunt aut corporis sunt. Alias temporibus quisquam quae est quia rem. Alias assumenda nobis velit sed unde molestiae. Et non nostrum hic minus eos omnis. Esse quae saepe suscipit ipsam perferendis. Praesentium qui incidunt aspernatur quasi ipsum. Eveniet nihil aperiam aut molestiae aut. Officia sit voluptatem nobis voluptate labore. Dicta voluptatibus dolorem sint et expedita. Nihil dolorem fuga ratione et dignissimos. Est rerum aut enim. Quis doloribus et neque dolores corrupti rem dolores recusandae. Similique est voluptatem et minus suscipit et iste qui. Dolor nulla rerum cum porro explicabo velit. Tenetur incidunt natus id esse. Ut sequi quod non molestiae ratione nihil. Placeat voluptatum porro velit quod accusantium velit placeat. Eos aut voluptatem id at quia cumque esse ratione. Voluptatibus omnis ut rerum ut fugiat. Adipisci qui et consectetur voluptas corrupti et autem. Odio deleniti quod mollitia placeat et. Alias voluptate ipsum eveniet fugit dolor temporibus voluptatem et. Praesentium ut non assumenda est ut. Fuga tempore officiis inventore mollitia. Maxime tenetur magnam et et dolores hic aliquid. Eveniet nostrum minima ducimus et molestiae ratione. Vero sit distinctio officiis magnam. Quaerat eius praesentium quasi et sint. Totam aut illum vel velit. Inventore accusamus at est incidunt nulla. Eius a esse molestiae modi. Eius cupiditate iusto fugiat nemo est cum. Ea ab neque nobis sit quia ullam eligendi. Sint molestias vel et suscipit qui pariatur autem. Est explicabo ut est voluptatem a corrupti quia. Qui voluptas voluptatibus amet aut repellendus omnis. Ipsa veritatis dolor consectetur qui dolore cum. Omnis reiciendis quos qui cumque. Ipsum minima fugit repudiandae maiores eum veritatis omnis. Aperiam dolorem ad eum eius vel. Repellat et voluptates nihil amet ad. Maxime vel ipsa laborum nobis ab doloribus. Et voluptas ducimus perspiciatis dicta. Est dolores cum et nostrum libero adipisci. Sed blanditiis eum quia beatae odit. Accusamus nam voluptatem molestias voluptatum dignissimos. Voluptatibus et sunt maiores iste inventore doloribus. Explicabo iure fugit quod corporis excepturi reprehenderit. Quis ut esse sed similique. Quis consequatur impedit fugiat neque. Voluptatem aut aut molestiae molestias qui fugiat. Et assumenda quae repudiandae sit natus. Quis vitae quaerat perspiciatis est odio sunt. Autem sed vero cumque consequatur cumque sit. Porro vel amet totam minus eveniet. Nobis quia cumque vero et quia vitae. Et amet qui eius aut. Iure officia ipsam fugiat.",
-                                                "description_en": null,
-                                                "row_status": 1,
-                                                "created_by": null,
-                                                "updated_by": null,
-                                                "deleted_at": null,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z"
-                                            },
-                                            {
-                                                "id": 22,
-                                                "title": "Sound Engineering Technician",
-                                                "title_en": "Sound Engineering Technician",
-                                                "description": "Sunt quo enim autem possimus alias qui sit cum. Esse quo expedita ipsam temporibus veritatis laborum. Omnis hic necessitatibus alias ullam dolor nostrum. Voluptatem quis consequatur et modi cumque aut. Aut quasi consequatur expedita commodi quaerat pariatur id rerum. Corporis hic aperiam delectus quia. Dolore eaque aut atque non. Ipsum iusto qui at vitae et et alias. Inventore et neque sequi saepe non accusantium ipsa. Omnis quia error at dolor nisi. Culpa eius qui a harum. Distinctio nostrum est et velit. Sint sapiente voluptas consectetur. Rerum a eos et modi atque doloribus facilis. Reprehenderit illo maxime porro architecto. Minus odit nobis vero omnis nihil quae. Qui nihil a esse unde omnis corporis. Quibusdam modi nihil ducimus enim vero voluptatem. Et et nisi excepturi autem omnis ex. Corporis qui autem dolorem autem. Beatae sunt eos voluptatibus qui quam. Repudiandae quae dolores quaerat voluptas minus omnis. Aperiam qui mollitia eos. Labore et dolores maiores quidem sint. Eius autem unde architecto quaerat possimus molestiae. Voluptas officia officia neque corrupti voluptatem laboriosam. Ullam totam error eos dolor velit rerum voluptatum laborum. Fugiat repudiandae quae fugit. Qui officiis illum dolorem recusandae. Doloribus voluptas officia qui. Atque et neque temporibus itaque ea aut explicabo voluptatem. Et hic error sint nemo nam maxime quasi. Qui sequi magni eum omnis officiis doloremque exercitationem. Non aut sint amet consequatur. Vel omnis aut cumque optio porro. Iure quis dolores aut natus commodi non necessitatibus. Molestiae dolor et nostrum nostrum et. Sed id quia aliquid id tempora. Nisi aliquam et sed totam voluptas. Eveniet sit esse qui sint deserunt porro sit. Ipsa a quidem placeat aut expedita. Vel sint sit necessitatibus rerum. Eos sit vel iure. Molestiae error qui non quo beatae nihil numquam. Nostrum quaerat ut qui id occaecati. Quibusdam quam qui architecto natus quia omnis ipsa. Cupiditate sed vitae quam blanditiis nihil error doloremque. Voluptas voluptate accusamus ut dolores voluptate exercitationem nostrum. Quo hic ad error. Autem et mollitia voluptatum repudiandae corporis totam dolore. Dolor ut tempore est voluptas aut. Aut ea eligendi rem qui ipsa reprehenderit alias. Quis harum nobis alias voluptatem delectus est. Modi dolor omnis excepturi. Nihil rerum eaque excepturi repellat sint. Sint voluptatem voluptas nihil sint iusto. Iste eos aut a expedita quos vel. Modi qui minima soluta aut vitae. Exercitationem et beatae neque qui necessitatibus. Distinctio sed dolor sit ut in totam nihil. Dolorum delectus nemo aliquam corrupti corporis.",
-                                                "description_en": null,
-                                                "row_status": 1,
-                                                "created_by": null,
-                                                "updated_by": null,
-                                                "deleted_at": null,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z"
-                                            }
-                                        ],
-                                        "physical_disabilities": [],
-                                        "job_experiences": [
-                                            {
-                                                "id": 1,
-                                                "youth_id": 1,
-                                                "company_name": "Blanda, Carter and Collins",
-                                                "company_name_en": "Blanda, Carter and Collins",
-                                                "position": "Compacting Machine Operator",
-                                                "position_en": "Compacting Machine Operator",
-                                                "employment_type_id": 1,
-                                                "location": "6623 Hyatt Avenue",
-                                                "location_en": "6623 Hyatt Avenue",
-                                                "job_description": "Architecture Teacher",
-                                                "job_description_en": "Architecture Teacher",
-                                                "start_date": "2012-05-21",
-                                                "end_date": "1974-11-21",
-                                                "is_currently_work": 0,
-                                                "row_status": 1,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z",
-                                                "deleted_at": null
-                                            }
-                                        ],
-                                        "languages_proficiencies": [
-                                            {
-                                                "id": 1,
-                                                "youth_id": 1,
-                                                "language_id": 3,
-                                                "reading_proficiency_level": 1,
-                                                "writing_proficiency_level": 1,
-                                                "speaking_proficiency_level": 2,
-                                                "understand_proficiency_level": 2,
-                                                "row_status": 1,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z",
-                                                "deleted_at": null
-                                            },
-                                            {
-                                                "id": 2,
-                                                "youth_id": 1,
-                                                "language_id": 2,
-                                                "reading_proficiency_level": 2,
-                                                "writing_proficiency_level": 2,
-                                                "speaking_proficiency_level": 2,
-                                                "understand_proficiency_level": 1,
-                                                "row_status": 1,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z",
-                                                "deleted_at": null
-                                            }
-                                        ],
-                                        "certifications": [
-                                            {
-                                                "id": 1,
-                                                "youth_id": 1,
-                                                "certification_name": "Delpha Corwin",
-                                                "certification_name_en": "Delpha Corwin",
-                                                "institute_name": "Prof. Darian Bode II",
-                                                "institute_name_en": "Prof. Darian Bode II",
-                                                "location": "6155 Yundt Wall",
-                                                "location_en": "841 Amparo Haven",
-                                                "start_date": "2013-04-19",
-                                                "end_date": "2013-04-20",
-                                                "certificate_file_path": "Delpha Corwin",
-                                                "row_status": 1,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z",
-                                                "deleted_at": null
-                                            },
-                                            {
-                                                "id": 2,
-                                                "youth_id": 1,
-                                                "certification_name": "Jayda Homenick",
-                                                "certification_name_en": "Jayda Homenick",
-                                                "institute_name": "Makenna Kovacek",
-                                                "institute_name_en": "Makenna Kovacek",
-                                                "location": "8161 Kub Unions",
-                                                "location_en": "225 Kaylin Expressway Suite 497",
-                                                "start_date": "2005-12-15",
-                                                "end_date": "2005-12-16",
-                                                "certificate_file_path": "Jayda Homenick",
-                                                "row_status": 1,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z",
-                                                "deleted_at": null
-                                            }
-                                        ],
-                                        "educations": [
-                                            {
-                                                "id": 1,
-                                                "youth_id": 1,
-                                                "institute_name": "D'Amore-Hickle",
-                                                "institute_name_en": "D'Amore-Hickle",
-                                                "examination_id": 1,
-                                                "board_id": 2,
-                                                "edu_group_id": 3,
-                                                "major_or_subject_id": null,
-                                                "roll_number": "620562875479",
-                                                "registration_number": "263591251176",
-                                                "result_type": 2,
-                                                "division_type_result": null,
-                                                "cgpa_gpa_max_value": 5,
-                                                "received_cgpa_gpa": 3.51,
-                                                "passing_year": 1996,
-                                                "row_status": 1,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z",
-                                                "deleted_at": null
-                                            },
-                                            {
-                                                "id": 2,
-                                                "youth_id": 1,
-                                                "institute_name": "Waelchi, Kovacek and Graham",
-                                                "institute_name_en": "Waelchi, Kovacek and Graham",
-                                                "examination_id": 1,
-                                                "board_id": 2,
-                                                "edu_group_id": 3,
-                                                "major_or_subject_id": null,
-                                                "roll_number": "099409455641",
-                                                "registration_number": "526647233800",
-                                                "result_type": 2,
-                                                "division_type_result": null,
-                                                "cgpa_gpa_max_value": 5,
-                                                "received_cgpa_gpa": 4.67,
-                                                "passing_year": 1987,
-                                                "row_status": 1,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z",
-                                                "deleted_at": null
-                                            }
-                                        ],
-                                        "portfolios": [
-                                            {
-                                                "id": 1,
-                                                "youth_id": 1,
-                                                "title": "Industrial Production Manager",
-                                                "title_en": "Industrial Production Manager",
-                                                "description": "Ullam a impedit aut dolores omnis rem velit et enim modi voluptatem ipsum quia dignissimos asperiores voluptatem sit suscipit accusantium dicta consequatur nam porro neque culpa et soluta necessitatibus asperiores doloribus dolorem quae nihil deleniti odit deserunt quo non hic numquam voluptate aut occaecati eaque aliquid odit enim ut quidem accusantium autem ipsa deleniti est rerum doloremque cupiditate corporis sed harum in autem error autem est ex quo molestias occaecati ipsam sint pariatur eum nulla ad.",
-                                                "description_en": "Ullam a impedit aut dolores omnis rem velit et enim modi voluptatem ipsum quia dignissimos asperiores voluptatem sit suscipit accusantium dicta consequatur nam porro neque culpa et soluta necessitatibus asperiores doloribus dolorem quae nihil deleniti odit deserunt quo non hic numquam voluptate aut occaecati eaque aliquid odit enim ut quidem accusantium autem ipsa deleniti est rerum doloremque cupiditate corporis sed harum in autem error autem est ex quo molestias occaecati ipsam sint pariatur eum nulla ad.",
-                                                "file_path": "C:\\Users\\HP\\AppData\\Local\\Temp\\fakC0FD.tmp",
-                                                "row_status": 1,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z",
-                                                "deleted_at": null
-                                            },
-                                            {
-                                                "id": 2,
-                                                "youth_id": 1,
-                                                "title": "Rotary Drill Operator",
-                                                "title_en": "Rotary Drill Operator",
-                                                "description": "Aut iste nulla aut commodi neque assumenda provident eveniet quisquam expedita ut ipsa explicabo non nisi amet et velit id voluptatem voluptas qui sint tenetur et minus est veritatis sed voluptatum rerum qui dolor ipsam optio pariatur ex doloribus magnam optio nemo ut aliquid exercitationem rem pariatur ex eveniet numquam animi consequatur aut enim hic in voluptates reiciendis eligendi voluptatem omnis recusandae consequatur modi tempore distinctio esse tempore minima voluptatem ut omnis quaerat distinctio ipsa est porro aut aut rerum voluptatem iusto repellat et in aut cumque voluptatem maiores ut quibusdam velit minima suscipit ipsam ab autem et omnis eius accusantium accusamus et exercitationem magni fugit exercitationem veritatis nam eaque repellendus qui sint quaerat dignissimos eum repellendus porro cupiditate inventore sunt vero provident iusto distinctio optio expedita maxime assumenda sunt ut aut minima eius tenetur id atque et ut.",
-                                                "description_en": "Aut iste nulla aut commodi neque assumenda provident eveniet quisquam expedita ut ipsa explicabo non nisi amet et velit id voluptatem voluptas qui sint tenetur et minus est veritatis sed voluptatum rerum qui dolor ipsam optio pariatur ex doloribus magnam optio nemo ut aliquid exercitationem rem pariatur ex eveniet numquam animi consequatur aut enim hic in voluptates reiciendis eligendi voluptatem omnis recusandae consequatur modi tempore distinctio esse tempore minima voluptatem ut omnis quaerat distinctio ipsa est porro aut aut rerum voluptatem iusto repellat et in aut cumque voluptatem maiores ut quibusdam velit minima suscipit ipsam ab autem et omnis eius accusantium accusamus et exercitationem magni fugit exercitationem veritatis nam eaque repellendus qui sint quaerat dignissimos eum repellendus porro cupiditate inventore sunt vero provident iusto distinctio optio expedita maxime assumenda sunt ut aut minima eius tenetur id atque et ut.",
-                                                "file_path": "C:\\Users\\HP\\AppData\\Local\\Temp\\fakC10E.tmp",
-                                                "row_status": 1,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z",
-                                                "deleted_at": null
-                                            },
-                                            {
-                                                "id": 3,
-                                                "youth_id": 1,
-                                                "title": "Healthcare Practitioner",
-                                                "title_en": "Healthcare Practitioner",
-                                                "description": "Porro magnam illo provident et facere qui facilis porro voluptatem omnis et ad optio omnis doloribus autem possimus aut eos deserunt accusantium numquam rerum commodi cupiditate quo aut eos ut qui magnam illo et mollitia molestiae ullam voluptate accusamus quis dicta sapiente aliquid debitis ut tenetur ratione sint vero iure architecto itaque eum et deleniti voluptate totam omnis dolorem laudantium dolore enim culpa repellat ut enim iste velit ex quo temporibus numquam incidunt ea qui illo repellendus et quas praesentium voluptate illo et quis omnis nihil corrupti libero est et ut est et repellat deserunt accusamus aut officia placeat quae molestiae.",
-                                                "description_en": "Porro magnam illo provident et facere qui facilis porro voluptatem omnis et ad optio omnis doloribus autem possimus aut eos deserunt accusantium numquam rerum commodi cupiditate quo aut eos ut qui magnam illo et mollitia molestiae ullam voluptate accusamus quis dicta sapiente aliquid debitis ut tenetur ratione sint vero iure architecto itaque eum et deleniti voluptate totam omnis dolorem laudantium dolore enim culpa repellat ut enim iste velit ex quo temporibus numquam incidunt ea qui illo repellendus et quas praesentium voluptate illo et quis omnis nihil corrupti libero est et ut est et repellat deserunt accusamus aut officia placeat quae molestiae.",
-                                                "file_path": "C:\\Users\\HP\\AppData\\Local\\Temp\\fakC10F.tmp",
-                                                "row_status": 1,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z",
-                                                "deleted_at": null
-                                            },
-                                            {
-                                                "id": 4,
-                                                "youth_id": 1,
-                                                "title": "Public Relations Specialist",
-                                                "title_en": "Public Relations Specialist",
-                                                "description": "Laborum placeat numquam ea perferendis provident officia ex quis qui nihil odio iure dolor dolores iusto dolor dolores corporis ratione nisi omnis eligendi sapiente corrupti tenetur optio nihil velit dolorem laudantium sapiente quam reiciendis sit enim qui quam deleniti excepturi non deleniti saepe et excepturi repellendus quibusdam eius non debitis tempore minima explicabo quia quam quae velit atque fugiat hic consequuntur omnis aut perspiciatis sunt voluptatem ut quas eaque magni et distinctio quia est veritatis inventore maiores voluptatem aut esse illo quod est quam fugiat corporis est necessitatibus labore error animi aliquam numquam occaecati laboriosam.",
-                                                "description_en": "Laborum placeat numquam ea perferendis provident officia ex quis qui nihil odio iure dolor dolores iusto dolor dolores corporis ratione nisi omnis eligendi sapiente corrupti tenetur optio nihil velit dolorem laudantium sapiente quam reiciendis sit enim qui quam deleniti excepturi non deleniti saepe et excepturi repellendus quibusdam eius non debitis tempore minima explicabo quia quam quae velit atque fugiat hic consequuntur omnis aut perspiciatis sunt voluptatem ut quas eaque magni et distinctio quia est veritatis inventore maiores voluptatem aut esse illo quod est quam fugiat corporis est necessitatibus labore error animi aliquam numquam occaecati laboriosam.",
-                                                "file_path": "C:\\Users\\HP\\AppData\\Local\\Temp\\fakC110.tmp",
-                                                "row_status": 1,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z",
-                                                "deleted_at": null
-                                            },
-                                            {
-                                                "id": 5,
-                                                "youth_id": 1,
-                                                "title": "Occupational Health Safety Technician",
-                                                "title_en": "Occupational Health Safety Technician",
-                                                "description": "Aspernatur eligendi hic vel sit qui consequuntur quae qui sint ut libero ad qui velit amet eum unde ut velit commodi cupiditate quisquam voluptatem consequatur natus sequi saepe sed inventore at ut a in voluptatem numquam qui nulla aliquid voluptates expedita eius nesciunt deserunt recusandae porro rerum accusamus aut in earum sed dicta exercitationem qui iure omnis totam qui itaque vel eos blanditiis corporis qui ut quod et consequatur et corrupti dolorem ut sed vel deserunt occaecati sed reprehenderit sint et ratione est dicta deleniti iusto cum.",
-                                                "description_en": "Aspernatur eligendi hic vel sit qui consequuntur quae qui sint ut libero ad qui velit amet eum unde ut velit commodi cupiditate quisquam voluptatem consequatur natus sequi saepe sed inventore at ut a in voluptatem numquam qui nulla aliquid voluptates expedita eius nesciunt deserunt recusandae porro rerum accusamus aut in earum sed dicta exercitationem qui iure omnis totam qui itaque vel eos blanditiis corporis qui ut quod et consequatur et corrupti dolorem ut sed vel deserunt occaecati sed reprehenderit sint et ratione est dicta deleniti iusto cum.",
-                                                "file_path": "C:\\Users\\HP\\AppData\\Local\\Temp\\fakC111.tmp",
-                                                "row_status": 1,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z",
-                                                "deleted_at": null
-                                            }
-                                        ],
-                                        "references": [
-                                            {
-                                                "id": 1,
-                                                "youth_id": 1,
-                                                "referrer_first_name": "Dock",
-                                                "referrer_first_name_en": "Dock",
-                                                "referrer_last_name": "Smitham",
-                                                "referrer_last_name_en": "Smitham",
-                                                "referrer_organization_name": "Barrows-Thompson",
-                                                "referrer_organization_name_en": "Schroeder, Harvey and Crona",
-                                                "referrer_designation": "Interpreter OR Translator",
-                                                "referrer_designation_en": "Occupational Health Safety Specialist",
-                                                "referrer_address": "996 Aiyana Roads Apt. 843\nLegrosview, NV 71111",
-                                                "referrer_address_en": "996 Aiyana Roads Apt. 843\nLegrosview, NV 71111",
-                                                "referrer_email": "harber.chaz@example.com",
-                                                "referrer_mobile": "1-208-779-2230",
-                                                "referrer_relation": "et",
-                                                "referrer_relation_en": "qui",
-                                                "row_status": 1,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z",
-                                                "deleted_at": null
-                                            },
-                                            {
-                                                "id": 2,
-                                                "youth_id": 1,
-                                                "referrer_first_name": "Magdalena",
-                                                "referrer_first_name_en": "Magdalena",
-                                                "referrer_last_name": "Klocko",
-                                                "referrer_last_name_en": "Klocko",
-                                                "referrer_organization_name": "Smith Ltd",
-                                                "referrer_organization_name_en": "Leannon, Weimann and Tillman",
-                                                "referrer_designation": "Title Abstractor",
-                                                "referrer_designation_en": "Substance Abuse Social Worker",
-                                                "referrer_address": "1483 Carol Plaza Apt. 125\nEsmeraldaberg, NE 34640",
-                                                "referrer_address_en": "1483 Carol Plaza Apt. 125\nEsmeraldaberg, NE 34640",
-                                                "referrer_email": "taryn05@example.org",
-                                                "referrer_mobile": "(681) 665-6307",
-                                                "referrer_relation": "dolorum",
-                                                "referrer_relation_en": "quasi",
-                                                "row_status": 1,
-                                                "created_at": "2021-10-10T07:23:59.000000Z",
-                                                "updated_at": "2021-10-10T07:23:59.000000Z",
-                                                "deleted_at": null
-                                            }
-                                        ]
-                                    },
                                     "_response_status": {
                                         "success": true,
                                         "code": 200,
@@ -1045,26 +823,184 @@
                                 "example": {
                                     "data": {
                                         "id": 1,
-                                        "first_name": "Tellur",
-                                        "last_name": "Rahman",
+                                        "username": "beatrice97@example.org",
+                                        "user_name_type": 1,
+                                        "first_name": "Elta Mante",
+                                        "first_name_en": null,
+                                        "last_name": "Elta Mante",
+                                        "last_name_en": null,
+                                        "loc_division_id": null,
+                                        "division_title": null,
+                                        "division_title_en": null,
+                                        "loc_district_id": null,
+                                        "district_title": null,
+                                        "district_title_en": null,
+                                        "loc_upazila_id": null,
+                                        "upazila_title": null,
+                                        "upazila_title_en": null,
                                         "gender": 1,
-                                        "skills": null,
-                                        "email": "",
-                                        "mobile": "",
-                                        "date_of_birth": "0000-00-00",
+                                        "religion": null,
+                                        "marital_status": null,
+                                        "nationality": 1,
+                                        "email": "beatrice97@example.org",
+                                        "mobile": "01788510903",
+                                        "identity_number_type": null,
+                                        "identity_number": null,
+                                        "date_of_birth": "-000001-11-30T00:00:00.000000Z",
+                                        "freedom_fighter_status": 0,
                                         "physical_disability_status": 0,
-                                        "physical_disabilities": null,
-                                        "city": null,
-                                        "zip_or_postal_code": null,
+                                        "does_belong_to_ethnic_group": 0,
                                         "bio": null,
+                                        "bio_en": null,
                                         "photo": null,
                                         "cv_path": null,
-                                        "created_at": null,
-                                        "updated_at": null
+                                        "signature_image_path": null,
+                                        "row_status": 1,
+                                        "created_at": "2021-10-17T09:31:01.000000Z",
+                                        "updated_at": "2021-10-17T09:31:01.000000Z",
+                                        "physical_disabilities": [],
+                                        "youth_languages_proficiencies": [
+                                            {
+                                                "id": 1,
+                                                "youth_id": 1,
+                                                "language_id": 3,
+                                                "reading_proficiency_level": 1,
+                                                "writing_proficiency_level": 2,
+                                                "speaking_proficiency_level": 2,
+                                                "understand_proficiency_level": 2,
+                                                "created_at": "2021-10-17T09:31:01.000000Z",
+                                                "updated_at": "2021-10-17T09:31:01.000000Z",
+                                                "deleted_at": null
+                                            },
+                                            {
+                                                "id": 2,
+                                                "youth_id": 1,
+                                                "language_id": 2,
+                                                "reading_proficiency_level": 1,
+                                                "writing_proficiency_level": 2,
+                                                "speaking_proficiency_level": 1,
+                                                "understand_proficiency_level": 1,
+                                                "created_at": "2021-10-17T09:31:01.000000Z",
+                                                "updated_at": "2021-10-17T09:31:01.000000Z",
+                                                "deleted_at": null
+                                            }
+                                        ],
+                                        "skills": [],
+                                        "youth_educations": [
+                                            {
+                                                "id": 1,
+                                                "youth_id": 1,
+                                                "education_level_id": 0,
+                                                "exam_degree_id": null,
+                                                "exam_degree_name": null,
+                                                "exam_degree_name_en": null,
+                                                "major_or_concentration": null,
+                                                "major_or_concentration_en": null,
+                                                "edu_group_id": null,
+                                                "edu_board_id": null,
+                                                "institute_name": "",
+                                                "institute_name_en": null,
+                                                "is_foreign_institute": 0,
+                                                "foreign_institute_country_id": null,
+                                                "result": null,
+                                                "marks_in_percentage": null,
+                                                "cgpa_scale": null,
+                                                "cgpa": null,
+                                                "year_of_passing": 0,
+                                                "duration": null,
+                                                "achievements": null,
+                                                "achievements_en": null,
+                                                "created_at": "2021-10-17T09:31:01.000000Z",
+                                                "updated_at": "2021-10-17T09:31:01.000000Z",
+                                                "deleted_at": null
+                                            }
+                                        ],
+                                        "youth_job_experiences": [
+                                            {
+                                                "id": 1,
+                                                "youth_id": 1,
+                                                "employment_type_id": 1,
+                                                "company_name": "Turcotte-Nitzsche",
+                                                "company_name_en": "Turcotte-Nitzsche",
+                                                "position": "Psychologist",
+                                                "position_en": "Psychologist",
+                                                "location": "714 Mills Lodge",
+                                                "location_en": "714 Mills Lodge",
+                                                "job_responsibilities": "Library Technician",
+                                                "job_responsibilities_en": "Library Technician",
+                                                "start_date": "1979-07-28T00:00:00.000000Z",
+                                                "end_date": "1978-12-04T00:00:00.000000Z",
+                                                "is_currently_working": 0,
+                                                "created_at": "2021-10-17T09:31:01.000000Z",
+                                                "updated_at": "2021-10-17T09:31:01.000000Z",
+                                                "deleted_at": null
+                                            }
+                                        ],
+                                        "youth_certifications": [
+                                            {
+                                                "id": 1,
+                                                "youth_id": 1,
+                                                "certification_name": "Verlie Lueilwitz",
+                                                "certification_name_en": "Verlie Lueilwitz",
+                                                "institute_name": "Lacy Walsh",
+                                                "institute_name_en": "Lacy Walsh",
+                                                "location": "32629 Lueilwitz Green Suite 576",
+                                                "location_en": "68156 Maxine Spurs Suite 462",
+                                                "start_date": "1974-09-29T00:00:00.000000Z",
+                                                "end_date": "1974-09-29T00:00:00.000000Z",
+                                                "certificate_file_path": "Verlie Lueilwitz",
+                                                "created_at": "2021-10-17T09:31:01.000000Z",
+                                                "updated_at": "2021-10-17T09:31:01.000000Z",
+                                                "deleted_at": null
+                                            },
+                                            {
+                                                "id": 2,
+                                                "youth_id": 1,
+                                                "certification_name": "Oleta Schinner",
+                                                "certification_name_en": "Oleta Schinner",
+                                                "institute_name": "Esta Treutel",
+                                                "institute_name_en": "Esta Treutel",
+                                                "location": "995 Wellington Junction",
+                                                "location_en": "57560 Schuppe Forks Apt. 038",
+                                                "start_date": "1998-04-12T00:00:00.000000Z",
+                                                "end_date": "1998-04-13T00:00:00.000000Z",
+                                                "certificate_file_path": "Oleta Schinner",
+                                                "created_at": "2021-10-17T09:31:01.000000Z",
+                                                "updated_at": "2021-10-17T09:31:01.000000Z",
+                                                "deleted_at": null
+                                            }
+                                        ],
+                                        "youth_portfolios": [
+                                            {
+                                                "id": 1,
+                                                "youth_id": 1,
+                                                "title": "Social Science Research Assistant",
+                                                "title_en": "Social Science Research Assistant",
+                                                "description": "incidunt placeat ad pariatur odit aspernatur et eum autem.\n",
+                                                "description_en": "incidunt placeat ad pariatur odit aspernatur et eum autem.",
+                                                "file_path": "C:\\Users\\HP\\AppData\\Local\\Temp\\fak8408.tmp",
+                                                "created_at": "2021-10-17T09:31:01.000000Z",
+                                                "updated_at": "2021-10-17T09:31:01.000000Z",
+                                                "deleted_at": null
+                                            },
+                                            {
+                                                "id": 2,
+                                                "youth_id": 1,
+                                                "title": "Radiologic Technician",
+                                                "title_en": "Radiologic Technician",
+                                                "description": "modi reprehenderit sint ad et et at molestiae animi minima.",
+                                                "description_en": "modi reprehenderit sint ad et et at molestiae animi minima.",
+                                                "file_path": "C:\\Users\\HP\\AppData\\Local\\Temp\\fak8419.tmp",
+                                                "created_at": "2021-10-17T09:31:01.000000Z",
+                                                "updated_at": "2021-10-17T09:31:01.000000Z",
+                                                "deleted_at": null
+                                            }
+                                        ]
                                     },
-                                    "response_status": {
+                                    "_response_status": {
                                         "success": true,
                                         "code": 200,
+                                        "message": "Youth profile information",
                                         "query_time": 0
                                     }
                                 }
@@ -1575,7 +1511,8 @@
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "maximum": 500
+                            "maximum": 500,
+                            "example": "new name"
                         }
                     },
                     {
@@ -1592,7 +1529,8 @@
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "maximum": 500
+                            "maximum": 500,
+                            "example": "new lastname"
                         }
                     },
                     {
@@ -1617,11 +1555,97 @@
                         }
                     },
                     {
+                        "name": "religion",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    },
+                    {
+                        "name": "marital_status",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    },
+                    {
+                        "name": "nationality",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    },
+                    {
+                        "name": "identity_number",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "kkkk"
+                        }
+                    },
+                    {
+                        "name": "identity_number_type",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    },
+                    {
+                        "name": "freedom_fighter_status",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    },
+                    {
+                        "name": "physical_disability_status",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    },
+                    {
+                        "name": "does_belong_to_ethnic_group",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    },
+                    {
                         "name": "email",
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "gg@gmail.com"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": 1234
+                        }
+                    },
+                    {
+                        "name": "password_confirmation",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": 1234
                         }
                     },
                     {
@@ -1629,7 +1653,8 @@
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "01456988998"
                         }
                     },
                     {
@@ -1642,22 +1667,10 @@
                         }
                     },
                     {
-                        "name": "physical_disability_status",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "enum": [
-                                0,
-                                1
-                            ],
-                            "description": "0=>No,1=>Yes",
-                            "default": 0
-                        }
-                    },
-                    {
                         "name": "loc_division_id",
                         "in": "query",
                         "required": true,
+                        "example": 23,
                         "schema": {
                             "type": "integer"
                         }
@@ -1667,14 +1680,16 @@
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "example": 23
                         }
                     },
                     {
                         "name": "loc_upazila_id",
                         "in": "query",
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "example": 23
                         }
                     },
                     {
@@ -1682,7 +1697,8 @@
                         "in": "query",
                         "schema": {
                             "type": "string",
-                            "maximum": 500
+                            "maximum": 500,
+                            "example": "lll"
                         }
                     },
                     {
@@ -1690,7 +1706,8 @@
                         "in": "query",
                         "schema": {
                             "type": "string",
-                            "maximum": 500
+                            "maximum": 500,
+                            "example": "new area"
                         }
                     },
                     {
@@ -1698,7 +1715,8 @@
                         "in": "query",
                         "schema": {
                             "type": "string",
-                            "maximum": 500
+                            "maximum": 500,
+                            "example": "new road"
                         }
                     },
                     {
@@ -1706,7 +1724,8 @@
                         "in": "query",
                         "schema": {
                             "type": "string",
-                            "maximum": 500
+                            "maximum": 500,
+                            "example": "jj"
                         }
                     },
                     {
@@ -1714,7 +1733,8 @@
                         "in": "query",
                         "schema": {
                             "type": "string",
-                            "maximum": 10
+                            "maximum": 10,
+                            "example": "asasa"
                         }
                     },
                     {
@@ -1740,11 +1760,39 @@
                         }
                     },
                     {
+                        "name": "signature_image_path",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maximum": 600
+                        }
+                    },
+                    {
                         "name": "cv_path",
                         "in": "query",
                         "schema": {
                             "type": "string",
                             "maximum": 300
+                        }
+                    },
+                    {
+                        "name": "skills",
+                        "in": "query",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    {
+                        "name": "physical_disabilities",
+                        "in": "query",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
                         }
                     }
                 ],
@@ -1759,27 +1807,45 @@
                                 "example": {
                                     "data": {
                                         "id": 1,
-                                        "first_name": "Tellur",
-                                        "last_name": "Rahman",
-                                        "gender": 1,
-                                        "skills": null,
-                                        "email": "sdfg@dom.com",
-                                        "mobile": "01245577498",
-                                        "date_of_birth": "0000-00-00",
-                                        "physical_disability_status": 0,
-                                        "physical_disabilities": null,
-                                        "city": null,
-                                        "zip_or_postal_code": null,
+                                        "is_freelance_profile": 0,
+                                        "username": "beatrice97@example.org",
+                                        "user_name_type": 1,
+                                        "first_name": "new name",
+                                        "first_name_en": null,
+                                        "last_name": "new lastname",
+                                        "last_name_en": null,
+                                        "loc_division_id": "1",
+                                        "loc_district_id": "1",
+                                        "loc_upazila_id": "1",
+                                        "date_of_birth": "2021-10-05T00:00:00.000000Z",
+                                        "gender": "2",
+                                        "religion": "2",
+                                        "marital_status": "2",
+                                        "nationality": "2",
+                                        "email": "ggdfd@gmail.com",
+                                        "mobile": "01306655456",
+                                        "identity_number_type": "2",
+                                        "identity_number": "kkkk",
+                                        "freedom_fighter_status": "2",
+                                        "physical_disability_status": "1",
+                                        "does_belong_to_ethnic_group": "2",
                                         "bio": null,
+                                        "bio_en": null,
                                         "photo": null,
                                         "cv_path": null,
-                                        "created_at": "2021-08-19T08:55:03.000000Z",
-                                        "updated_at": "2021-08-19T08:55:03.000000Z"
+                                        "signature_image_path": null,
+                                        "verification_code_sent_at": null,
+                                        "verification_code_verified_at": "2021-10-17T10:18:24.000000Z",
+                                        "row_status": 1,
+                                        "created_at": "2021-10-17T09:31:01.000000Z",
+                                        "updated_at": "2021-10-17T11:25:55.000000Z",
+                                        "deleted_at": null
                                     },
-                                    "response_status": {
+                                    "_response_status": {
                                         "success": true,
                                         "code": 200,
-                                        "query_time": 0
+                                        "message": "Youth Profile Successfully updated",
+                                        "query_time": "1 second before"
                                     }
                                 }
                             }
@@ -1831,6 +1897,14 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/verifyYouthProfile"
+                                },
+                                "example": {
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "You have successfully verified.",
+                                        "query_time": "1 second before"
+                                    }
                                 }
                             }
                         }
@@ -1861,7 +1935,14 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/freelanceStatusUpdate"
+                                    "example": {
+                                        "_response_status": {
+                                            "success": true,
+                                            "code": 200,
+                                            "message": "Successfully set your profile as a freelance profile",
+                                            "query_time": "1 second before"
+                                        }
+                                    }
                                 }
                             }
                         }
