@@ -99,10 +99,10 @@ abstract class BaseModel extends Model
     ];
 
     /** Freedom fighter statuses */
-    public const NON_FREEDOM_FIGHTER = 0;
-    public const FREEDOM_FIGHTER = 1;
-    public const CHILD_OF_FREEDOM_FIGHTER = 2;
-    public const GRAND_CHILD_OF_FREEDOM_FIGHTER = 3;
+    public const NON_FREEDOM_FIGHTER = 1;
+    public const FREEDOM_FIGHTER = 2;
+    public const CHILD_OF_FREEDOM_FIGHTER = 3;
+    public const GRAND_CHILD_OF_FREEDOM_FIGHTER = 4;
     public const FREEDOM_FIGHTER_STATUSES = [
         self::NON_FREEDOM_FIGHTER,
         self::FREEDOM_FIGHTER,
