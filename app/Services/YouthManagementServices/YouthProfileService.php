@@ -438,6 +438,25 @@ class YouthProfileService
             "first_name_en" => "nullable|string|min:2|max:500",
             "last_name" => "required|string|min:2|max:500",
             "last_name_en" => "nullable|string|min:2|max:500",
+            "loc_division_id" => [
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
+                "exists:loc_divisions,id",
+                "int"
+            ],
+            "loc_district_id" => [
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
+                "exists:loc_districts,id",
+                "int"
+            ],
+            "loc_upazila_id" => [
+                "nullable",
+                "numeric",
+                "exists:loc_upazilas,id",
+            ],
             "date_of_birth" => [
                 Rule::requiredIf(function () use ($id) {
                     return $id == null;
@@ -571,25 +590,7 @@ class YouthProfileService
                 BaseModel::PASSWORD_MIN_LENGTH,
                 BaseModel::PASSWORD_MAX_LENGTH,
             ],
-            "loc_division_id" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
-                "exists:loc_divisions,id",
-                "int"
-            ],
-            "loc_district_id" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
-                "exists:loc_districts,id",
-                "int"
-            ],
-            "loc_upazila_id" => [
-                "nullable",
-                "numeric",
-                "exists:loc_upazilas,id",
-            ],
+
             "village_or_area" => [
                 "nullable",
                 "string"
@@ -609,7 +610,7 @@ class YouthProfileService
             "zip_or_postal_code" => [
                 "nullable",
                 "string"
-            ],
+            ]
         ];
         return \Illuminate\Support\Facades\Validator::make($data, $rules, $customMessage);
     }

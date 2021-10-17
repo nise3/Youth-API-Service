@@ -42,8 +42,8 @@ class YouthJobExperienceService
             'job_experiences.youth_id',
             'job_experiences.location',
             'job_experiences.location_en',
-            'job_experiences.job_description',
-            'job_experiences.job_description_en',
+            'job_experiences.job_responsibilities',
+            'job_experiences.job_responsibilities_en',
             'job_experiences.start_date',
             'job_experiences.end_date',
             'job_experiences.is_currently_work',
@@ -109,8 +109,8 @@ class YouthJobExperienceService
             'job_experiences.youth_id',
             'job_experiences.location',
             'job_experiences.location_en',
-            'job_experiences.job_description',
-            'job_experiences.job_description_en',
+            'job_experiences.job_responsibilities',
+            'job_experiences.job_responsibilities_en',
             'job_experiences.start_date',
             'job_experiences.end_date',
             'job_experiences.employment_type_id',
@@ -222,6 +222,11 @@ class YouthJobExperienceService
             ]
         ];
         $rules = [
+            'employment_type_id' => [
+                'required',
+                'int',
+                'min:1'
+            ],
             'company_name' => [
                 'required',
                 'string',
@@ -242,11 +247,6 @@ class YouthJobExperienceService
                 'string',
                 'max:150'
             ],
-            'employment_type_id' => [
-                'required',
-                'int',
-                'min:1'
-            ],
             'location' => [
                 'required',
                 'string',
@@ -257,18 +257,13 @@ class YouthJobExperienceService
                 'string',
                 'max:300'
             ],
-            'job_description' => [
+            'job_responsibilities' => [
                 'nullable',
                 'string',
             ],
-            'job_description_en' => [
+            'job_responsibilities_en' => [
                 'nullable',
                 'string',
-            ],
-            'youth_id' => [
-                'required',
-                'int',
-                'exists:youths,id'
             ],
             'start_date' => [
                 'date',
