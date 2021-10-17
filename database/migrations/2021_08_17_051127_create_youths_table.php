@@ -57,7 +57,7 @@ class CreateYouthsTable extends Migration
             $table->string('identity_number', 100)->nullable();
 
             $table->unsignedTinyInteger('freedom_fighter_status')
-                ->comment('0 => No, 1 => Yes, 3=> child of a freedom fighter, 4 => grand child of a freedom fighter')
+                ->comment('1 => No, 2 => Yes, 3=> child of a freedom fighter, 4 => grand child of a freedom fighter')
                 ->default(0);
 
             $table->unsignedTinyInteger('physical_disability_status')
@@ -80,7 +80,7 @@ class CreateYouthsTable extends Migration
                 ->comment('Email Or SMS verification code verified at');
 
             $table->unsignedTinyInteger("row_status")->default(0)
-                ->comment('o=>inactive, 1=>active, 2=>pending, 3=>rejected');
+                ->comment('0=>inactive, 1=>active, 2=>pending, 3=>rejected');
 
             $table->timestamps();
             $table->softDeletes();
