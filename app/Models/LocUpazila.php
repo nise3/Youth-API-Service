@@ -3,7 +3,9 @@
 namespace App\Models;
 
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 /**
@@ -21,7 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class LocUpazila extends BaseModel
 {
-
+    use SoftDeletes, HasFactory;
     protected $table = 'loc_upazilas';
     public $timestamps = false;
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SOFT_DELETE;

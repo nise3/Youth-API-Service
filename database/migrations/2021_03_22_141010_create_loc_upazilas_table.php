@@ -22,7 +22,7 @@ class CreateLocUpazilasTable extends Migration {
 			$table->string('title', 500);
 			$table->unsignedTinyInteger('is_sadar_upazila')->default(0);
 			$table->char('bbs_code', 6)->nullable();
-
+            $table->softDeletes();
         });
 	}
 
