@@ -195,6 +195,11 @@ class YouthAddressService
         $customMessage = [];
 
         $rules = [
+            'youth_id' => [
+                'required',
+                'exists:youths,id,deleted_at,NULL',
+                'int',
+            ],
             'address_type' => [
                 'required',
                 'int',

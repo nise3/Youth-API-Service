@@ -68,7 +68,7 @@ class YouthLanguagesProficiencyController extends Controller
      *
      * @param Request $request
      * @return Exception|JsonResponse|Throwable
-     * @throws ValidationException
+     * @throws ValidationException|Throwable
      */
     public function store(Request $request): JsonResponse
     {
