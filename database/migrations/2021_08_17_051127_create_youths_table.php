@@ -27,6 +27,11 @@ class CreateYouthsTable extends Migration
             $table->string('last_name', 300);
             $table->string('last_name_en', 150)->nullable();
 
+            $table->unsignedMediumInteger("loc_division_id")
+                ->nullable()->index('youth_division_id_inx');
+            $table->unsignedMediumInteger("loc_district_id")
+                ->nullable()->index('youth_district_id_inx');
+            
             $table->date('date_of_birth');
             $table->unsignedTinyInteger('gender')
                 ->comment('1=>male,2=>female,3=>others');

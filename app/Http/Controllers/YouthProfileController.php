@@ -113,6 +113,8 @@ class YouthProfileController extends Controller
                 $addressData['loc_upazila_id'] = isset($validated['loc_upazila_id']) ? $validated['loc_upazila_id'] : null;
                 $addressData['village_or_area'] = isset($validated['village_or_area']) ? $validated['village_or_area'] : null;
                 $addressData['village_or_area_en'] = isset($validated['village_or_area_en'])?$validated['village_or_area_en']: null;
+                $addressData['house_n_road'] = isset($validated['house_n_road'])?$validated['house_n_road']: null;
+                $addressData['house_n_road_en'] = isset($validated['house_n_road_en'])?$validated['house_n_road_en']: null;
                 $addressData['zip_or_postal_code'] = isset($validated['zip_or_postal_code'])?$validated['zip_or_postal_code']: null;
                 $address = $this->youthAddressService->store($addressData);
 
