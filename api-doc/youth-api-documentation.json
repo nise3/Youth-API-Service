@@ -1287,22 +1287,20 @@
                                     "data": [
                                         {
                                             "id": 1,
+                                            "company_name": "Gerhold PLC",
+                                            "company_name_en": "Gerhold PLC",
+                                            "position": "Health Technologist",
+                                            "position_en": "Health Technologist",
                                             "youth_id": 1,
-                                            "company_name": "Schmitt Group",
-                                            "company_name_en": "Schmitt Group",
-                                            "position": "HR Manager",
-                                            "position_en": "HR Manager",
-                                            "employment_type_id": 1,
-                                            "location": "720 Gina Ways",
-                                            "location_en": "8485 Gleason Place",
-                                            "job_responsibilities": "Pressing Machine Operator",
-                                            "job_responsibilities_en": "Wind Instrument Repairer",
-                                            "start_date": "1974-07-03",
-                                            "end_date": "1993-06-06",
+                                            "location": "51696 Amelie Drive Suite 001",
+                                            "location_en": "51696 Amelie Drive Suite 001",
+                                            "job_responsibilities": "Respiratory Therapist",
+                                            "job_responsibilities_en": "Respiratory Therapist",
+                                            "start_date": "1977-09-18T00:00:00.000000Z",
+                                            "end_date": "2011-09-24T00:00:00.000000Z",
                                             "is_currently_working": 0,
-                                            "row_status": 1,
-                                            "created_at": "2021-08-19T08:55:03.000000Z",
-                                            "updated_at": "2021-08-19T08:55:03.000000Z"
+                                            "created_at": "2021-10-17T06:23:35.000000Z",
+                                            "updated_at": "2021-10-17T06:23:35.000000Z"
                                         }
                                     ],
                                     "response_status": {
@@ -1341,23 +1339,22 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 2,
-                                        "youth_id": 5,
-                                        "company_name": "Kerluke-Maggio",
-                                        "company_name_en": "Kerluke-Maggio",
-                                        "position": "Psychiatric Aide",
-                                        "position_en": "Psychiatric Aide",
-                                        "employment_type_id": 3,
-                                        "location": "720 Gina Ways",
-                                        "location_en": "8485 Gleason Place",
-                                        "job_responsibilities": "Pressing Machine Operator",
-                                        "job_responsibilities_en": "Wind Instrument Repairer",
-                                        "start_date": "1974-07-03",
-                                        "end_date": "1993-06-06",
-                                        "is_currently_working": 0,
-                                        "row_status": 1,
-                                        "created_at": "2021-08-19T08:55:03.000000Z",
-                                        "updated_at": "2021-08-19T08:55:03.000000Z"
+                                        "youth_id": 1,
+                                        "employment_type_id": "2",
+                                        "company_name": "sdgvdfh",
+                                        "company_name_en": null,
+                                        "position": "sdgfdg",
+                                        "position_en": null,
+                                        "location": "asdfgh",
+                                        "location_en": null,
+                                        "job_responsibilities": null,
+                                        "job_responsibilities_en": null,
+                                        "start_date": "2021-10-04T00:00:00.000000Z",
+                                        "end_date": null,
+                                        "is_currently_working": "0",
+                                        "updated_at": "2021-10-17T12:45:45.000000Z",
+                                        "created_at": "2021-10-17T12:45:45.000000Z",
+                                        "id": 21
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -1394,23 +1391,22 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 3,
-                                        "youth_id": 18,
-                                        "company_name": "Durgan-Marks",
-                                        "company_name_en": "Durgan-Marks",
-                                        "position": "User Experience Manager",
-                                        "position_en": "User Experience Manager",
+                                        "id": 1,
+                                        "company_name": "Gerhold PLC",
+                                        "company_name_en": "Gerhold PLC",
+                                        "position": "Health Technologist",
+                                        "position_en": "Health Technologist",
+                                        "youth_id": 1,
+                                        "location": "51696 Amelie Drive Suite 001",
+                                        "location_en": "51696 Amelie Drive Suite 001",
+                                        "job_responsibilities": "Respiratory Therapist",
+                                        "job_responsibilities_en": "Respiratory Therapist",
+                                        "start_date": "1977-09-18T00:00:00.000000Z",
+                                        "end_date": "2011-09-24T00:00:00.000000Z",
                                         "employment_type_id": 1,
-                                        "location": "720 Gina Ways",
-                                        "location_en": "8485 Gleason Place",
-                                        "job_responsibilities": "Pressing Machine Operator",
-                                        "job_responsibilities_en": "Wind Instrument Repairer",
-                                        "start_date": "1974-07-03",
-                                        "end_date": "1993-06-06",
-                                        "is_currently_working": 1,
-                                        "row_status": 1,
-                                        "created_at": "2021-07-26T12:08:11.000000Z",
-                                        "updated_at": "2021-07-26T12:08:11.000000Z"
+                                        "is_currently_working": 0,
+                                        "created_at": "2021-10-17T06:23:35.000000Z",
+                                        "updated_at": "2021-10-17T06:23:35.000000Z"
                                     },
                                     "response_status": {
                                         "success": true,
@@ -1453,23 +1449,23 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 4,
-                                        "youth_id": 9,
-                                        "company_name": "Brekke-Abbott",
-                                        "company_name_en": "Brekke-Abbott",
-                                        "position": "Electronics Engineering Technician",
-                                        "position_en": "Electronics Engineering Technician",
-                                        "employment_type_id": 1,
-                                        "location": "720 Gina Ways",
-                                        "location_en": "8485 Gleason Place",
-                                        "job_responsibilities": "Pressing Machine Operator",
-                                        "job_responsibilities_en": "Wind Instrument Repairer",
-                                        "start_date": "1974-07-03",
-                                        "end_date": "1993-06-06",
-                                        "is_currently_working": 0,
-                                        "row_status": 1,
-                                        "created_at": "2021-07-26T12:08:11.000000Z",
-                                        "updated_at": "2021-07-26T12:08:11.000000Z"
+                                        "id": 1,
+                                        "youth_id": 1,
+                                        "employment_type_id": "1",
+                                        "company_name": "annnnn",
+                                        "company_name_en": null,
+                                        "position": "1",
+                                        "position_en": null,
+                                        "location": "dfgdfghfgh dfgb",
+                                        "location_en": null,
+                                        "job_responsibilities": null,
+                                        "job_responsibilities_en": null,
+                                        "start_date": "2021-10-04T00:00:00.000000Z",
+                                        "end_date": null,
+                                        "is_currently_working": "0",
+                                        "created_at": "2021-10-17T06:23:35.000000Z",
+                                        "updated_at": "2021-10-17T12:49:13.000000Z",
+                                        "deleted_at": null
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -3902,7 +3898,7 @@
                                 "end_date": {
                                     "type": "string"
                                 },
-                                "is_currently_work": {
+                                "is_currently_working": {
                                     "type": "integer"
                                 },
                                 "row_status": {
@@ -4645,13 +4641,6 @@
                 "type": "object",
                 "description": "Job Experience",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
-                    "youth_id": {
-                        "type": "integer"
-                    },
                     "company_name": {
                         "type": "string"
                     },
@@ -4708,29 +4697,9 @@
                         ],
                         "description": "1=>Yes,0=>No",
                         "default": 0
-                    },
-                    "row_status": {
-                        "type": "integer",
-                        "default": 1
-                    },
-                    "deleted_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
                     }
                 },
                 "required": [
-                    "youth_id",
                     "company_name",
                     "position",
                     "employment_type_id",

@@ -29,7 +29,6 @@ class YouthJobExperienceService
         $companyNameBn = $request['company_name_bn'] ?? "";
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
-        $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
 
         /** @var Builder $jobExperienceBuilder */
@@ -46,8 +45,7 @@ class YouthJobExperienceService
             'youth_job_experiences.job_responsibilities_en',
             'youth_job_experiences.start_date',
             'youth_job_experiences.end_date',
-            'youth_job_experiences.is_currently_work',
-            'youth_job_experiences.row_status',
+            'youth_job_experiences.is_currently_working',
             'youth_job_experiences.created_at',
             'youth_job_experiences.updated_at'
         ]);
@@ -58,9 +56,6 @@ class YouthJobExperienceService
 
         $jobExperienceBuilder->orderBy('youth_job_experiences.id', $order);
 
-        if (is_numeric($rowStatus)) {
-            $jobExperienceBuilder->where('youth_job_experiences.row_status', $rowStatus);
-        }
         if (!empty($companyNameEn)) {
             $jobExperienceBuilder->where('youth_job_experiences.company_name_en', 'like', '%' . $companyNameEn . '%');
         }
@@ -114,8 +109,7 @@ class YouthJobExperienceService
             'youth_job_experiences.start_date',
             'youth_job_experiences.end_date',
             'youth_job_experiences.employment_type_id',
-            'youth_job_experiences.is_currently_work',
-            'youth_job_experiences.row_status',
+            'youth_job_experiences.is_currently_working',
             'youth_job_experiences.created_at',
             'youth_job_experiences.updated_at'
         ]);
@@ -178,10 +172,6 @@ class YouthJobExperienceService
             'order.in' => [
                 'code' => 30000,
                 "message" => 'Order must be either ASC or DESC',
-            ],
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
             ]
         ];
 
@@ -201,11 +191,7 @@ class YouthJobExperienceService
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
-            ],
-            'row_status' => [
-                "numeric",
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
-            ],
+            ]
         ], $customMessage);
     }
 
@@ -280,8 +266,8 @@ class YouthJobExperienceService
                 'nullable',
                 'after:start_date'
             ],
-            'is_currently_work' => [
-                'numeric',
+            'is_currently_working' => [
+                'integer',
                 Rule::in([BaseModel::CURRENTLY_NOT_WORKING, BaseModel::CURRENTLY_WORKING])
             ]
         ];
