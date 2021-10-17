@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class YouthAddress extends BaseModel
 {
     use SoftDeletes, HasFactory;
+
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
 
     /**

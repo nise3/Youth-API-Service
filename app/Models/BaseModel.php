@@ -162,33 +162,34 @@ abstract class BaseModel extends Model
     public const DEFAULT_PAGE_SIZE = 10;
 
     /** Education Level Status Code */
-    public const PSC_5_PASS="PSC_5_PASS";
-    public const JSC_JDC_8_PASS="JSC_JDC_8_PASS";
-    public const SECONDARY="SECONDARY";
-    public const HIGHER_SECONDARY="HIGHER_SECONDARY";
-    public const DIPLOMA="DIPLOMA";
-    public const BACHELOR="BACHELOR";
-    public const MASTERS="MASTERS";
-    public const PHD="PHD";
+    public const PSC_5_PASS = "PSC_5_PASS";
+    public const JSC_JDC_8_PASS = "JSC_JDC_8_PASS";
+    public const SECONDARY = "SECONDARY";
+    public const HIGHER_SECONDARY = "HIGHER_SECONDARY";
+    public const DIPLOMA = "DIPLOMA";
+    public const BACHELOR = "BACHELOR";
+    public const MASTERS = "MASTERS";
+    public const PHD = "PHD";
 
     /** Result Level Status Code */
-    public const FIRST_DIVISION="FIRST_DIVISION";
-    public const SECOND_DIVISION="SECOND_DIVISION";
-    public const THIRD_DIVISION="THIRD_DIVISION";
-    public const GRADE="GRADE";
-    public const APPEARED="APPEARED";
-    public const AWARDED="AWARDED";
-    public const ENROLLED="ENROLLED";
-    public const DO_NOT_MENTION="DO_NOT_MENTION";
-    public const PASS="PASS";
+    public const FIRST_DIVISION = "FIRST_DIVISION";
+    public const SECOND_DIVISION = "SECOND_DIVISION";
+    public const THIRD_DIVISION = "THIRD_DIVISION";
+    public const GRADE = "GRADE";
+    public const APPEARED = "APPEARED";
+    public const AWARDED = "AWARDED";
+    public const ENROLLED = "ENROLLED";
+    public const DO_NOT_MENTION = "DO_NOT_MENTION";
+    public const PASS = "PASS";
 
     public const ADDRESS_TYPE_PRESENT = 1;
     public const ADDRESS_TYPE_PERMANENT = 2;
+    public const ADDRESS_TYPE_OTHERS = 3;
 
-    public const  RELATIONSHIP_TYPE_FATHER= 1;
-    public const  RELATIONSHIP_TYPE_MOTHER= 2;
-    public const  RELATIONSHIP_TYPE_UNCLE= 3;
-    public const  RELATIONSHIP_TYPE_AUNT= 4;
-    public const  RELATIONSHIP_TYPE_OTHER= 5;
+    public const  RELATIONSHIP_TYPE_FATHER = 1;
+    public const  RELATIONSHIP_TYPE_MOTHER = 2;
+    public const  RELATIONSHIP_TYPE_UNCLE = 3;
+    public const  RELATIONSHIP_TYPE_AUNT = 4;
+    public const  RELATIONSHIP_TYPE_OTHER = 5;
 
 }
