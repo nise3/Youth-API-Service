@@ -167,6 +167,11 @@ class YouthReferenceService
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
         $rules = [
+            'youth_id' => [
+                'required',
+                'exists:youths,id,deleted_at,NULL',
+                'int',
+            ],
             'referrer_first_name' => [
                 'required',
                 'string',

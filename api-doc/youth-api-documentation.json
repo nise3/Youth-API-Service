@@ -11,7 +11,20 @@
         },
         {
             "url": "http://localhost:8000/api/v1"
+        },
+        {
+            "url": "http://localhost:8001/api/v1"
+        },
+        {
+            "url": "http://localhost:8002/api/v1"
+        },
+        {
+            "url": "http://localhost:8003/api/v1"
+        },
+        {
+            "url": "http://localhost:8004/api/v1"
         }
+
     ],
     "security": [
         {
@@ -775,23 +788,37 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 1,
-                                        "first_name": "Tellur",
-                                        "last_name": "Rahman",
-                                        "gender": 1,
-                                        "skills": null,
-                                        "email": "sdfg@dom.com",
-                                        "mobile": "01245577498",
-                                        "date_of_birth": "0000-00-00",
-                                        "physical_disability_status": 0,
-                                        "physical_disabilities": null,
-                                        "city": null,
-                                        "zip_or_postal_code": null,
+                                        "user_name_type": "1",
+                                        "first_name": "wsrgrdthg",
+                                        "first_name_en": null,
+                                        "last_name": "asdferh",
+                                        "last_name_en": null,
+                                        "loc_division_id": "1",
+                                        "loc_district_id": "1",
+                                        "loc_upazila_id": "1",
+                                        "date_of_birth": "2021-12-12T00:00:00.000000Z",
+                                        "gender": "2",
+                                        "religion": "1",
+                                        "marital_status": "1",
+                                        "nationality": "1",
+                                        "email": "erfhgrtfgh@gmail.com",
+                                        "mobile": "01308899564",
+                                        "identity_number_type": "1",
+                                        "identity_number": "56789ty76ee",
+                                        "freedom_fighter_status": "1",
+                                        "physical_disability_status": "1",
+                                        "does_belong_to_ethnic_group": "1",
                                         "bio": null,
+                                        "bio_en": null,
                                         "photo": null,
                                         "cv_path": null,
-                                        "created_at": "2021-08-19T08:55:03.000000Z",
-                                        "updated_at": "2021-08-19T08:55:03.000000Z"
+                                        "signature_image_path": null,
+                                        "username": "erfhgrtfgh@gmail.com",
+                                        "verification_code_sent_at": "2021-10-17T12:03:49.000000Z",
+                                        "row_status": 2,
+                                        "updated_at": "2021-10-17T12:03:49.000000Z",
+                                        "created_at": "2021-10-17T12:03:49.000000Z",
+                                        "id": 23
                                     },
                                     "response_status": {
                                         "success": true,
@@ -3220,7 +3247,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/youthGuardianProp"
+                                        "$ref": "#/components/schemas/youthGuardian"
                                     }
                                 }
                             }
@@ -3240,7 +3267,7 @@
                     "content": {
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "$ref": "#/components/schemas/youthGuardianProp"
+                                "$ref": "#/components/schemas/youthGuardian"
                             }
                         }
                     }
@@ -3251,7 +3278,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/youthGuardianProp"
+                                    "$ref": "#/components/schemas/youthGuardian"
                                 },
                                 "example": {
                                     "data": {
@@ -3306,7 +3333,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/youthGuardianProp"
+                                    "$ref": "#/components/schemas/youthGuardian"
                                 },
                                 "example": {
                                     "data": {
@@ -3357,7 +3384,7 @@
                     "content": {
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "$ref": "#/components/schemas/youthGuardianProp"
+                                "$ref": "#/components/schemas/youthGuardian"
                             }
                         }
                     }
@@ -3419,7 +3446,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/youthGuardianProp"
+                                    "$ref": "#/components/schemas/youthGuardian"
                                 },
                                 "example": {
                                     "_response_status": {
@@ -3448,17 +3475,13 @@
             }
         },
         "schemas": {
-            "youthGuardianProp": {
+            "youthGuardian": {
                 "type": "object",
                 "properties": {
                     "id": {
                         "type": "integer",
                         "example": 4,
                         "readOnly": true
-                    },
-                    "youth_id": {
-                        "type": "integer",
-                        "example": 4
                     },
                     "name": {
                         "type": "string",
@@ -3491,18 +3514,11 @@
                     "relationship_title_en": {
                         "type": "string",
                         "example": "father"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "example": "12/12/1987",
-                        "readOnly": true
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "example": "12/12/1987",
-                        "readOnly": true
                     }
-                }
+                },
+                "required": [
+                    "name"
+                ]
             },
             "Youth": {
                 "type": "object",
@@ -4295,7 +4311,6 @@
                             "uniqueItems": true
                         }
                     },
-
                     "physical_disabilities": {
                         "type": "array",
                         "minItems": 1,
@@ -4316,7 +4331,6 @@
                         "format": "password",
                         "example": "#Piyal_15021#"
                     },
-
                     "village_or_area": {
                         "type": "string"
                     },
