@@ -37,13 +37,21 @@ class YouthService
         $youthBuilder = Youth::select(
             [
                 'youths.id',
-                'youths.idp_user_id',
                 'youths.username',
                 'youths.user_name_type',
                 'youths.first_name',
                 'youths.first_name_en',
                 'youths.last_name',
                 'youths.last_name_en',
+                'youths.loc_division_id',
+                'loc_divisions.title as division_title',
+                'loc_divisions.title_en as division_title_en',
+                'youths.loc_district_id',
+                'loc_districts.title as district_title',
+                'loc_districts.title_en as district_title_en',
+                'youths.loc_upazila_id',
+                'loc_upazilas.title as upazila_title',
+                'loc_upazilas.title_en as upazila_title_en',
                 'youths.gender',
                 'youths.religion',
                 'youths.marital_status',
@@ -56,14 +64,8 @@ class YouthService
                 'youths.freedom_fighter_status',
                 'youths.physical_disability_status',
                 'youths.does_belong_to_ethnic_group',
-                'youths.bio',
-                'youths.bio_en',
                 'youths.photo',
                 'youths.cv_path',
-                'youths.signature_image_path',
-                'youths.verification_code',
-                'youths.verification_code_sent_at',
-                'youths.verification_code_verified_at',
                 'youths.row_status',
                 'youths.created_at',
                 'youths.updated_at',
@@ -71,21 +73,36 @@ class YouthService
         );
 
         $youthBuilder->orderBy('youths.id', $order);
-        $youthBuilder->with(["skills", "physicalDisabilities", "jobExperiences", "LanguagesProficiencies", "certifications", "educations", "portfolios", "references"]);
+
+        $youthBuilder->leftjoin('loc_divisions', function ($join) {
+            $join->on('youths.loc_division_id', '=', 'loc_divisions.id');
+        });
+        $youthBuilder->leftjoin('loc_districts', function ($join) {
+            $join->on('youths.loc_district_id', '=', 'loc_districts.id');
+        });
+        $youthBuilder->leftjoin('loc_upazilas', function ($join) {
+            $join->on('youths.loc_upazila_id', '=', 'loc_upazilas.id');
+
+        });
 
         if (!empty($firstName)) {
             $youthBuilder->where('youths.first_name', 'like', '%' . $firstName . '%');
         }
+
         if (!empty($lastName)) {
             $youthBuilder->where('youths.last_name', 'like', '%' . $lastName . '%');
         }
-        if (is_numeric($rowStatus)) {
-            $youthBuilder->where('youths.id', $order);
+
+        if (is_integer($rowStatus)) {
+            $youthBuilder->where('youths.row_status', $rowStatus);
+        } else {
+            $youthBuilder->where('youths.row_status', BaseModel::ROW_STATUS_ACTIVE);
         }
+
 
         /** @var Collection $youths */
 
-        if (is_numeric($paginate) || is_numeric($pageSize)) {
+        if (is_integer($paginate) || is_integer($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $youths = $youthBuilder->paginate($pageSize);
             $paginateData = (object)$youths->toArray();
@@ -126,6 +143,15 @@ class YouthService
                 'youths.first_name_en',
                 'youths.last_name',
                 'youths.last_name_en',
+                'youths.loc_division_id',
+                'loc_divisions.title as division_title',
+                'loc_divisions.title_en as division_title_en',
+                'youths.loc_district_id',
+                'loc_districts.title as district_title',
+                'loc_districts.title_en as district_title_en',
+                'youths.loc_upazila_id',
+                'loc_upazilas.title as upazila_title',
+                'loc_upazilas.title_en as upazila_title_en',
                 'youths.gender',
                 'youths.religion',
                 'youths.marital_status',
@@ -143,17 +169,33 @@ class YouthService
                 'youths.photo',
                 'youths.cv_path',
                 'youths.signature_image_path',
-                'youths.verification_code',
-                'youths.verification_code_sent_at',
-                'youths.verification_code_verified_at',
                 'youths.row_status',
                 'youths.created_at',
                 'youths.updated_at',
             ]
         );
 
+        $youthBuilder->leftjoin('loc_divisions', function ($join) {
+            $join->on('youths.loc_division_id', '=', 'loc_divisions.id');
+        });
+
+        $youthBuilder->leftjoin('loc_districts', function ($join) {
+            $join->on('youths.loc_district_id', '=', 'loc_districts.id');
+        });
+
+        $youthBuilder->leftjoin('loc_upazilas', function ($join) {
+            $join->on('youths.loc_upazila_id', '=', 'loc_upazilas.id');
+
+        });
+
         $youthBuilder->where('youths.id', $id);
-        $youthBuilder->with(["skills", "physicalDisabilities", "jobExperiences", "LanguagesProficiencies", "certifications", "educations", "portfolios", "references"]);
+
+        $youthBuilder->with([
+            "skills", "physicalDisabilities",
+            "youthJobExperiences", "youthLanguagesProficiencies",
+            "youthCertifications", "youthEducations", "youthPortfolios",
+            "youthReferences"
+        ]);
 
 
         /** @var Youth $youth */
@@ -227,8 +269,10 @@ class YouthService
         }
 
         return Validator::make($request->all(), [
-            'first_name' => 'nullable|max:400|min:2',
-            'last_name' => 'nullable|max:191|min:2',
+            'first_name' => 'nullable|max:300|min:2',
+            'first_name_en' => 'nullable|max:150|min:2',
+            'last_name' => 'nullable|max:300|min:2',
+            'last_name_en' => 'nullable|max:150|min:2',
             'page' => 'integer|gt:0',
             'pageSize' => 'integer|gt:0',
             'order' => [

@@ -31,7 +31,10 @@ class CreateYouthsTable extends Migration
                 ->nullable()->index('youth_division_id_inx');
             $table->unsignedMediumInteger("loc_district_id")
                 ->nullable()->index('youth_district_id_inx');
-            
+
+            $table->unsignedMediumInteger("loc_upazila_id")
+                ->nullable()->index('youth_upazila_id_inx');
+
             $table->date('date_of_birth');
             $table->unsignedTinyInteger('gender')
                 ->comment('1=>male,2=>female,3=>others');
@@ -76,7 +79,8 @@ class CreateYouthsTable extends Migration
             $table->dateTime("verification_code_verified_at")->nullable()
                 ->comment('Email Or SMS verification code verified at');
 
-            $table->unsignedTinyInteger("row_status")->default(0);
+            $table->unsignedTinyInteger("row_status")->default(0)
+                ->comment('o=>inactive, 1=>active, 2=>pending, 3=>rejected');
 
             $table->timestamps();
             $table->softDeletes();
