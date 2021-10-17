@@ -58,6 +58,7 @@ class YouthJobExperienceController extends Controller
      *
      * @param int|null $id
      * @return Exception|JsonResponse|Throwable
+     * @throws Throwable
      */
     public function read(int $id = null): JsonResponse
     {
@@ -73,7 +74,8 @@ class YouthJobExperienceController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      * @throws ValidationException
      */
     public function store(Request $request): JsonResponse

@@ -6,11 +6,8 @@ namespace App\Services\YouthManagementServices;
 use App\Models\BaseModel;
 use App\Models\PhysicalDisability;
 use App\Models\Skill;
-use App\Models\Trainer;
 use App\Models\Youth;
 use Carbon\Carbon;
-use Faker\Provider\Base;
-use Faker\Provider\Uuid;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -20,9 +17,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
-use Prophecy\Promise\PromiseInterface;
-use stdClass;
-use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -82,21 +76,18 @@ class YouthProfileService
 
         $youthProfileBuilder->leftJoin('loc_divisions', function ($join) {
             $join->on('loc_divisions.id', '=', 'youths.loc_division_id')
-                ->whereNull('loc_divisions.deleted_at')
-                ->where('loc_divisions.row_status', BaseModel::ROW_STATUS_ACTIVE);
+                ->whereNull('loc_divisions.deleted_at');
         });
 
         $youthProfileBuilder->leftJoin('loc_districts', function ($join) {
             $join->on('loc_districts.id', '=', 'youths.loc_district_id')
-                ->whereNull('loc_districts.deleted_at')
-                ->where("loc_districts.row_status", BaseModel::ROW_STATUS_ACTIVE);
+                ->whereNull('loc_districts.deleted_at');
 
         });
 
         $youthProfileBuilder->leftJoin('loc_upazilas', function ($join) {
             $join->on('loc_upazilas.id', '=', 'youths.loc_upazila_id')
-                ->whereNull('loc_upazilas.deleted_at')
-                ->where("loc_upazilas.row_status", BaseModel::ROW_STATUS_ACTIVE);
+                ->whereNull('loc_upazilas.deleted_at');
 
         });
 
@@ -284,19 +275,20 @@ class YouthProfileService
             ->post($url, $payload);
 
         Log::channel('idp_user')->info('idp_user_payload', $payload);
-        Log::channel('idp_user')->debug( $client->json() );
+        Log::channel('idp_user')->debug($client->json());
 
         return $client;
 
     }
 
-    private function prepareIdpPayload($data){
-        $userEmailNo =  trim($data['username']);
-        $cleanUserName =  trim($data['username']);
-        if(!str_contains($userEmailNo, '@')){
+    private function prepareIdpPayload($data)
+    {
+        $userEmailNo = trim($data['username']);
+        $cleanUserName = trim($data['username']);
+        if (!str_contains($userEmailNo, '@')) {
             $userEmailNo = 'y_' . $data['username'] . '@youth.nise3.com';
-        }else{
-            $cleanUserName =  str_replace('@', '', $cleanUserName);
+        } else {
+            $cleanUserName = str_replace('@', '', $cleanUserName);
         }
         return [
             'schemas' => [
@@ -307,9 +299,9 @@ class YouthProfileService
                 'familyName' => $data['name'],
                 'givenName' => $data['name']
             ],
-            'active' => (string) $data['active'],
+            'active' => (string)$data['active'],
             'organization' => $data['name'],
-            'userName' =>$cleanUserName,
+            'userName' => $cleanUserName,
             'password' => $data['password'],
             'userType' => $data['user_type'],
             'country' => 'BD',
@@ -451,18 +443,18 @@ class YouthProfileService
             "last_name_en" => "nullable|string|min:2|max:500",
             "loc_division_id" => [
                 "required",
-                "exists:loc_divisions,id",
+                "exists:loc_divisions,id,deleted_at,NULL",
                 "int"
             ],
             "loc_district_id" => [
                 "required",
-                "exists:loc_districts,id",
+                "exists:loc_districts,id,deleted_at,NULL",
                 "int"
             ],
             "loc_upazila_id" => [
                 "nullable",
                 "numeric",
-                "exists:loc_upazilas,id",
+                "exists:loc_upazilas,id,deleted_at,NULL",
             ],
             "date_of_birth" => [
                 Rule::requiredIf(function () use ($id) {
@@ -574,7 +566,7 @@ class YouthProfileService
                 "int",
                 "distinct",
                 "min:1",
-                "exists:physical_disabilities,id"
+                "exists:physical_disabilities,deleted_at,NULL,id"
             ],
             "password" => [
                 Rule::requiredIf(function () use ($id) {

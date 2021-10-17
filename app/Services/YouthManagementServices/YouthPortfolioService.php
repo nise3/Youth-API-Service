@@ -157,6 +157,11 @@ class YouthPortfolioService
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
         $rules = [
+            'youth_id' => [
+                'required',
+                'exists:youths,id,deleted_at,NULL',
+                'int',
+            ],
             'title' => [
                 'required',
                 'string',
@@ -178,11 +183,6 @@ class YouthPortfolioService
                 'nullable',
                 'string',
                 'min:2'
-            ],
-            'youth_id' => [
-                'required',
-                'int',
-                'exists:youths,id'
             ],
             'file_path' => [
                 'nullable',
