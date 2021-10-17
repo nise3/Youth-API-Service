@@ -31,6 +31,8 @@ class YouthCertification extends BaseModel
     use SoftDeletes, HasFactory;
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
 
+    protected $dates = ['start_date','end_date'];
+
     /**
      * @return BelongsTo
      */
