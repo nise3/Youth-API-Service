@@ -290,11 +290,6 @@ class YouthEducationService
     public function validator(Request $request, int $id = null): Validator
     {
         $rules = [
-            'youth_id' => [
-                'required',
-                'exists:youths,id',
-                'int'
-            ],
             'education_level_id' => [
                 'required',
                 'min:1',
