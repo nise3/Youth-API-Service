@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\YouthLanguagesProficiency
- *
  * @property int id
  * @property int youth_id
  * @property int language_id
