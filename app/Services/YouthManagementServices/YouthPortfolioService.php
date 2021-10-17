@@ -32,28 +32,28 @@ class YouthPortfolioService
 
         /** @var Builder $portfolioBuilder */
         $portfolioBuilder = YouthPortfolio::select([
-            'portfolios.id',
-            'portfolios.title',
-            'portfolios.title_en',
-            'portfolios.description',
-            'portfolios.description_en',
-            'portfolios.file_path',
-            'portfolios.youth_id',
-            'portfolios.created_at',
-            'portfolios.updated_at'
+            'youth_portfolios.id',
+            'youth_portfolios.title',
+            'youth_portfolios.title_en',
+            'youth_portfolios.description',
+            'youth_portfolios.description_en',
+            'youth_portfolios.file_path',
+            'youth_portfolios.youth_id',
+            'youth_portfolios.created_at',
+            'youth_portfolios.updated_at'
         ]);
-        $portfolioBuilder->orderBy('portfolios.id', $order);
+        $portfolioBuilder->orderBy('youth_portfolios.id', $order);
 
         if (is_int(Auth::id())) {
-            $portfolioBuilder->where('portfolios.youth_id', Auth::id());
+            $portfolioBuilder->where('youth_portfolios.youth_id', Auth::id());
         }
 
         if (!empty($title)) {
-            $portfolioBuilder->where('portfolios.title', 'like', '%' . $title . '%');
+            $portfolioBuilder->where('youth_portfolios.title', 'like', '%' . $title . '%');
         }
 
         if (!empty($titleEn)) {
-            $portfolioBuilder->where('portfolios.title_en', 'like', '%' . $titleEn . '%');
+            $portfolioBuilder->where('youth_portfolios.title_en', 'like', '%' . $titleEn . '%');
         }
 
         /** @var Collection $portfolios */
@@ -90,17 +90,17 @@ class YouthPortfolioService
     {
         /** @var Builder $portfolioBuilder */
         $portfolioBuilder = YouthPortfolio::select([
-            'portfolios.id',
-            'portfolios.title',
-            'portfolios.title_en',
-            'portfolios.description',
-            'portfolios.description_en',
-            'portfolios.file_path',
-            'portfolios.youth_id',
-            'portfolios.created_at',
-            'portfolios.updated_at'
+            'youth_portfolios.id',
+            'youth_portfolios.title',
+            'youth_portfolios.title_en',
+            'youth_portfolios.description',
+            'youth_portfolios.description_en',
+            'youth_portfolios.file_path',
+            'youth_portfolios.youth_id',
+            'youth_portfolios.created_at',
+            'youth_portfolios.updated_at'
         ]);
-        $portfolioBuilder->where('portfolios.id', $id);
+        $portfolioBuilder->where('youth_portfolios.id', $id);
 
         /** @var YouthPortfolio $portfolio */
         $portfolio = $portfolioBuilder->first();

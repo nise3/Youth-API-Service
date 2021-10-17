@@ -31,29 +31,29 @@ class YouthReferenceService
 
         /** @var  Builder $referenceBuilder */
         $referenceBuilder = YouthReference::select([
-            'references.id',
-            'references.youth_id',
-            'references.referrer_first_name',
-            'references.referrer_first_name_en',
-            'references.referrer_last_name',
-            'references.referrer_last_name_en',
-            'references.referrer_organization_name',
-            'references.referrer_organization_name_en',
-            'references.referrer_designation',
-            'references.referrer_designation_en',
-            'references.referrer_address',
-            'references.referrer_address_en',
-            'references.referrer_email',
-            'references.referrer_mobile',
-            'references.referrer_relation',
-            'references.referrer_relation_en',
-            'references.created_at',
-            'references.updated_at',
+            'youth_references.id',
+            'youth_references.youth_id',
+            'youth_references.referrer_first_name',
+            'youth_references.referrer_first_name_en',
+            'youth_references.referrer_last_name',
+            'youth_references.referrer_last_name_en',
+            'youth_references.referrer_organization_name',
+            'youth_references.referrer_organization_name_en',
+            'youth_references.referrer_designation',
+            'youth_references.referrer_designation_en',
+            'youth_references.referrer_address',
+            'youth_references.referrer_address_en',
+            'youth_references.referrer_email',
+            'youth_references.referrer_mobile',
+            'youth_references.referrer_relation',
+            'youth_references.referrer_relation_en',
+            'youth_references.created_at',
+            'youth_references.updated_at',
         ]);
-        $referenceBuilder->orderBy('references.id', $order);
+        $referenceBuilder->orderBy('youth_references.id', $order);
 
         if (is_int(Auth::id())) {
-            $referenceBuilder->where('references.youth_id', Auth::id());
+            $referenceBuilder->where('youth_references.youth_id', Auth::id());
         }
 
         /** @var Collection $references */
@@ -89,26 +89,26 @@ class YouthReferenceService
     {
         /** @var  Builder $referenceBuilder */
         $referenceBuilder = YouthReference::select([
-            'references.id',
-            'references.youth_id',
-            'references.referrer_first_name',
-            'references.referrer_first_name_en',
-            'references.referrer_last_name',
-            'references.referrer_last_name_en',
-            'references.referrer_organization_name',
-            'references.referrer_organization_name_en',
-            'references.referrer_designation',
-            'references.referrer_designation_en',
-            'references.referrer_address',
-            'references.referrer_address_en',
-            'references.referrer_email',
-            'references.referrer_mobile',
-            'references.referrer_relation',
-            'references.referrer_relation_en',
-            'references.created_at',
-            'references.updated_at',
+            'youth_references.id',
+            'youth_references.youth_id',
+            'youth_references.referrer_first_name',
+            'youth_references.referrer_first_name_en',
+            'youth_references.referrer_last_name',
+            'youth_references.referrer_last_name_en',
+            'youth_references.referrer_organization_name',
+            'youth_references.referrer_organization_name_en',
+            'youth_references.referrer_designation',
+            'youth_references.referrer_designation_en',
+            'youth_references.referrer_address',
+            'youth_references.referrer_address_en',
+            'youth_references.referrer_email',
+            'youth_references.referrer_mobile',
+            'youth_references.referrer_relation',
+            'youth_references.referrer_relation_en',
+            'youth_references.created_at',
+            'youth_references.updated_at',
         ]);
-        $referenceBuilder->where('references.id', $id);
+        $referenceBuilder->where('youth_references.id', $id);
 
         /** @var YouthReference $reference */
         $reference = $referenceBuilder->first();
