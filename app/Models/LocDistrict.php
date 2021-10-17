@@ -18,8 +18,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $title_en
  * @property string|null $bbs_code
  * @property int $loc_division_id
- * @property Carbon $created_at
- * @property Carbon $updated_at
  * @property bool|null $is_sadar_district
  * @property-read Collection|LocUpazila[] $locUpazilas
  * @property-read LocDivision $locDivision
@@ -27,6 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class LocDistrict extends BaseModel
 {
     protected $table = 'loc_districts';
+    public $timestamps = false;
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SOFT_DELETE;
 
     public function locDivision(): BelongsTo

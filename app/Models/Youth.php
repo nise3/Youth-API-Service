@@ -56,7 +56,7 @@ class Youth extends AuthBaseModel
 
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
 
-    protected $dates = ['date_of_birth'];
+    protected $dates = ['date_of_birth', 'verification_code_sent_at', 'verification_code_verified_at'];
 
     protected $hidden = [
         "pivot",
@@ -83,7 +83,7 @@ class Youth extends AuthBaseModel
     /**
      * @return HasMany
      */
-    public function jobExperiences(): HasMany
+    public function youthJobExperiences(): HasMany
     {
         return $this->hasMany(YouthJobExperience::class, 'youth_id', 'id');
     }
@@ -91,7 +91,7 @@ class Youth extends AuthBaseModel
     /**
      * @return HasMany
      */
-    public function LanguagesProficiencies(): HasMany
+    public function youthLanguagesProficiencies(): HasMany
     {
         return $this->hasMany(YouthLanguagesProficiency::class, 'youth_id', 'id');
     }
@@ -99,17 +99,9 @@ class Youth extends AuthBaseModel
     /**
      * @return HasMany
      */
-    public function certifications(): HasMany
+    public function youthCertifications(): HasMany
     {
         return $this->hasMany(YouthCertification::class, 'youth_id', 'id');
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function educations(): HasMany
-    {
-        return $this->hasMany(YouthEducation::class, 'youth_id', 'id');
     }
 
     /**
@@ -120,10 +112,11 @@ class Youth extends AuthBaseModel
         return $this->hasMany(YouthEducation::class, 'youth_id', 'id');
     }
 
+
     /**
      * @return HasMany
      */
-    public function portfolios(): HasMany
+    public function youthPortfolios(): HasMany
     {
         return $this->hasMany(YouthPortfolio::class, 'youth_id', 'id');
     }
@@ -131,7 +124,7 @@ class Youth extends AuthBaseModel
     /**
      * @return HasMany
      */
-    public function references(): HasMany
+    public function youthReferences(): HasMany
     {
         return $this->hasMany(YouthReference::class, 'youth_id', 'id');
     }
@@ -155,7 +148,7 @@ class Youth extends AuthBaseModel
     /**
      * @return HasOne
      */
-    public function youthGuardian(): HasOne
+    public function youthGuardians(): HasOne
     {
         return $this->hasOne(YouthGuardian::class);
     }
