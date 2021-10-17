@@ -223,12 +223,6 @@ class YouthCertificationService
                     return (!empty($request->start_date));
                 })
             ],
-            'youth_id' => [
-                'required',
-                'min:1',
-                'exists:youths,id',
-                'int'
-            ],
             'certificate_file_path' => [
                 'nullable',
                 'string',
