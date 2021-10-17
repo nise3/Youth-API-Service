@@ -166,7 +166,6 @@ class YouthProfileService
 
     /**
      * @param Youth $youth
-     * @param array $disabilities
      */
     private function detachPhysicalDisabilities(Youth $youth)
     {
@@ -439,6 +438,7 @@ class YouthProfileService
             "last_name" => "required|string|min:2|max:500",
             "last_name_en" => "nullable|string|min:2|max:500",
             "loc_division_id" => [
+                "nullable",
                 Rule::requiredIf(function () use ($id) {
                     return $id == null;
                 }),
@@ -446,6 +446,7 @@ class YouthProfileService
                 "int"
             ],
             "loc_district_id" => [
+                "nullable",
                 Rule::requiredIf(function () use ($id) {
                     return $id == null;
                 }),
