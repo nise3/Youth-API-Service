@@ -25,7 +25,7 @@ class YouthAddressService
 
     public function getAddressList(array $request, Carbon $startTime)
     {
-        $youthId = $request['youth_id'] ?? Auth::id();
+        $youthId = Auth::id();
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $order = $request['order'] ?? "ASC";
