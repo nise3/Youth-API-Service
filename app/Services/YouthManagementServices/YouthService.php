@@ -6,13 +6,10 @@ use App\Models\BaseModel;
 use App\Models\EduBoard;
 use App\Models\EducationLevel;
 use App\Models\EduGroup;
-use App\Models\Examination;
-use App\Models\MajorOrSubject;
 use App\Models\Youth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -175,7 +172,6 @@ class YouthService
     }
 
     /**
-     * @param Youth $youth
      * @param array $data
      * @return Youth
      */
@@ -233,8 +229,8 @@ class YouthService
         return Validator::make($request->all(), [
             'first_name' => 'nullable|max:400|min:2',
             'last_name' => 'nullable|max:191|min:2',
-            'page' => 'numeric|gt:0',
-            '$pageSize' => 'numeric|gt:0',
+            'page' => 'integer|gt:0',
+            'pageSize' => 'integer|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
@@ -244,21 +240,22 @@ class YouthService
                 'nullable'
             ],
             'row_status' => [
-                "numeric",
+                "integer",
                 Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
             ],
         ], $customMessage);
     }
 
+    /**
+     * @return array
+     */
     public function getEducationBasicTablesInfos(): array
     {
         return [
-            "examinations" => Examination::all(),
             "edu_groups" => EduGroup::all(),
-            "boards" => EduBoard::all(),
-            "major_subjects" => MajorOrSubject::all(),
-            "education_level_with_degrees"=>EducationLevel::with('examDegrees')->get(),
-            "result"=>config("nise3.exam_degree_results")
+            "edu_boards" => EduBoard::all(),
+            "education_level_with_degrees" => EducationLevel::with('examDegrees')->get(),
+            "result" => config("nise3.exam_degree_results")
         ];
     }
 
