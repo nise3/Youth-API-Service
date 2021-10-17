@@ -659,7 +659,7 @@ paths:
                   marital_status: null
                   nationality: 1
                   email: beatrice97@example.org
-                  mobile: 01788510903
+                  mobile: '01788510903'
                   identity_number_type: null
                   identity_number: null
                   date_of_birth: '-000001-11-30T00:00:00.000000Z'
@@ -696,7 +696,6 @@ paths:
                       created_at: '2021-10-17T09:31:01.000000Z'
                       updated_at: '2021-10-17T09:31:01.000000Z'
                       deleted_at: null
-
                   skills: []
                   youth_educations:
                     - id: 1
@@ -776,11 +775,10 @@ paths:
                       youth_id: 1
                       title: Social Science Research Assistant
                       title_en: Social Science Research Assistant
-                      description: >
+                      description: |
                         incidunt placeat ad pariatur odit aspernatur et eum autem.
-                      description_en: >-
-                        incidunt placeat ad pariatur odit aspernatur et eum autem.
-                      file_path: 'C:\Users\HP\AppData\Local\Temp\fak8408.tmp'
+                      description_en: incidunt placeat ad pariatur odit aspernatur et eum autem.
+                      file_path: C:\Users\HP\AppData\Local\Temp\fak8408.tmp
                       created_at: '2021-10-17T09:31:01.000000Z'
                       updated_at: '2021-10-17T09:31:01.000000Z'
                       deleted_at: null
@@ -788,11 +786,9 @@ paths:
                       youth_id: 1
                       title: Radiologic Technician
                       title_en: Radiologic Technician
-                      description: >-
-                        modi reprehenderit sint ad et et at molestiae animi minima.
-                      description_en: >-
-                        modi reprehenderit sint ad et et at molestiae animi minima.
-                      file_path: 'C:\Users\HP\AppData\Local\Temp\fak8419.tmp'
+                      description: modi reprehenderit sint ad et et at molestiae animi minima.
+                      description_en: modi reprehenderit sint ad et et at molestiae animi minima.
+                      file_path: C:\Users\HP\AppData\Local\Temp\fak8419.tmp
                       created_at: '2021-10-17T09:31:01.000000Z'
                       updated_at: '2021-10-17T09:31:01.000000Z'
                       deleted_at: null
@@ -807,6 +803,12 @@ paths:
     get:
       summary: get_list
       description: ' API endpoint to get the list of Youth portfolio'
+      parameters:
+        - $ref: '#/components/parameters/title'
+        - $ref: '#/components/parameters/title_en'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/order'
       responses:
         '200':
           description: get one
@@ -815,21 +817,36 @@ paths:
               schema:
                 $ref: '#/components/schemas/portfolio'
               example:
+                current_page: 1
+                total_page: 1
+                page_size: 10
+                total: 0
                 order: ASC
                 data:
-                  - id: 4
-                    title: Geographer
-                    title_en: Geographer
-                    description: 'Vitae molestiae porro blanditiis quaerat quibusdam eveniet qui '
-                    description_en: Vitae molestiae porro blanditiis quaerat quibusdam eveniet qui
-                    youth_id: 2
-                    row_status: 1
-                    created_at: '2021-10-03T09:55:34.000000Z'
-                    updated_at: '2021-10-03T09:55:34.000000Z'
-                response_status:
-                  success: true
-                  code: 200
-                  query_time: 0
+                  order: ASC
+                  data:
+                    - id: 1
+                      title: Social Science Research Assistant
+                      title_en: Social Science Research Assistant
+                      description: Fugit voluptas.
+                      description_en: Fugit voluptas.
+                      file_path: C:\Users\HP\AppData\Local\Temp\fak8408.tmp
+                      youth_id: 1
+                      created_at: '2021-10-17T09:31:01.000000Z'
+                      updated_at: '2021-10-17T09:31:01.000000Z'
+                    - id: 2
+                      title: Radiologic Technician
+                      title_en: Radiologic Technician
+                      description: Accusantium accusantium.
+                      description_en: Accusantium accusantium.
+                      file_path: C:\Users\HP\AppData\Local\Temp\fak8419.tmp
+                      youth_id: 1
+                      created_at: '2021-10-17T09:31:01.000000Z'
+                      updated_at: '2021-10-17T09:31:01.000000Z'
+                  response_status:
+                    success: true
+                    code: 200
+                    query_time: 0
       tags:
         - Portfolios
     post:
@@ -849,15 +866,19 @@ paths:
                 $ref: '#/components/schemas/portfolio'
               example:
                 data:
-                  title: Test
-                  youth_id: '1'
-                  updated_at: '2021-09-30T12:23:22.000000Z'
-                  created_at: '2021-09-30T12:23:22.000000Z'
-                  id: 24
+                  title: native title
+                  title_en: null
+                  description: null
+                  description_en: null
+                  youth_id: 1
+                  file_path: null
+                  updated_at: '2021-10-17T12:30:06.000000Z'
+                  created_at: '2021-10-17T12:30:06.000000Z'
+                  id: 102
                 _response_status:
                   success: true
                   code: 201
-                  message: Portfolio created successfully
+                  message: YouthPortfolio added successfully
                   query_time: 0
       tags:
         - Portfolios
@@ -906,15 +927,20 @@ paths:
                 $ref: '#/components/schemas/portfolio'
               example:
                 data:
-                  title: Test
-                  youth_id: '1'
-                  updated_at: '2021-09-30T12:23:22.000000Z'
-                  created_at: '2021-09-30T12:23:22.000000Z'
-                  id: 24
+                  id: 1
+                  youth_id: 1
+                  title: native title
+                  title_en: null
+                  description: null
+                  description_en: Fugit v autem.
+                  file_path: C:\Users\HP\AppData\Local\Temp\fak8408.tmp
+                  created_at: '2021-10-17T09:31:01.000000Z'
+                  updated_at: '2021-10-17T12:43:01.000000Z'
+                  deleted_at: null
                 _response_status:
                   success: true
-                  code: 201
-                  message: Portfolio updated successfully
+                  code: 200
+                  message: YouthPortfolio updated successfully
                   query_time: 0
       tags:
         - Portfolios
@@ -1238,13 +1264,13 @@ paths:
           required: true
           schema:
             type: string
-            example: 01456988998
+            example: '01456988998'
         - name: date_of_birth
           in: query
           schema:
             type: string
             format: date-time
-            example: 2021-10-5
+            example: '2021-10-05'
         - name: loc_division_id
           in: query
           required: true
@@ -1291,7 +1317,7 @@ paths:
           schema:
             type: string
             maximum: 10
-            example: 'asasa'
+            example: asasa
         - name: bio
           in: query
           schema:
@@ -1327,8 +1353,6 @@ paths:
             type: array
             items:
               type: integer
-
-
       responses:
         '200':
           description: update_youth_profile
@@ -1377,7 +1401,6 @@ paths:
                   code: 200
                   message: Youth Profile Successfully updated
                   query_time: 1 second before
-
       tags:
         - Youth Profile
   /youth-profile-verification:
@@ -1434,7 +1457,6 @@ paths:
           content:
             application/json:
               schema:
-                # $ref: '#/components/schemas/freelanceStatusUpdate'
                 example:
                   _response_status:
                     success: true
@@ -3318,6 +3340,7 @@ components:
           type: string
         youth_id:
           type: integer
+          example: 2
         deleted_at:
           type: string
           format: date-time
@@ -3689,6 +3712,22 @@ components:
         type: string
         default: ''
         example: Donald
+    title:
+      name: title
+      in: query
+      description: The title of youth-portfolio
+      schema:
+        type: string
+        default: ''
+        example: Donald
+    title_en:
+      name: title_en
+      in: query
+      description: The title_en of youth-portfolio
+      schema:
+        type: string
+        default: ''
+        example: title
     skillId:
       name: skillId
       in: path
@@ -3796,6 +3835,7 @@ components:
       required: true
       schema:
         type: integer
+        example: 1
     company_name_en:
       name: company_name_en
       in: query
