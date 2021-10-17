@@ -169,6 +169,11 @@ class YouthGuardianService
     public function validator(Request $request, int $id = null): Validator
     {
         $rules = [
+            'youth_id' => [
+                'required',
+                'exists:youths,id,deleted_at,NULL',
+                'int',
+            ],
             "mobile" => [
                 "required",
                 "max:11",
@@ -198,11 +203,11 @@ class YouthGuardianService
             ],
             'relationship_type' => [
                 'required',
-                function ($attr, $value, $fail) use ($request,$id) {
+                function ($attr, $value, $fail) use ($request, $id) {
 
                     if ($id == null && $value != BaseModel::RELATIONSHIP_TYPE_OTHER) {
                         $guardian = YouthGuardian::where('youth_id', $request['youth_id'])->where($attr, $value)->first();
-                        $guardian !=null && $fail($attr." should be unique with this youth id");
+                        $guardian != null && $fail($attr . " should be unique with this youth id");
                     }
                 },
                 'int',
