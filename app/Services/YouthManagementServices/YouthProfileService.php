@@ -82,21 +82,18 @@ class YouthProfileService
 
         $youthProfileBuilder->leftJoin('loc_divisions', function ($join) {
             $join->on('loc_divisions.id', '=', 'youths.loc_division_id')
-                ->whereNull('loc_divisions.deleted_at')
-                ->where('loc_divisions.row_status', BaseModel::ROW_STATUS_ACTIVE);
+                ->whereNull('loc_divisions.deleted_at');
         });
 
         $youthProfileBuilder->leftJoin('loc_districts', function ($join) {
             $join->on('loc_districts.id', '=', 'youths.loc_district_id')
-                ->whereNull('loc_districts.deleted_at')
-                ->where("loc_districts.row_status", BaseModel::ROW_STATUS_ACTIVE);
+                ->whereNull('loc_districts.deleted_at');
 
         });
 
         $youthProfileBuilder->leftJoin('loc_upazilas', function ($join) {
             $join->on('loc_upazilas.id', '=', 'youths.loc_upazila_id')
-                ->whereNull('loc_upazilas.deleted_at')
-                ->where("loc_upazilas.row_status", BaseModel::ROW_STATUS_ACTIVE);
+                ->whereNull('loc_upazilas.deleted_at');
 
         });
 
