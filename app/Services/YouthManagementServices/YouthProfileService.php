@@ -9,6 +9,7 @@ use App\Models\Skill;
 use App\Models\Trainer;
 use App\Models\Youth;
 use Carbon\Carbon;
+use Faker\Provider\Base;
 use Faker\Provider\Uuid;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
@@ -397,9 +398,6 @@ class YouthProfileService
     public function youthRegisterOrUpdateValidation(Request $request, int $id = null): Validator
     {
         $data = $request->all();
-        Log::info("Anisssss");
-        Log::info(json_encode($data));
-        Log::info("Anisssss endddd");
 
         $customMessage = [
             "password.regex" => [
@@ -431,14 +429,33 @@ class YouthProfileService
             "first_name_en" => "nullable|string|min:2|max:500",
             "last_name" => "required|string|min:2|max:500",
             "last_name_en" => "nullable|string|min:2|max:500",
-            "bio" => "nullable|string",
-            "bio_en" => "nullable|string",
+            "date_of_birth" => [
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
+                'date',
+                'date_format:Y-m-d'
+            ],
             "gender" => [
                 Rule::requiredIf(function () use ($id) {
                     return $id == null;
                 }),
                 "int",
                 Rule::in(BaseModel::GENDERS)
+            ],
+            'religion' => [
+                'int',
+                'nullable',
+                Rule::in(BaseModel::RELIGIONS)
+            ],
+            'marital_status' => [
+                'int',
+                'nullable',
+                Rule::in(BaseModel::MARITAL_STATUSES)
+            ],
+            'nationality' => [
+                'int',
+                'required'
             ],
             "email" => [
                 Rule::requiredIf(function () use ($id) {
@@ -466,13 +483,35 @@ class YouthProfileService
                 "unique:youths,mobile," . $id,
                 BaseModel::MOBILE_REGEX
             ],
-            "date_of_birth" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
-                'date',
-                'date_format:Y-m-d'
+            'identity_number_type' => [
+                'int',
+                'nullable',
+                Rule::in(BaseModel::IDENTITY_TYPES)
             ],
+            'identity_number' => [
+                'string',
+                'nullable'
+            ],
+            'freedom_fighter_status' => [
+                'int',
+                'required',
+                Rule::in(BaseModel::FREEDOM_FIGHTER_STATUSES)
+            ],
+            "physical_disability_status" => [
+                "required",
+                "int",
+                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUS)
+            ],
+            'does_belong_to_ethnic_group' => [
+                'int',
+                'required'
+            ],
+            "bio" => "nullable|string",
+            "bio_en" => "nullable|string",
+            "photo" => "nullable|string|max:600",
+            "cv_path" => "nullable|string|max:600",
+            "signature_image_path" => "nullable|string|max:600",
+
             "skills" => [
                 "required",
                 "array",
@@ -485,11 +524,7 @@ class YouthProfileService
                 "distinct",
                 "min:1"
             ],
-            "physical_disability_status" => [
-                "required",
-                "int",
-                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUS)
-            ],
+
             "physical_disabilities" => [
                 Rule::requiredIf(function () use ($id, $data) {
                     return $data['physical_disability_status'] == BaseModel::TRUE;

@@ -71,6 +71,12 @@ abstract class BaseModel extends Model
     public const MARITAL_STATUS_MARRIED = 2;
     public const MARITAL_STATUS_WIDOWED = 3;
     public const MARITAL_STATUS_DIVORCED = 4;
+    public const MARITAL_STATUSES = [
+        self::MARITAL_STATUS_SINGLE,
+        self::MARITAL_STATUS_MARRIED,
+        self::MARITAL_STATUS_WIDOWED,
+        self::MARITAL_STATUS_DIVORCED
+    ];
 
     /** Religions Mapping  */
     public const RELIGION_ISLAM = 1;
@@ -81,6 +87,28 @@ abstract class BaseModel extends Model
     public const RELIGION_SIKHISM = 6;
     public const RELIGION_ETHNIC = 7;
     public const RELIGION_AGNOSTIC_ATHEIST = 8;
+    public const RELIGIONS = [
+        self::RELIGION_ISLAM,
+        self::RELIGION_HINDUISM,
+        self::RELIGION_CHRISTIANITY,
+        self::RELIGION_BUDDHISM,
+        self::RELIGION_JUDAISM,
+        self::RELIGION_SIKHISM,
+        self::RELIGION_ETHNIC,
+        self::RELIGION_AGNOSTIC_ATHEIST
+    ];
+
+    /** Freedom fighter statuses */
+    public const NON_FREEDOM_FIGHTER = 0;
+    public const FREEDOM_FIGHTER = 1;
+    public const CHILD_OF_FREEDOM_FIGHTER = 2;
+    public const GRAND_CHILD_OF_FREEDOM_FIGHTER = 3;
+    public const FREEDOM_FIGHTER_STATUSES = [
+        self::NON_FREEDOM_FIGHTER,
+        self::FREEDOM_FIGHTER,
+        self::CHILD_OF_FREEDOM_FIGHTER,
+        self::GRAND_CHILD_OF_FREEDOM_FIGHTER
+    ];
 
     /** YouthLanguagesProficiency Level */
     public const EASY = 1;
@@ -92,6 +120,11 @@ abstract class BaseModel extends Model
     public const NID = 1;
     public const BIRTH_CARD = 2;
     public const PASSPORT = 3;
+    public const IDENTITY_TYPES = [
+        self::NID,
+        self::BIRTH_CARD,
+        self::PASSPORT
+    ];
 
     /** BIRTHDATE FORMAT  */
     public const BIRTHDATE_FORMAT = "Y-m-d";
