@@ -24,6 +24,8 @@ class YouthLanguagesProficiency extends BaseModel
 {
     use SoftDeletes, HasFactory;
 
+    protected $table = 'youth_languages_proficiencies';
+
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
 
     /**
