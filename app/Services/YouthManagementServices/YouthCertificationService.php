@@ -181,6 +181,11 @@ class YouthCertificationService
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
         $rules = [
+            'youth_id' => [
+                'required',
+                'exists:youths,id,deleted_at,NULL',
+                'int',
+            ],
             'certification_name' => [
                 'required',
                 'string',
