@@ -28,7 +28,6 @@ class YouthLanguagesProficiencyService
         $youthId = $request['youth_id'] ?? Auth::id();
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
-        $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
 
         /** @var Builder $languageProficiencyBuilder */
@@ -43,31 +42,23 @@ class YouthLanguagesProficiencyService
             'languages_proficiencies.writing_proficiency_level',
             'languages_proficiencies.speaking_proficiency_level',
             'languages_proficiencies.understand_proficiency_level',
-            'languages_proficiencies.row_status',
             'languages_proficiencies.created_at',
             'languages_proficiencies.updated_at'
         ]);
         $languageProficiencyBuilder->orderBy('languages_proficiencies.id', $order);
 
-        $languageProficiencyBuilder->join('languages', function ($join) use ($rowStatus) {
+        $languageProficiencyBuilder->join('languages', function ($join) {
             $join->on('languages_proficiencies.language_id', '=', 'languages.id')
                 ->whereNull('languages.deleted_at');
-            if (is_numeric($rowStatus)) {
-                $join->where('languages.row_status', $rowStatus);
-            }
         });
 
-        if (is_numeric($youthId)) {
+        if (is_integer($youthId)) {
             $languageProficiencyBuilder->where('languages_proficiencies.youth_id', $youthId);
-        }
-
-        if (is_numeric($rowStatus)) {
-            $languageProficiencyBuilder->where('languages_proficiencies.row_status', $rowStatus);
         }
 
         /** @var Collection $languagesProficiencies */
 
-        if (is_numeric($paginate) || is_numeric($pageSize)) {
+        if (is_integer($paginate) || is_integer($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $languagesProficiencies = $languageProficiencyBuilder->paginate($pageSize);
             $paginateData = (object)$languagesProficiencies->toArray();
@@ -108,7 +99,6 @@ class YouthLanguagesProficiencyService
             'languages_proficiencies.writing_proficiency_level',
             'languages_proficiencies.speaking_proficiency_level',
             'languages_proficiencies.understand_proficiency_level',
-            'languages_proficiencies.row_status',
             'languages_proficiencies.created_at',
             'languages_proficiencies.updated_at'
         ]);
@@ -172,12 +162,8 @@ class YouthLanguagesProficiencyService
      */
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
-        $customMessage = [
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be either 1 or 0'
-            ]
-        ];
+        $customMessage = [];
+
         $rules = [
             'youth_id' => [
                 'required',
@@ -213,10 +199,6 @@ class YouthLanguagesProficiencyService
                 'int',
                 'min:1',
                 'max:2'
-            ],
-            'row_status' => [
-                'required_if:' . $id . ',!=,null',
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
             ]
         ];
         return Validator::make($request->all(), $rules, $customMessage);
@@ -232,10 +214,6 @@ class YouthLanguagesProficiencyService
             'order.in' => [
                 'code' => 30000,
                 "message" => 'Order must be either ASC or DESC',
-            ],
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
             ]
         ];
 
@@ -244,16 +222,12 @@ class YouthLanguagesProficiencyService
         }
 
         return Validator::make($request->all(), [
-            'page' => 'numeric|gt:0',
-            'page_size' => 'numeric|gt:0',
+            'page' => 'integer|gt:0',
+            'page_size' => 'integer|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
-            ],
-            'row_status' => [
-                "numeric",
-                Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
-            ],
+            ]
         ], $customMessage);
     }
 }
