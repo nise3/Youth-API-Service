@@ -566,7 +566,7 @@ class YouthProfileService
                 "int",
                 "distinct",
                 "min:1",
-                "exists:physical_disabilities,deleted_at,NULL,id"
+                "exists:physical_disabilities,id,deleted_at,NULL"
             ],
             "password" => [
                 Rule::requiredIf(function () use ($id) {

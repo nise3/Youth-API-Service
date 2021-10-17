@@ -791,22 +791,22 @@
                                 "example": {
                                     "data": {
                                         "user_name_type": "1",
-                                        "first_name": "wsrgrdthg",
+                                        "first_name": "asdfcsdfv",
                                         "first_name_en": null,
-                                        "last_name": "asdferh",
+                                        "last_name": "wsdgfdfg",
                                         "last_name_en": null,
                                         "loc_division_id": "1",
                                         "loc_district_id": "1",
                                         "loc_upazila_id": "1",
-                                        "date_of_birth": "2021-12-12T00:00:00.000000Z",
-                                        "gender": "2",
-                                        "religion": "1",
-                                        "marital_status": "1",
-                                        "nationality": "1",
-                                        "email": "erfhgrtfgh@gmail.com",
-                                        "mobile": "01308899564",
-                                        "identity_number_type": "1",
-                                        "identity_number": "56789ty76ee",
+                                        "date_of_birth": "1990-12-12T00:00:00.000000Z",
+                                        "gender": "1",
+                                        "religion": null,
+                                        "marital_status": null,
+                                        "nationality": "2",
+                                        "email": "fffffff@gmail.com",
+                                        "mobile": "01308866287",
+                                        "identity_number_type": null,
+                                        "identity_number": null,
                                         "freedom_fighter_status": "1",
                                         "physical_disability_status": "1",
                                         "does_belong_to_ethnic_group": "1",
@@ -815,12 +815,12 @@
                                         "photo": null,
                                         "cv_path": null,
                                         "signature_image_path": null,
-                                        "username": "erfhgrtfgh@gmail.com",
-                                        "verification_code_sent_at": "2021-10-17T12:03:49.000000Z",
+                                        "username": "fffffff@gmail.com",
+                                        "verification_code_sent_at": "2021-10-17T16:02:27.000000Z",
                                         "row_status": 2,
-                                        "updated_at": "2021-10-17T12:03:49.000000Z",
-                                        "created_at": "2021-10-17T12:03:49.000000Z",
-                                        "id": 23
+                                        "updated_at": "2021-10-17T16:02:27.000000Z",
+                                        "created_at": "2021-10-17T16:02:27.000000Z",
+                                        "id": 24
                                     },
                                     "response_status": {
                                         "success": true,
@@ -1273,9 +1273,6 @@
                         "description": "success",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/youthRegistration"
-                                },
                                 "example": {
                                     "_response_status": {
                                         "success": true,
@@ -4227,7 +4224,7 @@
             },
             "youthRegistration": {
                 "type": "object",
-                "description": "Youth Profile",
+                "description": "Youth Registration",
                 "properties": {
                     "user_name_type": {
                         "type": "integer",
@@ -4257,6 +4254,23 @@
                         "minLength": 2,
                         "maxLength": 500
                     },
+                    "loc_division_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "loc_district_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "loc_upazila_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "date_of_birth": {
+                        "type": "string",
+                        "format": "date",
+                        "pattern": "yyyy-mm-dd"
+                    },
                     "gender": {
                         "type": "integer",
                         "enum": [
@@ -4266,6 +4280,17 @@
                         ],
                         "description": "1=>Male,2=>Female,3=>Others",
                         "default": 1
+                    },
+                    "religion": {
+                        "type": "integer",
+                        "description": "1=>Islam,2=>Hinduism, 3=>CHRISTIANITY, 4=>BUDDHISM, 5=>JUDAISM, 6=>SIKHISM, 7=>ETHNIC, 8=>AGNOSTIC_ATHEIST"
+                    },
+                    "marital_status": {
+                        "type": "integer",
+                        "description": "1=>SINGLE, 2=>MARRIED, 3=>WIDOWED, 4=>DIVORCED"
+                    },
+                    "nationality": {
+                        "type": "integer"
                     },
                     "email": {
                         "type": "string",
@@ -4277,10 +4302,16 @@
                         "maxLength": 11,
                         "uniqueItems": true
                     },
-                    "date_of_birth": {
-                        "type": "string",
-                        "format": "date",
-                        "pattern": "yyyy-mm-dd"
+                    "identity_number_type": {
+                        "type": "integer",
+                        "description": "1=>NID,2=>BIRTH_CARD,3=>PASSPORT,4=>IDENTITY_TYPES"
+                    },
+                    "identity_number": {
+                        "type": "string"
+                    },
+                    "freedom_fighter_status": {
+                        "type": "integer",
+                        "description": "1=>NON_FREEDOM_FIGHTER, 2=>FREEDOM_FIGHTER, 3=>CHILD_OF_FREEDOM_FIGHTER, 4=>GRAND_CHILD_OF_FREEDOM_FIGHTER"
                     },
                     "physical_disability_status": {
                         "type": "integer",
@@ -4318,6 +4349,7 @@
                             "uniqueItems": true
                         }
                     },
+
                     "physical_disabilities": {
                         "type": "array",
                         "minItems": 1,
@@ -4338,18 +4370,6 @@
                         "format": "password",
                         "example": "#Piyal_15021#"
                     },
-                    "loc_division_id": {
-                        "type": "integer",
-                        "example": "1"
-                    },
-                    "loc_district_id": {
-                        "type": "integer",
-                        "example": "1"
-                    },
-                    "loc_upazila_id": {
-                        "type": "integer",
-                        "example": "1"
-                    },
                     "village_or_area": {
                         "type": "string"
                     },
@@ -4358,23 +4378,31 @@
                     },
                     "zip_or_postal_code": {
                         "type": "string"
+                    },
+                    "house_n_road": {
+                        "type": "string"
+                    },
+                    "house_n_road_en": {
+                        "type": "string"
                     }
                 },
                 "required": [
                     "user_name_type",
                     "first_name",
                     "last_name",
-                    "gender",
-                    "email",
-                    "mobile",
-                    "skills",
-                    "password",
-                    "password_confirmation",
-                    "physical_disability_status",
-                    "date_of_birth",
                     "loc_division_id",
                     "loc_district_id",
-                    "zip_or_postal_code"
+                    "date_of_birth",
+                    "gender",
+                    "nationality",
+                    "email",
+                    "mobile",
+                    "freedom_fighter_status",
+                    "physical_disability_status",
+                    "does_belong_to_ethnic_group",
+                    "skills",
+                    "password",
+                    "password_confirmation"
                 ]
             },
             "youthProfile": {
