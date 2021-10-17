@@ -127,7 +127,7 @@ class YouthLanguagesProficiencyService
      */
     public function store(array $data): YouthLanguagesProficiency
     {
-        $languagesProficiency = new YouthLanguagesProficiency();
+        $languagesProficiency = app(YouthLanguagesProficiency::class);
         $languagesProficiency->fill($data);
         $languagesProficiency->save();
         return $languagesProficiency;
