@@ -3247,7 +3247,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/youthGuardianProp"
+                                        "$ref": "#/components/schemas/youthGuardian"
                                     }
                                 }
                             }
@@ -3267,7 +3267,7 @@
                     "content": {
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "$ref": "#/components/schemas/youthGuardianProp"
+                                "$ref": "#/components/schemas/youthGuardian"
                             }
                         }
                     }
@@ -3278,7 +3278,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/youthGuardianProp"
+                                    "$ref": "#/components/schemas/youthGuardian"
                                 },
                                 "example": {
                                     "data": {
@@ -3333,7 +3333,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/youthGuardianProp"
+                                    "$ref": "#/components/schemas/youthGuardian"
                                 },
                                 "example": {
                                     "data": {
@@ -3384,7 +3384,7 @@
                     "content": {
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "$ref": "#/components/schemas/youthGuardianProp"
+                                "$ref": "#/components/schemas/youthGuardian"
                             }
                         }
                     }
@@ -3446,7 +3446,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/youthGuardianProp"
+                                    "$ref": "#/components/schemas/youthGuardian"
                                 },
                                 "example": {
                                     "_response_status": {
@@ -3475,17 +3475,13 @@
             }
         },
         "schemas": {
-            "youthGuardianProp": {
+            "youthGuardian": {
                 "type": "object",
                 "properties": {
                     "id": {
                         "type": "integer",
                         "example": 4,
                         "readOnly": true
-                    },
-                    "youth_id": {
-                        "type": "integer",
-                        "example": 4
                     },
                     "name": {
                         "type": "string",
@@ -3518,18 +3514,11 @@
                     "relationship_title_en": {
                         "type": "string",
                         "example": "father"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "example": "12/12/1987",
-                        "readOnly": true
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "example": "12/12/1987",
-                        "readOnly": true
                     }
-                }
+                },
+                "required": [
+                    "name"
+                ]
             },
             "Youth": {
                 "type": "object",
@@ -4322,7 +4311,6 @@
                             "uniqueItems": true
                         }
                     },
-
                     "physical_disabilities": {
                         "type": "array",
                         "minItems": 1,
@@ -4343,7 +4331,6 @@
                         "format": "password",
                         "example": "#Piyal_15021#"
                     },
-
                     "village_or_area": {
                         "type": "string"
                     },
