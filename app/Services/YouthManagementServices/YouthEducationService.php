@@ -287,12 +287,18 @@ class YouthEducationService
      */
     public function validator(Request $request, int $id = null): Validator
     {
+        $request['deleted_at'] = null;
         $rules = [
+            'youth_id' => [
+                'required',
+                'exists:youths,id,deleted_at,NULL',
+                'int',
+            ],
             'education_level_id' => [
                 'required',
                 'min:1',
-                'exists:education_levels,id',
-                'unique_with:youth_educations,youth_id,' . $id,
+                'exists:education_levels,id,deleted_at,NULL',
+                'unique_with:youth_educations,youth_id,deleted_at,' . $id,
                 'integer'
             ],
             "exam_degree_id" => [
@@ -301,7 +307,7 @@ class YouthEducationService
                 }),
                 Rule::in(ExamDegree::where("education_level_id", $request->education_level_id)->pluck('id')->toArray()),
                 'min:1',
-                'unique_with:youth_educations,youth_id,' . $id,
+                'unique_with:youth_educations,youth_id,deleted_at,' . $id,
                 'integer'
 
             ],
@@ -329,15 +335,15 @@ class YouthEducationService
                 Rule::requiredIf(function () use ($request) {
                     return $this->getRequiredStatus(YouthEducation::EDU_GROUP, $request->education_level_id);
                 }),
-                'exists:edu_groups,id',
-                'unique_with:youth_educations,exam_degree_id,' . $id,
+                'exists:edu_groups,id,deleted_at,NULL',
+                'unique_with:youth_educations,exam_degree_id,,deleted_at,' . $id,
                 "integer"
             ],
             'edu_board_id' => [
                 Rule::requiredIf(function () use ($request) {
                     return $this->getRequiredStatus(YouthEducation::BOARD, $request->education_level_id);
                 }),
-                'exists:edu_boards,id',
+                'exists:edu_boards,id,deleted_at,NULL',
 //                'unique_with:youth_educations,exam_degree_id,' . $id,
                 "integer"
             ],

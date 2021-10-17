@@ -81,6 +81,7 @@ class YouthAddressController extends Controller
             throw $e;
         }
     }
+
     /**
      * Update the specified resource in storage
      * @param Request $request
@@ -112,6 +113,7 @@ class YouthAddressController extends Controller
         }
 
     }
+
     /**
      * Remove the specified resource from storage
      * @param int $id

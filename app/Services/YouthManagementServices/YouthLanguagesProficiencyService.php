@@ -127,6 +127,7 @@ class YouthLanguagesProficiencyService
      */
     public function store(array $data): YouthLanguagesProficiency
     {
+
         $languagesProficiency = app(YouthLanguagesProficiency::class);
         $languagesProficiency->fill($data);
         $languagesProficiency->save();
@@ -161,14 +162,19 @@ class YouthLanguagesProficiencyService
      */
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
+        $request['deleted_at'] = null;
         $customMessage = [];
-
         $rules = [
+            'youth_id' => [
+                'required',
+                'exists:youths,id,deleted_at,NULL',
+                'int',
+            ],
             'language_id' => [
                 'required',
+                'exists:languages,id,deleted_at,NULL',
+                'unique_with:youth_languages_proficiencies,youth_id,deleted_at,' . $id,
                 'int',
-                'exists:languages,id',
-                'unique_with:languages_proficiencies,youth_id,' . $id
             ],
             'reading_proficiency_level' => [
                 'required',
@@ -195,6 +201,8 @@ class YouthLanguagesProficiencyService
                 'max:2'
             ]
         ];
+
+
         return Validator::make($request->all(), $rules, $customMessage);
     }
 
