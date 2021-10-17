@@ -34,38 +34,38 @@ class YouthJobExperienceService
 
         /** @var Builder $jobExperienceBuilder */
         $jobExperienceBuilder = YouthJobExperience::select([
-            'job_experiences.id',
-            'job_experiences.company_name',
-            'job_experiences.company_name_en',
-            'job_experiences.position',
-            'job_experiences.position_en',
-            'job_experiences.youth_id',
-            'job_experiences.location',
-            'job_experiences.location_en',
-            'job_experiences.job_responsibilities',
-            'job_experiences.job_responsibilities_en',
-            'job_experiences.start_date',
-            'job_experiences.end_date',
-            'job_experiences.is_currently_work',
-            'job_experiences.row_status',
-            'job_experiences.created_at',
-            'job_experiences.updated_at'
+            'youth_job_experiences.id',
+            'youth_job_experiences.company_name',
+            'youth_job_experiences.company_name_en',
+            'youth_job_experiences.position',
+            'youth_job_experiences.position_en',
+            'youth_job_experiences.youth_id',
+            'youth_job_experiences.location',
+            'youth_job_experiences.location_en',
+            'youth_job_experiences.job_responsibilities',
+            'youth_job_experiences.job_responsibilities_en',
+            'youth_job_experiences.start_date',
+            'youth_job_experiences.end_date',
+            'youth_job_experiences.is_currently_work',
+            'youth_job_experiences.row_status',
+            'youth_job_experiences.created_at',
+            'youth_job_experiences.updated_at'
         ]);
 
         if (is_numeric(Auth::id())) {
-            $jobExperienceBuilder->where('job_experiences.youth_id', Auth::id());
+            $jobExperienceBuilder->where('youth_job_experiences.youth_id', Auth::id());
         }
 
-        $jobExperienceBuilder->orderBy('job_experiences.id', $order);
+        $jobExperienceBuilder->orderBy('youth_job_experiences.id', $order);
 
         if (is_numeric($rowStatus)) {
-            $jobExperienceBuilder->where('job_experiences.row_status', $rowStatus);
+            $jobExperienceBuilder->where('youth_job_experiences.row_status', $rowStatus);
         }
         if (!empty($companyNameEn)) {
-            $jobExperienceBuilder->where('job_experiences.company_name_en', 'like', '%' . $companyNameEn . '%');
+            $jobExperienceBuilder->where('youth_job_experiences.company_name_en', 'like', '%' . $companyNameEn . '%');
         }
         if (!empty($companyNameBn)) {
-            $jobExperienceBuilder->where('job_experiences.company_name_bn', 'like', '%' . $companyNameBn . '%');
+            $jobExperienceBuilder->where('youth_job_experiences.company_name_bn', 'like', '%' . $companyNameBn . '%');
         }
 
         /** @var Collection $jobExperiences */
@@ -101,25 +101,25 @@ class YouthJobExperienceService
     {
         /** @var Builder $jobExperienceBuilder */
         $jobExperienceBuilder = YouthJobExperience::select([
-            'job_experiences.id',
-            'job_experiences.company_name',
-            'job_experiences.company_name_en',
-            'job_experiences.position',
-            'job_experiences.position_en',
-            'job_experiences.youth_id',
-            'job_experiences.location',
-            'job_experiences.location_en',
-            'job_experiences.job_responsibilities',
-            'job_experiences.job_responsibilities_en',
-            'job_experiences.start_date',
-            'job_experiences.end_date',
-            'job_experiences.employment_type_id',
-            'job_experiences.is_currently_work',
-            'job_experiences.row_status',
-            'job_experiences.created_at',
-            'job_experiences.updated_at'
+            'youth_job_experiences.id',
+            'youth_job_experiences.company_name',
+            'youth_job_experiences.company_name_en',
+            'youth_job_experiences.position',
+            'youth_job_experiences.position_en',
+            'youth_job_experiences.youth_id',
+            'youth_job_experiences.location',
+            'youth_job_experiences.location_en',
+            'youth_job_experiences.job_responsibilities',
+            'youth_job_experiences.job_responsibilities_en',
+            'youth_job_experiences.start_date',
+            'youth_job_experiences.end_date',
+            'youth_job_experiences.employment_type_id',
+            'youth_job_experiences.is_currently_work',
+            'youth_job_experiences.row_status',
+            'youth_job_experiences.created_at',
+            'youth_job_experiences.updated_at'
         ]);
-        $jobExperienceBuilder->where('job_experiences.id', $id);
+        $jobExperienceBuilder->where('youth_job_experiences.id', $id);
 
         /** @var YouthJobExperience $jobExperience */
         $jobExperience = $jobExperienceBuilder->first();

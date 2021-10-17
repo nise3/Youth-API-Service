@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\YouthManagementServices;
-
 
 use App\Models\BaseModel;
 use App\Models\YouthLanguagesProficiency;
@@ -32,28 +30,28 @@ class YouthLanguagesProficiencyService
 
         /** @var Builder $languageProficiencyBuilder */
         $languageProficiencyBuilder = YouthLanguagesProficiency::select([
-            'languages_proficiencies.id',
-            'languages_proficiencies.youth_id',
-            'languages_proficiencies.language_id',
+            'youth_languages_proficiencies.id',
+            'youth_languages_proficiencies.youth_id',
+            'youth_languages_proficiencies.language_id',
             'languages.title as language_title',
             'languages.title_en as language_title_en',
             'languages.lang_code',
-            'languages_proficiencies.reading_proficiency_level',
-            'languages_proficiencies.writing_proficiency_level',
-            'languages_proficiencies.speaking_proficiency_level',
-            'languages_proficiencies.understand_proficiency_level',
-            'languages_proficiencies.created_at',
-            'languages_proficiencies.updated_at'
+            'youth_languages_proficiencies.reading_proficiency_level',
+            'youth_languages_proficiencies.writing_proficiency_level',
+            'youth_languages_proficiencies.speaking_proficiency_level',
+            'youth_languages_proficiencies.understand_proficiency_level',
+            'youth_languages_proficiencies.created_at',
+            'youth_languages_proficiencies.updated_at'
         ]);
-        $languageProficiencyBuilder->orderBy('languages_proficiencies.id', $order);
+        $languageProficiencyBuilder->orderBy('youth_languages_proficiencies.id', $order);
 
         $languageProficiencyBuilder->join('languages', function ($join) {
-            $join->on('languages_proficiencies.language_id', '=', 'languages.id')
+            $join->on('youth_languages_proficiencies.language_id', '=', 'languages.id')
                 ->whereNull('languages.deleted_at');
         });
 
         if (is_integer($youthId)) {
-            $languageProficiencyBuilder->where('languages_proficiencies.youth_id', $youthId);
+            $languageProficiencyBuilder->where('youth_languages_proficiencies.youth_id', $youthId);
         }
 
         /** @var Collection $languagesProficiencies */
@@ -89,25 +87,25 @@ class YouthLanguagesProficiencyService
     {
         /** @var Builder $languageBuilder */
         $languageProficiencyBuilder = YouthLanguagesProficiency::select([
-            'languages_proficiencies.id',
-            'languages_proficiencies.youth_id',
-            'languages_proficiencies.language_id',
+            'youth_languages_proficiencies.id',
+            'youth_languages_proficiencies.youth_id',
+            'youth_languages_proficiencies.language_id',
             'languages.title as language_title',
             'languages.title_en as language_title_en',
             'languages.lang_code',
-            'languages_proficiencies.reading_proficiency_level',
-            'languages_proficiencies.writing_proficiency_level',
-            'languages_proficiencies.speaking_proficiency_level',
-            'languages_proficiencies.understand_proficiency_level',
-            'languages_proficiencies.created_at',
-            'languages_proficiencies.updated_at'
+            'youth_languages_proficiencies.reading_proficiency_level',
+            'youth_languages_proficiencies.writing_proficiency_level',
+            'youth_languages_proficiencies.speaking_proficiency_level',
+            'youth_languages_proficiencies.understand_proficiency_level',
+            'youth_languages_proficiencies.created_at',
+            'youth_languages_proficiencies.updated_at'
         ]);
         $languageProficiencyBuilder->join('languages', function ($join) {
-            $join->on('languages_proficiencies.language_id', '=', 'languages.id')
+            $join->on('youth_languages_proficiencies.language_id', '=', 'languages.id')
                 ->whereNull('languages.deleted_at');
         });
 
-        $languageProficiencyBuilder->where('languages_proficiencies.id', $id);
+        $languageProficiencyBuilder->where('youth_languages_proficiencies.id', $id);
 
         /** @var $languageProficiency $language */
         $languagesProficiency = $languageProficiencyBuilder->first();
@@ -129,7 +127,7 @@ class YouthLanguagesProficiencyService
      */
     public function store(array $data): YouthLanguagesProficiency
     {
-        $languagesProficiency = new YouthLanguagesProficiency();
+        $languagesProficiency = app(YouthLanguagesProficiency::class);
         $languagesProficiency->fill($data);
         $languagesProficiency->save();
         return $languagesProficiency;

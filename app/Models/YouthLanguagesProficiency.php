@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\YouthLanguagesProficiency
- *
  * @property int id
  * @property int youth_id
  * @property int language_id
@@ -23,6 +22,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class YouthLanguagesProficiency extends BaseModel
 {
     use SoftDeletes, HasFactory;
+
+    protected $table = 'youth_languages_proficiencies';
 
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;
 

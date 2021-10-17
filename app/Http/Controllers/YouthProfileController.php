@@ -94,7 +94,7 @@ class YouthProfileController extends Controller
                 'user_type' => BaseModel::YOUTH_USER_TYPE,
                 'active' => BaseModel::ROW_STATUS_PENDING,
             ];
-            //dd(isset($validated['loc_upazila_id']));
+
             $httpClient = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
             if ($httpClient->json("id")) {
                 Log::info("Youth create for idp user--->".$httpClient->json("id")."----->email-->".$validated['email']);
