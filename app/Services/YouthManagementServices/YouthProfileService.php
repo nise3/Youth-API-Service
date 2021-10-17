@@ -438,18 +438,12 @@ class YouthProfileService
             "last_name" => "required|string|min:2|max:500",
             "last_name_en" => "nullable|string|min:2|max:500",
             "loc_division_id" => [
-                "nullable",
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
+                "required",
                 "exists:loc_divisions,id",
                 "int"
             ],
             "loc_district_id" => [
-                "nullable",
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
+                "required",
                 "exists:loc_districts,id",
                 "int"
             ],
