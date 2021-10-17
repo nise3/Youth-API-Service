@@ -136,6 +136,7 @@ class YouthJobExperienceService
     }
 
     /**
+     * @param YouthJobExperience $jobExperience
      * @param array $data
      * @return YouthJobExperience
      */
@@ -222,6 +223,11 @@ class YouthJobExperienceService
             ]
         ];
         $rules = [
+            'youth_id' => [
+                'required',
+                'exists:youths,id,deleted_at,NULL',
+                'int',
+            ],
             'employment_type_id' => [
                 'required',
                 'int',

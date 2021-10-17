@@ -48,7 +48,7 @@ class YouthReferenceController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
      * @throws Throwable
      */
     public function read(int $id): JsonResponse
@@ -65,7 +65,8 @@ class YouthReferenceController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      * @throws ValidationException
      */
     public function store(Request $request): JsonResponse
