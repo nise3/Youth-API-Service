@@ -766,14 +766,12 @@ class YouthProfileService
             ]
         ];
 
-        if ($id) {
-            $rules['user_name_type'] = [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
-                Rule::in(BaseModel::USER_NAME_TYPE)
-            ];
-        }
+        $rules['user_name_type'] = [
+            Rule::requiredIf(function () use ($id) {
+                return $id == null;
+            }),
+            Rule::in(BaseModel::USER_NAME_TYPE)
+        ];
 
         if ($request['physical_disability_status'] == BaseModel::TRUE) {
             $rules['physical_disabilities'] = [
@@ -796,6 +794,7 @@ class YouthProfileService
 
         return \Illuminate\Support\Facades\Validator::make($data, $rules, $customMessage);
     }
+
     /**
      * @param string $id
      * @return Youth|null
