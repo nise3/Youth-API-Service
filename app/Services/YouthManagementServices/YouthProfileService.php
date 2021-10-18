@@ -407,7 +407,7 @@ class YouthProfileService
         return \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $customMessage);
     }
 
-    public function youthRegisterOrUpdateValidation(Request $request, int $id = null): Validator
+    public function youthUpdateValidation(Request $request, int $id = null): Validator
     {
         $data = $request->all();
 
@@ -532,7 +532,6 @@ class YouthProfileService
             "photo" => "nullable|string|max:600",
             "cv_path" => "nullable|string|max:600",
             "signature_image_path" => "nullable|string|max:600",
-
             "skills" => [
                 "required",
                 "array",
@@ -585,7 +584,8 @@ class YouthProfileService
             ],
             "zip_or_postal_code" => [
                 "nullable",
-                "string"
+                "string",
+                "size:4"
             ]
         ];
 
@@ -620,7 +620,179 @@ class YouthProfileService
         return \Illuminate\Support\Facades\Validator::make($data, $rules, $customMessage);
     }
 
+    public function youthRegisterValidation(Request $request, int $id = null): Validator
+    {
+        $data = $request->all();
 
+        $customMessage = [
+            "password.regex" => [
+                "code" => "",
+                "message" => [
+                    "Have At least one Uppercase letter",
+                    "At least one Lower case letter",
+                    "Also,At least one numeric value",
+                    "And, At least one special character",
+                    "Must be more than 8 characters long"
+                ]
+            ]
+        ];
+
+        if (!empty($data["skills"])) {
+            $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
+        }
+        if (!empty($data["physical_disabilities"])) {
+            $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
+        }
+        $rules = [
+            "first_name" => "required|string|min:2|max:500",
+            "first_name_en" => "nullable|string|min:2|max:250",
+            "last_name" => "required|string|min:2|max:500",
+            "last_name_en" => "nullable|string|min:2|max:250",
+            "loc_division_id" => [
+                "required",
+                "exists:loc_divisions,id,deleted_at,NULL",
+                "int"
+            ],
+            "loc_district_id" => [
+                "required",
+                "exists:loc_districts,id,deleted_at,NULL",
+                "int"
+            ],
+            "loc_upazila_id" => [
+                "nullable",
+                "exists:loc_upazilas,id,deleted_at,NULL",
+                "int"
+            ],
+            "date_of_birth" => [
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
+                'date',
+                'date_format:Y-m-d'
+            ],
+            "gender" => [
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
+                Rule::in(BaseModel::GENDERS),
+                "int"
+            ],
+            "email" => [
+                Rule::requiredIf(function () use ($id) {
+                    if ($id == null) {
+                        return true;
+                    } else if ($id) {
+                        $youth = Youth::find($id);
+                        return $youth->user_name_type == BaseModel::USER_NAME_TYPE_MOBILE_NUMBER;
+                    }
+                }),
+                "unique:youths,email," . $id,
+                "email",
+            ],
+            "mobile" => [
+                Rule::requiredIf(function () use ($id) {
+                    if ($id == null)
+                        return true;
+                    else if ($id) {
+                        $youth = Youth::find($id);
+                        return $youth->user_name_type == BaseModel::USER_NAME_TYPE_EMAIL;
+                    }
+                }),
+                "max:11",
+                "unique:youths,mobile," . $id,
+                BaseModel::MOBILE_REGEX
+            ],
+            "physical_disability_status" => [
+                "required",
+                "int",
+                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUS)
+            ],
+            "skills" => [
+                "required",
+                "array",
+                "min:1",
+                "max:10"
+            ],
+            "skills.*" => [
+                "required",
+                'numeric',
+                "distinct",
+                "min:1"
+            ],
+            "password" => [
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
+                "required_with:password_confirmation",
+                BaseModel::PASSWORD_REGEX,
+                BaseModel::PASSWORD_TYPE,
+                BaseModel::PASSWORD_MIN_LENGTH,
+                BaseModel::PASSWORD_MAX_LENGTH,
+                "confirmed"
+            ],
+            "password_confirmation" => [
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
+                "required_with:password",
+                BaseModel::PASSWORD_REGEX,
+                BaseModel::PASSWORD_TYPE,
+                BaseModel::PASSWORD_MIN_LENGTH,
+                BaseModel::PASSWORD_MAX_LENGTH,
+            ],
+            "village_or_area" => [
+                "nullable",
+                "string"
+            ],
+            "village_or_area_en" => [
+                "nullable",
+                "string"
+            ],
+            "house_n_road" => [
+                "nullable",
+                "string"
+            ],
+            "house_n_road_en" => [
+                "nullable",
+                "string"
+            ],
+            "zip_or_postal_code" => [
+                "nullable",
+                "string",
+                "size:4"
+            ]
+        ];
+
+        if ($id) {
+            $rules['user_name_type'] = [
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
+                Rule::in(BaseModel::USER_NAME_TYPE)
+            ];
+        }
+
+        if ($request['physical_disability_status'] == BaseModel::TRUE) {
+            $rules['physical_disabilities'] = [
+                Rule::requiredIf(function () use ($id, $data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
+                }),
+                "array",
+                "min:1"
+            ];
+            $rules['physical_disabilities.*'] = [
+                Rule::requiredIf(function () use ($id, $data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
+                }),
+                "exists:physical_disabilities,id,deleted_at,NULL",
+                "int",
+                "distinct",
+                "min:1",
+            ];
+        }
+
+        return \Illuminate\Support\Facades\Validator::make($data, $rules, $customMessage);
+    }
     /**
      * @param string $id
      * @return Youth|null

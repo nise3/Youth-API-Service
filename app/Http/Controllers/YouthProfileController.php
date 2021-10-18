@@ -82,7 +82,7 @@ class YouthProfileController extends Controller
     function youthRegistration(Request $request): JsonResponse
     {
         $youth = new Youth();
-        $validated = $this->youthProfileService->youthRegisterOrUpdateValidation($request)->validate();
+        $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
 
         $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
         DB::beginTransaction();
@@ -98,14 +98,14 @@ class YouthProfileController extends Controller
 
             $httpClient = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
             if ($httpClient->json("id")) {
-                Log::info("Youth create for idp user--->".$httpClient->json("id")."----->email-->".$validated['email']);
+                Log::info("Youth create for idp user--->" . $httpClient->json("id") . "----->email-->" . $validated['email']);
                 $validated['idp_user_id'] = $httpClient->json("id");
                 $validated["verification_code"] = $this->youthProfileService->generateCode();
                 $validated['verification_code_sent_at'] = Carbon::now();
                 $validated['row_status'] = BaseModel::ROW_STATUS_PENDING;
                 $youth = $this->youthProfileService->store($youth, $validated);
 
-                Log::info("Youth user create in db----->email-->".$validated['email']);
+                Log::info("Youth user create in db----->email-->" . $validated['email']);
 
                 $addressData['youth_id'] = $youth->id;
                 $addressData['address_type'] = YouthAddress::ADDRESS_TYPE_PRESENT;
@@ -113,10 +113,10 @@ class YouthProfileController extends Controller
                 $addressData['loc_district_id'] = $validated['loc_district_id'];
                 $addressData['loc_upazila_id'] = isset($validated['loc_upazila_id']) ? $validated['loc_upazila_id'] : null;
                 $addressData['village_or_area'] = isset($validated['village_or_area']) ? $validated['village_or_area'] : null;
-                $addressData['village_or_area_en'] = isset($validated['village_or_area_en'])?$validated['village_or_area_en']: null;
-                $addressData['house_n_road'] = isset($validated['house_n_road'])?$validated['house_n_road']: null;
-                $addressData['house_n_road_en'] = isset($validated['house_n_road_en'])?$validated['house_n_road_en']: null;
-                $addressData['zip_or_postal_code'] = isset($validated['zip_or_postal_code'])?$validated['zip_or_postal_code']: null;
+                $addressData['village_or_area_en'] = isset($validated['village_or_area_en']) ? $validated['village_or_area_en'] : null;
+                $addressData['house_n_road'] = isset($validated['house_n_road']) ? $validated['house_n_road'] : null;
+                $addressData['house_n_road_en'] = isset($validated['house_n_road_en']) ? $validated['house_n_road_en'] : null;
+                $addressData['zip_or_postal_code'] = isset($validated['zip_or_postal_code']) ? $validated['zip_or_postal_code'] : null;
                 $address = $this->youthAddressService->store($addressData);
 
                 Log::info("Youth user address create for user");
@@ -138,6 +138,7 @@ class YouthProfileController extends Controller
                     ]
                 ];
                 DB::commit();
+                return Response::json($response, $response['_response_status']['code']);
             } else {
                 DB::rollBack();
                 $response = [
@@ -148,12 +149,13 @@ class YouthProfileController extends Controller
                         "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
                     ]
                 ];
+                return Response::json($response, $response['_response_status']['code']);
             }
 
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_CREATED);
+
     }
 
     /**

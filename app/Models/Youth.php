@@ -56,6 +56,7 @@ class Youth extends AuthBaseModel
     public const MARITAL_STATUS_MARRIED = 2;
     public const MARITAL_STATUS_WIDOWED = 3;
     public const MARITAL_STATUS_DIVORCED = 4;
+
     public const MARITAL_STATUSES = [
         self::MARITAL_STATUS_SINGLE,
         self::MARITAL_STATUS_MARRIED,

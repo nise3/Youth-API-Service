@@ -4078,7 +4078,7 @@
                     "first_name_en": {
                         "type": "string",
                         "minLength": 2,
-                        "maxLength": 500
+                        "maxLength": 250
                     },
                     "last_name": {
                         "type": "string",
@@ -4088,19 +4088,16 @@
                     "last_name_en": {
                         "type": "string",
                         "minLength": 2,
-                        "maxLength": 500
+                        "maxLength": 250
                     },
                     "loc_division_id": {
-                        "type": "integer",
-                        "example": "1"
+                        "type": "integer"
                     },
                     "loc_district_id": {
-                        "type": "integer",
-                        "example": "1"
+                        "type": "integer"
                     },
                     "loc_upazila_id": {
-                        "type": "integer",
-                        "example": "1"
+                        "type": "integer"
                     },
                     "date_of_birth": {
                         "type": "string",
@@ -4117,17 +4114,6 @@
                         "description": "1=>Male,2=>Female,3=>Others",
                         "default": 1
                     },
-                    "religion": {
-                        "type": "integer",
-                        "description": "1=>Islam,2=>Hinduism, 3=>CHRISTIANITY, 4=>BUDDHISM, 5=>JUDAISM, 6=>SIKHISM, 7=>ETHNIC, 8=>AGNOSTIC_ATHEIST"
-                    },
-                    "marital_status": {
-                        "type": "integer",
-                        "description": "1=>SINGLE, 2=>MARRIED, 3=>WIDOWED, 4=>DIVORCED"
-                    },
-                    "nationality": {
-                        "type": "integer"
-                    },
                     "email": {
                         "type": "string",
                         "format": "email",
@@ -4138,17 +4124,6 @@
                         "maxLength": 11,
                         "uniqueItems": true
                     },
-                    "identity_number_type": {
-                        "type": "integer",
-                        "description": "1=>NID,2=>BIRTH_CARD,3=>PASSPORT,4=>IDENTITY_TYPES"
-                    },
-                    "identity_number": {
-                        "type": "string"
-                    },
-                    "freedom_fighter_status": {
-                        "type": "integer",
-                        "description": "1=>NON_FREEDOM_FIGHTER, 2=>FREEDOM_FIGHTER, 3=>CHILD_OF_FREEDOM_FIGHTER, 4=>GRAND_CHILD_OF_FREEDOM_FIGHTER"
-                    },
                     "physical_disability_status": {
                         "type": "integer",
                         "enum": [
@@ -4158,34 +4133,6 @@
                         "description": "0=>No,1=>Yes",
                         "default": 0
                     },
-                    "does_belong_to_ethnic_group": {
-                        "type": "integer"
-                    },
-                    "bio": {
-                        "type": "string"
-                    },
-                    "bio_en": {
-                        "type": "string"
-                    },
-                    "photo": {
-                        "type": "string"
-                    },
-                    "cv_path": {
-                        "type": "string"
-                    },
-                    "signature_image_path": {
-                        "type": "string"
-                    },
-                    "skills": {
-                        "type": "array",
-                        "minItems": 1,
-                        "maxItems": 10,
-                        "items": {
-                            "type": "integer",
-                            "uniqueItems": true
-                        }
-                    },
-
                     "physical_disabilities": {
                         "type": "array",
                         "minItems": 1,
@@ -4195,6 +4142,24 @@
                             "example": 1
                         },
                         "description": "1=> Visual Disabilities, 2=> Hearing Disabilities, 3=> Mental Health Disabilities,4=> Intellectual Disabilities, 5=> Social Disabilities"
+                    },
+                    "does_belong_to_ethnic_group": {
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "description": "0=>No,1=>Yes",
+                        "default": 0
+                    },
+                    "skills": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 10,
+                        "items": {
+                            "type": "integer",
+                            "uniqueItems": true
+                        }
                     },
                     "password": {
                         "type": "string",
@@ -4207,19 +4172,24 @@
                         "example": "#Piyal_15021#"
                     },
                     "village_or_area": {
-                        "type": "string"
+                        "type": "string",
+                        "default": "Blah Blah"
                     },
                     "village_or_area_en": {
-                        "type": "string"
+                        "type": "string",
+                        "default": "Blah Blah"
                     },
                     "zip_or_postal_code": {
-                        "type": "string"
+                        "type": "string",
+                        "default": "2150"
                     },
                     "house_n_road": {
-                        "type": "string"
+                        "type": "string",
+                        "default": "Blah Blah"
                     },
                     "house_n_road_en": {
-                        "type": "string"
+                        "type": "string",
+                        "default": "Blah Blah"
                     }
                 },
                 "required": [
@@ -4230,12 +4200,9 @@
                     "loc_district_id",
                     "date_of_birth",
                     "gender",
-                    "nationality",
                     "email",
                     "mobile",
-                    "freedom_fighter_status",
                     "physical_disability_status",
-                    "does_belong_to_ethnic_group",
                     "skills",
                     "password",
                     "password_confirmation"
