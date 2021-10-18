@@ -545,23 +545,6 @@ class YouthProfileService
                 "distinct",
                 "min:1"
             ],
-
-            "physical_disabilities" => [
-                Rule::requiredIf(function () use ($id, $data) {
-                    return $data['physical_disability_status'] == BaseModel::TRUE;
-                }),
-                "array",
-                "min:1"
-            ],
-            "physical_disabilities.*" => [
-                Rule::requiredIf(function () use ($id, $data) {
-                    return $data['physical_disability_status'] == BaseModel::TRUE;
-                }),
-                "int",
-                "distinct",
-                "min:1",
-                "exists:physical_disabilities,id,deleted_at,NULL"
-            ],
             "password" => [
                 Rule::requiredIf(function () use ($id) {
                     return $id == null;
@@ -612,6 +595,25 @@ class YouthProfileService
                     return $id == null;
                 }),
                 Rule::in(BaseModel::USER_NAME_TYPE)
+            ];
+        }
+
+        if($request['physical_disability_status'] == BaseModel::TRUE){
+            $rules['physical_disabilities'] = [
+                Rule::requiredIf(function () use ($id, $data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
+                }),
+                "array",
+                "min:1"
+            ];
+            $rules['physical_disabilities.*'] = [
+                Rule::requiredIf(function () use ($id, $data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
+                }),
+                "int",
+                "distinct",
+                "min:1",
+                "exists:physical_disabilities,id,deleted_at,NULL"
             ];
         }
 
