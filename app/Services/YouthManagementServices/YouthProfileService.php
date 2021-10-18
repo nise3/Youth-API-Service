@@ -624,6 +624,9 @@ class YouthProfileService
     {
         $data = $request->all();
 
+        Log::debug('-- Youth Registration Post Data -- ');
+        Log::debug($data);
+
         $customMessage = [
             "password.regex" => [
                 "code" => "",
