@@ -431,12 +431,6 @@ class YouthProfileService
             $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
         }
         $rules = [
-            "user_name_type" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
-                Rule::in(BaseModel::USER_NAME_TYPE)
-            ],
             "first_name" => "required|string|min:2|max:500",
             "first_name_en" => "nullable|string|min:2|max:500",
             "last_name" => "required|string|min:2|max:500",
@@ -611,6 +605,16 @@ class YouthProfileService
                 "string"
             ]
         ];
+
+        if($id == null){
+            $rules['user_name_type'] = [
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
+                Rule::in(BaseModel::USER_NAME_TYPE)
+            ];
+        }
+
         return \Illuminate\Support\Facades\Validator::make($data, $rules, $customMessage);
     }
 
