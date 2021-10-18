@@ -447,8 +447,8 @@ class YouthProfileService
             ],
             "loc_upazila_id" => [
                 "nullable",
-                "numeric",
                 "exists:loc_upazilas,id,deleted_at,NULL",
+                "int"
             ],
             "date_of_birth" => [
                 Rule::requiredIf(function () use ($id) {
@@ -461,8 +461,8 @@ class YouthProfileService
                 Rule::requiredIf(function () use ($id) {
                     return $id == null;
                 }),
-                "int",
-                Rule::in(BaseModel::GENDERS)
+                Rule::in(BaseModel::GENDERS),
+                "int"
             ],
             'religion' => [
                 'int',
@@ -480,9 +480,9 @@ class YouthProfileService
             ],
             "email" => [
                 Rule::requiredIf(function () use ($id) {
-                    if ($id == null)
+                    if ($id == null) {
                         return true;
-                    else if ($id) {
+                    } else if ($id) {
                         $youth = Youth::find($id);
                         return $youth->user_name_type == BaseModel::USER_NAME_TYPE_MOBILE_NUMBER;
                     }
@@ -589,7 +589,7 @@ class YouthProfileService
             ]
         ];
 
-        if($id == null){
+        if ($id == null) {
             $rules['user_name_type'] = [
                 Rule::requiredIf(function () use ($id) {
                     return $id == null;
@@ -598,7 +598,7 @@ class YouthProfileService
             ];
         }
 
-        if($request['physical_disability_status'] == BaseModel::TRUE){
+        if ($request['physical_disability_status'] == BaseModel::TRUE) {
             $rules['physical_disabilities'] = [
                 Rule::requiredIf(function () use ($id, $data) {
                     return $data['physical_disability_status'] == BaseModel::TRUE;
@@ -610,10 +610,10 @@ class YouthProfileService
                 Rule::requiredIf(function () use ($id, $data) {
                     return $data['physical_disability_status'] == BaseModel::TRUE;
                 }),
+                "exists:physical_disabilities,id,deleted_at,NULL",
                 "int",
                 "distinct",
                 "min:1",
-                "exists:physical_disabilities,id,deleted_at,NULL"
             ];
         }
 
