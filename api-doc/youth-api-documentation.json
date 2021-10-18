@@ -4119,12 +4119,12 @@
                     "password": {
                         "type": "string",
                         "format": "password",
-                        "example": "#Piyal_15021#"
+                        "description": "Min Len: 8, Max len: 50"
                     },
                     "password_confirmation": {
                         "type": "string",
                         "format": "password",
-                        "example": "#Piyal_15021#"
+                        "description": "Min Len: 8, Max len: 50"
                     },
                     "village_or_area": {
                         "type": "string",
