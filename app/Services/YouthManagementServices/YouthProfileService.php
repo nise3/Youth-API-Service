@@ -724,8 +724,8 @@ class YouthProfileService
             ],
             "password" => [
                 "required_with:password_confirmation",
-//                BaseModel::PASSWORD_REGEX,
-//                BaseModel::PASSWORD_TYPE,
+                BaseModel::PASSWORD_REGEX,
+                BaseModel::PASSWORD_TYPE,
                 BaseModel::PASSWORD_MIN_LENGTH,
                 BaseModel::PASSWORD_MAX_LENGTH,
                 "confirmed"
