@@ -507,7 +507,7 @@ class YouthProfileService
             'identity_number_type' => [
                 'int',
                 'nullable',
-                Rule::in(BaseModel::IDENTITY_TYPES)
+                Rule::in(Youth::IDENTITY_TYPES)
             ],
             'identity_number' => [
                 'string',
@@ -516,7 +516,7 @@ class YouthProfileService
             'freedom_fighter_status' => [
                 'int',
                 'required',
-                Rule::in(BaseModel::FREEDOM_FIGHTER_STATUSES)
+                Rule::in(Youth::FREEDOM_FIGHTER_STATUSES)
             ],
             "physical_disability_status" => [
                 "required",
