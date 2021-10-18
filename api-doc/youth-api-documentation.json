@@ -4119,8 +4119,7 @@
                     "password": {
                         "type": "string",
                         "format": "password",
-                        "description": "Min Len: 8, Max len: 50",
-
+                        "description": "Min Len: 8, Max len: 50"
                     },
                     "password_confirmation": {
                         "type": "string",
