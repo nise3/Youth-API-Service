@@ -173,7 +173,7 @@ class YouthProfileController extends Controller
         /** @var Youth $youth */
         $youth = Youth::findOrFail(Auth::id());
 
-        $validated = $this->youthProfileService->youthRegisterOrUpdateValidation($request, $id)->validate();
+        $validated = $this->youthProfileService->youthUpdateValidation($request, $id)->validate();
 
         try {
             $data = $this->youthProfileService->update($youth, $validated);
