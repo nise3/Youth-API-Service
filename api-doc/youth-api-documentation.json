@@ -4143,15 +4143,6 @@
                         },
                         "description": "1=> Visual Disabilities, 2=> Hearing Disabilities, 3=> Mental Health Disabilities,4=> Intellectual Disabilities, 5=> Social Disabilities"
                     },
-                    "does_belong_to_ethnic_group": {
-                        "type": "integer",
-                        "enum": [
-                            0,
-                            1
-                        ],
-                        "description": "0=>No,1=>Yes",
-                        "default": 0
-                    },
                     "skills": {
                         "type": "array",
                         "minItems": 1,
