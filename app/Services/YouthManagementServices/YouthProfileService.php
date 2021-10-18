@@ -91,7 +91,7 @@ class YouthProfileService
 
         });
 
-        $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences", "youthCertifications", "youthPortfolios"]);
+        $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences", "youthCertifications", "youthPortfolios", "youthAddresses"]);
         $youthProfileBuilder->where('youths.id', '=', Auth::id());
         return $youthProfileBuilder->first();
 
