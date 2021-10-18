@@ -8,10 +8,12 @@ use App\Models\PhysicalDisability;
 use App\Models\Skill;
 use App\Models\Youth;
 use Carbon\Carbon;
+use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -141,7 +143,6 @@ class YouthProfileService
         /** Assign skills to Youth */
         $skillIds = Skill::whereIn("id", $skills)->orderBy('id', 'ASC')->pluck('id')->toArray();
         $youth->skills()->sync($skillIds);
-
     }
 
     /**
@@ -216,7 +217,8 @@ class YouthProfileService
         $mobile_number = $data["mobile"] ?? null;
         if ($email) {
             return true;
-        } elseif ($mobile_number) {
+        }
+        if ($mobile_number) {
             return true;
         }
         return false;
@@ -260,9 +262,9 @@ class YouthProfileService
 
     /**
      * @param array $data
-     * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
+     * @return PromiseInterface|Response
      */
-    public function idpUserCreate(array $data): \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
+    public function idpUserCreate(array $data): PromiseInterface|Response
     {
         $url = clientUrl(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
         $payload = $this->prepareIdpPayload($data);
