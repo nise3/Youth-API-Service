@@ -2,10 +2,8 @@
 
 namespace App\Providers;
 
-use App\Extend\MessageBagExtended;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\MessageBag;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,10 +25,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-
-
-        $this->app->extend(MessageBag::class,  function (MessageBag $messageBag) {
-            return new MessageBagExtended($messageBag);
-        });
     }
 }
