@@ -21,14 +21,16 @@ class AppServiceProvider extends ServiceProvider
             return new \Laravel\Lumen\Http\ResponseFactory();
         });
 
-        $this->app->extend(MessageBag::class,  function (MessageBag $messageBag) {
-            return new MessageBagExtended($messageBag);
-        });
 
     }
 
     public function boot()
     {
         Schema::defaultStringLength(191);
+
+
+        $this->app->extend(MessageBag::class,  function (MessageBag $messageBag) {
+            return new MessageBagExtended($messageBag);
+        });
     }
 }
