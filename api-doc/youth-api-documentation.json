@@ -1536,306 +1536,198 @@
             "put": {
                 "summary": "Youth personal info update",
                 "description": "API endpoint to update a youth profile. A successful request response will show 200 HTTP status code ",
-                "parameters": [
-                    {
-                        "name": "is_freelance_profile",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "default": 0
-                        }
-                    },
-                    {
-                        "name": "first_name",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500,
-                            "example": "new name"
-                        }
-                    },
-                    {
-                        "name": "first_name_en",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500
-                        }
-                    },
-                    {
-                        "name": "last_name",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500,
-                            "example": "new lastname"
-                        }
-                    },
-                    {
-                        "name": "last_name_en",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500
-                        }
-                    },
-                    {
-                        "name": "gender",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "enum": [
-                                1,
-                                2,
-                                3
-                            ],
-                            "description": "1=>male,2=>female,3=>others"
-                        }
-                    },
-                    {
-                        "name": "religion",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 2
-                        }
-                    },
-                    {
-                        "name": "marital_status",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 2
-                        }
-                    },
-                    {
-                        "name": "nationality",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 2
-                        }
-                    },
-                    {
-                        "name": "identity_number",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "example": "kkkk"
-                        }
-                    },
-                    {
-                        "name": "identity_number_type",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "example": 2
-                        }
-                    },
-                    {
-                        "name": "freedom_fighter_status",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "example": 2
-                        }
-                    },
-                    {
-                        "name": "physical_disability_status",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "example": 2
-                        }
-                    },
-                    {
-                        "name": "does_belong_to_ethnic_group",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "example": 2
-                        }
-                    },
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "gg@gmail.com"
-                        }
-                    },
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": 1234
-                        }
-                    },
-                    {
-                        "name": "password_confirmation",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": 1234
-                        }
-                    },
-                    {
-                        "name": "mobile",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "01456988998"
-                        }
-                    },
-                    {
-                        "name": "date_of_birth",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "date-time",
-                            "example": "2021-10-05"
-                        }
-                    },
-                    {
-                        "name": "loc_division_id",
-                        "in": "query",
-                        "required": true,
-                        "example": 23,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "loc_district_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 23
-                        }
-                    },
-                    {
-                        "name": "loc_upazila_id",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "example": 23
-                        }
-                    },
-                    {
-                        "name": "village_or_area",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500,
-                            "example": "lll"
-                        }
-                    },
-                    {
-                        "name": "village_or_area_en",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500,
-                            "example": "new area"
-                        }
-                    },
-                    {
-                        "name": "house_n_road",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500,
-                            "example": "new road"
-                        }
-                    },
-                    {
-                        "name": "house_n_road_en",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 500,
-                            "example": "jj"
-                        }
-                    },
-                    {
-                        "name": "zip_or_postal_code",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 10,
-                            "example": "asasa"
-                        }
-                    },
-                    {
-                        "name": "bio",
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "bio_en",
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "photo",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 300
-                        }
-                    },
-                    {
-                        "name": "signature_image_path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 600
-                        }
-                    },
-                    {
-                        "name": "cv_path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "maximum": 300
-                        }
-                    },
-                    {
-                        "name": "skills",
-                        "in": "query",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
-                        }
-                    },
-                    {
-                        "name": "physical_disabilities",
-                        "in": "query",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "is_freelance_profile": {
+                                        "type": "integer",
+                                        "default": 0
+                                    },
+                                    "first_name": {
+                                        "type": "string",
+                                        "maximum": 500,
+                                        "example": "new name"
+                                    },
+                                    "first_name_en": {
+                                        "type": "string",
+                                        "maximum": 500
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "maximum": 500,
+                                        "example": "new lastname"
+                                    },
+                                    "last_name_en": {
+                                        "type": "string",
+                                        "maximum": 500
+                                    },
+                                    "gender": {
+                                        "type": "integer",
+                                        "enum": [
+                                            1,
+                                            2,
+                                            3
+                                        ],
+                                        "description": "1=>male,2=>female,3=>others"
+                                    },
+                                    "religion": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "marital_status": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "nationality": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "identity_number": {
+                                        "type": "string",
+                                        "example": "kkkk"
+                                    },
+                                    "identity_number_type": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "freedom_fighter_status": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "physical_disability_status": {
+                                        "type": "integer",
+                                        "enum": [
+                                            0,
+                                            1
+                                        ],
+                                        "description": "0=>No,1=>Yes",
+                                        "default": 0
+                                    },
+                                    "does_belong_to_ethnic_group": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "gg@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "#Piyal_15021#"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "#Piyal_15021#"
+                                    },
+                                    "mobile": {
+                                        "type": "string",
+                                        "maxLength": 11,
+                                        "uniqueItems": true,
+                                        "example": "01456988998"
+                                    },
+                                    "date_of_birth": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2021-10-05"
+                                    },
+                                    "loc_division_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "loc_district_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "loc_upazila_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "village_or_area": {
+                                        "type": "string",
+                                        "maximum": 500
+                                    },
+                                    "village_or_area_en": {
+                                        "type": "string",
+                                        "maximum": 500,
+                                        "example": "new area"
+                                    },
+                                    "house_n_road": {
+                                        "type": "string",
+                                        "maximum": 500,
+                                        "example": "new road"
+                                    },
+                                    "house_n_road_en": {
+                                        "type": "string",
+                                        "maximum": 500,
+                                        "example": "jj"
+                                    },
+                                    "zip_or_postal_code": {
+                                        "type": "string",
+                                        "maximum": 10,
+                                        "example": "asasa"
+                                    },
+                                    "bio": {
+                                        "type": "string"
+                                    },
+                                    "bio_en": {
+                                        "type": "string"
+                                    },
+                                    "photo": {
+                                        "type": "string",
+                                        "maximum": 300
+                                    },
+                                    "signature_image_path": {
+                                        "type": "string",
+                                        "maximum": 600
+                                    },
+                                    "cv_path": {
+                                        "type": "string",
+                                        "maximum": 300
+                                    },
+                                    "skills": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "physical_disabilities": {
+                                        "type": "array",
+                                        "minItems": 1,
+                                        "items": {
+                                            "type": "integer",
+                                            "uniqueItems": true,
+                                            "example": 1
+                                        },
+                                        "description": "1=> Visual Disabilities, 2=> Hearing Disabilities, 3=> Mental Health Disabilities,4=> Intellectual Disabilities, 5=> Social Disabilities"
+                                    }
+                                },
+                                "required": [
+                                    "first_name",
+                                    "last_name",
+                                    "does_belong_to_ethnic_group",
+                                    "freedom_fighter_status",
+                                    "gender",
+                                    "email",
+                                    "nationality",
+                                    "mobile",
+                                    "skills",
+                                    "password",
+                                    "password_confirmation",
+                                    "physical_disability_status",
+                                    "date_of_birth",
+                                    "loc_division_id",
+                                    "loc_district_id",
+                                    "physical_disabilities"
+                                ]
                             }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "update_youth_profile",
@@ -1848,8 +1740,8 @@
                                     "data": {
                                         "id": 1,
                                         "is_freelance_profile": 0,
-                                        "username": "beatrice97@example.org",
-                                        "user_name_type": 1,
+                                        "username": "delbert.kuhlman@example.org",
+                                        "user_name_type": "1",
                                         "first_name": "new name",
                                         "first_name_en": null,
                                         "last_name": "new lastname",
@@ -1858,15 +1750,15 @@
                                         "loc_district_id": "1",
                                         "loc_upazila_id": "1",
                                         "date_of_birth": "2021-10-05T00:00:00.000000Z",
-                                        "gender": "2",
+                                        "gender": "1",
                                         "religion": "2",
                                         "marital_status": "2",
                                         "nationality": "2",
-                                        "email": "ggdfd@gmail.com",
-                                        "mobile": "01306655456",
+                                        "email": "gddg@gmail.com",
+                                        "mobile": "01356988998",
                                         "identity_number_type": "2",
                                         "identity_number": "kkkk",
-                                        "freedom_fighter_status": "2",
+                                        "freedom_fighter_status": "1",
                                         "physical_disability_status": "1",
                                         "does_belong_to_ethnic_group": "2",
                                         "bio": null,
@@ -1875,10 +1767,10 @@
                                         "cv_path": null,
                                         "signature_image_path": null,
                                         "verification_code_sent_at": null,
-                                        "verification_code_verified_at": "2021-10-17T10:18:24.000000Z",
+                                        "verification_code_verified_at": null,
                                         "row_status": 1,
-                                        "created_at": "2021-10-17T09:31:01.000000Z",
-                                        "updated_at": "2021-10-17T11:25:55.000000Z",
+                                        "created_at": "2021-10-17T13:49:01.000000Z",
+                                        "updated_at": "2021-10-18T06:14:40.000000Z",
                                         "deleted_at": null
                                     },
                                     "_response_status": {

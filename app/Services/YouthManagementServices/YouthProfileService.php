@@ -431,12 +431,6 @@ class YouthProfileService
             $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
         }
         $rules = [
-            "user_name_type" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
-                Rule::in(BaseModel::USER_NAME_TYPE)
-            ],
             "first_name" => "required|string|min:2|max:500",
             "first_name_en" => "nullable|string|min:2|max:500",
             "last_name" => "required|string|min:2|max:500",
@@ -551,23 +545,6 @@ class YouthProfileService
                 "distinct",
                 "min:1"
             ],
-
-            "physical_disabilities" => [
-                Rule::requiredIf(function () use ($id, $data) {
-                    return $data['physical_disability_status'] == BaseModel::TRUE;
-                }),
-                "array",
-                "min:1"
-            ],
-            "physical_disabilities.*" => [
-                Rule::requiredIf(function () use ($id, $data) {
-                    return $data['physical_disability_status'] == BaseModel::TRUE;
-                }),
-                "int",
-                "distinct",
-                "min:1",
-                "exists:physical_disabilities,id,deleted_at,NULL"
-            ],
             "password" => [
                 Rule::requiredIf(function () use ($id) {
                     return $id == null;
@@ -611,6 +588,35 @@ class YouthProfileService
                 "string"
             ]
         ];
+
+        if($id == null){
+            $rules['user_name_type'] = [
+                Rule::requiredIf(function () use ($id) {
+                    return $id == null;
+                }),
+                Rule::in(BaseModel::USER_NAME_TYPE)
+            ];
+        }
+
+        if($request['physical_disability_status'] == BaseModel::TRUE){
+            $rules['physical_disabilities'] = [
+                Rule::requiredIf(function () use ($id, $data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
+                }),
+                "array",
+                "min:1"
+            ];
+            $rules['physical_disabilities.*'] = [
+                Rule::requiredIf(function () use ($id, $data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
+                }),
+                "int",
+                "distinct",
+                "min:1",
+                "exists:physical_disabilities,id,deleted_at,NULL"
+            ];
+        }
+
         return \Illuminate\Support\Facades\Validator::make($data, $rules, $customMessage);
     }
 
