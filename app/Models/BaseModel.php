@@ -91,7 +91,7 @@ abstract class BaseModel extends Model
     /** UserName Type */
     public const USER_NAME_TYPE_EMAIL = 1;
     public const USER_NAME_TYPE_MOBILE_NUMBER = 2;
-    public const USER_NAME_TYPE = [
+    public const USER_NAME_TYPES = [
         self::USER_NAME_TYPE_EMAIL,
         self::USER_NAME_TYPE_MOBILE_NUMBER
     ];

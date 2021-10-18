@@ -81,11 +81,12 @@ class YouthProfileController extends Controller
      */
     function youthRegistration(Request $request): JsonResponse
     {
-        $youth = new Youth();
+        $youth = app(Youth::class);
         $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
+
+        $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
         Log::debug('-- Youth Registration After Validation -- ');
         Log::debug($validated);
-        $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
 
         DB::beginTransaction();
         try {
