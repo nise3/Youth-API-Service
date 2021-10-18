@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\BaseModel;
+use App\Models\EducationLevel;
 
 return [
     "is_dev_mode" => env("IS_DEVELOPMENT_MOOD", false),
@@ -58,55 +59,55 @@ return [
     'exam_degree_results' => [
         1 => [
             'id' => 1,
-            'code' => BaseModel::FIRST_DIVISION,
+            'code' => EducationLevel::RESULT_FIRST_DIVISION,
             'title_en' => 'First Division/Class',
             'title' => 'First Division/Class'
         ],
         2 => [
             'id' => 2,
-            'code' => BaseModel::SECOND_DIVISION,
+            'code' => EducationLevel::RESULT_SECOND_DIVISION,
             'title_en' => 'Second  Division/Class',
             'title' => 'Second  Division/Class'
         ],
         3 => [
             'id' => 3,
-            'code' => BaseModel::THIRD_DIVISION,
+            'code' => EducationLevel::RESULT_THIRD_DIVISION,
             'title_en' => 'Third Division/Class',
             'title' => 'Third Division/Class'
         ],
         4 => [
             'id' => 4,
-            'code' => BaseModel::GRADE,
+            'code' => EducationLevel::RESULT_GRADE,
             'title_en' => 'Grade',
             'title' => 'Grade'
         ],
         5 => [
             'id' => 5,
-            'code' => BaseModel::APPEARED,
+            'code' => EducationLevel::RESULT_APPEARED,
             'title_en' => 'Appeared',
             'title' => 'Appeared'
         ],
         6 => [
             'id' => 6,
-            'code' => BaseModel::ENROLLED,
+            'code' => EducationLevel::RESULT_ENROLLED,
             'title_en' => 'Enrolled',
             'title' => 'Enrolled'
         ],
         7 => [
             'id' => 7,
-            'code' => BaseModel::AWARDED,
+            'code' => EducationLevel::RESULT_AWARDED,
             'title_en' => 'Awarded',
             'title' => 'Awarded'
         ],
         8 => [
             'id' => 8,
-            'code' => BaseModel::DO_NOT_MENTION,
+            'code' => EducationLevel::RESULT_DO_NOT_MENTION,
             'title_en' => 'Do Not Mention',
             'title' => 'Do Not Mention'
         ],
         9 => [
             'id' => 9,
-            'code' => BaseModel::PASS,
+            'code' => EducationLevel::RESULT_PASS,
             'title_en' => 'Pass',
             'title_bn' => 'Pass'
         ],
