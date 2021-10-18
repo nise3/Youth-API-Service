@@ -723,25 +723,19 @@ class YouthProfileService
                 "min:1"
             ],
             "password" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
                 "required_with:password_confirmation",
-//                BaseModel::PASSWORD_REGEX,
-//                BaseModel::PASSWORD_TYPE,
+                BaseModel::PASSWORD_REGEX,
+                BaseModel::PASSWORD_TYPE,
                 BaseModel::PASSWORD_MIN_LENGTH,
                 BaseModel::PASSWORD_MAX_LENGTH,
                 "confirmed"
             ],
             "password_confirmation" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
                 "required_with:password",
 //                BaseModel::PASSWORD_REGEX,
 //                BaseModel::PASSWORD_TYPE,
-                BaseModel::PASSWORD_MIN_LENGTH,
-                BaseModel::PASSWORD_MAX_LENGTH,
+//                BaseModel::PASSWORD_MIN_LENGTH,
+//                BaseModel::PASSWORD_MAX_LENGTH,
             ],
             "village_or_area" => [
                 "nullable",
