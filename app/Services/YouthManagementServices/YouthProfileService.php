@@ -667,7 +667,10 @@ class YouthProfileService
             "password" => [
                 "required",
                 "confirmed",
-                Password::min(BaseModel::PASSWORD_MIN_LENGTH_V1)->letters(),
+                Password::min(BaseModel::PASSWORD_MIN_LENGTH_V1)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
             ],
             "password_confirmation" => [
                 "required_with:password"
