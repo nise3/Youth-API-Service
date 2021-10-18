@@ -268,7 +268,7 @@ class YouthJobExperienceService
             ],
             'is_currently_working' => [
                 'integer',
-                Rule::in([BaseModel::CURRENTLY_NOT_WORKING, BaseModel::CURRENTLY_WORKING])
+                Rule::in([YouthJobExperience::CURRENTLY_NOT_WORKING, YouthJobExperience::CURRENTLY_WORKING])
             ]
         ];
         return Validator::make($request->all(), $rules, $customMessage);

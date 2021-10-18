@@ -38,7 +38,7 @@ class CreateYouthEducationsTable extends Migration
             $table->unsignedSmallInteger('foreign_institute_country_id')->nullable();
 
             $table->unsignedTinyInteger('result') /** available in nise3 config file with key 'exam_degree_results' */
-                ->comment('1=> First Division, 2=> Second  Division/Class, 3=> Third Division/Class, 4=> Grade, 5=> Appeared, 6=> Enrolled, 7=> Awarded, 8=> Do Not Mention, 9=> Pass');
+                ->comment('1=> First Division / Class, 2=> Second  Division/Class, 3=> Third Division/Class, 4=> Grade, 5=> Appeared, 6=> Enrolled, 7=> Awarded, 8=> Do Not Mention, 9=> Pass');
 
             $table->float('marks_in_percentage', 6)
                 ->nullable()->comment('Marks in percentage[ highest value 100, lowest value 0]');

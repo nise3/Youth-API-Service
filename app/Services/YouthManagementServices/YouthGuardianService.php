@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\YouthManagementServices;
-
 
 use App\Models\BaseModel;
 use App\Models\YouthGuardian;
@@ -205,7 +203,7 @@ class YouthGuardianService
                 'required',
                 function ($attr, $value, $fail) use ($request, $id) {
 
-                    if ($id == null && $value != BaseModel::RELATIONSHIP_TYPE_OTHER) {
+                    if ($id == null && $value != YouthGuardian::RELATIONSHIP_TYPE_OTHER) {
                         $guardian = YouthGuardian::where('youth_id', $request['youth_id'])->where($attr, $value)->first();
                         $guardian != null && $fail($attr . " should be unique with this youth id");
                     }
@@ -214,7 +212,7 @@ class YouthGuardianService
             ],
             'relationship_title' => [
                 Rule::requiredIf(function () use ($request) {
-                    return $request['relationship_type'] == BaseModel::RELATIONSHIP_TYPE_OTHER;
+                    return $request['relationship_type'] == YouthGuardian::RELATIONSHIP_TYPE_OTHER;
                 }),
                 'string',
                 'min:1'

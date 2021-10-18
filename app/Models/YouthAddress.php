@@ -26,6 +26,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class YouthAddress extends BaseModel
 {
+    public const ADDRESS_TYPE_PRESENT = 1;
+    public const ADDRESS_TYPE_PERMANENT = 2;
+    public const ADDRESS_TYPE_OTHERS = 3;
+
+    public const ADDRESS_TYPES = [
+        self::ADDRESS_TYPE_PRESENT,
+        self::ADDRESS_TYPE_PERMANENT,
+        self::ADDRESS_TYPE_OTHERS,
+    ];
+
     use SoftDeletes, HasFactory;
 
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;

@@ -52,7 +52,7 @@ class CreateYouthsTable extends Migration
             $table->string('mobile', 20)->nullable();
 
             $table->unsignedTinyInteger('identity_number_type')
-                ->nullable()->comment('Nid => 1, Birth Cert => 2, Passport => 3');
+                ->nullable()->comment('Nid => 1, Birth Certificate => 2, Passport => 3');
 
             $table->string('identity_number', 100)->nullable();
 

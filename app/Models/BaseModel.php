@@ -66,66 +66,6 @@ abstract class BaseModel extends Model
         self::OTHERS
     ];
 
-    /** Marital Statuses */
-    public const MARITAL_STATUS_SINGLE = 1;
-    public const MARITAL_STATUS_MARRIED = 2;
-    public const MARITAL_STATUS_WIDOWED = 3;
-    public const MARITAL_STATUS_DIVORCED = 4;
-    public const MARITAL_STATUSES = [
-        self::MARITAL_STATUS_SINGLE,
-        self::MARITAL_STATUS_MARRIED,
-        self::MARITAL_STATUS_WIDOWED,
-        self::MARITAL_STATUS_DIVORCED
-    ];
-
-    /** Religions Mapping  */
-    public const RELIGION_ISLAM = 1;
-    public const RELIGION_HINDUISM = 2;
-    public const RELIGION_CHRISTIANITY = 3;
-    public const RELIGION_BUDDHISM = 4;
-    public const RELIGION_JUDAISM = 5;
-    public const RELIGION_SIKHISM = 6;
-    public const RELIGION_ETHNIC = 7;
-    public const RELIGION_AGNOSTIC_ATHEIST = 8;
-    public const RELIGIONS = [
-        self::RELIGION_ISLAM,
-        self::RELIGION_HINDUISM,
-        self::RELIGION_CHRISTIANITY,
-        self::RELIGION_BUDDHISM,
-        self::RELIGION_JUDAISM,
-        self::RELIGION_SIKHISM,
-        self::RELIGION_ETHNIC,
-        self::RELIGION_AGNOSTIC_ATHEIST
-    ];
-
-    /** Freedom fighter statuses */
-    public const NON_FREEDOM_FIGHTER = 1;
-    public const FREEDOM_FIGHTER = 2;
-    public const CHILD_OF_FREEDOM_FIGHTER = 3;
-    public const GRAND_CHILD_OF_FREEDOM_FIGHTER = 4;
-    public const FREEDOM_FIGHTER_STATUSES = [
-        self::NON_FREEDOM_FIGHTER,
-        self::FREEDOM_FIGHTER,
-        self::CHILD_OF_FREEDOM_FIGHTER,
-        self::GRAND_CHILD_OF_FREEDOM_FIGHTER
-    ];
-
-    /** YouthLanguagesProficiency Level */
-    public const EASY = 1;
-    public const NOT_EASY = 0;
-    public const FLUENTLY = 1;
-    public const NOT_FLUENTLY = 0;
-
-    /**  Identity Number Type  */
-    public const NID = 1;
-    public const BIRTH_CARD = 2;
-    public const PASSPORT = 3;
-    public const IDENTITY_TYPES = [
-        self::NID,
-        self::BIRTH_CARD,
-        self::PASSPORT
-    ];
-
     /** BIRTHDATE FORMAT  */
     public const BIRTHDATE_FORMAT = "Y-m-d";
 
@@ -156,40 +96,6 @@ abstract class BaseModel extends Model
         self::USER_NAME_TYPE_MOBILE_NUMBER
     ];
 
-    /** Working Status  */
-    public const CURRENTLY_WORKING = 1;
-    public const CURRENTLY_NOT_WORKING = 0;
     public const DEFAULT_PAGE_SIZE = 10;
-
-    /** Education Level Status Code */
-    public const PSC_5_PASS = "PSC_5_PASS";
-    public const JSC_JDC_8_PASS = "JSC_JDC_8_PASS";
-    public const SECONDARY = "SECONDARY";
-    public const HIGHER_SECONDARY = "HIGHER_SECONDARY";
-    public const DIPLOMA = "DIPLOMA";
-    public const BACHELOR = "BACHELOR";
-    public const MASTERS = "MASTERS";
-    public const PHD = "PHD";
-
-    /** Result Level Status Code */
-    public const FIRST_DIVISION = "FIRST_DIVISION";
-    public const SECOND_DIVISION = "SECOND_DIVISION";
-    public const THIRD_DIVISION = "THIRD_DIVISION";
-    public const GRADE = "GRADE";
-    public const APPEARED = "APPEARED";
-    public const AWARDED = "AWARDED";
-    public const ENROLLED = "ENROLLED";
-    public const DO_NOT_MENTION = "DO_NOT_MENTION";
-    public const PASS = "PASS";
-
-    public const ADDRESS_TYPE_PRESENT = 1;
-    public const ADDRESS_TYPE_PERMANENT = 2;
-    public const ADDRESS_TYPE_OTHERS = 3;
-
-    public const  RELATIONSHIP_TYPE_FATHER = 1;
-    public const  RELATIONSHIP_TYPE_MOTHER = 2;
-    public const  RELATIONSHIP_TYPE_UNCLE = 3;
-    public const  RELATIONSHIP_TYPE_AUNT = 4;
-    public const  RELATIONSHIP_TYPE_OTHER = 5;
 
 }
