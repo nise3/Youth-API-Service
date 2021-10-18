@@ -203,7 +203,7 @@ class YouthAddressService
             'address_type' => [
                 'required',
                 'int',
-                Rule::in([BaseModel::ADDRESS_TYPE_PRESENT, BaseModel::ADDRESS_TYPE_PERMANENT, BaseModel::ADDRESS_TYPE_OTHERS])
+                Rule::in([YouthAddress::ADDRESS_TYPE_PRESENT, YouthAddress::ADDRESS_TYPE_PERMANENT, YouthAddress::ADDRESS_TYPE_OTHERS])
             ],
             'loc_division_id' => [
                 'required',

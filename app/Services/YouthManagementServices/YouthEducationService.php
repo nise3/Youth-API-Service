@@ -454,41 +454,41 @@ class YouthEducationService
             /** Validation Rule Based On YouthEducation Level */
             case YouthEducation::DEGREE:
             {
-                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [BaseModel::PSC_5_PASS, BaseModel::JSC_JDC_8_PASS, BaseModel::SECONDARY, BaseModel::HIGHER_SECONDARY, BaseModel::DIPLOMA, BaseModel::BACHELOR, BaseModel::MASTERS]);
+                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [EducationLevel::EDUCATION_LEVEL_PSC_5_PASS, EducationLevel::EDUCATION_LEVEL_JSC_JDC_8_PASS, EducationLevel::EDUCATION_LEVEL_SECONDARY, EducationLevel::EDUCATION_LEVEL_HIGHER_SECONDARY, EducationLevel::EDUCATION_LEVEL_DIPLOMA, EducationLevel::EDUCATION_LEVEL_BACHELOR, EducationLevel::EDUCATION_LEVEL_MASTERS]);
             }
             case YouthEducation::BOARD:
             {
-                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [BaseModel::PSC_5_PASS, BaseModel::JSC_JDC_8_PASS, BaseModel::SECONDARY, BaseModel::HIGHER_SECONDARY]);
+                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [EducationLevel::EDUCATION_LEVEL_PSC_5_PASS, EducationLevel::EDUCATION_LEVEL_JSC_JDC_8_PASS, EducationLevel::EDUCATION_LEVEL_SECONDARY, EducationLevel::EDUCATION_LEVEL_HIGHER_SECONDARY]);
             }
             case YouthEducation::MAJOR:
             {
-                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [BaseModel::SECONDARY, BaseModel::HIGHER_SECONDARY, BaseModel::DIPLOMA, BaseModel::BACHELOR, BaseModel::MASTERS]);
+                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [EducationLevel::EDUCATION_LEVEL_SECONDARY, EducationLevel::EDUCATION_LEVEL_HIGHER_SECONDARY, EducationLevel::EDUCATION_LEVEL_DIPLOMA, EducationLevel::EDUCATION_LEVEL_BACHELOR, EducationLevel::EDUCATION_LEVEL_MASTERS]);
             }
             case YouthEducation::EXAM_DEGREE_NAME:
             {
-                return $this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id) == BaseModel::PHD;
+                return $this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id) == EducationLevel::EDUCATION_LEVEL_PHD;
             }
             case YouthEducation::EDU_GROUP:
             {
-                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [BaseModel::SECONDARY, BaseModel::HIGHER_SECONDARY]);
+                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [EducationLevel::EDUCATION_LEVEL_SECONDARY, EducationLevel::EDUCATION_LEVEL_HIGHER_SECONDARY]);
             }
             /** Validation Rule Based On Result Type */
             case YouthEducation::MARKS:
             {
-                return in_array($this->getCodeById(YouthEducation::RESULT_TRIGGER, $id), [BaseModel::FIRST_DIVISION, BaseModel::SECOND_DIVISION, BaseModel::THIRD_DIVISION]);
+                return in_array($this->getCodeById(YouthEducation::RESULT_TRIGGER, $id), [EducationLevel::RESULT_FIRST_DIVISION, EducationLevel::RESULT_SECOND_DIVISION, EducationLevel::RESULT_THIRD_DIVISION]);
             }
             case YouthEducation::SCALE:
             case YouthEducation::CGPA:
             {
-                return $this->getCodeById(YouthEducation::RESULT_TRIGGER, $id) == BaseModel::GRADE;
+                return $this->getCodeById(YouthEducation::RESULT_TRIGGER, $id) == EducationLevel::RESULT_GRADE;
             }
             case YouthEducation::YEAR_OF_PASS:
             {
-                return in_array($this->getCodeById(YouthEducation::RESULT_TRIGGER, $id), [BaseModel::GRADE, BaseModel::ENROLLED, BaseModel::AWARDED, BaseModel::PASS]);
+                return in_array($this->getCodeById(YouthEducation::RESULT_TRIGGER, $id), [EducationLevel::RESULT_GRADE, EducationLevel::RESULT_ENROLLED, EducationLevel::RESULT_AWARDED, EducationLevel::RESULT_PASS]);
             }
             case YouthEducation::EXPECTED_YEAR_OF_EXPERIENCE:
             {
-                return $this->getCodeById(YouthEducation::RESULT_TRIGGER, $id) == BaseModel::APPEARED;
+                return $this->getCodeById(YouthEducation::RESULT_TRIGGER, $id) == EducationLevel::RESULT_APPEARED;
             }
             default:
             {

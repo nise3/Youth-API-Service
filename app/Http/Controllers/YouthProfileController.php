@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BaseModel;
 use App\Models\Youth;
+use App\Models\YouthAddress;
 use App\Services\YouthManagementServices\YouthAddressService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -107,7 +108,7 @@ class YouthProfileController extends Controller
                 Log::info("Youth user create in db----->email-->".$validated['email']);
 
                 $addressData['youth_id'] = $youth->id;
-                $addressData['address_type'] = BaseModel::ADDRESS_TYPE_PRESENT;
+                $addressData['address_type'] = YouthAddress::ADDRESS_TYPE_PRESENT;
                 $addressData['loc_division_id'] = $validated['loc_division_id'];
                 $addressData['loc_district_id'] = $validated['loc_district_id'];
                 $addressData['loc_upazila_id'] = isset($validated['loc_upazila_id']) ? $validated['loc_upazila_id'] : null;

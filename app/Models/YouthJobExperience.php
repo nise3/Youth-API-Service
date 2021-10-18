@@ -29,6 +29,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class YouthJobExperience extends BaseModel
 {
+    /** Working Status  */
+    public const CURRENTLY_WORKING = 1;
+    public const CURRENTLY_NOT_WORKING = 0;
+
     use SoftDeletes, HasFactory;
 
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE_SOFT_DELETE;

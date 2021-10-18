@@ -473,12 +473,12 @@ class YouthProfileService
             'religion' => [
                 'int',
                 'nullable',
-                Rule::in(BaseModel::RELIGIONS)
+                Rule::in(Youth::RELIGIONS)
             ],
             'marital_status' => [
                 'int',
                 'nullable',
-                Rule::in(BaseModel::MARITAL_STATUSES)
+                Rule::in(Youth::MARITAL_STATUSES)
             ],
             'nationality' => [
                 'int',

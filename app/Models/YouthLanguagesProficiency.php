@@ -21,6 +21,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class YouthLanguagesProficiency extends BaseModel
 {
+    /** YouthLanguagesProficiency Level */
+    public const EASY = 1;
+    public const NOT_EASY = 0;
+    public const FLUENTLY = 1;
+    public const NOT_FLUENTLY = 0;
+
     use SoftDeletes, HasFactory;
 
     protected $table = 'youth_languages_proficiencies';
