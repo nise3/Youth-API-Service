@@ -47,7 +47,10 @@ use PHPUnit\Util\Json;
  * @property-read  Collection skills
  */
 class Youth extends AuthBaseModel
+
 {
+    use SoftDeletes, HasFactory;
+
     /** Marital Statuses */
     public const MARITAL_STATUS_SINGLE = 1;
     public const MARITAL_STATUS_MARRIED = 2;
@@ -102,8 +105,6 @@ class Youth extends AuthBaseModel
         self::BIRTH_CARD,
         self::PASSPORT
     ];
-
-    use SoftDeletes, HasFactory;
 
     /**
      * @var string
