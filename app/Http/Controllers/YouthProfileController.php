@@ -169,11 +169,10 @@ class YouthProfileController extends Controller
      */
     public function youthProfileInfoUpdate(Request $request): JsonResponse
     {
-        $id = Auth::id();
         /** @var Youth $youth */
         $youth = Youth::findOrFail(Auth::id());
 
-        $validated = $this->youthProfileService->youthUpdateValidation($request, $id)->validate();
+        $validated = $this->youthProfileService->youthUpdateValidation($request, $youth)->validate();
 
         try {
             $data = $this->youthProfileService->update($youth, $validated);

@@ -86,7 +86,9 @@ abstract class BaseModel extends Model
     public const PASSWORD_REGEX = "regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/";
     public const PASSWORD_TYPE = "string";
     public const PASSWORD_MIN_LENGTH = "min:8";
+    public const PASSWORD_MIN_LENGTH_V1 = 8;
     public const PASSWORD_MAX_LENGTH = "max:50";
+    public const PASSWORD_MAX_LENGTH_V1 = 50;
 
     /** UserName Type */
     public const USER_NAME_TYPE_EMAIL = 1;
