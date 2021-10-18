@@ -727,8 +727,8 @@ class YouthProfileService
                     return $id == null;
                 }),
                 "required_with:password_confirmation",
-                BaseModel::PASSWORD_REGEX,
-                BaseModel::PASSWORD_TYPE,
+//                BaseModel::PASSWORD_REGEX,
+//                BaseModel::PASSWORD_TYPE,
                 BaseModel::PASSWORD_MIN_LENGTH,
                 BaseModel::PASSWORD_MAX_LENGTH,
                 "confirmed"
@@ -738,8 +738,8 @@ class YouthProfileService
                     return $id == null;
                 }),
                 "required_with:password",
-                BaseModel::PASSWORD_REGEX,
-                BaseModel::PASSWORD_TYPE,
+//                BaseModel::PASSWORD_REGEX,
+//                BaseModel::PASSWORD_TYPE,
                 BaseModel::PASSWORD_MIN_LENGTH,
                 BaseModel::PASSWORD_MAX_LENGTH,
             ],
