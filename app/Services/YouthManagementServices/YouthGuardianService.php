@@ -218,7 +218,7 @@ class YouthGuardianService
                     Log::debug($request->filled('relationship_type') && $request->get('relationship_type') == YouthGuardian::RELATIONSHIP_TYPE_OTHER);
                     return $request->filled('relationship_type') && $request->get('relationship_type') == YouthGuardian::RELATIONSHIP_TYPE_OTHER;
                 }),*/
-                'string'
+//                'string'
             ],
             'relationship_title_en' => [
                 'nullable',
