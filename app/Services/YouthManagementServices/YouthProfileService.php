@@ -56,6 +56,7 @@ class YouthProfileService
                 'loc_upazilas.title_en as upazila_title_en',
                 'youths.gender',
                 'youths.religion',
+                'youths.is_freelance_profile',
                 'youths.marital_status',
                 'youths.nationality',
                 'youths.email',
