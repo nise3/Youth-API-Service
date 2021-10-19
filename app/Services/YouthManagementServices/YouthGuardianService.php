@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,13 +27,13 @@ class YouthGuardianService
      */
     public function getGuardianList(array $request, Carbon $startTime): array
     {
+        $youthId = $request['youth_id'] ?? Auth::id();
         $guardianName = $request['name'] ?? "";
         $guardianNameEn = $request['name_en'] ?? "";
 
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $order = $request['order'] ?? "ASC";
-
 
         /** @var Builder $guardianBuilder */
         $guardianBuilder = YouthGuardian::select(
@@ -53,8 +52,8 @@ class YouthGuardianService
             ]
         );
 
-        if (is_int(Auth::id())) {
-            $guardianBuilder->where('youth_guardians.youth_id', Auth::id());
+        if (is_integer($youthId)) {
+            $guardianBuilder->where('youth_guardians.youth_id', $youthId);
         }
         if (!empty($guardianName)) {
             $guardianBuilder->where('youth_guardians.name', 'like', '%' . $guardianName . '%');
@@ -64,8 +63,7 @@ class YouthGuardianService
         }
 
         /** @var Collection $guardians */
-
-        if (is_numeric($paginate) || is_numeric($pageSize)) {
+        if (is_integer($paginate) || is_integer($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $guardians = $guardianBuilder->paginate($pageSize);
             $paginateData = (object)$guardians->toArray();
@@ -95,6 +93,7 @@ class YouthGuardianService
      */
     public function getOneGuardian(int $id, Carbon $startTime): array
     {
+        /** @var Builder $guardianBuilder */
         $guardianBuilder = YouthGuardian::select(
             [
                 'youth_guardians.id',
@@ -114,10 +113,10 @@ class YouthGuardianService
         $guardianBuilder->where('youth_guardians.id', $id);
 
         /** @var YouthGuardian $guardian */
-        $guardian = $guardianBuilder->first();
+        $guardian = $guardianBuilder->firstOrFail();
 
         return [
-            "data" => $guardian ?: [],
+            "data" => $guardian,
             "_response_status" => [
                 "success" => true,
                 "code" => Response::HTTP_OK,
@@ -129,12 +128,14 @@ class YouthGuardianService
     /**
      * @param array $data
      * @return YouthGuardian
+     * @throws \Throwable
      */
     public function createGuardian(array $data): YouthGuardian
     {
+        /** @var YouthGuardian $youthGuardian */
         $youthGuardian = app(YouthGuardian::class);
         $youthGuardian->fill($data);
-        $youthGuardian->save();
+        throw_if(!$youthGuardian->save(), 'RuntimeException', 'Youth Guardian has not been Saved to db.', 500);
         return $youthGuardian;
     }
 
@@ -142,21 +143,46 @@ class YouthGuardianService
      * @param YouthGuardian $youthGuardian
      * @param array $data
      * @return YouthGuardian
+     * @throws \Throwable
      */
     public function update(YouthGuardian $youthGuardian, array $data): YouthGuardian
     {
         $youthGuardian->fill($data);
-        $youthGuardian->save();
+        throw_if(!$youthGuardian->save(), 'RuntimeException', 'Youth Guardian has not been deleted.', 500);
         return $youthGuardian;
     }
 
     /**
      * @param YouthGuardian $youthGuardian
      * @return bool
+     * @throws \Throwable
      */
     public function destroy(YouthGuardian $youthGuardian): bool
     {
-        return $youthGuardian->delete();
+        throw_if(!$youthGuardian->delete(), 'RuntimeException', 'Youth Guardian has not been deleted.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthGuardian $youthGuardian
+     * @return bool
+     * @throws \Throwable
+     */
+    public function restore(YouthGuardian $youthGuardian): bool
+    {
+        throw_if(!$youthGuardian->restore(), 'RuntimeException', 'Youth Guardian has not been restored.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthGuardian $youthGuardian
+     * @return bool
+     * @throws \Throwable
+     */
+    public function forceDelete(YouthGuardian $youthGuardian): bool
+    {
+        throw_if(!$youthGuardian->forceDelete(), 'RuntimeException', 'Youth Guardian has not been successfully deleted forcefully.', 500);
+        return true;
     }
 
     /**
@@ -243,11 +269,12 @@ class YouthGuardianService
     public function filterValidator(Request $request): Validator
     {
         $customMessage = [
-            'order.in' => 'Order must be within ASC or DESC. [30000]'
+            'order.in' => 'Order must be within ASC or DESC. [30000]',
+            'relationship_type.in' => 'Relationship Type must be from (' . implode(',', YouthGuardian::RELATIONSHIP_TYPES) . '). [30000]',
         ];
 
-        if (!empty($request['order'])) {
-            $request['order'] = strtoupper($request['order']);
+        if ($request->filled('order')) {
+            $request->offsetSet('order', strtoupper($request->get('order')));
         }
 
         return \Illuminate\Support\Facades\Validator::make($request->all(), [
@@ -255,6 +282,10 @@ class YouthGuardianService
             'pageSize' => 'int|gt:0',
             'name' => 'nullable|string',
             'name_en' => 'nullable|string',
+            'relationship_type' => [
+                'nullable',
+                Rule::in(YouthGuardian::RELATIONSHIP_TYPES)
+            ],
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])

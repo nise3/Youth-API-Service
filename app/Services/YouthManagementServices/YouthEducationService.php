@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 
 /**
@@ -30,6 +31,7 @@ class YouthEducationService
      */
     public function getEducationList(array $request, Carbon $startTime): array
     {
+        $youthId = $request['youth_id'] ?? Auth::id();
         $instituteName = $request['institute_name'] ?? "";
         $instituteNameEn = $request['institute_name_en'] ?? "";
         $examinationTitleEn = $request['examination_title_en'] ?? "";
@@ -110,8 +112,8 @@ class YouthEducationService
         $educationBuilder->orderBy('youth_educations.id', $order);
 
 
-        if (is_numeric(Auth::id())) {
-            $educationBuilder->where('youth_educations.youth_id', Auth::id());
+        if (is_integer($youthId)) {
+            $educationBuilder->where('youth_educations.youth_id', $youthId);
         }
 
         if (!empty($instituteName)) {
@@ -145,8 +147,7 @@ class YouthEducationService
         $educationBuilder->where("youth_educations.youth_id", Auth::id());
 
         /** @var Collection $youth_educations */
-
-        if (is_numeric($paginate) || is_numeric($pageSize)) {
+        if (is_integer($paginate) || is_integer($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $youth_educations = $educationBuilder->paginate($pageSize);
             $paginateData = (object)$youth_educations->toArray();
@@ -234,10 +235,10 @@ class YouthEducationService
                 ->whereNull('edu_groups.deleted_at');
         });
 
-        $education = $educationBuilder->where("youth_educations.id", $id)->first();
+        $education = $educationBuilder->where("youth_educations.id", $id)->firstOrFail();
 
         return [
-            "data" => $education ?: [],
+            "data" => $education,
             "_response_status" => [
                 "success" => true,
                 "code" => Response::HTTP_OK,
@@ -250,11 +251,12 @@ class YouthEducationService
      * @param YouthEducation $youthEducation
      * @param array $data
      * @return YouthEducation
+     * @throws Throwable
      */
     public function createEducation(YouthEducation $youthEducation, array $data): YouthEducation
     {
         $youthEducation->fill($data);
-        $youthEducation->save();
+        throw_if(!$youthEducation->save(), 'RuntimeException', 'Youth Education Info has not been Saved to db.', 500);
         return $youthEducation;
     }
 
@@ -262,49 +264,75 @@ class YouthEducationService
      * @param YouthEducation $youthEducation
      * @param array $data
      * @return YouthEducation
+     * @throws Throwable
      */
     public function update(YouthEducation $youthEducation, array $data): YouthEducation
     {
         $youthEducation->fill($data);
-        $youthEducation->save();
+        throw_if(!$youthEducation->save(), 'RuntimeException', 'Youth Education Info has not been deleted.', 500);
         return $youthEducation;
     }
 
     /**
      * @param YouthEducation $youthEducation
      * @return bool
+     * @throws Throwable
      */
     public function destroy(YouthEducation $youthEducation): bool
     {
-        return $youthEducation->delete();
+        throw_if(!$youthEducation->delete(), 'RuntimeException', 'Youth Education Info has not been deleted.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthEducation $youthEducation
+     * @return bool
+     * @throws Throwable
+     */
+    public function restore(YouthEducation $youthEducation): bool
+    {
+        throw_if(!$youthEducation->restore(), 'RuntimeException', 'Youth Education Info has not been restored.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthEducation $youthEducation
+     * @return bool
+     * @throws Throwable
+     */
+    public function forceDelete(YouthEducation $youthEducation): bool
+    {
+        throw_if(!$youthEducation->forceDelete(), 'RuntimeException', 'Youth Education Info has not been successfully deleted forcefully.', 500);
+        return true;
     }
 
     /**
      * @param Request $request
-     * return use Illuminate\Support\Facades\Validator;
      * @param int|null $id
      * @return Validator
-     */
+     **/
     public function validator(Request $request, int $id = null): Validator
     {
-        $request['deleted_at'] = null;
+        $request->offsetSet('deleted_at', null);
+
         $rules = [
             'youth_id' => [
                 'required',
-                'exists:youths,id,deleted_at,NULL',
                 'int',
+                'exists:youths,id,deleted_at,NULL',
             ],
             'education_level_id' => [
                 'required',
                 'min:1',
+                'integer',
                 'exists:education_levels,id,deleted_at,NULL',
                 'unique_with:youth_educations,youth_id,deleted_at,' . $id,
-                'integer'
             ],
             "exam_degree_id" => [
                 Rule::requiredIf(function () use ($request) {
                     return $this->getRequiredStatus(YouthEducation::DEGREE, $request->education_level_id);
                 }),
+                'nullable',
                 Rule::in(ExamDegree::where("education_level_id", $request->education_level_id)->pluck('id')->toArray()),
                 'min:1',
                 'unique_with:youth_educations,youth_id,deleted_at,' . $id,
@@ -315,6 +343,7 @@ class YouthEducationService
                 Rule::requiredIf(function () use ($request) {
                     return $this->getRequiredStatus(YouthEducation::EXAM_DEGREE_NAME, $request->education_level_id);
                 }),
+                'nullable',
                 "string"
             ],
             "exam_degree_name_en" => [
@@ -325,6 +354,7 @@ class YouthEducationService
                 Rule::requiredIf(function () use ($request) {
                     return $this->getRequiredStatus(YouthEducation::MAJOR, $request->education_level_id);
                 }),
+                'nullable',
                 "string"
             ],
             "major_or_concentration_en" => [
@@ -335,6 +365,7 @@ class YouthEducationService
                 Rule::requiredIf(function () use ($request) {
                     return $this->getRequiredStatus(YouthEducation::EDU_GROUP, $request->education_level_id);
                 }),
+                'nullable',
                 'exists:edu_groups,id,deleted_at,NULL',
                 'unique_with:youth_educations,exam_degree_id,,deleted_at,' . $id,
                 "integer"
@@ -343,6 +374,7 @@ class YouthEducationService
                 Rule::requiredIf(function () use ($request) {
                     return $this->getRequiredStatus(YouthEducation::BOARD, $request->education_level_id);
                 }),
+                'nullable',
                 'exists:edu_boards,id,deleted_at,NULL',
 //                'unique_with:youth_educations,exam_degree_id,' . $id,
                 "integer"
@@ -366,6 +398,7 @@ class YouthEducationService
                 Rule::requiredIf(function () use ($request) {
                     return BaseModel::TRUE == $request->is_foreign_institute;
                 }),
+                'nullable',
                 "integer"
             ],
             "result" => [
@@ -377,12 +410,14 @@ class YouthEducationService
                 Rule::requiredIf(function () use ($request) { //TODO: rename YouthEducation::MARKS
                     return $this->getRequiredStatus(YouthEducation::BOARD, $request->result);
                 }),
+                'nullable',
                 "numeric"
             ],
             "cgpa_scale" => [
                 Rule::requiredIf(function () use ($request) {
                     return $this->getRequiredStatus(YouthEducation::SCALE, $request->result);
                 }),
+                'nullable',
                 Rule::in([YouthEducation::GPA_OUT_OF_FOUR, YouthEducation::GPA_OUT_OF_FIVE]),
                 "integer"
             ],
@@ -396,6 +431,7 @@ class YouthEducationService
                 Rule::requiredIf(function () use ($request) {
                     return $this->getRequiredStatus(YouthEducation::YEAR_OF_PASS, $request->result);
                 }),
+                'nullable',
                 'string'
             ],
             "duration" => [
@@ -422,14 +458,11 @@ class YouthEducationService
     public function filterValidator(Request $request): Validator
     {
         $customMessage = [
-            'order.in' => [
-                'code' => 30000,
-                "message" => 'Order must be within ASC or DESC',
-            ]
+            'order.in' => 'Order must be within ASC or DESC. [30000]'
         ];
 
-        if (!empty($request['order'])) {
-            $request['order'] = strtoupper($request['order']);
+        if ($request->filled('order')) {
+            $request->offsetSet('order', strtoupper($request->get('order')));
         }
 
         return \Illuminate\Support\Facades\Validator::make($request->all(), [

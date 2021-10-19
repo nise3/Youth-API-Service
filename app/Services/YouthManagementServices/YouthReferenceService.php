@@ -57,8 +57,8 @@ class YouthReferenceService
             $referenceBuilder->where('youth_references.youth_id', $youthId);
         }
 
+        $response = [];
         /** @var Collection $references */
-
         if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $references = $referenceBuilder->paginate($pageSize);
@@ -296,8 +296,8 @@ class YouthReferenceService
             'order.in' =>  'Order must be either ASC or DESC. [30000]'
         ];
 
-        if (!empty($request['order'])) {
-            $request['order'] = strtoupper($request['order']);
+        if ($request->filled('order')) {
+            $request->offsetSet('order', strtoupper($request->get('order')));
         }
 
         return Validator::make($request->all(), [

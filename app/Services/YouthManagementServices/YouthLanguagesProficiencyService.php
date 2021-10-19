@@ -124,13 +124,13 @@ class YouthLanguagesProficiencyService
     /**
      * @param array $data
      * @return YouthLanguagesProficiency
+     * @throws \Throwable
      */
     public function store(array $data): YouthLanguagesProficiency
     {
-
         $languagesProficiency = app(YouthLanguagesProficiency::class);
         $languagesProficiency->fill($data);
-        $languagesProficiency->save();
+        throw_if(!$languagesProficiency->save(), 'RuntimeException', 'Youth Language Proficiency has not been Saved to db.', 500);
         return $languagesProficiency;
     }
 
@@ -138,21 +138,46 @@ class YouthLanguagesProficiencyService
      * @param YouthLanguagesProficiency $languagesProficiency
      * @param array $data
      * @return YouthLanguagesProficiency
+     * @throws \Throwable
      */
     public function update(YouthLanguagesProficiency $languagesProficiency, array $data): YouthLanguagesProficiency
     {
         $languagesProficiency->fill($data);
-        $languagesProficiency->save();
+        throw_if(!$languagesProficiency->save(), 'RuntimeException', 'Youth Language Proficiency has not been updated to db.', 500);
         return $languagesProficiency;
     }
 
     /**
      * @param YouthLanguagesProficiency $languagesProficiency
      * @return bool
+     * @throws \Throwable
      */
     public function destroy(YouthLanguagesProficiency $languagesProficiency): bool
     {
-        return $languagesProficiency->delete();
+        throw_if(!$languagesProficiency->delete(), 'RuntimeException', 'Youth Language Proficiency has not been deleted.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthLanguagesProficiency $languagesProficiency
+     * @return bool
+     * @throws \Throwable
+     */
+    public function restore(YouthLanguagesProficiency $languagesProficiency): bool
+    {
+        throw_if(!$languagesProficiency->restore(), 'RuntimeException', 'Youth Language Proficiency has not been restored.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthLanguagesProficiency $languagesProficiency
+     * @return bool
+     * @throws \Throwable
+     */
+    public function forceDelete(YouthLanguagesProficiency $languagesProficiency): bool
+    {
+        throw_if(!$languagesProficiency->forceDelete(), 'RuntimeException', 'Youth Language Proficiency has not been successfully deleted forcefully.', 500);
+        return true;
     }
 
     /**
@@ -167,14 +192,14 @@ class YouthLanguagesProficiencyService
         $rules = [
             'youth_id' => [
                 'required',
-                'exists:youths,id,deleted_at,NULL',
                 'int',
+                'exists:youths,id,deleted_at,NULL',
             ],
             'language_id' => [
                 'required',
+                'int',
                 'exists:languages,id,deleted_at,NULL',
                 'unique_with:youth_languages_proficiencies,youth_id,deleted_at,' . $id,
-                'int',
             ],
             'reading_proficiency_level' => [
                 'required',
@@ -213,14 +238,11 @@ class YouthLanguagesProficiencyService
     public function filterValidator(Request $request): \Illuminate\Contracts\Validation\Validator
     {
         $customMessage = [
-            'order.in' => [
-                'code' => 30000,
-                "message" => 'Order must be either ASC or DESC',
-            ]
+            'order.in' => 'Order must be either ASC or DESC. [30000]'
         ];
 
-        if (!empty($request['order'])) {
-            $request['order'] = strtoupper($request['order']);
+        if ($request->filled('order')) {
+            $request->offsetSet('order', strtoupper($request->get('order')));
         }
 
         return Validator::make($request->all(), [

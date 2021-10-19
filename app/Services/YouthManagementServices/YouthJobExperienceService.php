@@ -24,6 +24,7 @@ class YouthJobExperienceService
 
     public function getAllJobExperiences(array $request, Carbon $startTime): array
     {
+        $youthId = $request['youth_id'] ?? Auth::id();
         $companyNameEn = $request['company_name_en'] ?? "";
         $companyNameBn = $request['company_name_bn'] ?? "";
         $paginate = $request['page'] ?? "";
@@ -49,8 +50,8 @@ class YouthJobExperienceService
             'youth_job_experiences.updated_at'
         ]);
 
-        if (is_numeric(Auth::id())) {
-            $jobExperienceBuilder->where('youth_job_experiences.youth_id', Auth::id());
+        if (is_integer($youthId)) {
+            $jobExperienceBuilder->where('youth_job_experiences.youth_id', $youthId);
         }
 
         $jobExperienceBuilder->orderBy('youth_job_experiences.id', $order);
@@ -64,7 +65,7 @@ class YouthJobExperienceService
 
         /** @var Collection $jobExperiences */
 
-        if (is_numeric($paginate) || is_numeric($pageSize)) {
+        if (is_integer($paginate) || is_integer($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $jobExperiences = $jobExperienceBuilder->paginate($pageSize);
             $paginateData = (object)$jobExperiences->toArray();
@@ -115,10 +116,10 @@ class YouthJobExperienceService
         $jobExperienceBuilder->where('youth_job_experiences.id', $id);
 
         /** @var YouthJobExperience $jobExperience */
-        $jobExperience = $jobExperienceBuilder->first();
+        $jobExperience = $jobExperienceBuilder->firstOrFail();
 
         return [
-            "data" => $jobExperience ?: [],
+            "data" => $jobExperience,
             "_response_status" => [
                 "success" => true,
                 "code" => Response::HTTP_OK,
@@ -132,11 +133,12 @@ class YouthJobExperienceService
      * @param YouthJobExperience $jobExperience
      * @param array $data
      * @return YouthJobExperience
+     * @throws \Throwable
      */
     public function store(YouthJobExperience $jobExperience, array $data): YouthJobExperience
     {
         $jobExperience->fill($data);
-        $jobExperience->save();
+        throw_if(!$jobExperience->save(), 'RuntimeException', 'Youth Job Experience has not been Saved to db.', 500);
         return $jobExperience;
     }
 
@@ -144,21 +146,46 @@ class YouthJobExperienceService
      * @param YouthJobExperience $jobExperience
      * @param array $data
      * @return YouthJobExperience
+     * @throws \Throwable
      */
     public function update(YouthJobExperience $jobExperience, array $data): YouthJobExperience
     {
         $jobExperience->fill($data);
-        $jobExperience->save();
+        throw_if(!$jobExperience->save(), 'RuntimeException', 'Youth Job Experience has not been deleted.', 500);
         return $jobExperience;
     }
 
     /**
      * @param YouthJobExperience $jobExperience
      * @return bool
+     * @throws \Throwable
      */
     public function destroy(YouthJobExperience $jobExperience): bool
     {
-        return $jobExperience->delete();
+        throw_if(!$jobExperience->delete(), 'RuntimeException', 'Youth Job Experience has not been deleted.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthJobExperience $jobExperience
+     * @return bool
+     * @throws \Throwable
+     */
+    public function restore(YouthJobExperience $jobExperience): bool
+    {
+        throw_if(!$jobExperience->restore(), 'RuntimeException', 'Youth Job Experience has not been restored.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthJobExperience $jobExperience
+     * @return bool
+     * @throws \Throwable
+     */
+    public function forceDelete(YouthJobExperience $jobExperience): bool
+    {
+        throw_if(!$jobExperience->forceDelete(), 'RuntimeException', 'Youth Job Experience has not been successfully deleted forcefully.', 500);
+        return true;
     }
 
     /**
@@ -171,19 +198,19 @@ class YouthJobExperienceService
             'order.in' => 'Order must be either ASC or DESC. [30000]'
         ];
 
-        if (!empty($request['order'])) {
-            $request['order'] = strtoupper($request['order']);
+        if ($request->filled('order')) {
+            $request->offsetSet('order', strtoupper($request->get('order')));
         }
 
         return Validator::make($request->all(), [
-            'page' => 'numeric|gt:0',
-            'company_name' => 'nullable|max:300|min:2',
+            'page' => 'integer|gt:0',
+            'company_name' => 'nullable|max:600|min:2',
             'company_name_en' => 'nullable|max:300|min:2',
-            'location' => 'nullable|max:300|min:2',
+            'location' => 'nullable|max:600|min:2',
             'location_en' => 'nullable|max:300|min:2',
             'position' => 'nullable|max:300|min:2',
-            'position_en' => 'nullable|max:300|min:2',
-            'page_size' => 'numeric|gt:0',
+            'position_en' => 'nullable|max:150|min:2',
+            'page_size' => 'integer|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
@@ -210,12 +237,13 @@ class YouthJobExperienceService
             'employment_type_id' => [
                 'required',
                 'int',
-                'min:1'
+                'min:1',
+                'exists:employment_types,id,deleted_at,NULL',
             ],
             'company_name' => [
                 'required',
                 'string',
-                'max:300'
+                'max:600'
             ],
             'company_name_en' => [
                 'nullable',
@@ -225,7 +253,7 @@ class YouthJobExperienceService
             'position' => [
                 'required',
                 'string',
-                'max:150'
+                'max:300'
             ],
             'position_en' => [
                 'nullable',
@@ -235,7 +263,7 @@ class YouthJobExperienceService
             'location' => [
                 'required',
                 'string',
-                'max:300'
+                'max:600'
             ],
             'location_en' => [
                 'nullable',

@@ -24,6 +24,7 @@ class YouthPortfolioService
 
     public function getAllPortfolios(array $request, Carbon $startTime): array
     {
+        $youthId = $request['youth_id'] ?? Auth::id();
         $title = $request['title'] ?? "";
         $titleEn = $request['title_en'] ?? "";
         $paginate = $request['page'] ?? "";
@@ -44,8 +45,8 @@ class YouthPortfolioService
         ]);
         $portfolioBuilder->orderBy('youth_portfolios.id', $order);
 
-        if (is_int(Auth::id())) {
-            $portfolioBuilder->where('youth_portfolios.youth_id', Auth::id());
+        if (is_integer($youthId)) {
+            $portfolioBuilder->where('youth_portfolios.youth_id', $youthId);
         }
 
         if (!empty($title)) {
@@ -103,10 +104,10 @@ class YouthPortfolioService
         $portfolioBuilder->where('youth_portfolios.id', $id);
 
         /** @var YouthPortfolio $portfolio */
-        $portfolio = $portfolioBuilder->first();
+        $portfolio = $portfolioBuilder->firstOrFail();
 
         return [
-            "data" => $portfolio ?: [],
+            "data" => $portfolio,
             "_response_status" => [
                 "success" => true,
                 "code" => Response::HTTP_OK,
@@ -119,12 +120,13 @@ class YouthPortfolioService
     /**
      * @param array $data
      * @return YouthPortfolio
+     * @throws \Throwable
      */
     public function store(array $data): YouthPortfolio
     {
-        $portfolio = new YouthPortfolio();
+        $portfolio = app(YouthPortfolio::class);
         $portfolio->fill($data);
-        $portfolio->save();
+        throw_if(!$portfolio->save(), 'RuntimeException', 'Youth Portfolio has not been Saved to db.', 500);
         return $portfolio;
     }
 
@@ -132,21 +134,46 @@ class YouthPortfolioService
      * @param YouthPortfolio $portfolio
      * @param array $data
      * @return YouthPortfolio
+     * @throws \Throwable
      */
     public function update(YouthPortfolio $portfolio, array $data): YouthPortfolio
     {
         $portfolio->fill($data);
-        $portfolio->save();
+        throw_if(!$portfolio->save(), 'RuntimeException', 'Youth Portfolio has not been deleted.', 500);
         return $portfolio;
     }
 
     /**
      * @param YouthPortfolio $portfolio
      * @return bool
+     * @throws \Throwable
      */
     public function destroy(YouthPortfolio $portfolio): bool
     {
-        return $portfolio->delete();
+        throw_if(!$portfolio->delete(), 'RuntimeException', 'Youth Portfolio has not been deleted.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthPortfolio $portfolio
+     * @return bool
+     * @throws \Throwable
+     */
+    public function restore(YouthPortfolio $portfolio): bool
+    {
+        throw_if(!$portfolio->restore(), 'RuntimeException', 'Youth Portfolio has not been restored.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthPortfolio $portfolio
+     * @return bool
+     * @throws \Throwable
+     */
+    public function forceDelete(YouthPortfolio $portfolio): bool
+    {
+        throw_if(!$portfolio->forceDelete(), 'RuntimeException', 'Youth Portfolio has not been successfully deleted forcefully.', 500);
+        return true;
     }
 
     /**
@@ -199,14 +226,11 @@ class YouthPortfolioService
     public function filterValidator(Request $request): \Illuminate\Contracts\Validation\Validator
     {
         $customMessage = [
-            'order.in' => [
-                'code' => 30000,
-                "message" => 'Order must be within ASC or DESC',
-            ]
+            'order.in' => 'Order must be within ASC or DESC. [30000]'
         ];
 
-        if (!empty($request['order'])) {
-            $request['order'] = strtoupper($request['order']);
+        if ($request->filled('order')) {
+            $request->offsetSet('order', strtoupper($request->get('order')));
         }
 
         return Validator::make($request->all(), [
