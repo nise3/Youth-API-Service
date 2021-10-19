@@ -595,18 +595,18 @@ class YouthProfileService
             "last_name_en" => "nullable|string|min:2|max:250",
             "loc_division_id" => [
                 "required",
+                "int",
                 "exists:loc_divisions,id,deleted_at,NULL",
-                "int"
             ],
             "loc_district_id" => [
                 "required",
+                "int",
                 "exists:loc_districts,id,deleted_at,NULL",
-                "int"
             ],
             "loc_upazila_id" => [
                 "nullable",
+                "int",
                 "exists:loc_upazilas,id,deleted_at,NULL",
-                "int"
             ],
             "date_of_birth" => [
                 "required",

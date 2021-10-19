@@ -6,7 +6,6 @@ namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
 use App\Models\YouthAddress;
-use App\Models\YouthLanguagesProficiency;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -14,7 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class YouthAddressService
@@ -153,35 +151,62 @@ class YouthAddressService
 
     /**
      * @param array $data
-     * @return bool
+     * @return YouthAddress
+     * @throws \Throwable
      */
-    public function store(array $data): bool
+    public function store(array $data): YouthAddress
     {
         /** @var YouthAddress $address */
         $address = app(YouthAddress::class);
         $address->fill($data);
-        return $address->save();
+        throw_if($address->save(), 'RuntimeException', 'Youth Address has not been Saved to db.', 500);
+        return $address;
     }
 
     /**
      * @param YouthAddress $youthAddress
      * @param array $data
      * @return YouthAddress
+     * @throws \Throwable
      */
     public function update(YouthAddress $youthAddress, array $data): YouthAddress
     {
         $youthAddress->fill($data);
-        $youthAddress->save();
+        throw_if($youthAddress->save(), 'RuntimeException', 'Youth Address has not been updated to db.', 500);
         return $youthAddress;
     }
 
     /**
      * @param YouthAddress $youthAddress
      * @return bool
+     * @throws \Throwable
      */
     public function destroy(YouthAddress $youthAddress): bool
     {
-        return $youthAddress->delete();
+        throw_if($youthAddress->delete(), 'RuntimeException', 'Youth Address has not been deleted.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthAddress $youthAddress
+     * @return bool
+     * @throws \Throwable
+     */
+    public function restore(YouthAddress $youthAddress): bool
+    {
+        throw_if($youthAddress->restore(), 'RuntimeException', 'Youth Address has not been restored.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthAddress $youthAddress
+     * @return bool
+     * @throws \Throwable
+     */
+    public function forceDelete(YouthAddress $youthAddress): bool
+    {
+        throw_if($youthAddress->forceDelete(), 'RuntimeException', 'Youth Address has not been successfully deleted forcefully.', 500);
+        return true;
     }
 
     /**
@@ -191,7 +216,6 @@ class YouthAddressService
      */
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
-        $customMessage = [];
 
         $rules = [
             'youth_id' => [
@@ -204,17 +228,20 @@ class YouthAddressService
                 'int',
                 Rule::in([YouthAddress::ADDRESS_TYPE_PRESENT, YouthAddress::ADDRESS_TYPE_PERMANENT, YouthAddress::ADDRESS_TYPE_OTHERS])
             ],
-            'loc_division_id' => [
-                'required',
-                'integer',
+            "loc_division_id" => [
+                "required",
+                "int",
+                "exists:loc_divisions,id,deleted_at,NULL",
             ],
-            'loc_district_id' => [
-                'required',
-                'integer',
+            "loc_district_id" => [
+                "required",
+                "int",
+                "exists:loc_districts,id,deleted_at,NULL",
             ],
-            'loc_upazila_id' => [
-                'nullable',
-                'integer',
+            "loc_upazila_id" => [
+                "nullable",
+                "int",
+                "exists:loc_upazilas,id,deleted_at,NULL",
             ],
             'village_or_area' => [
                 'nullable',
@@ -247,7 +274,7 @@ class YouthAddressService
                 'min:4'
             ],
         ];
-        return Validator::make($request->all(), $rules, $customMessage);
+        return Validator::make($request->all(), $rules);
     }
 
     /**
@@ -257,10 +284,7 @@ class YouthAddressService
     public function filterValidator(Request $request): \Illuminate\Contracts\Validation\Validator
     {
         $customMessage = [
-            'order.in' => [
-                'code' => 30000,
-                "message" => 'Order must be either ASC or DESC',
-            ]
+            'order.in' => 'Order must be either ASC or DESC. [30000]'
         ];
 
         if (!empty($request['order'])) {

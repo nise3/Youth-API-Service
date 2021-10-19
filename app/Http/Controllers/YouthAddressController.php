@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Skill;
 use App\Models\YouthAddress;
 use App\Services\YouthManagementServices\YouthAddressService;
 use Carbon\Carbon;
@@ -90,7 +91,7 @@ class YouthAddressController extends Controller
         try {
             $data = $this->youthAddressService->store($validated);
             $response = [
-                'data' => $data ?: null,
+                'data' => $data,
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_CREATED,
@@ -123,7 +124,7 @@ class YouthAddressController extends Controller
         try {
             $data = $this->youthAddressService->update($guardian, $validated);
             $response = [
-                'data' => $data ?: null,
+                'data' => $data,
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_OK,
@@ -162,5 +163,54 @@ class YouthAddressController extends Controller
             throw $e;
         }
 
+    }
+    /**
+     * @param int $id
+     * @return JsonResponse
+     * @throws Throwable
+     */
+    public function restore(int $id): JsonResponse
+    {
+        $guardian = YouthAddress::onlyTrashed()->findOrFail($id);
+        try {
+            $this->youthAddressService->restore($guardian);
+            $response = [
+                '_response_status' => [
+                    "success" => true,
+                    "code" => ResponseAlias::HTTP_OK,
+                    "message" => "Skill restored successfully",
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+                ]
+            ];
+            return Response::json($response, ResponseAlias::HTTP_OK);
+
+        } catch (Throwable $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return JsonResponse
+     * @throws Throwable
+     */
+    public function forceDelete(int $id): JsonResponse
+    {
+        $guardian = YouthAddress::onlyTrashed()->findOrFail($id);
+        try {
+            $this->youthAddressService->forceDelete($guardian);
+            $response = [
+                '_response_status' => [
+                    "success" => true,
+                    "code" => ResponseAlias::HTTP_OK,
+                    "message" => "Skill Permanently Deleted Successfully",
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+                ]
+            ];
+
+            return Response::json($response, ResponseAlias::HTTP_OK);
+        } catch (Throwable $e) {
+            throw $e;
+        }
     }
 }
