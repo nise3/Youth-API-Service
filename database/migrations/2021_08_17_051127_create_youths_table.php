@@ -15,7 +15,9 @@ class CreateYouthsTable extends Migration
         Schema::create('youths', function (Blueprint $table) {
             $table->increments('id');
             $table->string("idp_user_id", 100)->nullable();
-            $table->unsignedTinyInteger("is_freelance_profile")->default(0);
+            $table->unsignedTinyInteger("is_freelance_profile")
+                ->default(0)
+                ->comment('1 => Yes, 0 => No');
 
             $table->string("username", 100)->unique()
                 ->comment("username is either email or mobile");

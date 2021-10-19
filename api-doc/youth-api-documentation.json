@@ -295,6 +295,30 @@
                         "$ref": "#/components/parameters/order"
                     },
                     {
+                        "name": "is_freelance_profile",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "loc_division_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "loc_district_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
                         "name": "first_name",
                         "in": "query",
                         "required": false,
@@ -303,7 +327,7 @@
                         }
                     },
                     {
-                        "name": "flast_name",
+                        "name": "last_name",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -325,6 +349,7 @@
                                         {
                                             "id": 1,
                                             "username": "enola.skiles@example.net",
+                                            "is_freelance_profile": 0,
                                             "user_name_type": 1,
                                             "first_name": "Liliane McClure V",
                                             "first_name_en": null,
@@ -3638,6 +3663,9 @@
                     },
                     "username": {
                         "type": "string"
+                    },
+                    "is_freelance_profile": {
+                        "type": "integer"
                     },
                     "user_name_type": {
                         "type": "integer"

@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +27,10 @@ class YouthService
     {
         $firstName = $requestp['first_name'] ?? "";
         $lastName = $request['last_name'] ?? "";
+        $isFreelanceProfile = $request['is_freelance_profile'] ?? "";
+        $divisionId = $request['loc_division_id'] ?? "";
+        $districtId = $request['loc_district_id'] ?? "";
+
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
@@ -51,6 +56,8 @@ class YouthService
                 'youths.loc_upazila_id',
                 'loc_upazilas.title as upazila_title',
                 'loc_upazilas.title_en as upazila_title_en',
+                DB::raw('SUBSTR(youths.bio, 0, 80) as youth_bio'),
+                DB::raw('SUBSTR(youths.bio_en, 0, 80) as youth_bio_en'),
                 'youths.gender',
                 'youths.religion',
                 'youths.marital_status',
@@ -87,6 +94,7 @@ class YouthService
             $join->on('youths.loc_upazila_id', '=', 'loc_upazilas.id')
                 ->whereNull('loc_upazilas.deleted_at');
         });
+
         $youthBuilder->with('skills');
         if (!empty($firstName)) {
             $youthBuilder->where('youths.first_name', 'like', '%' . $firstName . '%');
@@ -96,10 +104,21 @@ class YouthService
             $youthBuilder->where('youths.last_name', 'like', '%' . $lastName . '%');
         }
 
+        if ($isFreelanceProfile !== '' && is_integer($isFreelanceProfile)) {
+            $youthBuilder->where('youths.is_freelance_profile', '=', $isFreelanceProfile);
+        }
+
         if (is_integer($rowStatus)) {
             $youthBuilder->where('youths.row_status', $rowStatus);
         }
 
+        if (is_integer($divisionId) && $divisionId) {
+            $youthBuilder->where('youths.loc_division_id', $divisionId);
+        }
+
+        if (is_integer($districtId) && $districtId) {
+            $youthBuilder->where('youths.loc_district_id', $districtId);
+        }
 
         /** @var Collection $youths */
 
@@ -257,14 +276,9 @@ class YouthService
     public function filterValidator(Request $request): \Illuminate\Contracts\Validation\Validator
     {
         $customMessage = [
-            'order.in' => [
-                'code' => 30000,
-                "message" => 'Order must be within ASC or DESC',
-            ],
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
-            ]
+            'order.in' => 'Order must be either ASC or DESC. [30000]',
+            'row_status.in' => 'Row status must be either 1 or 0. [30000]',
+            'is_freelance_profile.in' => "'Is Freelance Profile' must be either 1 or 0. [30000]",
         ];
 
         if (!empty($request['order'])) {
@@ -276,6 +290,21 @@ class YouthService
             'first_name_en' => 'nullable|max:150|min:2',
             'last_name' => 'nullable|max:300|min:2',
             'last_name_en' => 'nullable|max:150|min:2',
+            'is_freelance_profile' => [
+                'nullable',
+                'int',
+                Rule::in([0, 1])
+            ],
+            "loc_division_id" => [
+                "nullable",
+                "int",
+                "exists:loc_divisions,id,deleted_at,NULL",
+            ],
+            "loc_district_id" => [
+                "nullable",
+                "int",
+                "exists:loc_districts,id,deleted_at,NULL",
+            ],
             'page' => 'integer|gt:0',
             'pageSize' => 'integer|gt:0',
             'order' => [
@@ -292,7 +321,7 @@ class YouthService
     /**
      * @return array
      */
-    public function getEducationBasicTablesInfos(): array
+    public function getEducationBasicTablesInfos()
     {
         return [
             "edu_groups" => EduGroup::all(),
