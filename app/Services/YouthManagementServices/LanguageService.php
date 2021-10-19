@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\YouthManagementServices;
-
 
 use App\Models\BaseModel;
 use App\Models\Language;
@@ -12,11 +10,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Symfony\Component\HttpFoundation\Response;
 
 class LanguageService
 {
-    public function getAllLanguageList(array $request, Carbon $startTime)
+    /**
+     * @param array $request
+     * @param Carbon $startTime
+     * @return array
+     */
+    public function getAllLanguageList(array $request, Carbon $startTime): array
     {
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
@@ -28,7 +30,7 @@ class LanguageService
         $languageBuilder->orderBy('languages.id', $order);
 
         /** @var Collection $languages */
-
+        $response = [];
         if (is_integer($paginate) || is_integer($pageSize)) {
             $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $languages = $languageBuilder->paginate($pageSize);
@@ -43,11 +45,8 @@ class LanguageService
 
         $response['order'] = $order;
         $response['data'] = $languages->toArray()['data'] ?? $languages->toArray();
-        $response['response_status'] = [
-            "success" => true,
-            "code" => Response::HTTP_OK,
-            "query_time" => $startTime->diffInSeconds(Carbon::now())
-        ];
+        $response['query_time'] = $startTime->diffInSeconds(Carbon::now());
+
         return $response;
     }
 
@@ -58,10 +57,7 @@ class LanguageService
     public function filterValidator(Request $request): Validator
     {
         $customMessage = [
-            'order.in' => [
-                'code' => 30000,
-                "message" => 'Order must be within ASC or DESC',
-            ]
+            'order.in' => 'Order must be within ASC or DESC. [30000]'
         ];
 
         if (!empty($request['order'])) {

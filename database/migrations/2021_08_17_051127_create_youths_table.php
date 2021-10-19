@@ -48,7 +48,7 @@ class CreateYouthsTable extends Migration
             $table->unsignedSmallInteger('nationality')->default(1);
             /** Coming from nise3 config file */
 
-            $table->string('email', 200)->nullable();
+            $table->string('email', 255)->nullable();
             $table->string('mobile', 20)->nullable();
 
             $table->unsignedTinyInteger('identity_number_type')
@@ -58,12 +58,15 @@ class CreateYouthsTable extends Migration
 
             $table->unsignedTinyInteger('freedom_fighter_status')
                 ->comment('1 => No, 2 => Yes, 3=> child of a freedom fighter, 4 => grand child of a freedom fighter')
-                ->default(0);
+                ->default(1);
 
             $table->unsignedTinyInteger('physical_disability_status')
-                ->comment('0=>No, 1=>Yes')->default(0);
+                ->comment('0=>No, 1=>Yes')
+                ->default(0);
 
-            $table->unsignedTinyInteger('does_belong_to_ethnic_group')->default(0);
+            $table->unsignedTinyInteger('does_belong_to_ethnic_group')
+                ->comment('0=>No, 1=>Yes')
+                ->default(0);
 
             $table->text("bio")->nullable();
             $table->text("bio_en")->nullable();

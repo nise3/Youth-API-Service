@@ -762,7 +762,7 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "user_name_type": "1",
+                                        "user_name_type": "2",
                                         "first_name": "asdfcsdfv",
                                         "first_name_en": null,
                                         "last_name": "wsdgfdfg",
@@ -772,22 +772,10 @@
                                         "loc_upazila_id": "1",
                                         "date_of_birth": "1990-12-12T00:00:00.000000Z",
                                         "gender": "1",
-                                        "religion": null,
-                                        "marital_status": null,
-                                        "nationality": "2",
                                         "email": "fffffff@gmail.com",
                                         "mobile": "01308866287",
-                                        "identity_number_type": null,
-                                        "identity_number": null,
-                                        "freedom_fighter_status": "1",
                                         "physical_disability_status": "1",
-                                        "does_belong_to_ethnic_group": "1",
-                                        "bio": null,
-                                        "bio_en": null,
-                                        "photo": null,
-                                        "cv_path": null,
-                                        "signature_image_path": null,
-                                        "username": "fffffff@gmail.com",
+                                        "username": "01308866287",
                                         "verification_code_sent_at": "2021-10-17T16:02:27.000000Z",
                                         "row_status": 2,
                                         "updated_at": "2021-10-17T16:02:27.000000Z",
@@ -824,11 +812,11 @@
                                 "example": {
                                     "data": {
                                         "id": 1,
-                                        "username": "beatrice97@example.org",
+                                        "username": "vwitting@example.com",
                                         "user_name_type": 1,
-                                        "first_name": "Elta Mante",
+                                        "first_name": "Prof. Barbara Altenwerth DDS",
                                         "first_name_en": null,
-                                        "last_name": "Elta Mante",
+                                        "last_name": "Prof. Barbara Altenwerth DDS",
                                         "last_name_en": null,
                                         "loc_division_id": null,
                                         "division_title": null,
@@ -839,12 +827,12 @@
                                         "loc_upazila_id": null,
                                         "upazila_title": null,
                                         "upazila_title_en": null,
-                                        "gender": 1,
+                                        "gender": 2,
                                         "religion": null,
                                         "marital_status": null,
                                         "nationality": 1,
-                                        "email": "beatrice97@example.org",
-                                        "mobile": "01788510903",
+                                        "email": "vwitting@example.com",
+                                        "mobile": "01724643197",
                                         "identity_number_type": null,
                                         "identity_number": null,
                                         "date_of_birth": "-000001-11-30T00:00:00.000000Z",
@@ -857,10 +845,9 @@
                                         "cv_path": null,
                                         "signature_image_path": null,
                                         "row_status": 1,
-                                        "created_at": "2021-10-17T09:31:01.000000Z",
-                                        "updated_at": "2021-10-17T09:31:01.000000Z",
-                                        "physical_disabilities": [
-                                        ],
+                                        "created_at": "2021-10-17T06:23:35.000000Z",
+                                        "updated_at": "2021-10-17T06:23:35.000000Z",
+                                        "physical_disabilities": [],
                                         "youth_languages_proficiencies": [
                                             {
                                                 "id": 1,
@@ -870,106 +857,77 @@
                                                 "writing_proficiency_level": 2,
                                                 "speaking_proficiency_level": 2,
                                                 "understand_proficiency_level": 2,
-                                                "created_at": "2021-10-17T09:31:01.000000Z",
-                                                "updated_at": "2021-10-17T09:31:01.000000Z",
-                                                "deleted_at": null
-                                            },
-                                            {
-                                                "id": 2,
-                                                "youth_id": 1,
-                                                "language_id": 2,
-                                                "reading_proficiency_level": 1,
-                                                "writing_proficiency_level": 2,
-                                                "speaking_proficiency_level": 1,
-                                                "understand_proficiency_level": 1,
-                                                "created_at": "2021-10-17T09:31:01.000000Z",
-                                                "updated_at": "2021-10-17T09:31:01.000000Z",
+                                                "created_at": "2021-10-17T06:23:35.000000Z",
+                                                "updated_at": "2021-10-17T06:23:35.000000Z",
                                                 "deleted_at": null
                                             }
                                         ],
-                                        "skills": [
-                                        ],
+                                        "skills": [],
                                         "youth_educations": [
                                             {
-                                                "id": 1,
+                                                "id": 21,
                                                 "youth_id": 1,
-                                                "education_level_id": 0,
-                                                "exam_degree_id": null,
-                                                "exam_degree_name": null,
+                                                "education_level_id": 1,
+                                                "exam_degree_id": 3,
+                                                "exam_degree_name": "5",
                                                 "exam_degree_name_en": null,
-                                                "major_or_concentration": null,
+                                                "major_or_concentration": "1",
                                                 "major_or_concentration_en": null,
-                                                "edu_group_id": null,
-                                                "edu_board_id": null,
-                                                "institute_name": "",
+                                                "edu_group_id": 1,
+                                                "edu_board_id": 1,
+                                                "institute_name": "sdfvg",
                                                 "institute_name_en": null,
-                                                "is_foreign_institute": 0,
-                                                "foreign_institute_country_id": null,
-                                                "result": null,
-                                                "marks_in_percentage": null,
-                                                "cgpa_scale": null,
-                                                "cgpa": null,
-                                                "year_of_passing": 0,
+                                                "is_foreign_institute": 1,
+                                                "foreign_institute_country_id": 1,
+                                                "result": "First Division/Class",
+                                                "marks_in_percentage": 17,
+                                                "cgpa_scale": 5,
+                                                "cgpa": 3,
+                                                "year_of_passing": 2015,
                                                 "duration": null,
                                                 "achievements": null,
                                                 "achievements_en": null,
-                                                "created_at": "2021-10-17T09:31:01.000000Z",
-                                                "updated_at": "2021-10-17T09:31:01.000000Z",
+                                                "created_at": "2021-10-18T04:02:33.000000Z",
+                                                "updated_at": "2021-10-18T04:02:33.000000Z",
                                                 "deleted_at": null
                                             }
                                         ],
                                         "youth_job_experiences": [
                                             {
-                                                "id": 1,
+                                                "id": 21,
                                                 "youth_id": 1,
-                                                "employment_type_id": 1,
-                                                "company_name": "Turcotte-Nitzsche",
-                                                "company_name_en": "Turcotte-Nitzsche",
-                                                "position": "Psychologist",
-                                                "position_en": "Psychologist",
-                                                "location": "714 Mills Lodge",
-                                                "location_en": "714 Mills Lodge",
-                                                "job_responsibilities": "Library Technician",
-                                                "job_responsibilities_en": "Library Technician",
-                                                "start_date": "1979-07-28T00:00:00.000000Z",
-                                                "end_date": "1978-12-04T00:00:00.000000Z",
+                                                "employment_type_id": 2,
+                                                "company_name": "sdgvdfh",
+                                                "company_name_en": null,
+                                                "position": "sdgfdg",
+                                                "position_en": null,
+                                                "location": "asdfgh",
+                                                "location_en": null,
+                                                "job_responsibilities": null,
+                                                "job_responsibilities_en": null,
+                                                "start_date": "2021-10-04T00:00:00.000000Z",
+                                                "end_date": null,
                                                 "is_currently_working": 0,
-                                                "created_at": "2021-10-17T09:31:01.000000Z",
-                                                "updated_at": "2021-10-17T09:31:01.000000Z",
+                                                "created_at": "2021-10-17T12:45:45.000000Z",
+                                                "updated_at": "2021-10-17T12:45:45.000000Z",
                                                 "deleted_at": null
                                             }
                                         ],
                                         "youth_certifications": [
                                             {
-                                                "id": 1,
-                                                "youth_id": 1,
-                                                "certification_name": "Verlie Lueilwitz",
-                                                "certification_name_en": "Verlie Lueilwitz",
-                                                "institute_name": "Lacy Walsh",
-                                                "institute_name_en": "Lacy Walsh",
-                                                "location": "32629 Lueilwitz Green Suite 576",
-                                                "location_en": "68156 Maxine Spurs Suite 462",
-                                                "start_date": "1974-09-29T00:00:00.000000Z",
-                                                "end_date": "1974-09-29T00:00:00.000000Z",
-                                                "certificate_file_path": "Verlie Lueilwitz",
-                                                "created_at": "2021-10-17T09:31:01.000000Z",
-                                                "updated_at": "2021-10-17T09:31:01.000000Z",
-                                                "deleted_at": null
-                                            },
-                                            {
                                                 "id": 2,
                                                 "youth_id": 1,
-                                                "certification_name": "Oleta Schinner",
-                                                "certification_name_en": "Oleta Schinner",
-                                                "institute_name": "Esta Treutel",
-                                                "institute_name_en": "Esta Treutel",
-                                                "location": "995 Wellington Junction",
-                                                "location_en": "57560 Schuppe Forks Apt. 038",
-                                                "start_date": "1998-04-12T00:00:00.000000Z",
-                                                "end_date": "1998-04-13T00:00:00.000000Z",
-                                                "certificate_file_path": "Oleta Schinner",
-                                                "created_at": "2021-10-17T09:31:01.000000Z",
-                                                "updated_at": "2021-10-17T09:31:01.000000Z",
+                                                "certification_name": "sdfgsdf",
+                                                "certification_name_en": null,
+                                                "institute_name": "sdfsdf",
+                                                "institute_name_en": null,
+                                                "location": "sdfsdf",
+                                                "location_en": null,
+                                                "start_date": "2021-10-04T00:00:00.000000Z",
+                                                "end_date": "2021-10-06T00:00:00.000000Z",
+                                                "certificate_file_path": "sdfsdf",
+                                                "created_at": "2021-10-17T06:23:35.000000Z",
+                                                "updated_at": "2021-10-17T15:03:04.000000Z",
                                                 "deleted_at": null
                                             }
                                         ],
@@ -977,25 +935,31 @@
                                             {
                                                 "id": 1,
                                                 "youth_id": 1,
-                                                "title": "Social Science Research Assistant",
-                                                "title_en": "Social Science Research Assistant",
-                                                "description": "incidunt placeat ad pariatur odit aspernatur et eum autem.\n",
-                                                "description_en": "incidunt placeat ad pariatur odit aspernatur et eum autem.",
-                                                "file_path": "C:\\Users\\HP\\AppData\\Local\\Temp\\fak8408.tmp",
-                                                "created_at": "2021-10-17T09:31:01.000000Z",
-                                                "updated_at": "2021-10-17T09:31:01.000000Z",
+                                                "title": "Environmental Engineering Technician",
+                                                "title_en": "Environmental Engineering Technician",
+                                                "description": "Quoqui aut et provident minus ea voluptates autem ipsa at beatae nihil iure blanditiis sint qui voluptatibus aliquam.",
+                                                "description_en": "Quod delectus qui voluptatibus aliquam.",
+                                                "file_path": "C:\\Users\\HP\\AppData\\Local\\Temp\\fak1FC9.tmp",
+                                                "created_at": "2021-10-17T06:23:35.000000Z",
+                                                "updated_at": "2021-10-17T06:23:35.000000Z",
                                                 "deleted_at": null
-                                            },
+                                            }
+                                        ],
+                                        "youth_addresses": [
                                             {
-                                                "id": 2,
+                                                "id": 1,
                                                 "youth_id": 1,
-                                                "title": "Radiologic Technician",
-                                                "title_en": "Radiologic Technician",
-                                                "description": "modi reprehenderit sint ad et et at molestiae animi minima.",
-                                                "description_en": "modi reprehenderit sint ad et et at molestiae animi minima.",
-                                                "file_path": "C:\\Users\\HP\\AppData\\Local\\Temp\\fak8419.tmp",
-                                                "created_at": "2021-10-17T09:31:01.000000Z",
-                                                "updated_at": "2021-10-17T09:31:01.000000Z",
+                                                "address_type": 1,
+                                                "loc_division_id": 1,
+                                                "loc_district_id": 1,
+                                                "loc_upazila_id": 1,
+                                                "village_or_area": null,
+                                                "village_or_area_en": null,
+                                                "house_n_road": null,
+                                                "house_n_road_en": null,
+                                                "zip_or_postal_code": null,
+                                                "created_at": "2021-10-17T11:04:15.000000Z",
+                                                "updated_at": "2021-10-17T11:04:15.000000Z",
                                                 "deleted_at": null
                                             }
                                         ]
@@ -4078,7 +4042,7 @@
                     "first_name_en": {
                         "type": "string",
                         "minLength": 2,
-                        "maxLength": 500
+                        "maxLength": 250
                     },
                     "last_name": {
                         "type": "string",
@@ -4088,19 +4052,16 @@
                     "last_name_en": {
                         "type": "string",
                         "minLength": 2,
-                        "maxLength": 500
+                        "maxLength": 250
                     },
                     "loc_division_id": {
-                        "type": "integer",
-                        "example": "1"
+                        "type": "integer"
                     },
                     "loc_district_id": {
-                        "type": "integer",
-                        "example": "1"
+                        "type": "integer"
                     },
                     "loc_upazila_id": {
-                        "type": "integer",
-                        "example": "1"
+                        "type": "integer"
                     },
                     "date_of_birth": {
                         "type": "string",
@@ -4117,17 +4078,6 @@
                         "description": "1=>Male,2=>Female,3=>Others",
                         "default": 1
                     },
-                    "religion": {
-                        "type": "integer",
-                        "description": "1=>Islam,2=>Hinduism, 3=>CHRISTIANITY, 4=>BUDDHISM, 5=>JUDAISM, 6=>SIKHISM, 7=>ETHNIC, 8=>AGNOSTIC_ATHEIST"
-                    },
-                    "marital_status": {
-                        "type": "integer",
-                        "description": "1=>SINGLE, 2=>MARRIED, 3=>WIDOWED, 4=>DIVORCED"
-                    },
-                    "nationality": {
-                        "type": "integer"
-                    },
                     "email": {
                         "type": "string",
                         "format": "email",
@@ -4138,17 +4088,6 @@
                         "maxLength": 11,
                         "uniqueItems": true
                     },
-                    "identity_number_type": {
-                        "type": "integer",
-                        "description": "1=>NID,2=>BIRTH_CARD,3=>PASSPORT,4=>IDENTITY_TYPES"
-                    },
-                    "identity_number": {
-                        "type": "string"
-                    },
-                    "freedom_fighter_status": {
-                        "type": "integer",
-                        "description": "1=>NON_FREEDOM_FIGHTER, 2=>FREEDOM_FIGHTER, 3=>CHILD_OF_FREEDOM_FIGHTER, 4=>GRAND_CHILD_OF_FREEDOM_FIGHTER"
-                    },
                     "physical_disability_status": {
                         "type": "integer",
                         "enum": [
@@ -4158,34 +4097,6 @@
                         "description": "0=>No,1=>Yes",
                         "default": 0
                     },
-                    "does_belong_to_ethnic_group": {
-                        "type": "integer"
-                    },
-                    "bio": {
-                        "type": "string"
-                    },
-                    "bio_en": {
-                        "type": "string"
-                    },
-                    "photo": {
-                        "type": "string"
-                    },
-                    "cv_path": {
-                        "type": "string"
-                    },
-                    "signature_image_path": {
-                        "type": "string"
-                    },
-                    "skills": {
-                        "type": "array",
-                        "minItems": 1,
-                        "maxItems": 10,
-                        "items": {
-                            "type": "integer",
-                            "uniqueItems": true
-                        }
-                    },
-
                     "physical_disabilities": {
                         "type": "array",
                         "minItems": 1,
@@ -4196,30 +4107,44 @@
                         },
                         "description": "1=> Visual Disabilities, 2=> Hearing Disabilities, 3=> Mental Health Disabilities,4=> Intellectual Disabilities, 5=> Social Disabilities"
                     },
+                    "skills": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 10,
+                        "items": {
+                            "type": "integer",
+                            "uniqueItems": true
+                        }
+                    },
                     "password": {
                         "type": "string",
                         "format": "password",
-                        "example": "#Piyal_15021#"
+                        "description": "Min Len: 8, Max len: 50"
                     },
                     "password_confirmation": {
                         "type": "string",
                         "format": "password",
-                        "example": "#Piyal_15021#"
+                        "description": "Min Len: 8, Max len: 50"
                     },
                     "village_or_area": {
-                        "type": "string"
+                        "type": "string",
+                        "default": "Blah Blah"
                     },
                     "village_or_area_en": {
-                        "type": "string"
+                        "type": "string",
+                        "default": "Blah Blah"
                     },
                     "zip_or_postal_code": {
-                        "type": "string"
+                        "type": "string",
+                        "default": "2150"
                     },
                     "house_n_road": {
-                        "type": "string"
+                        "type": "string",
+                        "default": "Blah Blah"
                     },
                     "house_n_road_en": {
-                        "type": "string"
+                        "type": "string",
+                        "default": "Blah Blah"
                     }
                 },
                 "required": [
@@ -4230,12 +4155,9 @@
                     "loc_district_id",
                     "date_of_birth",
                     "gender",
-                    "nationality",
                     "email",
                     "mobile",
-                    "freedom_fighter_status",
                     "physical_disability_status",
-                    "does_belong_to_ethnic_group",
                     "skills",
                     "password",
                     "password_confirmation"

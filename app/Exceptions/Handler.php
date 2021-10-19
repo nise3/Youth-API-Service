@@ -13,13 +13,11 @@ use Illuminate\Http\Client\RequestException as IlluminateRequestException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use ParseError;
 use PDOException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -29,24 +27,16 @@ class Handler extends ExceptionHandler
 {
     /**
      * A list of the exception types that should not be reported.
-     *
      * @var array
      */
-    protected $dontReport = [
-        AuthorizationException::class,
-        HttpException::class,
-        ModelNotFoundException::class,
-        ValidationException::class,
-    ];
+    protected $dontReport = [];
 
     /**
      * Report or log an exception.
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-     *
      * @param Throwable $exception
      * @return void
-     *
      * @throws Exception
      */
     public function report(Throwable $exception)
@@ -112,6 +102,9 @@ class Handler extends ExceptionHandler
         } elseif ($e instanceof PDOException) {
             $errors['_response_status']['code'] = ResponseAlias::HTTP_INTERNAL_SERVER_ERROR;
             $errors['_response_status']['message'] = "PDO Error";
+        } elseif ($e instanceof \RuntimeException) {
+            $errors['_response_status']['code'] = ResponseAlias::HTTP_INTERNAL_SERVER_ERROR;
+            $errors['_response_status']['message'] = $e->getMessage();
         } elseif ($e instanceof Exception) {
             $errors['_response_status']['code'] = $e->getCode() ?? ResponseAlias::HTTP_INTERNAL_SERVER_ERROR;
             $errors['_response_status']['message'] = $e->getMessage();

@@ -18,8 +18,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(ResponseFactory::class, function() {
             return new \Laravel\Lumen\Http\ResponseFactory();
         });
-
-
     }
 
     public function boot()

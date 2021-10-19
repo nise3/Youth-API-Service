@@ -8,15 +8,18 @@ use App\Models\PhysicalDisability;
 use App\Models\Skill;
 use App\Models\Youth;
 use Carbon\Carbon;
+use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 
 /**
@@ -91,8 +94,9 @@ class YouthProfileService
 
         });
 
-        $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences", "youthCertifications", "youthPortfolios"]);
         $youthProfileBuilder->where('youths.id', '=', Auth::id());
+        $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences", "youthCertifications", "youthPortfolios", "youthAddresses"]);
+
         return $youthProfileBuilder->first();
 
     }
@@ -140,7 +144,6 @@ class YouthProfileService
         /** Assign skills to Youth */
         $skillIds = Skill::whereIn("id", $skills)->orderBy('id', 'ASC')->pluck('id')->toArray();
         $youth->skills()->sync($skillIds);
-
     }
 
     /**
@@ -215,7 +218,8 @@ class YouthProfileService
         $mobile_number = $data["mobile"] ?? null;
         if ($email) {
             return true;
-        } elseif ($mobile_number) {
+        }
+        if ($mobile_number) {
             return true;
         }
         return false;
@@ -259,9 +263,9 @@ class YouthProfileService
 
     /**
      * @param array $data
-     * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
+     * @return PromiseInterface|Response
      */
-    public function idpUserCreate(array $data): \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
+    public function idpUserCreate(array $data): PromiseInterface|Response
     {
         $url = clientUrl(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
         $payload = $this->prepareIdpPayload($data);
@@ -318,10 +322,7 @@ class YouthProfileService
     public function freelanceStatusValidator(Request $request): Validator
     {
         $customMessage = [
-            "freelance_profile_status.in" => [
-                "code" => 30000,
-                "message" => "The freelance_status is either 0 or 1"
-            ]
+            "freelance_profile_status.in" => "The freelance_status is either 0 or 1. [30000]"
         ];
 
         $rules = [
@@ -340,30 +341,22 @@ class YouthProfileService
     public function verifyYouthValidator(Request $request): Validator
     {
         $customMessage = [
-            "email.exists" => [
-                "code" => 24000,
-                "message" => "The email is not exists in the system"
-            ],
-            "mobile.exists" => [
-                "code" => 24000,
-                "message" => "The mobile is not exists in the system"
-            ],
+            "email.exists" => "The email is not exists in the system. [24000]",
+            "mobile.exists" => "The mobile is not exists in the system. [24000]"
         ];
 
         $rules = [
             "email" => [
                 Rule::requiredIf(function () use ($request) {
-                    return !array_key_exists("mobile", $request->all());
+                    return !$request->exists('mobile');
                 }),
-                "exists:youths,email"
+                "exists:youths,email,deleted_at,NULL"
             ],
             "mobile" => [
                 Rule::requiredIf(function () use ($request) {
-                    return !array_key_exists("email", $request->all());
+                    return !$request->exists('email');
                 }),
-                "max:11",
-                BaseModel::MOBILE_REGEX,
-                "exists:youths,mobile"
+                "exists:youths,mobile,deleted_at,NULL"
             ],
             "verification_code" => [
                 "required",
@@ -377,64 +370,50 @@ class YouthProfileService
     public function resendCodeValidator(Request $request): Validator
     {
         $customMessage = [
-            "email.exists" => [
-                "code" => 24000,
-                "message" => "The email is not exists in the system"
-            ],
-            "mobile.exists" => [
-                "code" => 24000,
-                "message" => "The mobile is not exists in the system"
-            ],
+            "email.exists" => "The email is not exists in the system. [24000]",
+            "mobile.exists" => "The mobile is not exists in the system. [24000]"
         ];
 
         $rules = [
             "email" => [
                 Rule::requiredIf(function () use ($request) {
-                    return !array_key_exists("mobile", $request->all());
+                    return !$request->exists('mobile');
                 }),
-                "exists:youths,email"
+                "exists:youths,email,deleted_at,NULL"
             ],
             "mobile" => [
                 Rule::requiredIf(function () use ($request) {
-                    return !array_key_exists("email", $request->all());
+                    return !$request->exists('email');
                 }),
-                "max:11",
-                BaseModel::MOBILE_REGEX,
-                "exists:youths,mobile"
-            ]
+                "exists:youths,mobile,deleted_at,NULL"
+            ],
         ];
 
         return \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $customMessage);
     }
 
-    public function youthRegisterOrUpdateValidation(Request $request, int $id = null): Validator
+    /**
+     * @param Request $request
+     * @param Youth $youth
+     * @return Validator
+     */
+    public function youthUpdateValidation(Request $request, Youth $youth): Validator
     {
         $data = $request->all();
-
-        $customMessage = [
-            "password.regex" => [
-                "code" => "",
-                "message" => [
-                    "Have At least one Uppercase letter",
-                    "At least one Lower case letter",
-                    "Also,At least one numeric value",
-                    "And, At least one special character",
-                    "Must be more than 8 characters long"
-                ]
-            ]
-        ];
 
         if (!empty($data["skills"])) {
             $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
         }
+
         if (!empty($data["physical_disabilities"])) {
             $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
         }
+
         $rules = [
             "first_name" => "required|string|min:2|max:500",
-            "first_name_en" => "nullable|string|min:2|max:500",
+            "first_name_en" => "nullable|string|min:2|max:250",
             "last_name" => "required|string|min:2|max:500",
-            "last_name_en" => "nullable|string|min:2|max:500",
+            "last_name_en" => "nullable|string|min:2|max:250",
             "loc_division_id" => [
                 "required",
                 "exists:loc_divisions,id,deleted_at,NULL",
@@ -451,88 +430,79 @@ class YouthProfileService
                 "int"
             ],
             "date_of_birth" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
+                'nullable',
                 'date',
                 'date_format:Y-m-d'
             ],
             "gender" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
+                'nullable',
                 Rule::in(BaseModel::GENDERS),
                 "int"
             ],
             'religion' => [
-                'int',
                 'nullable',
+                'int',
                 Rule::in(Youth::RELIGIONS)
             ],
             'marital_status' => [
-                'int',
                 'nullable',
+                'int',
                 Rule::in(Youth::MARITAL_STATUSES)
             ],
             'nationality' => [
+                'required',
                 'int',
-                'required'
             ],
             "email" => [
-                Rule::requiredIf(function () use ($id) {
-                    if ($id == null) {
-                        return true;
-                    } else if ($id) {
-                        $youth = Youth::find($id);
-                        return $youth->user_name_type == BaseModel::USER_NAME_TYPE_MOBILE_NUMBER;
-                    }
+                Rule::requiredIf(function () use ($youth) {
+                    return $youth->user_name_type == BaseModel::USER_NAME_TYPE_MOBILE_NUMBER;
                 }),
-                "unique:youths,email," . $id,
-                "email",
-
+                Rule::unique('youths', 'email')
+                    ->ignore($youth->id)
+                    ->where(function (\Illuminate\Database\Query\Builder $query) {
+                        return $query->whereNull('deleted_at');
+                    })
             ],
             "mobile" => [
-                Rule::requiredIf(function () use ($id) {
-                    if ($id == null)
-                        return true;
-                    else if ($id) {
-                        $youth = Youth::find($id);
-                        return $youth->user_name_type == BaseModel::USER_NAME_TYPE_EMAIL;
-                    }
+                Rule::requiredIf(function () use ($youth) {
+                    return $youth->user_name_type == BaseModel::USER_NAME_TYPE_EMAIL;
                 }),
-                "max:11",
-                "unique:youths,mobile," . $id,
-                BaseModel::MOBILE_REGEX
+                Rule::unique('youths', 'mobile')
+                    ->ignore($youth->id)
+                    ->where(function (\Illuminate\Database\Query\Builder $query) {
+                        return $query->whereNull('deleted_at');
+                    })
             ],
             'identity_number_type' => [
-                'int',
                 'nullable',
+                'int',
                 Rule::in(Youth::IDENTITY_TYPES)
             ],
             'identity_number' => [
+                'nullable',
                 'string',
-                'nullable'
+                'min:11',
+                'max:50'
             ],
             'freedom_fighter_status' => [
-                'int',
                 'required',
+                'int',
                 Rule::in(Youth::FREEDOM_FIGHTER_STATUSES)
             ],
             "physical_disability_status" => [
                 "required",
                 "int",
-                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUS)
+                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUSES)
             ],
             'does_belong_to_ethnic_group' => [
-                'int',
-                'required'
+                'required',
+                'int'
             ],
             "bio" => "nullable|string",
             "bio_en" => "nullable|string",
             "photo" => "nullable|string|max:600",
             "cv_path" => "nullable|string|max:600",
             "signature_image_path" => "nullable|string|max:600",
-
             "skills" => [
                 "required",
                 "array",
@@ -541,32 +511,10 @@ class YouthProfileService
             ],
             "skills.*" => [
                 "required",
-                'numeric',
+                'integer',
                 "distinct",
                 "min:1"
             ],
-            "password" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
-                "required_with:password_confirmation",
-                BaseModel::PASSWORD_REGEX,
-                BaseModel::PASSWORD_TYPE,
-                BaseModel::PASSWORD_MIN_LENGTH,
-                BaseModel::PASSWORD_MAX_LENGTH,
-                "confirmed"
-            ],
-            "password_confirmation" => [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
-                "required_with:password",
-                BaseModel::PASSWORD_REGEX,
-                BaseModel::PASSWORD_TYPE,
-                BaseModel::PASSWORD_MIN_LENGTH,
-                BaseModel::PASSWORD_MAX_LENGTH,
-            ],
-
             "village_or_area" => [
                 "nullable",
                 "string"
@@ -585,29 +533,21 @@ class YouthProfileService
             ],
             "zip_or_postal_code" => [
                 "nullable",
-                "string"
+                "string",
+                "size:4"
             ]
         ];
 
-        if ($id == null) {
-            $rules['user_name_type'] = [
-                Rule::requiredIf(function () use ($id) {
-                    return $id == null;
-                }),
-                Rule::in(BaseModel::USER_NAME_TYPE)
-            ];
-        }
-
-        if ($request['physical_disability_status'] == BaseModel::TRUE) {
+        if (isset($request['physical_disability_status']) && $request['physical_disability_status'] == BaseModel::TRUE) {
             $rules['physical_disabilities'] = [
-                Rule::requiredIf(function () use ($id, $data) {
+                Rule::requiredIf(function () use ($data) {
                     return $data['physical_disability_status'] == BaseModel::TRUE;
                 }),
                 "array",
                 "min:1"
             ];
             $rules['physical_disabilities.*'] = [
-                Rule::requiredIf(function () use ($id, $data) {
+                Rule::requiredIf(function () use ($data) {
                     return $data['physical_disability_status'] == BaseModel::TRUE;
                 }),
                 "exists:physical_disabilities,id,deleted_at,NULL",
@@ -617,9 +557,160 @@ class YouthProfileService
             ];
         }
 
-        return \Illuminate\Support\Facades\Validator::make($data, $rules, $customMessage);
+        return \Illuminate\Support\Facades\Validator::make($data, $rules);
     }
 
+    public function youthRegisterValidation(Request $request, int $id = null): Validator
+    {
+        $data = $request->all();
+
+        /*        $customMessage = [
+                    "password.regex" => [
+                        "message" => [
+                            "Have At least one Uppercase letter",
+                            "At least one Lower case letter",
+                            "Also,At least one numeric value",
+                            "And, At least one special character",
+                            "Must be more than 8 characters long"
+                        ]
+                    ]
+                ];
+        */
+
+        if (!empty($data["skills"])) {
+            $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
+        }
+
+        if (!empty($data["physical_disabilities"])) {
+            $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
+        }
+
+        $rules = [
+            'user_name_type' => [
+                Rule::in(BaseModel::USER_NAME_TYPES)
+            ],
+            "first_name" => "required|string|min:2|max:500",
+            "first_name_en" => "nullable|string|min:2|max:250",
+            "last_name" => "required|string|min:2|max:500",
+            "last_name_en" => "nullable|string|min:2|max:250",
+            "loc_division_id" => [
+                "required",
+                "int",
+                "exists:loc_divisions,id,deleted_at,NULL",
+            ],
+            "loc_district_id" => [
+                "required",
+                "int",
+                "exists:loc_districts,id,deleted_at,NULL",
+            ],
+            "loc_upazila_id" => [
+                "nullable",
+                "int",
+                "exists:loc_upazilas,id,deleted_at,NULL",
+            ],
+            "date_of_birth" => [
+                "required",
+                'date',
+                'date_format:Y-m-d'
+            ],
+            "gender" => [
+                "required",
+                Rule::in(BaseModel::GENDERS),
+                "int"
+            ],
+            "email" => [
+                Rule::requiredIf(function () use ($data) {
+                    return isset($data["user_name_type"]) && $data["user_name_type"] == BaseModel::USER_NAME_TYPE_EMAIL;
+                }),
+                "email",
+                Rule::unique('youths', 'email')
+                    ->where(function (\Illuminate\Database\Query\Builder $query) {
+                        return $query->whereNull('deleted_at');
+                    })
+            ],
+            "mobile" => [
+                Rule::requiredIf(function () use ($data) {
+                    return isset($data["user_name_type"]) && $data["user_name_type"] == BaseModel::USER_NAME_TYPE_MOBILE_NUMBER;
+                }),
+                "max:11",
+                BaseModel::MOBILE_REGEX,
+                Rule::unique('youths', 'mobile')
+                    ->where(function (\Illuminate\Database\Query\Builder $query) {
+                        return $query->whereNull('deleted_at');
+                    }),
+            ],
+            "physical_disability_status" => [
+                "required",
+                "int",
+                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUSES)
+            ],
+            "skills" => [
+                "required",
+                "array",
+                "min:1",
+                "max:10"
+            ],
+            "skills.*" => [
+                "required",
+                'numeric',
+                "distinct",
+                "min:1"
+            ],
+            "password" => [
+                "required",
+                "confirmed",
+                Password::min(BaseModel::PASSWORD_MIN_LENGTH_V1)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+            ],
+            "password_confirmation" => [
+                "required_with:password"
+            ],
+            "village_or_area" => [
+                "nullable",
+                "string"
+            ],
+            "village_or_area_en" => [
+                "nullable",
+                "string"
+            ],
+            "house_n_road" => [
+                "nullable",
+                "string"
+            ],
+            "house_n_road_en" => [
+                "nullable",
+                "string"
+            ],
+            "zip_or_postal_code" => [
+                "nullable",
+                "string",
+                "size:4"
+            ]
+        ];
+
+        if (isset($request['physical_disability_status']) && $request['physical_disability_status'] == BaseModel::TRUE) {
+            $rules['physical_disabilities'] = [
+                Rule::requiredIf(function () use ($data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
+                }),
+                "array",
+                "min:1"
+            ];
+            $rules['physical_disabilities.*'] = [
+                Rule::requiredIf(function () use ($data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
+                }),
+                "exists:physical_disabilities,id,deleted_at,NULL",
+                "int",
+                "distinct",
+                "min:1",
+            ];
+        }
+
+        return \Illuminate\Support\Facades\Validator::make($data, $rules);
+    }
 
     /**
      * @param string $id
@@ -627,7 +718,6 @@ class YouthProfileService
      */
     public function getAuthYouth(string $id): ?Youth
     {
-
         /** @var Youth $youth */
         return Youth::where('idp_user_id', $id)
             ->where("row_status", BaseModel::ROW_STATUS_ACTIVE)

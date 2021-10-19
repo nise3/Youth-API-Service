@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Symfony\Component\HttpFoundation\Response;
 
 class YouthCertificationService
 {
@@ -23,6 +22,7 @@ class YouthCertificationService
 
     public function getAllCertifications(array $request, Carbon $startTime): array
     {
+        $youthId = $request['youth_id'] ?? Auth::id();
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $order = $request['order'] ?? BaseModel::ROW_ORDER_ASC;
@@ -44,13 +44,13 @@ class YouthCertificationService
             'youth_certifications.updated_at'
         ]);
 
-        if (is_int(Auth::id())) {
-            $certificationBuilder->where('youth_certifications.youth_id', Auth::id());
+        if (is_integer($youthId)) {
+            $certificationBuilder->where('youth_certifications.youth_id', $youthId);
         }
 
         $certificationBuilder->orderBy('youth_certifications.id', $order);
 
-
+        $response = [];
         /** @var Collection $certifications */
 
         if (is_int($paginate) || is_int($pageSize)) {
@@ -67,11 +67,8 @@ class YouthCertificationService
 
         $response['order'] = $order;
         $response['data'] = $certifications->toArray()['data'] ?? $certifications->toArray();
-        $response['response_status'] = [
-            "success" => true,
-            "code" => Response::HTTP_OK,
-            "query_time" => $startTime->diffInSeconds(Carbon::now())
-        ];
+        $response['query_time'] = $startTime->diffInSeconds(Carbon::now());
+
         return $response;
     }
 
@@ -98,30 +95,29 @@ class YouthCertificationService
             'youth_certifications.created_at',
             'youth_certifications.updated_at'
         ]);
+
         $certificationBuilder->where('youth_certifications.id', $id);
 
         /** @var YouthCertification $certification */
-        $certification = $certificationBuilder->first();
+        $certification = $certificationBuilder->firstOrFail();
 
         return [
-            "data" => $certification ?: [],
-            "_response_status" => [
-                "success" => true,
-                "code" => Response::HTTP_OK,
-                "query_time" => $startTime->diffInSeconds(Carbon::now())
-            ]
+            "data" => $certification,
+            "query_time" => $startTime->diffInSeconds(Carbon::now())
         ];
     }
 
     /**
      * @param array $data
      * @return YouthCertification
+     * @throws \Throwable
      */
     public function store(array $data): YouthCertification
     {
-        $certification = new YouthCertification();
+        /** @var YouthCertification $certification */
+        $certification = app(YouthCertification::class);
         $certification->fill($data);
-        $certification->save();
+        throw_if($certification->save(), 'RuntimeException', 'Youth Certification has not been Saved to db.', 500);
         return $certification;
     }
 
@@ -129,21 +125,46 @@ class YouthCertificationService
      * @param YouthCertification $certification
      * @param array $data
      * @return YouthCertification
+     * @throws \Throwable
      */
     public function update(YouthCertification $certification, array $data): YouthCertification
     {
         $certification->fill($data);
-        $certification->save();
+        throw_if($certification->save(), 'RuntimeException', 'Youth Certification has not been updated to db.', 500);
         return $certification;
     }
 
     /**
      * @param YouthCertification $certification
      * @return bool
+     * @throws \Throwable
      */
     public function destroy(YouthCertification $certification): bool
     {
-        return $certification->delete();
+        throw_if($certification->delete(), 'RuntimeException', 'Youth Certification has not been deleted.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthCertification $certification
+     * @return bool
+     * @throws \Throwable
+     */
+    public function restore(YouthCertification $certification): bool
+    {
+        throw_if($certification->restore(), 'RuntimeException', 'Youth Certification has not been restored.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthCertification $certification
+     * @return bool
+     * @throws \Throwable
+     */
+    public function forceDelete(YouthCertification $certification): bool
+    {
+        throw_if($certification->forceDelete(), 'RuntimeException', 'Youth Certification has not been successfully deleted forcefully.', 500);
+        return true;
     }
 
     /**
@@ -153,10 +174,7 @@ class YouthCertificationService
     public function filterValidator(Request $request): \Illuminate\Contracts\Validation\Validator
     {
         $customMessage = [
-            'order.in' => [
-                'code' => 30000,
-                "message" => 'Order must be either ASC or DESC',
-            ]
+            'order.in' => 'Order must be either ASC or DESC. [30000]'
         ];
 
         if (!empty($request['order'])) {
@@ -183,8 +201,8 @@ class YouthCertificationService
         $rules = [
             'youth_id' => [
                 'required',
-                'exists:youths,id,deleted_at,NULL',
                 'int',
+                'exists:youths,id,deleted_at,NULL',
             ],
             'certification_name' => [
                 'required',
@@ -217,16 +235,17 @@ class YouthCertificationService
                 'max:500'
             ],
             'start_date' => [
+                'nullable',
                 'date',
-                'nullable'
+                'date_format:Y-m-d'
             ],
             'end_date' => [
-                'date',
-                'nullable',
-                'after:start_date',
                 Rule::requiredIf(function () use ($request) {
-                    return (!empty($request->start_date));
-                })
+                    return $request->exists('start_date') && $request->filled('start_date');
+                }),
+                'date',
+                'date_format:Y-m-d',
+                'after:start_date',
             ],
             'certificate_file_path' => [
                 'nullable',

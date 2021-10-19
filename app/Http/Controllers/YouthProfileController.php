@@ -8,7 +8,6 @@ use App\Models\YouthAddress;
 use App\Services\YouthManagementServices\YouthAddressService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,15 +26,16 @@ class YouthProfileController extends Controller
      * @var YouthProfileService
      */
     public YouthProfileService $youthProfileService;
+
     /**
      * @var YouthAddressService
      */
     public YouthAddressService $youthAddressService;
+
     /**
      * @var Carbon
      */
     private Carbon $startTime;
-
 
     /**
      * YouthProfileController constructor.
@@ -55,21 +55,18 @@ class YouthProfileController extends Controller
      */
     public function getYouthProfile(): JsonResponse
     {
-        try {
-            $youth = $this->youthProfileService->getYouthProfile();
-            $response = [
-                "data" => $youth ?: new stdClass(),
-                "_response_status" => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Youth profile information",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
-        return Response::json($response);
+        $youth = $this->youthProfileService->getYouthProfile();
+        $response = [
+            "data" => $youth ?: new stdClass(),
+            "_response_status" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Youth profile information",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**
@@ -81,79 +78,79 @@ class YouthProfileController extends Controller
      */
     function youthRegistration(Request $request): JsonResponse
     {
-        $youth = new Youth();
-        $validated = $this->youthProfileService->youthRegisterOrUpdateValidation($request)->validate();
+        $youth = app(Youth::class);
+        $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
 
         $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
+        Log::debug('-- Youth Registration After Validation -- ');
+        Log::debug($validated);
+
         DB::beginTransaction();
-        try {
-            $idpUserPayLoad = [
-                'name' => $validated['first_name'] . " " . $validated["last_name"],
-                'email' => $validated['email'],
-                'username' => $validated['username'],
-                'password' => $validated['password'],
-                'user_type' => BaseModel::YOUTH_USER_TYPE,
-                'active' => BaseModel::ROW_STATUS_PENDING,
+        $idpUserPayLoad = [
+            'name' => $validated['first_name'] . " " . $validated["last_name"],
+            'email' => $validated['email'],
+            'username' => $validated['username'],
+            'password' => $validated['password'],
+            'user_type' => BaseModel::YOUTH_USER_TYPE,
+            'active' => BaseModel::ROW_STATUS_PENDING,
+        ];
+
+        $httpClient = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
+        if (!$httpClient->json("id")) {
+            DB::rollBack();
+            $response = [
+                '_response_status' => [
+                    "success" => false,
+                    "code" => ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
+                    "message" => "Youth registration is not done",
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                ]
             ];
-
-            $httpClient = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
-            if ($httpClient->json("id")) {
-                Log::info("Youth create for idp user--->".$httpClient->json("id")."----->email-->".$validated['email']);
-                $validated['idp_user_id'] = $httpClient->json("id");
-                $validated["verification_code"] = $this->youthProfileService->generateCode();
-                $validated['verification_code_sent_at'] = Carbon::now();
-                $validated['row_status'] = BaseModel::ROW_STATUS_PENDING;
-                $youth = $this->youthProfileService->store($youth, $validated);
-
-                Log::info("Youth user create in db----->email-->".$validated['email']);
-
-                $addressData['youth_id'] = $youth->id;
-                $addressData['address_type'] = YouthAddress::ADDRESS_TYPE_PRESENT;
-                $addressData['loc_division_id'] = $validated['loc_division_id'];
-                $addressData['loc_district_id'] = $validated['loc_district_id'];
-                $addressData['loc_upazila_id'] = isset($validated['loc_upazila_id']) ? $validated['loc_upazila_id'] : null;
-                $addressData['village_or_area'] = isset($validated['village_or_area']) ? $validated['village_or_area'] : null;
-                $addressData['village_or_area_en'] = isset($validated['village_or_area_en'])?$validated['village_or_area_en']: null;
-                $addressData['house_n_road'] = isset($validated['house_n_road'])?$validated['house_n_road']: null;
-                $addressData['house_n_road_en'] = isset($validated['house_n_road_en'])?$validated['house_n_road_en']: null;
-                $addressData['zip_or_postal_code'] = isset($validated['zip_or_postal_code'])?$validated['zip_or_postal_code']: null;
-                $address = $this->youthAddressService->store($addressData);
-
-                Log::info("Youth user address create for user");
-
-                /** @var  $sendVeryCodePayLoad */
-                $sendVeryCodePayLoad["code"] = $validated['verification_code'];
-                $payloadField = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? "email" : "mobile";
-                $sendVeryCodePayLoad[$payloadField] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
-
-                $send_status = $this->youthProfileService->sendVerifyCode($sendVeryCodePayLoad);
-
-                $response = [
-                    'data' => $youth ?? new stdClass(),
-                    '_response_status' => [
-                        "success" => true,
-                        "code" => ResponseAlias::HTTP_CREATED,
-                        "message" => "Youth registration successfully done!",
-                        "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-                    ]
-                ];
-                DB::commit();
-            } else {
-                DB::rollBack();
-                $response = [
-                    '_response_status' => [
-                        "success" => false,
-                        "code" => ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
-                        "message" => "Youth registration is not done",
-                        "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-                    ]
-                ];
-            }
-
-        } catch (Throwable $e) {
-            throw $e;
+            return Response::json($response, $response['_response_status']['code']);
         }
-        return Response::json($response, ResponseAlias::HTTP_CREATED);
+
+        Log::info("Youth create for idp user--->" . $httpClient->json("id") . "----->email-->" . $validated['email']);
+        $validated['idp_user_id'] = $httpClient->json("id");
+        $validated["verification_code"] = $this->youthProfileService->generateCode();
+        $validated['verification_code_sent_at'] = Carbon::now();
+        $validated['row_status'] = BaseModel::ROW_STATUS_PENDING;
+        $youth = $this->youthProfileService->store($youth, $validated);
+
+        Log::info("Youth user create in db----->email-->" . $validated['email']);
+
+        $addressData['youth_id'] = $youth->id;
+        $addressData['address_type'] = YouthAddress::ADDRESS_TYPE_PRESENT;
+        $addressData['loc_division_id'] = $validated['loc_division_id'];
+        $addressData['loc_district_id'] = $validated['loc_district_id'];
+        $addressData['loc_upazila_id'] = $validated['loc_upazila_id'] ?? null;
+        $addressData['village_or_area'] = $validated['village_or_area'] ?? null;
+        $addressData['village_or_area_en'] = $validated['village_or_area_en'] ?? null;
+        $addressData['house_n_road'] = $validated['house_n_road'] ?? null;
+        $addressData['house_n_road_en'] = $validated['house_n_road_en'] ?? null;
+        $addressData['zip_or_postal_code'] = $validated['zip_or_postal_code'] ?? null;
+        $address = $this->youthAddressService->store($addressData);
+
+        /*Log::info("Youth user address create for user");*/
+
+        /** @var  $sendVeryCodePayLoad */
+        $sendVeryCodePayLoad["code"] = $validated['verification_code'];
+        $payloadField = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? "email" : "mobile";
+        $sendVeryCodePayLoad[$payloadField] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
+
+        $send_status = $this->youthProfileService->sendVerifyCode($sendVeryCodePayLoad);
+
+        $response = [
+            'data' => $youth ?? new stdClass(),
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_CREATED,
+                "message" => "Youth registration successfully done!",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
+        DB::commit();
+        return Response::json($response, $response['_response_status']['code']);
+
     }
 
     /**
@@ -164,26 +161,21 @@ class YouthProfileController extends Controller
      */
     public function youthProfileInfoUpdate(Request $request): JsonResponse
     {
-        $id = Auth::id();
         /** @var Youth $youth */
         $youth = Youth::findOrFail(Auth::id());
 
-        $validated = $this->youthProfileService->youthRegisterOrUpdateValidation($request, $id)->validate();
+        $validated = $this->youthProfileService->youthUpdateValidation($request, $youth)->validate();
 
-        try {
-            $data = $this->youthProfileService->update($youth, $validated);
-            $response = [
-                'data' => $data ?: [],
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Youth Profile Successfully updated",
-                    "query_time" => $this->startTime->diffForHumans(Carbon::now())
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $data = $this->youthProfileService->update($youth, $validated);
+        $response = [
+            'data' => $data ?: [],
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Youth Profile Successfully Updated",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ]
+        ];
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
@@ -255,6 +247,7 @@ class YouthProfileController extends Controller
         $validated = $this->youthProfileService->resendCodeValidator($request)->validate();
 
         try {
+
             $status = $this->youthProfileService->resendCode($validated);
             $response = [
                 '_response_status' => [
@@ -264,10 +257,12 @@ class YouthProfileController extends Controller
                     "query_time" => $this->startTime->diffForHumans(Carbon::now())
                 ]
             ];
+
+            return Response::json($response, ResponseAlias::HTTP_OK);
+
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
 
