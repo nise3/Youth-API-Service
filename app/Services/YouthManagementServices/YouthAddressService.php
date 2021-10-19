@@ -23,7 +23,12 @@ use Symfony\Component\HttpFoundation\Response;
 class YouthAddressService
 {
 
-    public function getAddressList(array $request, Carbon $startTime)
+    /**
+     * @param array $request
+     * @param Carbon $startTime
+     * @return array
+     */
+    public function getAddressList(array $request, Carbon $startTime): array
     {
         $youthId = $request['youth_id'] ?? Auth::id();
         $paginate = $request['page'] ?? "";
@@ -71,8 +76,9 @@ class YouthAddressService
         if (is_integer($youthId)) {
             $youthAddressBuilder->where('youth_addresses.youth_id', $youthId);
         }
-        /** @var Collection $youthAddresses */
 
+        $response = [];
+        /** @var Collection $youthAddresses */
         if (is_integer($paginate) || is_integer($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $youthAddresses = $youthAddressBuilder->paginate($pageSize);
@@ -87,11 +93,8 @@ class YouthAddressService
 
         $response['order'] = $order;
         $response['data'] = $youthAddresses->toArray()['data'] ?? $youthAddresses->toArray();
-        $response['response_status'] = [
-            "success" => true,
-            "code" => Response::HTTP_OK,
-            "query_time" => $startTime->diffInSeconds(Carbon::now())
-        ];
+        $response['query_time'] = $startTime->diffInSeconds(Carbon::now());
+
         return $response;
     }
 
@@ -140,28 +143,24 @@ class YouthAddressService
 
         $youthAddressBuilder->where('youth_addresses.id', $id);
 
-        $youthAddress = $youthAddressBuilder->first();
+        $youthAddress = $youthAddressBuilder->firstOrFail();
 
         return [
-            "data" => $youthAddress ?: [],
-            "_response_status" => [
-                "success" => true,
-                "code" => Response::HTTP_OK,
-                "query_time" => $startTime->diffInSeconds(Carbon::now())
-            ]
+            "data" => $youthAddress,
+            "query_time" => $startTime->diffInSeconds(Carbon::now())
         ];
     }
 
     /**
      * @param array $data
-     * @return YouthAddress
+     * @return bool
      */
-    public function store(array $data): YouthAddress
+    public function store(array $data): bool
     {
+        /** @var YouthAddress $address */
         $address = app(YouthAddress::class);
         $address->fill($data);
-        $address->save();
-        return $address;
+        return $address->save();
     }
 
     /**

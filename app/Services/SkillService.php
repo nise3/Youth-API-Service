@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 /**
  * Class SkillService
@@ -99,12 +100,14 @@ class SkillService
     /**
      * @param array $data
      * @return Skill
+     * @throws Throwable
      */
     public function store(array $data): Skill
     {
-        $skill = new Skill();
+        /** @var Skill $skill */
+        $skill = app(Skill::class);
         $skill->fill($data);
-        $skill->save();
+        throw_if($skill->save(), 'RuntimeException', 'Skill has not been saved to db.', 500);
         return $skill;
     }
 
@@ -112,21 +115,24 @@ class SkillService
      * @param Skill $skill
      * @param array $data
      * @return Skill
+     * @throws Throwable
      */
     public function update(Skill $skill, array $data): Skill
     {
         $skill->fill($data);
-        $skill->save();
+        throw_if($skill->save(), 'RuntimeException', 'Skill has not been updated to db.', 500);
         return $skill;
     }
 
     /**
      * @param Skill $skill
      * @return bool
+     * @throws Throwable
      */
     public function destroy(Skill $skill): bool
     {
-        return $skill->delete();
+        throw_if($skill->delete(), 'RuntimeException', 'Skill has not been deleted.', 500);
+        return true;
     }
 
     /**
@@ -187,19 +193,23 @@ class SkillService
     /**
      * @param Skill $skill
      * @return bool
+     * @throws Throwable
      */
     public function restore(Skill $skill): bool
     {
-        return $skill->restore();
+        throw_if($skill->restore(), 'RuntimeException', 'Skill has not been restored.', 500);
+        return true;
     }
 
     /**
      * @param Skill $skill
      * @return bool
+     * @throws Throwable
      */
     public function forceDelete(Skill $skill): bool
     {
-        return $skill->forceDelete();
+        throw_if($skill->forceDelete(), 'RuntimeException', 'Skill has not been successfully deleted forcefully.', 500);
+        return true;
     }
 
     /**
@@ -225,7 +235,7 @@ class SkillService
                 'min:2'
             ]
         ];
-        if($id){
+        if ($id) {
             $rules['title_en'][] = Rule::unique('skills', 'title_en')
                 ->ignore($id)
                 ->where(function (\Illuminate\Database\Query\Builder $query) {

@@ -29,8 +29,27 @@ class YouthAddressController extends Controller
 
         $filter = $this->youthAddressService->filterValidator($request)->validate();
         try {
-            $response = $this->youthAddressService->getAddressList($filter, $this->startTime);
-            return Response::json($response);
+            $returnedData = $this->youthAddressService->getAddressList($filter, $this->startTime);
+
+            $response = [
+                'order' => $returnedData['order'],
+                'data' => $returnedData['data'],
+                '_response_status' => [
+                    "success" => true,
+                    "code" => ResponseAlias::HTTP_OK,
+                    'query_time' => $returnedData['query_time']
+                ]
+            ];
+
+            if (isset($returnedData['total_page'])) {
+                $response['total'] = $returnedData['total'];
+                $response['current_page'] = $returnedData['current_page'];
+                $response['total_page'] = $returnedData['total_page'];
+                $response['page_size'] = $returnedData['page_size'];
+            }
+
+            return Response::json($response, ResponseAlias::HTTP_OK);
+
         } catch (Throwable $e) {
             throw $e;
         }
@@ -45,7 +64,12 @@ class YouthAddressController extends Controller
     {
         try {
             $response = $this->youthAddressService->getOneYouthAddress($id, $this->startTime);
-            return Response::json($response);
+            $response['_response_status'] = [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                'query_time' => $response['query_time']
+            ];
+            return Response::json($response, ResponseAlias::HTTP_OK);
         } catch (Throwable $e) {
             throw $e;
         }

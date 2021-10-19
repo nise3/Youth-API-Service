@@ -51,6 +51,7 @@ class SkillController extends Controller
         $filter = $this->skillService->filterValidator($request)->validate();
         try {
             $returnedData = $this->skillService->getSkillList($filter, $this->startTime);
+
             $response = [
                 'order' => $returnedData['order'],
                 'data' => $returnedData['data'],
@@ -106,21 +107,17 @@ class SkillController extends Controller
     function store(Request $request): JsonResponse
     {
         $validated = $this->skillService->validator($request)->validate();
-        try {
-            $data = $this->skillService->store($validated);
-            $response = [
-                'data' => $data ?: null,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "Skill has been Added Successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-            return Response::json($response, ResponseAlias::HTTP_CREATED);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $created = $this->skillService->store($validated);
+        $response = [
+            'data' => $created,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_CREATED,
+                "message" => "Skill has been Added Successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_CREATED);
 
     }
 
@@ -135,23 +132,20 @@ class SkillController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         $skill = Skill::findOrFail($id);
+
         $validated = $this->skillService->validator($request, $id)->validate();
 
-        try {
-            $data = $this->skillService->update($skill, $validated);
-            $response = [
-                'data' => $data ?: null,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Skill updated successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-            return Response::json($response, ResponseAlias::HTTP_CREATED);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $updated = $this->skillService->update($skill, $validated);
+        $response = [
+            'data' => $updated,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Skill has been Updated Successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
     /**
@@ -165,7 +159,7 @@ class SkillController extends Controller
         $skill = Skill::findOrFail($id);
 
         try {
-            $this->skillService->destroy($skill);
+             $this->skillService->destroy($skill);
             $response = [
                 '_response_status' => [
                     "success" => true,
@@ -189,9 +183,7 @@ class SkillController extends Controller
     {
         try {
             $response = $this->skillService->getTrashedSkillList($request, $this->startTime);
-
             return Response::json($response);
-
         } catch (Throwable $e) {
             throw $e;
         }
@@ -203,7 +195,7 @@ class SkillController extends Controller
      * @return JsonResponse
      * @throws Throwable
      */
-    public function restore(int $id)
+    public function restore(int $id): JsonResponse
     {
         $skill = Skill::onlyTrashed()->findOrFail($id);
         try {
