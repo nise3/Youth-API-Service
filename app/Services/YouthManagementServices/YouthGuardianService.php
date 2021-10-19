@@ -159,7 +159,6 @@ class YouthGuardianService
         return $youthGuardian->delete();
     }
 
-
     /**
      * @param Request $request
      * @param int|null $id
@@ -167,7 +166,6 @@ class YouthGuardianService
      */
     public function validator(Request $request, int $id = null): Validator
     {
-        Log::debug($request->all());
         $rules = [
             'youth_id' => [
                 'required',
@@ -206,7 +204,7 @@ class YouthGuardianService
                 'integer',
             ],
             'relationship_title' => [
-                'required_if:relationship_type,==,'.YouthGuardian::RELATIONSHIP_TYPE_OTHER,
+                'required_if:relationship_type,==,' . YouthGuardian::RELATIONSHIP_TYPE_OTHER,
                 'nullable',
                 'string',
                 'min:1'
