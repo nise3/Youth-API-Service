@@ -67,6 +67,7 @@ class YouthService
                 'youths.identity_number_type',
                 'youths.identity_number',
                 'youths.date_of_birth',
+                'youths.is_freelance_profile',
                 'youths.freedom_fighter_status',
                 'youths.physical_disability_status',
                 'youths.does_belong_to_ethnic_group',
@@ -95,7 +96,7 @@ class YouthService
                 ->whereNull('loc_upazilas.deleted_at');
         });
 
-        $youthBuilder->with('skills');
+        $youthBuilder->with(['skills', 'physicalDisabilities']);
         if (!empty($firstName)) {
             $youthBuilder->where('youths.first_name', 'like', '%' . $firstName . '%');
         }
@@ -184,8 +185,8 @@ class YouthService
                 'youths.freedom_fighter_status',
                 'youths.physical_disability_status',
                 'youths.does_belong_to_ethnic_group',
-                'youths.bio',
-                'youths.bio_en',
+                'youths.bio as youth_bio',
+                'youths.bio_en as youth_bio_en',
                 'youths.photo',
                 'youths.cv_path',
                 'youths.signature_image_path',
