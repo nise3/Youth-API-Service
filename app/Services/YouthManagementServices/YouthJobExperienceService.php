@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Services\YouthManagementServices;
 
 
@@ -169,10 +168,7 @@ class YouthJobExperienceService
     public function filterValidator(Request $request): \Illuminate\Contracts\Validation\Validator
     {
         $customMessage = [
-            'order.in' => [
-                'code' => 30000,
-                "message" => 'Order must be either ASC or DESC',
-            ]
+            'order.in' => 'Order must be either ASC or DESC. [30000]'
         ];
 
         if (!empty($request['order'])) {
@@ -203,16 +199,13 @@ class YouthJobExperienceService
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
         $customMessage = [
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be either 1 or 0'
-            ]
+            'is_currently_working.in' => 'Row status must be either 1 or 0. [30000]'
         ];
         $rules = [
             'youth_id' => [
                 'required',
-                'exists:youths,id,deleted_at,NULL',
                 'int',
+                'exists:youths,id,deleted_at,NULL',
             ],
             'employment_type_id' => [
                 'required',
@@ -258,18 +251,25 @@ class YouthJobExperienceService
                 'string',
             ],
             'start_date' => [
-                'date',
                 'required',
-            ],
-            'end_date' => [
                 'date',
-                'nullable',
-                'after:start_date'
+                'date_format:Y-m-d'
             ],
             'is_currently_working' => [
+                'nullable',
                 'integer',
                 Rule::in([YouthJobExperience::CURRENTLY_NOT_WORKING, YouthJobExperience::CURRENTLY_WORKING])
-            ]
+            ],
+            'end_date' => [
+                Rule::requiredIf(function () use ($request) {
+                    return $request->filled('is_currently_working') && $request->is_currently_working;
+                }),
+                'nullable',
+                'date',
+                'date_format:Y-m-d',
+                'after:start_date',
+            ],
+
         ];
         return Validator::make($request->all(), $rules, $customMessage);
     }

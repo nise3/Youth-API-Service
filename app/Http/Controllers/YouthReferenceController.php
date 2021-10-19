@@ -36,11 +36,7 @@ class YouthReferenceController extends Controller
     public function getList(Request $request): JsonResponse
     {
         $filter = $this->referenceService->filterValidator($request)->validate();
-        try {
-            $response = $this->referenceService->getReferenceList($filter, $this->startTime);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->referenceService->getReferenceList($filter, $this->startTime);
         return Response::json($response);
     }
 
@@ -53,11 +49,7 @@ class YouthReferenceController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        try {
-            $response = $this->referenceService->getOneReference($id, $this->startTime);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->referenceService->getOneReference($id, $this->startTime);
         return Response::json($response);
     }
 
@@ -71,22 +63,21 @@ class YouthReferenceController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $request['youth_id'] = Auth::id();
-        $validated = $this->referenceService->validator($request)->validate();
-        try {
-            $reference = $this->referenceService->store($validated);
-            $response = [
-                'data' => $reference,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "YouthReference added successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
+        if (!$request->filled('youth_id')) {
+            $youthId = Auth::id();
+            $request->offsetSet('youth_id', $youthId);
         }
+        $validated = $this->referenceService->validator($request)->validate();
+        $reference = $this->referenceService->store($validated);
+        $response = [
+            'data' => $reference,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_CREATED,
+                "message" => "YouthReference added successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
@@ -95,52 +86,49 @@ class YouthReferenceController extends Controller
      *
      * @param Request $request
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      * @throws ValidationException
      */
     public function update(Request $request, int $id): JsonResponse
     {
         $reference = YouthReference::findOrFail($id);
-        $request['youth_id'] = Auth::id();
-        $validated = $this->referenceService->validator($request, $id)->validate();
-        try {
-            $reference = $this->referenceService->update($reference, $validated);
-            $response = [
-                'data' => $reference,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "YouthReference updated successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
+        if (!$request->filled('youth_id')) {
+            $youthId = Auth::id();
+            $request->offsetSet('youth_id', $youthId);
         }
+        $validated = $this->referenceService->validator($request, $id)->validate();
+        $reference = $this->referenceService->update($reference, $validated);
+        $response = [
+            'data' => $reference,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "YouthReference updated successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
+     * @throws Throwable
      */
     public function destroy(int $id): JsonResponse
     {
         $reference = YouthReference::findOrFail($id);
-        try {
-            $this->referenceService->destroy($reference);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "YouthReference deleted successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $this->referenceService->destroy($reference);
+        $response = [
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "YouthReference deleted successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 }

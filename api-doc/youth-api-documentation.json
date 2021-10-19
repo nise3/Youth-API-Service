@@ -4286,21 +4286,6 @@
                             1,
                             0
                         ]
-                    },
-                    "deleted_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
                     }
                 },
                 "required": [
@@ -4405,30 +4390,10 @@
                     },
                     "file_path": {
                         "type": "string"
-                    },
-                    "youth_id": {
-                        "type": "integer",
-                        "example": 2
-                    },
-                    "deleted_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
                     }
                 },
                 "required": [
-                    "title",
-                    "youth_id"
+                    "title"
                 ]
             },
             "jobExperience": {
@@ -4439,16 +4404,13 @@
                         "type": "string"
                     },
                     "company_name_en": {
-                        "type": "string",
-                        "maxLength": 300
+                        "type": "string"
                     },
                     "position": {
-                        "type": "string",
-                        "maxLength": 150
+                        "type": "string"
                     },
                     "position_en": {
-                        "type": "string",
-                        "maxLength": 150
+                        "type": "string"
                     },
                     "employment_type_id": {
                         "type": "integer",
@@ -4461,12 +4423,10 @@
                         "description": "1=>Full Time,2=>Part Time,3=>Casual,4=>Apprentice or Trainee "
                     },
                     "location": {
-                        "type": "string",
-                        "maxLength": 300
+                        "type": "string"
                     },
                     "location_en": {
-                        "type": "string",
-                        "maxLength": 300
+                        "type": "string"
                     },
                     "job_responsibilities": {
                         "type": "string"
@@ -4476,8 +4436,7 @@
                     },
                     "start_date": {
                         "type": "string",
-                        "format": "date-time",
-                        "example": "2021-10-04"
+                        "format": "date-time"
                     },
                     "end_date": {
                         "type": "string",
@@ -4506,60 +4465,46 @@
                 "description": "Provide references of a youth",
                 "properties": {
                     "referrer_first_name": {
-                        "type": "string",
-                        "maxLength": 250
+                        "type": "string"
                     },
                     "referrer_first_name_en": {
-                        "type": "string",
-                        "maxLength": 150
+                        "type": "string"
                     },
                     "referrer_last_name": {
-                        "type": "string",
-                        "maxLength": 250
+                        "type": "string"
                     },
                     "referrer_last_name_en": {
-                        "type": "string",
-                        "maxLength": 150
+                        "type": "string"
                     },
                     "referrer_organization_name": {
-                        "type": "string",
-                        "maxLength": 600
+                        "type": "string"
                     },
                     "referrer_organization_name_en": {
-                        "type": "string",
-                        "maxLength": 300
+                        "type": "string"
                     },
                     "referrer_designation": {
-                        "type": "string",
-                        "maxLength": 500
+                        "type": "string"
                     },
                     "referrer_designation_en": {
-                        "type": "string",
-                        "maxLength": 200
+                        "type": "string"
                     },
                     "referrer_address": {
-                        "type": "string",
-                        "maxLength": 1000
+                        "type": "string"
                     },
                     "referrer_address_en": {
-                        "type": "string",
-                        "maxLength": 600
+                        "type": "string"
                     },
                     "referrer_email": {
-                        "type": "string",
-                        "maxLength": 191
+                        "type": "string"
                     },
                     "referrer_mobile": {
-                        "type": "string",
-                        "maxLength": 15
+                        "type": "string"
                     },
                     "referrer_relation": {
-                        "type": "string",
-                        "maxLength": 600
+                        "type": "string"
                     },
                     "referrer_relation_en": {
-                        "type": "string",
-                        "maxLength": 300
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -4568,7 +4513,6 @@
                     "referrer_designation",
                     "referrer_organization_name",
                     "referrer_address",
-                    "referrer_email",
                     "referrer_mobile",
                     "referrer_relation"
                 ]
@@ -4581,71 +4525,35 @@
                         "type": "integer",
                         "readOnly": true
                     },
-                    "youth_id": {
-                        "type": "integer",
-                        "example": 1
-                    },
                     "certification_name": {
-                        "type": "string",
-                        "maxLength": 300
+                        "type": "string"
                     },
                     "certification_name_en": {
-                        "type": "string",
-                        "maxLength": 300
+                        "type": "string"
                     },
                     "institute_name": {
-                        "type": "string",
-                        "maxLength": 300
+                        "type": "string"
                     },
                     "institute_name_en": {
-                        "type": "string",
-                        "maxLength": 300
+                        "type": "string"
                     },
                     "location": {
-                        "type": "string",
-                        "maxLength": 300
+                        "type": "string"
                     },
                     "location_en": {
-                        "type": "string",
-                        "maxLength": 300
+                        "type": "string"
                     },
                     "start_date": {
                         "type": "string",
-                        "format": "date",
-                        "example": "2021-10-04"
+                        "format": "date"
                     },
                     "end_date": {
                         "type": "string",
-                        "format": "date",
-                        "example": "2021-10-06"
+                        "format": "date"
                     },
                     "certificate_file_path": {
                         "type": "string",
                         "maxLength": 500
-                    },
-                    "row_status": {
-                        "type": "integer",
-                        "description": "District activation status",
-                        "enum": [
-                            1,
-                            0
-                        ],
-                        "default": 1
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "deleted_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
                     }
                 },
                 "required": [

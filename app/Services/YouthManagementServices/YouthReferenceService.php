@@ -14,7 +14,7 @@ use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- *
+ *  YouthReferenceService for YouthReference Model
  */
 class YouthReferenceService
 {
@@ -25,6 +25,7 @@ class YouthReferenceService
      */
     public function getReferenceList(array $request, Carbon $startTime): array
     {
+        $youthId = $request['youth_id'] ?? Auth::id();
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $order = $request['order'] ?? "ASC";
@@ -52,8 +53,8 @@ class YouthReferenceService
         ]);
         $referenceBuilder->orderBy('youth_references.id', $order);
 
-        if (is_int(Auth::id())) {
-            $referenceBuilder->where('youth_references.youth_id', Auth::id());
+        if (is_integer($youthId)) {
+            $referenceBuilder->where('youth_references.youth_id', $youthId);
         }
 
         /** @var Collection $references */
@@ -108,13 +109,14 @@ class YouthReferenceService
             'youth_references.created_at',
             'youth_references.updated_at',
         ]);
+
         $referenceBuilder->where('youth_references.id', $id);
 
         /** @var YouthReference $reference */
-        $reference = $referenceBuilder->first();
+        $reference = $referenceBuilder->firstOrFail();
 
         return [
-            "data" => $reference ?: [],
+            "data" => $reference,
             "_response_status" => [
                 "success" => true,
                 "code" => Response::HTTP_OK,
@@ -127,13 +129,15 @@ class YouthReferenceService
     /**
      * @param array $data
      * @return YouthReference
+     * @throws \Throwable
      */
     public function store(array $data): YouthReference
     {
-        $reference = new YouthReference();
-        $reference->fill($data);
-        $reference->save();
-        return $reference;
+        /** @var YouthReference $youthReference */
+        $youthReference = app(YouthReference::class);
+        $youthReference->fill($data);
+        throw_if(!$youthReference->save(), 'RuntimeException', 'Youth Reference has not been Saved to db.', 500);
+        return $youthReference;
     }
 
 
@@ -141,11 +145,12 @@ class YouthReferenceService
      * @param YouthReference $reference
      * @param array $data
      * @return YouthReference
+     * @throws \Throwable
      */
     public function update(YouthReference $reference, array $data): YouthReference
     {
         $reference->fill($data);
-        $reference->save();
+        throw_if(!$reference->save(), 'RuntimeException', 'Youth Reference has not been updated to db.', 500);
         return $reference;
     }
 
@@ -153,10 +158,34 @@ class YouthReferenceService
     /**
      * @param YouthReference $reference
      * @return bool
+     * @throws \Throwable
      */
     public function destroy(YouthReference $reference): bool
     {
-        return $reference->delete();
+        throw_if(!$reference->delete(), 'RuntimeException', 'Youth Reference has not been deleted.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthReference $reference
+     * @return bool
+     * @throws \Throwable
+     */
+    public function restore(YouthReference $reference): bool
+    {
+        throw_if(!$reference->restore(), 'RuntimeException', 'Youth Reference has not been restored.', 500);
+        return true;
+    }
+
+    /**
+     * @param YouthReference $reference
+     * @return bool
+     * @throws \Throwable
+     */
+    public function forceDelete(YouthReference $reference): bool
+    {
+        throw_if(!$reference->forceDelete(), 'RuntimeException', 'Youth Reference has not been successfully deleted forcefully.', 500);
+        return true;
     }
 
     /**
@@ -169,13 +198,13 @@ class YouthReferenceService
         $rules = [
             'youth_id' => [
                 'required',
-                'exists:youths,id,deleted_at,NULL',
                 'int',
+                'exists:youths,id,deleted_at,NULL',
             ],
             'referrer_first_name' => [
                 'required',
                 'string',
-                'max:150',
+                'max:300',
                 'min:2'
             ],
             'referrer_first_name_en' => [
@@ -187,7 +216,7 @@ class YouthReferenceService
             'referrer_last_name' => [
                 'required',
                 'string',
-                'max:150',
+                'max:300',
                 'min:2'
             ],
             'referrer_last_name_en' => [
@@ -205,25 +234,25 @@ class YouthReferenceService
             'referrer_organization_name_en' => [
                 'nullable',
                 'string',
-                'max:150',
+                'max:300',
                 'min:2'
             ],
             'referrer_designation' => [
                 'required',
                 'string',
-                'max:200',
+                'max:500',
                 'min:2'
             ],
             'referrer_designation_en' => [
                 'nullable',
                 'string',
-                'max:200',
+                'max:250',
                 'min:2'
             ],
             'referrer_address' => [
                 'required',
                 'string',
-                'max:600',
+                'max:1200',
                 'min:2'
             ],
             'referrer_address_en' => [
@@ -233,7 +262,7 @@ class YouthReferenceService
                 'min:2'
             ],
             'referrer_email' => [
-                'required',
+                'nullable',
                 'email'
             ],
             'referrer_mobile' => [
@@ -244,10 +273,14 @@ class YouthReferenceService
             'referrer_relation' => [
                 'required',
                 'string',
+                'max:600',
+                'min:2'
             ],
             'referrer_relation_en' => [
                 'nullable',
                 'string',
+                'max:300',
+                'min:2'
             ]
         ];
         return Validator::make($request->all(), $rules);
@@ -260,10 +293,7 @@ class YouthReferenceService
     public function filterValidator(Request $request): \Illuminate\Contracts\Validation\Validator
     {
         $customMessage = [
-            'order.in' => [
-                'code' => 30000,
-                "message" => 'Order must be either ASC or DESC',
-            ]
+            'order.in' =>  'Order must be either ASC or DESC. [30000]'
         ];
 
         if (!empty($request['order'])) {

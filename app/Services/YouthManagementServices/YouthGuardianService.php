@@ -132,7 +132,7 @@ class YouthGuardianService
      */
     public function createGuardian(array $data): YouthGuardian
     {
-        $youthGuardian = new YouthGuardian();
+        $youthGuardian = app(YouthGuardian::class);
         $youthGuardian->fill($data);
         $youthGuardian->save();
         return $youthGuardian;
