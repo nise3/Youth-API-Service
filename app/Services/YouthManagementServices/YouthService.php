@@ -97,6 +97,7 @@ class YouthService
         });
 
         $youthBuilder->with(['skills', 'physicalDisabilities']);
+
         if (!empty($firstName)) {
             $youthBuilder->where('youths.first_name', 'like', '%' . $firstName . '%');
         }

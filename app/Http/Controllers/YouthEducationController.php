@@ -39,12 +39,8 @@ class YouthEducationController extends Controller
     {
 
         $filter = $this->youthEducationService->filterValidator($request)->validate();
-        try {
-            $response = $this->youthEducationService->getEducationList($filter, $this->startTime);
-            return Response::json($response);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->youthEducationService->getEducationList($filter, $this->startTime);
+        return Response::json($response);
 
     }
 
@@ -56,12 +52,8 @@ class YouthEducationController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        try {
-            $response = $this->youthEducationService->getOneEducation($id, $this->startTime);
-            return Response::json($response);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->youthEducationService->getOneEducation($id, $this->startTime);
+        return Response::json($response);
 
     }
 
