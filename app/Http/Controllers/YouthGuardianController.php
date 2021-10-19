@@ -26,16 +26,15 @@ class YouthGuardianController extends Controller
     }
 
 
+    /**
+     * @throws Throwable
+     * @throws ValidationException
+     */
     public function getList(Request $request): JsonResponse
     {
 
         $filter = $this->youthGuardianService->filterValidator($request)->validate();
-        try {
-            $response = $this->youthGuardianService->getGuardianList($filter, $this->startTime);
-
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->youthGuardianService->getGuardianList($filter, $this->startTime);
         return Response::json($response);
     }
 
@@ -47,11 +46,7 @@ class YouthGuardianController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        try {
-            $response = $this->youthGuardianService->getOneGuardian($id, $this->startTime);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->youthGuardianService->getOneGuardian($id, $this->startTime);
         return Response::json($response);
     }
 
@@ -64,22 +59,22 @@ class YouthGuardianController extends Controller
      */
     function store(Request $request): JsonResponse
     {
-        $request['youth_id'] = $request['youth_id'] ?? Auth::id();
-        $validated = $this->youthGuardianService->validator($request)->validate();
-        try {
-            $data = $this->youthGuardianService->createGuardian($validated);
-            $response = [
-                'data' => $data ?: null,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "Guardian added successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
+        if (!$request->filled('youth_id')) {
+            $youthId = Auth::id();
+            $request->offsetSet('youth_id', $youthId);
         }
+
+        $validated = $this->youthGuardianService->validator($request)->validate();
+        $data = $this->youthGuardianService->createGuardian($validated);
+        $response = [
+            'data' => $data ?: null,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_CREATED,
+                "message" => "Guardian added successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
@@ -95,23 +90,23 @@ class YouthGuardianController extends Controller
     {
 
         $guardian = YouthGuardian::findOrFail($id);
-        $request['youth_id'] = Auth::id();
+        if (!$request->filled('youth_id')) {
+            $youthId = Auth::id();
+            $request->offsetSet('youth_id', $youthId);
+        }
+
         $validated = $this->youthGuardianService->validator($request, $id)->validate();
 
-        try {
-            $data = $this->youthGuardianService->update($guardian, $validated);
-            $response = [
-                'data' => $data ?: null,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Guardian updated successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $data = $this->youthGuardianService->update($guardian, $validated);
+        $response = [
+            'data' => $data ?: null,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Guardian updated successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
@@ -124,19 +119,15 @@ class YouthGuardianController extends Controller
     public function destroy(int $id): JsonResponse
     {
         $guardian = YouthGuardian::findOrFail($id);
-        try {
-            $this->youthGuardianService->destroy($guardian);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Guardian deleted successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $this->youthGuardianService->destroy($guardian);
+        $response = [
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Guardian deleted successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 

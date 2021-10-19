@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -166,6 +167,7 @@ class YouthGuardianService
      */
     public function validator(Request $request, int $id = null): Validator
     {
+        Log::debug($request->all());
         $rules = [
             'youth_id' => [
                 'required',
@@ -197,22 +199,22 @@ class YouthGuardianService
             'date_of_birth' => [
                 'nullable',
                 'date',
-
+                'date_format:Y-m-d'
             ],
             'relationship_type' => [
                 'required',
-                function ($attr, $value, $fail) use ($request, $id) {
-
-                    if ($id == null && $value != YouthGuardian::RELATIONSHIP_TYPE_OTHER) {
-                        $guardian = YouthGuardian::where('youth_id', $request['youth_id'])->where($attr, $value)->first();
-                        $guardian != null && $fail($attr . " should be unique with this youth id");
-                    }
-                },
-                'int',
+                /*                function ($attr, $value, $fail) use ($request, $id) {
+                                    if ($id == null && $value != YouthGuardian::RELATIONSHIP_TYPE_OTHER) {
+                                        $guardian = YouthGuardian::where('youth_id', $request['youth_id'])->where($attr, $value)->first();
+                                        $guardian != null && $fail($attr . " should be unique with this youth id");
+                                    }
+                                },
+                */
+                'integer',
             ],
             'relationship_title' => [
                 Rule::requiredIf(function () use ($request) {
-                    return $request['relationship_type'] == YouthGuardian::RELATIONSHIP_TYPE_OTHER;
+                    return $request->exists('relationship_type') && $request->get('relationship_type') == YouthGuardian::RELATIONSHIP_TYPE_OTHER;
                 }),
                 'string',
                 'min:1'
@@ -224,6 +226,23 @@ class YouthGuardianService
             ]
         ];
 
+        if ($id) {
+            $rules['relationship_type'][2] = Rule::unique('youth_guardians', 'relationship_type')
+                ->ignore($id)
+                ->where(function (\Illuminate\Database\Query\Builder $query) use ($request) {
+                    return $query->whereNull('deleted_at')
+                        ->where('youth_id', $request->get('youth_id'))
+                        ->whereIn('relationship_type', [YouthGuardian::RELATIONSHIP_TYPE_FATHER, YouthGuardian::RELATIONSHIP_TYPE_MOTHER]);
+                });
+        } else {
+            $rules['relationship_type'][2] = Rule::unique('youth_guardians', 'relationship_type')
+                ->where(function (\Illuminate\Database\Query\Builder $query) use ($request) {
+                    return $query->whereNull('deleted_at')
+                        ->where('youth_id', $request->get('youth_id'))
+                        ->whereIn('relationship_type', [YouthGuardian::RELATIONSHIP_TYPE_FATHER, YouthGuardian::RELATIONSHIP_TYPE_MOTHER]);
+                });
+        }
+
         return \Illuminate\Support\Facades\Validator::make($request->all(), $rules);
     }
 
@@ -234,10 +253,7 @@ class YouthGuardianService
     public function filterValidator(Request $request): Validator
     {
         $customMessage = [
-            'order.in' => [
-                'code' => 30000,
-                "message" => 'Order must be within ASC or DESC',
-            ]
+            'order.in' => 'Order must be within ASC or DESC. [30000]'
         ];
 
         if (!empty($request['order'])) {
