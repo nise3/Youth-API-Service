@@ -457,16 +457,21 @@ class YouthProfileService
                 Rule::requiredIf(function () use ($youth) {
                     return $youth->user_name_type == BaseModel::USER_NAME_TYPE_MOBILE_NUMBER;
                 }),
-                "unique:youths,email," . $youth->id,
-                "email",
+                Rule::unique('youths', 'email')
+                    ->ignore($youth->id)
+                    ->where(function (\Illuminate\Database\Query\Builder $query) {
+                        return $query->whereNull('deleted_at');
+                    })
             ],
             "mobile" => [
                 Rule::requiredIf(function () use ($youth) {
                     return $youth->user_name_type == BaseModel::USER_NAME_TYPE_EMAIL;
                 }),
-                "max:11",
-                "unique:youths,mobile," . $youth->id,
-                BaseModel::MOBILE_REGEX
+                Rule::unique('youths', 'mobile')
+                    ->ignore($youth->id)
+                    ->where(function (\Illuminate\Database\Query\Builder $query) {
+                        return $query->whereNull('deleted_at');
+                    })
             ],
             'identity_number_type' => [
                 'nullable',
@@ -476,6 +481,8 @@ class YouthProfileService
             'identity_number' => [
                 'nullable',
                 'string',
+                'min:11',
+                'max:50'
             ],
             'freedom_fighter_status' => [
                 'required',
@@ -485,7 +492,7 @@ class YouthProfileService
             "physical_disability_status" => [
                 "required",
                 "int",
-                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUS)
+                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUSES)
             ],
             'does_belong_to_ethnic_group' => [
                 'required',
@@ -612,20 +619,30 @@ class YouthProfileService
                 "int"
             ],
             "email" => [
-                "required",
-                "unique:youths,email",
-                "email"
+                Rule::requiredIf(function () use ($data) {
+                    return isset($data["user_name_type"]) && $data["user_name_type"] == BaseModel::USER_NAME_TYPE_EMAIL;
+                }),
+                "email",
+                Rule::unique('youths', 'email')
+                    ->where(function (\Illuminate\Database\Query\Builder $query) {
+                        return $query->whereNull('deleted_at');
+                    })
             ],
             "mobile" => [
-                "required",
+                Rule::requiredIf(function () use ($data) {
+                    return isset($data["user_name_type"]) && $data["user_name_type"] == BaseModel::USER_NAME_TYPE_MOBILE_NUMBER;
+                }),
                 "max:11",
-                "unique:youths,mobile",
-                BaseModel::MOBILE_REGEX
+                BaseModel::MOBILE_REGEX,
+                Rule::unique('youths', 'mobile')
+                    ->where(function (\Illuminate\Database\Query\Builder $query) {
+                        return $query->whereNull('deleted_at');
+                    }),
             ],
             "physical_disability_status" => [
                 "required",
                 "int",
-                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUS)
+                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUSES)
             ],
             "skills" => [
                 "required",
@@ -701,7 +718,6 @@ class YouthProfileService
      */
     public function getAuthYouth(string $id): ?Youth
     {
-
         /** @var Youth $youth */
         return Youth::where('idp_user_id', $id)
             ->where("row_status", BaseModel::ROW_STATUS_ACTIVE)

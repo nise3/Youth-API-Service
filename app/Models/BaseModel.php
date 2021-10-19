@@ -51,7 +51,7 @@ abstract class BaseModel extends Model
     ];
 
     /** Physical Disability Statues  */
-    public const PHYSICAL_DISABILITIES_STATUS = [
+    public const PHYSICAL_DISABILITIES_STATUSES = [
         self::TRUE,
         self::FALSE
     ];
