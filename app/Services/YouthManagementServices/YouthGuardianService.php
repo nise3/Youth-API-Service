@@ -203,13 +203,6 @@ class YouthGuardianService
             ],
             'relationship_type' => [
                 'required',
-                /*                function ($attr, $value, $fail) use ($request, $id) {
-                                    if ($id == null && $value != YouthGuardian::RELATIONSHIP_TYPE_OTHER) {
-                                        $guardian = YouthGuardian::where('youth_id', $request['youth_id'])->where($attr, $value)->first();
-                                        $guardian != null && $fail($attr . " should be unique with this youth id");
-                                    }
-                                },
-                */
                 'integer',
             ],
             'relationship_title' => [
@@ -217,12 +210,6 @@ class YouthGuardianService
                 'nullable',
                 'string',
                 'min:1'
-
-/*                Rule::requiredIf(function () use ($request) {
-                    Log::debug($request->filled('relationship_type') && $request->get('relationship_type') == YouthGuardian::RELATIONSHIP_TYPE_OTHER);
-                    return $request->filled('relationship_type') && $request->get('relationship_type') == YouthGuardian::RELATIONSHIP_TYPE_OTHER;
-                }),*/
-//
             ],
             'relationship_title_en' => [
                 'nullable',
