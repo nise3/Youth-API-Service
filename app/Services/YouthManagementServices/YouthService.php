@@ -338,7 +338,7 @@ class YouthService
             "edu_groups" => EduGroup::all(),
             "edu_boards" => EduBoard::all(),
             "education_level_with_degrees" => EducationLevel::with('examDegrees')->get(),
-            "result" => config("nise3.exam_degree_results")
+            "result" => array_values(config("nise3.exam_degree_results"))
         ];
     }
 

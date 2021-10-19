@@ -374,7 +374,7 @@ class YouthEducationService
                 Rule::in(array_keys(config("nise3.exam_degree_results")))
             ],
             'marks_in_percentage' => [
-                Rule::requiredIf(function () use ($request) {
+                Rule::requiredIf(function () use ($request) { //TODO: rename YouthEducation::MARKS
                     return $this->getRequiredStatus(YouthEducation::BOARD, $request->result);
                 }),
                 "numeric"
