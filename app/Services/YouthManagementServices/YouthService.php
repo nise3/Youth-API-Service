@@ -30,7 +30,6 @@ class YouthService
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
-        $skills = $request['skills'] ?? "";
 
         /** @var Builder $youthBuilder */
 
@@ -88,7 +87,7 @@ class YouthService
             $join->on('youths.loc_upazila_id', '=', 'loc_upazilas.id')
                 ->whereNull('loc_upazilas.deleted_at');
         });
-
+        $youthBuilder->with('skills');
         if (!empty($firstName)) {
             $youthBuilder->where('youths.first_name', 'like', '%' . $firstName . '%');
         }
@@ -99,8 +98,6 @@ class YouthService
 
         if (is_integer($rowStatus)) {
             $youthBuilder->where('youths.row_status', $rowStatus);
-        } else {
-            $youthBuilder->where('youths.row_status', BaseModel::ROW_STATUS_ACTIVE);
         }
 
 
@@ -191,7 +188,7 @@ class YouthService
 
         $youthBuilder->leftjoin('loc_upazilas', function ($join) {
             $join->on('youths.loc_upazila_id', '=', 'loc_upazilas.id')
-            ->whereNull('loc_upazilas.deleted_at');
+                ->whereNull('loc_upazilas.deleted_at');
         });
 
         $youthBuilder->where('youths.id', $id);
@@ -284,10 +281,6 @@ class YouthService
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
-            ],
-            'skills' => [
-                'array',
-                'nullable'
             ],
             'row_status' => [
                 "integer",
