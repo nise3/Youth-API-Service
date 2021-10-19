@@ -7,6 +7,7 @@ use ErrorException;
 use Exception;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Client\RequestException as IlluminateRequestException;
@@ -68,6 +69,9 @@ class Handler extends ExceptionHandler
         if ($e instanceof HttpResponseException) {
             $errors['_response_status']['code'] = ResponseAlias::HTTP_NOT_FOUND;
             $errors['_response_status']['message'] = "Invalid Request Format";
+        } elseif ($e instanceof AuthenticationException) {
+            $errors['_response_status']['code'] = ResponseAlias::HTTP_UNAUTHORIZED;
+            $errors['_response_status']['message'] = "Unable to Access";
         } elseif ($e instanceof AuthorizationException) {
             $errors['_response_status']['code'] = ResponseAlias::HTTP_FORBIDDEN;
             $errors['_response_status']['message'] = "Unable to Access";

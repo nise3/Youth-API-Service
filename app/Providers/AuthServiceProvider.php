@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Models\Youth;
 use App\Services\YouthManagementServices\YouthProfileService;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -11,7 +13,8 @@ use Illuminate\Support\ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    private CONST _WSO2_KEY = '';
+    private const _WSO2_KEY = '';
+
     /**
      * Register any application services.
      *
@@ -23,9 +26,8 @@ class AuthServiceProvider extends ServiceProvider
     }
 
     /**
-     * Boot the authentication services for the application.
-     *
-     * @return void
+     * @throws BindingResolutionException
+     * @throws \Throwable
      */
     public function boot()
     {
@@ -33,42 +35,46 @@ class AuthServiceProvider extends ServiceProvider
         // application. The callback which receives the incoming request instance
         // should return either a User instance or null. You're free to obtain
         // the User instance via an API token or any other method necessary.
-//        Log::info('booooooottttt');
-//        //dd($this->app['auth']);
-//        $this->app['auth']->viaRequest('token', function ($request) {
-//            Log::info('reqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq');
-//            dd('asdasdasd');
-//        });
 
-        $token = Request::capture()->header('Authorization');
-        Auth::setUser(new Youth());
-        $authUser = null;
+//        $token = Request::capture()->header('Authorization');
+        $token =  request()->bearerToken();
+        Auth::setUser(app(Youth::class));
+
         if ($token) {
-            //$header = explode(" ", $token);
-            $token = trim(str_replace('Bearer', '', $token));
-
-            //$jwtPayload = $this->decode($token);
             $idpServerId = $this->getIdpServerIdFromToken($token);
-            Log::info("Auth idp user id-->".$idpServerId);
+            Log::info("Auth idp user id-->" . $idpServerId);
+            /** @var YouthProfileService $youthService */
             $youthService = $this->app->make(YouthProfileService::class);
-            if($idpServerId){
+            if ($idpServerId) {
                 $authUser = $youthService->getAuthYouth($idpServerId);
-                Log::info("authUser fetch:" . json_encode($authUser));
-                if($authUser){
+
+                if ($authUser) {
+                    Log::info("Youth Auth User fetched:" . json_encode($authUser));
                     Auth::setUser($authUser);
+                } else {
+                    Log::info("Youth Auth User Null");
                 }
             }
-            Log::info("userInfoWithIdpId:" . json_encode(Auth::user()));
-
         }
+        Log::info("userInfoWithIdpId:" . json_encode(Auth::user()));
     }
 
-    private function decode($data, $verify = false)
-   {
+    //TODO: Shift this method from here to any helper or Service Class
+    /**
+     * @param $data
+     * @param false $verify
+     * @return mixed
+     * @throws \Throwable
+     */
+    private function decode($data, bool $verify = false): mixed
+    {
         $sections = explode('.', $data);
+        throw_if((count($sections) < 3), AuthenticationException::class, 'Invalid number of sections of Tokens (<3)',);
+/*
         if (count($sections) < 3) {
             throw new \Exception('Invalid number of sections of Tokens (<3)');
         }
+*/
 
         list($header, $claims, $signature) = $sections;
 
@@ -76,36 +82,44 @@ class AuthServiceProvider extends ServiceProvider
         $claims = json_decode(base64_decode($claims));
 
         $signature = json_decode(base64_decode($signature));
-        $key =$this->getJwtKey();
+        $key = $this->getJwtKey();
 
         if ($verify === true) {
-            if ($this->verify($key, $header, $claims, $signature) === false){
-                throw new \Exception ('Signature did not verify');
-            }
+            throw_if($this->verify($key, $header, $claims, $signature), AuthenticationException::class,'Signature could not be verified');
         }
 
         return $claims;
     }
 
+    /** TODO: Shift this method from here to any helper or Service Class */
+    /**
+     * @throws \Throwable
+     */
     private function getIdpServerIdFromToken($data, $verify = false)
     {
         $sections = explode('.', $data);
-        if (count($sections) < 3) {
-            throw new \Exception('Invalid number of sections of Tokens (<3)');
-        }
+
+        throw_if((count($sections) < 3), AuthenticationException::class, 'Invalid number of sections of Tokens (<3)',);
 
         list($header, $claims, $signature) = $sections;
+
         preg_match("/['\"]sub['\"]:['\"](.*?)['\"][,]/", base64_decode($claims), $matches);
 
-        return count($matches)>1 ? $matches[1] : "";
+        return count($matches) > 1 ? $matches[1] : "";
     }
 
-    protected function getJwtKey()
+    /** TODO: Shift this method from here to any helper or Service Class */
+    protected function getJwtKey(): string
     {
         return self::_WSO2_KEY;
     }
-    protected function verify()
+
+    /** TODO: Shift this method from here to any helper or Service Class */
+    /**
+     * Verify Signature
+     */
+    protected function verify(): bool
     {
-       //do some verification task
+        return true;
     }
 }

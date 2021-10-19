@@ -714,11 +714,10 @@ class YouthProfileService
 
     /**
      * @param string $id
-     * @return Youth|null
+     * @return  Youth|null
      */
-    public function getAuthYouth(string $id): ?Youth
+    public function getAuthYouth(string $id): Youth|null
     {
-        /** @var Youth $youth */
         return Youth::where('idp_user_id', $id)
             ->where("row_status", BaseModel::ROW_STATUS_ACTIVE)
             ->first();
