@@ -828,6 +828,7 @@
                                         "upazila_title": null,
                                         "upazila_title_en": null,
                                         "gender": 2,
+                                        "is_freelance_profile": false,
                                         "religion": null,
                                         "marital_status": null,
                                         "nationality": 1,
@@ -4172,7 +4173,7 @@
                         "example": "yt7idt698adugiiausj"
                     },
                     "is_freelance_profile": {
-                        "type": "string",
+                        "type": "integer",
                         "default": 0
                     },
                     "username": {
