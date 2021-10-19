@@ -251,7 +251,7 @@ class YouthService
     {
         $youth = app(Youth::class);
         $youth->fill($data);
-        throw_if($youth->save(), 'RuntimeException', 'Youth has not been Saved to db.', 500);
+        throw_if(!$youth->save(), 'RuntimeException', 'Youth has not been Saved to db.', 500);
         return $youth;
     }
 
@@ -264,7 +264,7 @@ class YouthService
     public function update(Youth $youth, array $data): Youth
     {
         $youth->fill($data);
-        throw_if($youth->save(), 'RuntimeException', 'Youth has not been updated to db.', 500);
+        throw_if(!$youth->save(), 'RuntimeException', 'Youth has not been updated to db.', 500);
         return $youth;
     }
 
@@ -276,7 +276,7 @@ class YouthService
      */
     public function destroy(Youth $youth): bool
     {
-        throw_if($youth->delete(), 'RuntimeException', 'Youth has not been deleted.', 500);
+        throw_if(!$youth->delete(), 'RuntimeException', 'Youth has not been deleted.', 500);
         return true;
     }
 

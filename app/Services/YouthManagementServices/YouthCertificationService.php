@@ -117,7 +117,7 @@ class YouthCertificationService
         /** @var YouthCertification $certification */
         $certification = app(YouthCertification::class);
         $certification->fill($data);
-        throw_if($certification->save(), 'RuntimeException', 'Youth Certification has not been Saved to db.', 500);
+        throw_if(!$certification->save(), 'RuntimeException', 'Youth Certification has not been Saved to db.', 500);
         return $certification;
     }
 
@@ -130,7 +130,7 @@ class YouthCertificationService
     public function update(YouthCertification $certification, array $data): YouthCertification
     {
         $certification->fill($data);
-        throw_if($certification->save(), 'RuntimeException', 'Youth Certification has not been updated to db.', 500);
+        throw_if(!$certification->save(), 'RuntimeException', 'Youth Certification has not been updated to db.', 500);
         return $certification;
     }
 
@@ -141,7 +141,7 @@ class YouthCertificationService
      */
     public function destroy(YouthCertification $certification): bool
     {
-        throw_if($certification->delete(), 'RuntimeException', 'Youth Certification has not been deleted.', 500);
+        throw_if(!$certification->delete(), 'RuntimeException', 'Youth Certification has not been deleted.', 500);
         return true;
     }
 
@@ -152,7 +152,7 @@ class YouthCertificationService
      */
     public function restore(YouthCertification $certification): bool
     {
-        throw_if($certification->restore(), 'RuntimeException', 'Youth Certification has not been restored.', 500);
+        throw_if(!$certification->restore(), 'RuntimeException', 'Youth Certification has not been restored.', 500);
         return true;
     }
 
@@ -163,7 +163,7 @@ class YouthCertificationService
      */
     public function forceDelete(YouthCertification $certification): bool
     {
-        throw_if($certification->forceDelete(), 'RuntimeException', 'Youth Certification has not been successfully deleted forcefully.', 500);
+        throw_if(!$certification->forceDelete(), 'RuntimeException', 'Youth Certification has not been successfully deleted forcefully.', 500);
         return true;
     }
 
@@ -243,6 +243,7 @@ class YouthCertificationService
                 Rule::requiredIf(function () use ($request) {
                     return $request->exists('start_date') && $request->filled('start_date');
                 }),
+                'nullable',
                 'date',
                 'date_format:Y-m-d',
                 'after:start_date',

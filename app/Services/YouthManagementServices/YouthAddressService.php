@@ -159,7 +159,7 @@ class YouthAddressService
         /** @var YouthAddress $address */
         $address = app(YouthAddress::class);
         $address->fill($data);
-        throw_if($address->save(), 'RuntimeException', 'Youth Address has not been Saved to db.', 500);
+        throw_if(!$address->save(), 'RuntimeException', 'Youth Address has not been Saved to db.', 500);
         return $address;
     }
 
@@ -172,7 +172,7 @@ class YouthAddressService
     public function update(YouthAddress $youthAddress, array $data): YouthAddress
     {
         $youthAddress->fill($data);
-        throw_if($youthAddress->save(), 'RuntimeException', 'Youth Address has not been updated to db.', 500);
+        throw_if(!$youthAddress->save(), 'RuntimeException', 'Youth Address has not been updated to db.', 500);
         return $youthAddress;
     }
 
@@ -183,7 +183,7 @@ class YouthAddressService
      */
     public function destroy(YouthAddress $youthAddress): bool
     {
-        throw_if($youthAddress->delete(), 'RuntimeException', 'Youth Address has not been deleted.', 500);
+        throw_if(!$youthAddress->delete(), 'RuntimeException', 'Youth Address has not been deleted.', 500);
         return true;
     }
 
@@ -194,7 +194,7 @@ class YouthAddressService
      */
     public function restore(YouthAddress $youthAddress): bool
     {
-        throw_if($youthAddress->restore(), 'RuntimeException', 'Youth Address has not been restored.', 500);
+        throw_if(!$youthAddress->restore(), 'RuntimeException', 'Youth Address has not been restored.', 500);
         return true;
     }
 
@@ -205,7 +205,7 @@ class YouthAddressService
      */
     public function forceDelete(YouthAddress $youthAddress): bool
     {
-        throw_if($youthAddress->forceDelete(), 'RuntimeException', 'Youth Address has not been successfully deleted forcefully.', 500);
+        throw_if(!$youthAddress->forceDelete(), 'RuntimeException', 'Youth Address has not been successfully deleted forcefully.', 500);
         return true;
     }
 
