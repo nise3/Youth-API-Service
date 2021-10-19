@@ -214,11 +214,10 @@ class YouthGuardianService
             ],
             'relationship_title' => [
                 Rule::requiredIf(function () use ($request) {
-                    Log::debug($request->exists('relationship_type') && $request->get('relationship_type') == YouthGuardian::RELATIONSHIP_TYPE_OTHER);
-                    return $request->exists('relationship_type') && $request->get('relationship_type') == YouthGuardian::RELATIONSHIP_TYPE_OTHER;
+                    Log::debug($request->filled('relationship_type') && $request->get('relationship_type') == YouthGuardian::RELATIONSHIP_TYPE_OTHER);
+                    return $request->filled('relationship_type') && $request->get('relationship_type') == YouthGuardian::RELATIONSHIP_TYPE_OTHER;
                 }),
-                'string',
-                'min:1'
+                'string'
             ],
             'relationship_title_en' => [
                 'nullable',
