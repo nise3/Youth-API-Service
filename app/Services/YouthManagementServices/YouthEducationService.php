@@ -460,7 +460,7 @@ class YouthEducationService
             {
                 return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [EducationLevel::EDUCATION_LEVEL_PSC_5_PASS, EducationLevel::EDUCATION_LEVEL_JSC_JDC_8_PASS, EducationLevel::EDUCATION_LEVEL_SECONDARY, EducationLevel::EDUCATION_LEVEL_HIGHER_SECONDARY]);
             }
-            case YouthEducation::MAJOR:
+            case YouthEducation::MAJOR: //TODO: Remove SSC & HSC LABEL
             {
                 return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [EducationLevel::EDUCATION_LEVEL_SECONDARY, EducationLevel::EDUCATION_LEVEL_HIGHER_SECONDARY, EducationLevel::EDUCATION_LEVEL_DIPLOMA, EducationLevel::EDUCATION_LEVEL_BACHELOR, EducationLevel::EDUCATION_LEVEL_MASTERS]);
             }
@@ -486,7 +486,7 @@ class YouthEducationService
             {
                 return in_array($this->getCodeById(YouthEducation::RESULT_TRIGGER, $id), [EducationLevel::RESULT_GRADE, EducationLevel::RESULT_ENROLLED, EducationLevel::RESULT_AWARDED, EducationLevel::RESULT_PASS]);
             }
-            case YouthEducation::EXPECTED_YEAR_OF_EXPERIENCE:
+            case YouthEducation::EXPECTED_YEAR_OF_EXPERIENCE: //TODO: Remove This
             {
                 return $this->getCodeById(YouthEducation::RESULT_TRIGGER, $id) == EducationLevel::RESULT_APPEARED;
             }
