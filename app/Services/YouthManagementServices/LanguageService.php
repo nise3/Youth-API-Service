@@ -30,7 +30,7 @@ class LanguageService
         $languageBuilder->orderBy('languages.id', $order);
 
         /** @var Collection $languages */
-
+        $response = [];
         if (is_integer($paginate) || is_integer($pageSize)) {
             $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $languages = $languageBuilder->paginate($pageSize);

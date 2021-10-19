@@ -247,6 +247,7 @@ class YouthProfileController extends Controller
         $validated = $this->youthProfileService->resendCodeValidator($request)->validate();
 
         try {
+
             $status = $this->youthProfileService->resendCode($validated);
             $response = [
                 '_response_status' => [
@@ -256,10 +257,12 @@ class YouthProfileController extends Controller
                     "query_time" => $this->startTime->diffForHumans(Carbon::now())
                 ]
             ];
+
+            return Response::json($response, ResponseAlias::HTTP_OK);
+
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
 

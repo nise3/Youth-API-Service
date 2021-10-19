@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
 /**
@@ -15,7 +16,7 @@ use Illuminate\Support\Collection;
  */
 class Skill extends BaseModel
 {
-    use HasFactory;
+    use SoftDeletes, HasFactory;
 
     public $timestamps = false;
     /**
@@ -34,4 +35,6 @@ class Skill extends BaseModel
     {
         return $this->belongsToMany(Youth::class, 'youth_skills');
     }
+
+
 }

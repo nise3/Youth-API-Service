@@ -29,9 +29,7 @@ class SkillService
         $titleEn = $request['title_en'] ?? "";
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
-        $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
-
 
         /** @var Builder $skillBuilder */
         $skillBuilder = Skill::select(
@@ -43,9 +41,6 @@ class SkillService
         );
         $skillBuilder->orderBy('skills.id', $order);
 
-        if (is_numeric($rowStatus)) {
-            $skillBuilder->where('skills.row_status', $rowStatus);
-        }
         if (!empty($title)) {
             $skillBuilder->where('skills.title', 'like', '%' . $title . '%');
         }
@@ -54,8 +49,8 @@ class SkillService
         }
 
         /** @var Collection $skills */
-
-        if (is_numeric($paginate) || is_numeric($pageSize)) {
+        $response = [];
+        if (is_integer($paginate) || is_integer($pageSize)) {
             $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $skills = $skillBuilder->paginate($pageSize);
             $paginateData = (object)$skills->toArray();
@@ -69,11 +64,7 @@ class SkillService
 
         $response['order'] = $order;
         $response['data'] = $skills->toArray()['data'] ?? $skills->toArray();
-        $response['_response_status'] = [
-            "success" => true,
-            "code" => Response::HTTP_OK,
-            "query_time" => $startTime->diffInSeconds(Carbon::now())
-        ];
+        $response['query_time'] = $startTime->diffInSeconds(Carbon::now());
 
         return $response;
     }
@@ -97,15 +88,11 @@ class SkillService
         $skillBuilder->where('skills.id', '=', $id);
 
         /** @var Skill $skill */
-        $skill = $skillBuilder->first();
+        $skill = $skillBuilder->firstOrFail();
 
         return [
-            "data" => $skill ?: [],
-            "_response_status" => [
-                "success" => true,
-                "code" => Response::HTTP_OK,
-                "query_time" => $startTime->diffInSeconds(Carbon::now())
-            ]
+            "data" => $skill,
+            "query_time" => $startTime->diffInSeconds(Carbon::now())
         ];
     }
 
@@ -173,7 +160,7 @@ class SkillService
         }
 
         /** @var Collection $skills */
-
+        $response = [];
         if (!is_null($paginate) || !is_null($limit)) {
             $limit = $limit ?: 10;
             $skills = $skillBuilder->paginate($limit);
@@ -223,18 +210,13 @@ class SkillService
      */
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
-        $customMessage = [
-            'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
-            ]
-        ];
         $rules = [
             'title_en' => [
                 'nullable',
                 'string',
-                'max:191',
+                'max:200',
                 'min:2',
+
             ],
             'title' => [
                 'required',
@@ -243,7 +225,28 @@ class SkillService
                 'min:2'
             ]
         ];
-        return Validator::make($request->all(), $rules, $customMessage);
+        if($id){
+            $rules['title_en'][] = Rule::unique('skills', 'title_en')
+                ->ignore($id)
+                ->where(function (\Illuminate\Database\Query\Builder $query) {
+                    return $query->whereNull('deleted_at');
+                });
+            $rules['title'][] = Rule::unique('skills', 'title')
+                ->ignore($id)
+                ->where(function (\Illuminate\Database\Query\Builder $query) {
+                    return $query->whereNull('deleted_at');
+                });
+        } else {
+            $rules['title_en'][] = Rule::unique('skills', 'title_en')
+                ->where(function (\Illuminate\Database\Query\Builder $query) {
+                    return $query->whereNull('deleted_at');
+                });
+            $rules['title'][] = Rule::unique('skills', 'title')
+                ->where(function (\Illuminate\Database\Query\Builder $query) {
+                    return $query->whereNull('deleted_at');
+                });
+        }
+        return Validator::make($request->all(), $rules);
     }
 
     /**
@@ -253,10 +256,7 @@ class SkillService
     public function filterValidator(Request $request): \Illuminate\Contracts\Validation\Validator
     {
         $customMessage = [
-            'order.in' => [
-                'code' => 30000,
-                "message" => 'Order must be within ASC or DESC',
-            ]
+            'order.in' => 'Order must be within ASC or DESC. [30000]'
         ];
 
         if (!empty($request['order'])) {
