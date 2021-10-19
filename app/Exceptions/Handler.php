@@ -18,7 +18,6 @@ use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use ParseError;
 use PDOException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -28,23 +27,16 @@ class Handler extends ExceptionHandler
 {
     /**
      * A list of the exception types that should not be reported.
-     *
      * @var array
      */
-    protected $dontReport = [
-        AuthorizationException::class,
-        HttpException::class,
-        ModelNotFoundException::class
-    ];
+    protected $dontReport = [];
 
     /**
      * Report or log an exception.
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-     *
      * @param Throwable $exception
      * @return void
-     *
      * @throws Exception
      */
     public function report(Throwable $exception)

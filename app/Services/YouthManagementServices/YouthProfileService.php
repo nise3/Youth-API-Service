@@ -94,8 +94,11 @@ class YouthProfileService
 
         });
 
-        $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences", "youthCertifications", "youthPortfolios", "youthAddresses"]);
         $youthProfileBuilder->where('youths.id', '=', Auth::id());
+        // TODO: Replace This following Elloquent Relationship with Left Join
+
+        $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences", "youthCertifications", "youthPortfolios", "youthAddresses"]);
+
         return $youthProfileBuilder->first();
 
     }

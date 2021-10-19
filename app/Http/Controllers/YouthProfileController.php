@@ -8,7 +8,6 @@ use App\Models\YouthAddress;
 use App\Services\YouthManagementServices\YouthAddressService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -55,20 +54,17 @@ class YouthProfileController extends Controller
      */
     public function getYouthProfile(): JsonResponse
     {
-        try {
-            $youth = $this->youthProfileService->getYouthProfile();
-            $response = [
-                "data" => $youth ?: new stdClass(),
-                "_response_status" => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Youth profile information",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $youth = $this->youthProfileService->getYouthProfile();
+        $response = [
+            "data" => $youth ?: new stdClass(),
+            "_response_status" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Youth profile information",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+
         return Response::json($response);
     }
 

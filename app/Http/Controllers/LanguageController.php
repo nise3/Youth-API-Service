@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Services\YouthManagementServices\LanguageService;
-use App\Services\YouthManagementServices\YouthGuardianService;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class LanguageController extends Controller
@@ -22,14 +23,27 @@ class LanguageController extends Controller
         $this->startTime = Carbon::now();
     }
 
-    public function getList(Request $request)
+    /**
+     * @throws Throwable
+     * @throws ValidationException
+     */
+    public function getList(Request $request): JsonResponse
     {
         $filter = $this->languageService->filterValidator($request)->validate();
         try {
-            $response = $this->languageService->getAllLanguageList($filter, $this->startTime);
+            $returnedData = $this->languageService->getAllLanguageList($filter, $this->startTime);
+            $response = [
+                'order' =>  $returnedData['order'],
+                'data' => $returnedData['data'],
+                '_response_status' => [
+                    "success" => true,
+                    "code" => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                    'query_time' => $returnedData['query_time']
+                ]
+            ];
+            return Response::json($response, \Symfony\Component\HttpFoundation\Response::HTTP_OK);
         } catch (Throwable $e) {
             throw $e;
         }
-        return Response::json($response);
     }
 }
