@@ -25,35 +25,35 @@ class YouthAddressController extends Controller
         $this->startTime = Carbon::now();
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ValidationException
+     */
     public function getList(Request $request): JsonResponse
     {
 
         $filter = $this->youthAddressService->filterValidator($request)->validate();
-        try {
-            $returnedData = $this->youthAddressService->getAddressList($filter, $this->startTime);
+        $returnedData = $this->youthAddressService->getAddressList($filter, $this->startTime);
 
-            $response = [
-                'order' => $returnedData['order'],
-                'data' => $returnedData['data'],
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    'query_time' => $returnedData['query_time']
-                ]
-            ];
+        $response = [
+            'order' => $returnedData['order'],
+            'data' => $returnedData['data'],
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                'query_time' => $returnedData['query_time']
+            ]
+        ];
 
-            if (isset($returnedData['total_page'])) {
-                $response['total'] = $returnedData['total'];
-                $response['current_page'] = $returnedData['current_page'];
-                $response['total_page'] = $returnedData['total_page'];
-                $response['page_size'] = $returnedData['page_size'];
-            }
-
-            return Response::json($response, ResponseAlias::HTTP_OK);
-
-        } catch (Throwable $e) {
-            throw $e;
+        if (isset($returnedData['total_page'])) {
+            $response['total'] = $returnedData['total'];
+            $response['current_page'] = $returnedData['current_page'];
+            $response['total_page'] = $returnedData['total_page'];
+            $response['page_size'] = $returnedData['page_size'];
         }
+
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**
@@ -63,17 +63,13 @@ class YouthAddressController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        try {
-            $response = $this->youthAddressService->getOneYouthAddress($id, $this->startTime);
-            $response['_response_status'] = [
-                "success" => true,
-                "code" => ResponseAlias::HTTP_OK,
-                'query_time' => $response['query_time']
-            ];
-            return Response::json($response, ResponseAlias::HTTP_OK);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->youthAddressService->getOneYouthAddress($id, $this->startTime);
+        $response['_response_status'] = [
+            "success" => true,
+            "code" => ResponseAlias::HTTP_OK,
+            'query_time' => $response['query_time']
+        ];
+        return Response::json($response, ResponseAlias::HTTP_OK);
 
     }
 
@@ -86,25 +82,25 @@ class YouthAddressController extends Controller
      */
     function store(Request $request): JsonResponse
     {
-        $request['youth_id'] = $request['youth_id'] ?? Auth::id();
-        $validated = $this->youthAddressService->validator($request)->validate();
-        try {
-            $data = $this->youthAddressService->store($validated);
-            $response = [
-                'data' => $data,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "Youth Address Added Successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-
-            return Response::json($response, ResponseAlias::HTTP_CREATED);
-
-        } catch (Throwable $e) {
-            throw $e;
+        if (!$request->filled('youth_id')) {
+            $youthId = Auth::id();
+            $request->offsetSet('youth_id', $youthId);
         }
+
+        $validated = $this->youthAddressService->validator($request)->validate();
+        $data = $this->youthAddressService->store($validated);
+
+        $response = [
+            'data' => $data,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_CREATED,
+                "message" => "Youth Address Added Successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+
+        return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
     /**
@@ -118,24 +114,25 @@ class YouthAddressController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         $guardian = YouthAddress::findOrFail($id);
-        $request['youth_id'] = Auth::id();
+
+        if (!$request->filled('youth_id')) {
+            $youthId = Auth::id();
+            $request->offsetSet('youth_id', $youthId);
+        }
+
         $validated = $this->youthAddressService->validator($request, $id)->validate();
 
-        try {
-            $data = $this->youthAddressService->update($guardian, $validated);
-            $response = [
-                'data' => $data,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Youth Address Updated Successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-            return Response::json($response, ResponseAlias::HTTP_CREATED);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $data = $this->youthAddressService->update($guardian, $validated);
+        $response = [
+            'data' => $data,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Youth Address Updated Successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_CREATED);
 
     }
 
@@ -147,23 +144,21 @@ class YouthAddressController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
+        // TODO: Check Policy so that an youth can not delete other youth's data
         $guardian = YouthAddress::findOrFail($id);
-        try {
-            $this->youthAddressService->destroy($guardian);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Guardian deleted successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-            return Response::json($response, ResponseAlias::HTTP_OK);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $this->youthAddressService->destroy($guardian);
+        $response = [
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Guardian deleted successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_ACCEPTED);
 
     }
+
     /**
      * @param int $id
      * @return JsonResponse
@@ -171,22 +166,18 @@ class YouthAddressController extends Controller
      */
     public function restore(int $id): JsonResponse
     {
+        // TODO: Check Policy so that an youth can not delete other youth's data
         $guardian = YouthAddress::onlyTrashed()->findOrFail($id);
-        try {
-            $this->youthAddressService->restore($guardian);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Skill restored successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-            return Response::json($response, ResponseAlias::HTTP_OK);
-
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $this->youthAddressService->restore($guardian);
+        $response = [
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Skill restored successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_ACCEPTED);
     }
 
     /**
@@ -196,21 +187,18 @@ class YouthAddressController extends Controller
      */
     public function forceDelete(int $id): JsonResponse
     {
+        // TODO: Check Policy so that an youth can not delete other youth's data
         $guardian = YouthAddress::onlyTrashed()->findOrFail($id);
-        try {
-            $this->youthAddressService->forceDelete($guardian);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Skill Permanently Deleted Successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
+        $this->youthAddressService->forceDelete($guardian);
+        $response = [
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Skill Permanently Deleted Successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
 
-            return Response::json($response, ResponseAlias::HTTP_OK);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        return Response::json($response, ResponseAlias::HTTP_ACCEPTED);
     }
 }

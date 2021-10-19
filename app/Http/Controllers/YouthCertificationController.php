@@ -45,12 +45,26 @@ class YouthCertificationController extends Controller
     public function getList(Request $request): JsonResponse
     {
         $filter = $this->certificationService->filterValidator($request)->validate();
-        try {
-            $response = $this->certificationService->getAllCertifications($filter, $this->startTime);
-            return Response::json($response);
-        } catch (Throwable $e) {
-            throw $e;
+        $returnedData = $this->certificationService->getAllCertifications($filter, $this->startTime);
+
+        $response = [
+            'order' => $returnedData['order'],
+            'data' => $returnedData['data'],
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                'query_time' => $returnedData['query_time']
+            ]
+        ];
+
+        if (isset($returnedData['total_page'])) {
+            $response['total'] = $returnedData['total'];
+            $response['current_page'] = $returnedData['current_page'];
+            $response['total_page'] = $returnedData['total_page'];
+            $response['page_size'] = $returnedData['page_size'];
         }
+
+        return Response::json($response, ResponseAlias::HTTP_OK);
 
     }
 
@@ -62,13 +76,14 @@ class YouthCertificationController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        try {
-            $response = $this->certificationService->getOneCertification($id, $this->startTime);
-            return Response::json($response);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->certificationService->getOneCertification($id, $this->startTime);
+        $response['_response_status'] = [
+            "success" => true,
+            "code" => ResponseAlias::HTTP_OK,
+            'query_time' => $response['query_time']
+        ];
 
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
 
@@ -80,23 +95,23 @@ class YouthCertificationController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $request['youth_id'] = Auth::id();
-        $validated = $this->certificationService->validator($request)->validate();
-        try {
-            $certification = $this->certificationService->store($validated);
-            $response = [
-                'data' => $certification,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "YouthCertification added successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-            return Response::json($response, ResponseAlias::HTTP_CREATED);
-        } catch (Throwable $e) {
-            throw $e;
+        if (!$request->filled('youth_id')) {
+            $youthId = Auth::id();
+            $request->offsetSet('youth_id', $youthId);
         }
+
+        $validated = $this->certificationService->validator($request)->validate();
+        $certification = $this->certificationService->store($validated);
+        $response = [
+            'data' => $certification,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_CREATED,
+                "message" => "YouthCertification added successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_CREATED);
 
     }
 
@@ -110,24 +125,25 @@ class YouthCertificationController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $request['youth_id'] = Auth::id();
+        if(!$request->filled('youth_id')){
+            $youthId = Auth::id();
+            $request->offsetSet('youth_id', $youthId);
+        }
+
         $certification = YouthCertification::findOrFail($id);
         $validated = $this->certificationService->validator($request, $id)->validate();
-        try {
-            $certification = $this->certificationService->update($certification, $validated);
-            $response = [
-                'data' => $certification,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Certificate updated successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-                ]
-            ];
-            return Response::json($response, ResponseAlias::HTTP_CREATED);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+
+        $certification = $this->certificationService->update($certification, $validated);
+        $response = [
+            'data' => $certification,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Certificate updated successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_CREATED);
 
     }
 
@@ -139,21 +155,18 @@ class YouthCertificationController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
+        // TODO: Check Policy so that an youth can not delete other youth's data
         $certification = YouthCertification::findOrFail($id);
-        try {
-            $this->certificationService->destroy($certification);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Certificate deleted successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-                ]
-            ];
-            return Response::json($response, ResponseAlias::HTTP_OK);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $this->certificationService->destroy($certification);
+        $response = [
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Certificate deleted successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_OK);
 
     }
 }
