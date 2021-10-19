@@ -544,6 +544,7 @@ class YouthProfileService
                 Rule::requiredIf(function () use ($data) {
                     return $data['physical_disability_status'] == BaseModel::TRUE;
                 }),
+                'nullable',
                 "array",
                 "min:1"
             ];
@@ -551,6 +552,7 @@ class YouthProfileService
                 Rule::requiredIf(function () use ($data) {
                     return $data['physical_disability_status'] == BaseModel::TRUE;
                 }),
+                'nullable',
                 "exists:physical_disabilities,id,deleted_at,NULL",
                 "int",
                 "distinct",
@@ -696,6 +698,7 @@ class YouthProfileService
                 Rule::requiredIf(function () use ($data) {
                     return $data['physical_disability_status'] == BaseModel::TRUE;
                 }),
+                'nullable',
                 "array",
                 "min:1"
             ];
@@ -703,10 +706,11 @@ class YouthProfileService
                 Rule::requiredIf(function () use ($data) {
                     return $data['physical_disability_status'] == BaseModel::TRUE;
                 }),
-                "exists:physical_disabilities,id,deleted_at,NULL",
+                'nullable',
                 "int",
                 "distinct",
                 "min:1",
+                "exists:physical_disabilities,id,deleted_at,NULL",
             ];
         }
 
