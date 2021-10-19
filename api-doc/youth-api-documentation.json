@@ -281,6 +281,36 @@
             "get": {
                 "summary": "get_list",
                 "description": " API endpoint to get the list of Youth profile.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page_size"
+                    },
+                    {
+                        "$ref": "#/components/parameters/row_status_optional"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    },
+                    {
+                        "name": "first_name",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "flast_name",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -325,7 +355,15 @@
                                             "cv_path": null,
                                             "row_status": 1,
                                             "created_at": "2021-10-10T07:23:58.000000Z",
-                                            "updated_at": "2021-10-10T07:23:58.000000Z"
+                                            "updated_at": "2021-10-10T07:23:58.000000Z",
+                                            "skills": [
+                                                {
+                                                    "id": 1,
+                                                    "title": "টেকনিকাল রাইটিং",
+                                                    "title_en": "Technical Writing",
+                                                    "deleted_at": null
+                                                }
+                                            ]
                                         }
                                     ],
                                     "_response_status": {
