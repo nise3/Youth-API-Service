@@ -56,7 +56,7 @@ class YouthService
                 'youths.loc_upazila_id',
                 'loc_upazilas.title as upazila_title',
                 'loc_upazilas.title_en as upazila_title_en',
-                DB::raw('SUBSTR(youths.bio, 0, 80) as youth_bio'),
+                DB::raw('SUBSTR(youths.bio, 0, 160) as youth_bio'),
                 DB::raw('SUBSTR(youths.bio_en, 0, 80) as youth_bio_en'),
                 'youths.gender',
                 'youths.religion',
