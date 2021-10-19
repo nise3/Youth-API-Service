@@ -48,7 +48,7 @@ class CreateYouthsTable extends Migration
             $table->unsignedSmallInteger('nationality')->default(1);
             /** Coming from nise3 config file */
 
-            $table->string('email', 200)->nullable();
+            $table->string('email', 255)->nullable();
             $table->string('mobile', 20)->nullable();
 
             $table->unsignedTinyInteger('identity_number_type')

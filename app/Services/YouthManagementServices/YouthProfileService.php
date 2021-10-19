@@ -95,8 +95,6 @@ class YouthProfileService
         });
 
         $youthProfileBuilder->where('youths.id', '=', Auth::id());
-        // TODO: Replace This following Elloquent Relationship with Left Join
-
         $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences", "youthCertifications", "youthPortfolios", "youthAddresses"]);
 
         return $youthProfileBuilder->first();
@@ -324,10 +322,7 @@ class YouthProfileService
     public function freelanceStatusValidator(Request $request): Validator
     {
         $customMessage = [
-            "freelance_profile_status.in" => [
-                "code" => 30000,
-                "message" => "The freelance_status is either 0 or 1"
-            ]
+            "freelance_profile_status.in" => "The freelance_status is either 0 or 1. [30000]"
         ];
 
         $rules = [
@@ -346,30 +341,22 @@ class YouthProfileService
     public function verifyYouthValidator(Request $request): Validator
     {
         $customMessage = [
-            "email.exists" => [
-                "code" => 24000,
-                "message" => "The email is not exists in the system"
-            ],
-            "mobile.exists" => [
-                "code" => 24000,
-                "message" => "The mobile is not exists in the system"
-            ],
+            "email.exists" => "The email is not exists in the system. [24000]",
+            "mobile.exists" => "The mobile is not exists in the system. [24000]"
         ];
 
         $rules = [
             "email" => [
                 Rule::requiredIf(function () use ($request) {
-                    return !array_key_exists("mobile", $request->all());
+                    return !$request->exists('mobile');
                 }),
-                "exists:youths,email"
+                "exists:youths,email,deleted_at,NULL"
             ],
             "mobile" => [
                 Rule::requiredIf(function () use ($request) {
-                    return !array_key_exists("email", $request->all());
+                    return !$request->exists('email');
                 }),
-                "max:11",
-                BaseModel::MOBILE_REGEX,
-                "exists:youths,mobile"
+                "exists:youths,mobile,deleted_at,NULL"
             ],
             "verification_code" => [
                 "required",
@@ -383,31 +370,23 @@ class YouthProfileService
     public function resendCodeValidator(Request $request): Validator
     {
         $customMessage = [
-            "email.exists" => [
-                "code" => 24000,
-                "message" => "The email is not exists in the system"
-            ],
-            "mobile.exists" => [
-                "code" => 24000,
-                "message" => "The mobile is not exists in the system"
-            ],
+            "email.exists" => "The email is not exists in the system. [24000]",
+            "mobile.exists" => "The mobile is not exists in the system. [24000]"
         ];
 
         $rules = [
             "email" => [
                 Rule::requiredIf(function () use ($request) {
-                    return !array_key_exists("mobile", $request->all());
+                    return !$request->exists('mobile');
                 }),
-                "exists:youths,email"
+                "exists:youths,email,deleted_at,NULL"
             ],
             "mobile" => [
                 Rule::requiredIf(function () use ($request) {
-                    return !array_key_exists("email", $request->all());
+                    return !$request->exists('email');
                 }),
-                "max:11",
-                BaseModel::MOBILE_REGEX,
-                "exists:youths,mobile"
-            ]
+                "exists:youths,mobile,deleted_at,NULL"
+            ],
         ];
 
         return \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $customMessage);
@@ -461,18 +440,18 @@ class YouthProfileService
                 "int"
             ],
             'religion' => [
-                'int',
                 'nullable',
+                'int',
                 Rule::in(Youth::RELIGIONS)
             ],
             'marital_status' => [
-                'int',
                 'nullable',
+                'int',
                 Rule::in(Youth::MARITAL_STATUSES)
             ],
             'nationality' => [
+                'required',
                 'int',
-                'required'
             ],
             "email" => [
                 Rule::requiredIf(function () use ($youth) {
@@ -480,7 +459,6 @@ class YouthProfileService
                 }),
                 "unique:youths,email," . $youth->id,
                 "email",
-
             ],
             "mobile" => [
                 Rule::requiredIf(function () use ($youth) {
@@ -491,17 +469,17 @@ class YouthProfileService
                 BaseModel::MOBILE_REGEX
             ],
             'identity_number_type' => [
-                'int',
                 'nullable',
+                'int',
                 Rule::in(Youth::IDENTITY_TYPES)
             ],
             'identity_number' => [
+                'nullable',
                 'string',
-                'nullable'
             ],
             'freedom_fighter_status' => [
-                'int',
                 'required',
+                'int',
                 Rule::in(Youth::FREEDOM_FIGHTER_STATUSES)
             ],
             "physical_disability_status" => [
@@ -510,8 +488,8 @@ class YouthProfileService
                 Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUS)
             ],
             'does_belong_to_ethnic_group' => [
-                'int',
-                'required'
+                'required',
+                'int'
             ],
             "bio" => "nullable|string",
             "bio_en" => "nullable|string",
@@ -526,7 +504,7 @@ class YouthProfileService
             ],
             "skills.*" => [
                 "required",
-                'numeric',
+                'integer',
                 "distinct",
                 "min:1"
             ],
@@ -553,17 +531,7 @@ class YouthProfileService
             ]
         ];
 
-        /*        if ($id == null) {
-                    $rules['user_name_type'] = [
-                        Rule::requiredIf(function () use ($id) {
-                            return $id == null;
-                        }),
-                        Rule::in(BaseModel::USER_NAME_TYPES)
-                    ];
-                }
-        */
-
-        if ($request['physical_disability_status'] == BaseModel::TRUE) {
+        if (isset($request['physical_disability_status']) && $request['physical_disability_status'] == BaseModel::TRUE) {
             $rules['physical_disabilities'] = [
                 Rule::requiredIf(function () use ($data) {
                     return $data['physical_disability_status'] == BaseModel::TRUE;
@@ -605,9 +573,11 @@ class YouthProfileService
         if (!empty($data["skills"])) {
             $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
         }
+
         if (!empty($data["physical_disabilities"])) {
             $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
         }
+
         $rules = [
             'user_name_type' => [
                 Rule::in(BaseModel::USER_NAME_TYPES)
@@ -703,7 +673,7 @@ class YouthProfileService
             ]
         ];
 
-        if ($request['physical_disability_status'] == BaseModel::TRUE) {
+        if (isset($request['physical_disability_status']) && $request['physical_disability_status'] == BaseModel::TRUE) {
             $rules['physical_disabilities'] = [
                 Rule::requiredIf(function () use ($data) {
                     return $data['physical_disability_status'] == BaseModel::TRUE;
