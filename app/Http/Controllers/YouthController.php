@@ -34,11 +34,7 @@ class  YouthController extends Controller
     public function getList(Request $request): JsonResponse
     {
         $filter = $this->youthService->filterValidator($request)->validate();
-        try {
-            $response = $this->youthService->getYouthProfileList($filter, $this->startTime);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->youthService->getYouthProfileList($filter, $this->startTime);
         return Response::json($response);
     }
 
@@ -50,11 +46,7 @@ class  YouthController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        try {
-            $response = $this->youthService->getOneYouthProfile($id, $this->startTime);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->youthService->getOneYouthProfile($id, $this->startTime);
         return Response::json($response);
     }
 
@@ -67,19 +59,15 @@ class  YouthController extends Controller
 
     public function youthEducationBasicInfos(): JsonResponse
     {
-        try {
-            $info = $this->youthService->getEducationBasicTablesInfos();
+        $info = $this->youthService->getEducationBasicTablesInfos();
 
-            $response['data'] = $info;
-            $response['response_status'] = [
-                "success" => true,
-                "code" => ResponseAlias::HTTP_OK,
-                "message" => "List of educational information",
-                "query_time" => $this->startTime->diffForHumans(Carbon::now())
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response['data'] = $info;
+        $response['response_status'] = [
+            "success" => true,
+            "code" => ResponseAlias::HTTP_OK,
+            "message" => "List of Education Related Information",
+            "query_time" => $this->startTime->diffForHumans(Carbon::now())
+        ];
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 

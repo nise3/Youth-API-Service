@@ -164,6 +164,7 @@ class YouthService
                 'youths.first_name_en',
                 'youths.last_name',
                 'youths.last_name_en',
+                'youths.is_freelance_profile',
                 'youths.loc_division_id',
                 'loc_divisions.title as division_title',
                 'loc_divisions.title_en as division_title_en',
@@ -214,15 +215,19 @@ class YouthService
         $youthBuilder->where('youths.id', $id);
 
         $youthBuilder->with([
-            "skills", "physicalDisabilities",
-            "youthJobExperiences", "youthLanguagesProficiencies",
-            "youthCertifications", "youthEducations", "youthPortfolios",
+            "skills",
+            "physicalDisabilities",
+            "youthJobExperiences",
+            "youthLanguagesProficiencies",
+            "youthCertifications",
+            "youthEducations",
+            "youthPortfolios",
             "youthReferences"
         ]);
 
 
         /** @var Youth $youth */
-        $youth = $youthBuilder->first();
+        $youth = $youthBuilder->firstOrFail();
 
         return [
             "data" => $youth ?: [],
@@ -239,12 +244,13 @@ class YouthService
     /**
      * @param array $data
      * @return Youth
+     * @throws \Throwable
      */
     public function store(array $data): Youth
     {
-        $youth = new Youth();
+        $youth = app(Youth::class);
         $youth->fill($data);
-        $youth->save();
+        throw_if($youth->save(), 'RuntimeException', 'Youth has not been Saved to db.', 500);
         return $youth;
     }
 
@@ -252,11 +258,12 @@ class YouthService
      * @param Youth $youth
      * @param array $data
      * @return Youth
+     * @throws \Throwable
      */
     public function update(Youth $youth, array $data): Youth
     {
         $youth->fill($data);
-        $youth->save();
+        throw_if($youth->save(), 'RuntimeException', 'Youth has not been updated to db.', 500);
         return $youth;
     }
 
@@ -264,10 +271,12 @@ class YouthService
     /**
      * @param Youth $youth
      * @return bool
+     * @throws \Throwable
      */
     public function destroy(Youth $youth): bool
     {
-        return $youth->delete();
+        throw_if($youth->delete(), 'RuntimeException', 'Youth has not been deleted.', 500);
+        return true;
     }
 
     /**
