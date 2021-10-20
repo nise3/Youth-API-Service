@@ -3457,10 +3457,6 @@
             "youthGuardian": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
                     "name": {
                         "type": "string"
                     },
@@ -3507,10 +3503,6 @@
                 "type": "object",
                 "description": "Provide Youth Profile Information",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
                     "username": {
                         "type": "string"
                     },
@@ -3667,10 +3659,6 @@
                 "type": "object",
                 "description": "Youth List response structure",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
                     "username": {
                         "type": "string"
                     },
@@ -4411,10 +4399,6 @@
                 "type": "object",
                 "description": "Youth Portfolios",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
                     "title": {
                         "type": "string",
                         "description": "Title in native"
@@ -4511,10 +4495,6 @@
                 "type": "object",
                 "description": "Provide references of a youth",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
                     "referrer_first_name": {
                         "type": "string"
                     },
@@ -4572,10 +4552,6 @@
                 "type": "object",
                 "description": "Provide certifications",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
                     "certification_name": {
                         "type": "string"
                     },
@@ -4650,10 +4626,6 @@
                 "type": "object",
                 "description": "Provide educational info of a youth",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
                     "education_level_id": {
                         "type": "integer",
                         "description": "PSC, JSC, SSC, HSC, Degree, B.Sc. (Pass), Honours, Preliminary Masters, Masters etc"
@@ -4739,10 +4711,6 @@
                 "type": "object",
                 "description": "Provide language Proficiency info",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
                     "language_id": {
                         "type": "integer"
                     },
