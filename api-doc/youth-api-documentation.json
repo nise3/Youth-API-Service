@@ -3490,8 +3490,7 @@
                         "type": "string"
                     },
                     "relationship_title_en": {
-                        "type": "string",
-                        "example": "father"
+                        "type": "string"
                     }
                 },
                 "required": [
