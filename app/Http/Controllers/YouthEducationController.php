@@ -66,7 +66,7 @@ class YouthEducationController extends Controller
      */
     function store(Request $request): JsonResponse
     {
-        $youthEducation = new YouthEducation();
+        $youthEducation = app(YouthEducation::class);
         $request['youth_id'] = $request['youth_id'] ?? Auth::id();
         $validated = $this->youthEducationService->validator($request)->validate();
         try {

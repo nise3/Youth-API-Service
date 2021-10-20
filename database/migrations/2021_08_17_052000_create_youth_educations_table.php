@@ -47,6 +47,7 @@ class CreateYouthEducationsTable extends Migration
             $table->float('cgpa', 6)->nullable();
 
             $table->year('year_of_passing');
+            $table->year('expected_year_of_passing')->nullable();
             $table->unsignedTinyInteger('duration')->nullable()->comment('Duration in years');
             $table->string('achievements', 1000)->nullable();
             $table->string('achievements_en', 500)->nullable();
