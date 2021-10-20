@@ -402,11 +402,11 @@ class YouthProfileService
         $data = $request->all();
 
         if (!empty($data["skills"])) {
-            $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
+            $data["skills"] = is_array($data['skills']) ? $data['skills'] : explode(',', $data['skills']);
         }
 
         if (!empty($data["physical_disabilities"])) {
-            $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
+            $data["physical_disabilities"] = is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
         }
 
         $rules = [
@@ -580,11 +580,11 @@ class YouthProfileService
         */
 
         if (!empty($data["skills"])) {
-            $data["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
+            $data["skills"] = isset($data['skills']) && is_array($data['skills']) ? $data['skills'] : explode(',', $data['skills']);
         }
 
         if (!empty($data["physical_disabilities"])) {
-            $data["physical_disabilities"] = is_array($request['physical_disabilities']) ? $request['physical_disabilities'] : explode(',', $request['physical_disabilities']);
+            $data["physical_disabilities"] = isset($data['physical_disabilities']) && is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
         }
 
         $rules = [
