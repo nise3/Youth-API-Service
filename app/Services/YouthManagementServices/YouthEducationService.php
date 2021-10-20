@@ -31,7 +31,7 @@ class YouthEducationService
      */
     public function getEducationList(array $request, Carbon $startTime): array
     {
-        $youthId = $request['youth_id'] ?? Auth::id();
+
         $instituteName = $request['institute_name'] ?? "";
         $instituteNameEn = $request['institute_name_en'] ?? "";
         $examinationTitleEn = $request['examination_title_en'] ?? "";
@@ -110,11 +110,6 @@ class YouthEducationService
                 ->whereNull('edu_groups.deleted_at');
         });
         $educationBuilder->orderBy('youth_educations.id', $order);
-
-
-        if (is_integer($youthId)) {
-            $educationBuilder->where('youth_educations.youth_id', $youthId);
-        }
 
         if (!empty($instituteName)) {
             $educationBuilder->where('youth_educations.institute_name', 'like', '%' . $instituteName . '%');
@@ -407,8 +402,8 @@ class YouthEducationService
                 Rule::in(array_keys(config("nise3.exam_degree_results")))
             ],
             'marks_in_percentage' => [
-                Rule::requiredIf(function () use ($request) { //TODO: rename YouthEducation::MARKS
-                    return $this->getRequiredStatus(YouthEducation::BOARD, $request->result);
+                Rule::requiredIf(function () use ($request) {
+                    return $this->getRequiredStatus(YouthEducation::MARKS, $request->result);
                 }),
                 'nullable',
                 "numeric"
@@ -430,6 +425,13 @@ class YouthEducationService
             'year_of_passing' => [
                 Rule::requiredIf(function () use ($request) {
                     return $this->getRequiredStatus(YouthEducation::YEAR_OF_PASS, $request->result);
+                }),
+                'nullable',
+                'string'
+            ],
+            "expected_year_of_passing"=>[
+                Rule::requiredIf(function () use ($request) {
+                    return $this->getRequiredStatus(YouthEducation::EXPECTED_YEAR_OF_PASSING, $request->result);
                 }),
                 'nullable',
                 'string'
@@ -493,9 +495,9 @@ class YouthEducationService
             {
                 return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [EducationLevel::EDUCATION_LEVEL_PSC_5_PASS, EducationLevel::EDUCATION_LEVEL_JSC_JDC_8_PASS, EducationLevel::EDUCATION_LEVEL_SECONDARY, EducationLevel::EDUCATION_LEVEL_HIGHER_SECONDARY]);
             }
-            case YouthEducation::MAJOR: //TODO: Remove SSC & HSC LABEL
+            case YouthEducation::MAJOR:
             {
-                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [EducationLevel::EDUCATION_LEVEL_SECONDARY, EducationLevel::EDUCATION_LEVEL_HIGHER_SECONDARY, EducationLevel::EDUCATION_LEVEL_DIPLOMA, EducationLevel::EDUCATION_LEVEL_BACHELOR, EducationLevel::EDUCATION_LEVEL_MASTERS]);
+                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [EducationLevel::EDUCATION_LEVEL_DIPLOMA, EducationLevel::EDUCATION_LEVEL_BACHELOR, EducationLevel::EDUCATION_LEVEL_MASTERS]);
             }
             case YouthEducation::EXAM_DEGREE_NAME:
             {
@@ -519,7 +521,7 @@ class YouthEducationService
             {
                 return in_array($this->getCodeById(YouthEducation::RESULT_TRIGGER, $id), [EducationLevel::RESULT_GRADE, EducationLevel::RESULT_ENROLLED, EducationLevel::RESULT_AWARDED, EducationLevel::RESULT_PASS]);
             }
-            case YouthEducation::EXPECTED_YEAR_OF_EXPERIENCE: //TODO: Remove This
+            case YouthEducation::EXPECTED_YEAR_OF_PASSING:
             {
                 return $this->getCodeById(YouthEducation::RESULT_TRIGGER, $id) == EducationLevel::RESULT_APPEARED;
             }

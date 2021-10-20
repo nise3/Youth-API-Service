@@ -61,7 +61,7 @@ class YouthEducation extends BaseModel
     public const CGPA = "CGPA";
     public const SCALE = "SCALE";
     public const YEAR_OF_PASS = "YEAR_OF_PASS";
-    public const EXPECTED_YEAR_OF_EXPERIENCE = "EXPECTED_YEAR_OF_EXPERIENCE";
+    public const EXPECTED_YEAR_OF_PASSING = "EXPECTED_YEAR_OF_PASSING";
     public const EDU_GROUP = "EDU_GROUP";
 
     /** Trigger Flag For Education Form Validation */
