@@ -283,6 +283,19 @@
                 "description": " API endpoint to get the list of Youth profile.A successful request response will show 200 HTTP status code",
                 "parameters": [
                     {
+                        "name": "nearby",
+                        "in": "query",
+                        "required": true,
+                        "description": "1=>nearby_true,0=>nearby_false ",
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1
+                            ]
+                        }
+                    },
+                    {
                         "$ref": "#/components/parameters/page"
                     },
                     {
@@ -295,6 +308,22 @@
                         "$ref": "#/components/parameters/order"
                     },
                     {
+                        "name": "skill_ids",
+                        "in": "query",
+                        "required": false,
+                        "content": {
+                            "multipart/form-data": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer",
+                                        "uniqueItems": true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
                         "name": "is_freelance_profile",
                         "in": "query",
                         "required": false,
@@ -303,7 +332,7 @@
                         }
                     },
                     {
-                        "name": "loc_division_id",
+                        "name": "loc_upazila_id",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -4866,8 +4895,7 @@
                 "required": false,
                 "style": "form",
                 "schema": {
-                    "type": "integer",
-                    "example": 1
+                    "type": "integer"
                 }
             },
             "order": {

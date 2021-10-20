@@ -12,8 +12,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use SebastianBergmann\LinesOfCode\LinesOfCode;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -29,16 +31,16 @@ class YouthService
         $firstName = $requestp['first_name'] ?? "";
         $lastName = $request['last_name'] ?? "";
         $isFreelanceProfile = $request['is_freelance_profile'] ?? "";
-        $divisionId = $request['loc_division_id'] ?? "";
-        $districtId = $request['loc_district_id'] ?? "";
+        $locDistrictId = $request['loc_district_id'] ?? "";
+        $locUpazilaId = $request['loc_upazila_id'] ?? "";
         $skillIds = $request['skill_ids'] ?? [];
+        $nearby = $request['nearby'] ?? "";
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
 
         /** @var Builder $youthBuilder */
-
         $youthBuilder = Youth::select(
             [
                 'youths.id',
@@ -107,30 +109,29 @@ class YouthService
             $youthBuilder->where('youths.last_name', 'like', '%' . $lastName . '%');
         }
 
-        if (!empty($isFreelanceProfile)){
+        if (!empty($isFreelanceProfile)) {
             $youthBuilder->where('youths.is_freelance_profile', '=', $isFreelanceProfile);
         }
 
-        if (is_integer($rowStatus)) {
+        if (!empty($rowStatus)) {
             $youthBuilder->where('youths.row_status', $rowStatus);
         }
-
-        if (is_integer($divisionId)) {
-            $youthBuilder->where('youths.loc_division_id', $divisionId);
+        if ($nearby == Youth::YOUTH_NEARBY_FILTER_TRUE) {
+            if (!empty($locUpazilaId)) {
+                $youthBuilder->where('youths.loc_upazila_id', '=', $locUpazilaId);
+            } else if (!empty($locDistrictId)) {
+                $youthBuilder->where('youths.loc_district_id', '=', $locDistrictId);
+            }
         }
-
-        if (is_integer($districtId) && $districtId) {
-            $youthBuilder->where('youths.loc_district_id', $districtId);
-        }
-
         if (is_array($skillIds) && count($skillIds) > 0) {
             $youthBuilder->join('youth_skills', 'youth_skills.youth_id', '=', 'youths.id');
             $youthBuilder->whereIn('youth_skills.skill_id', $skillIds);
+            $youthBuilder->groupBy('youths.id');
         }
 
         /** @var Collection $youths */
 
-        if (is_integer($paginate) || is_integer($pageSize)) {
+        if (($paginate) || !empty($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $youths = $youthBuilder->paginate($pageSize);
             $paginateData = (object)$youths->toArray();
@@ -304,15 +305,22 @@ class YouthService
 
         $requestData = $request->all();
 
+        Log::info($requestData['skill_ids']);
         if (isset($requestData['skill_ids'])) {
             $requestData['skill_ids'] = is_array($requestData['skill_ids']) ? $requestData['skill_ids'] : explode(',', $requestData['skill_ids']);
         }
+        Log::info($requestData['skill_ids']);
 
-        return Validator::make($requestData, [
+        $rules = [
             'first_name' => 'nullable|max:300|min:2',
             'first_name_en' => 'nullable|max:150|min:2',
             'last_name' => 'nullable|max:300|min:2',
             'last_name_en' => 'nullable|max:150|min:2',
+            'nearby' => [
+                'nullable',
+                'int',
+                Rule::in([Youth::YOUTH_NEARBY_FILTER_TRUE, Youth::YOUTH_NEARBY_FILTER_FALSE])
+            ],
             'is_freelance_profile' => [
                 'nullable',
                 'int',
@@ -340,8 +348,8 @@ class YouthService
                 'distinct',
                 'min:1'
             ],
-            'page' => 'integer|gt:0',
-            'pageSize' => 'integer|gt:0',
+            'page' => 'nullable|integer|gt:0',
+            'page_size' => 'nullable|integer|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
@@ -350,7 +358,23 @@ class YouthService
                 "integer",
                 Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
             ],
-        ], $customMessage);
+        ];
+        if (isset($requestData['nearby']) && $requestData['nearby'] == Youth::YOUTH_NEARBY_FILTER_TRUE) {
+            $rules['loc_district_id'] = [
+                Rule::requiredIf(function () use ($requestData) {
+                    return (!isset($requestData['loc_upazila_id']));
+                }),
+                'nullable',
+                'exists:loc_districts,id,deleted_at,NULL',
+                'integer'
+            ];
+            $rules['loc_upazila_id'] = [
+                'nullable',
+                'exists:loc_districts,id,deleted_at,NULL',
+                'integer'
+            ];
+        }
+        return Validator::make($requestData, $rules, $customMessage);
     }
 
     /**

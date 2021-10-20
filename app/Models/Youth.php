@@ -51,6 +51,9 @@ class Youth extends AuthBaseModel
 {
     use SoftDeletes, HasFactory;
 
+    const YOUTH_NEARBY_FILTER_TRUE = 1;
+    const YOUTH_NEARBY_FILTER_FALSE = 0;
+
     /** Marital Statuses */
     public const MARITAL_STATUS_SINGLE = 1;
     public const MARITAL_STATUS_MARRIED = 2;
