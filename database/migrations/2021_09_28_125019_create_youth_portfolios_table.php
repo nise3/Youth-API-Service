@@ -20,7 +20,7 @@ class CreateYouthPortfoliosTable extends Migration
             $table->string('title_en', 300)->nullable();
             $table->text("description")->nullable();
             $table->text("description_en")->nullable();
-            $table->string("file_path", 500)->nullable();
+            $table->string("file_path", 600)->nullable();
             $table->timestamps();
             $table->softDeletes();
 

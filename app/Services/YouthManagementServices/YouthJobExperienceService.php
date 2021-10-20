@@ -290,7 +290,7 @@ class YouthJobExperienceService
             ],
             'end_date' => [
                 Rule::requiredIf(function () use ($request) {
-                    return $request->filled('is_currently_working') && $request->is_currently_working;
+                    return $request->filled('is_currently_working') && $request->get('is_currently_working');
                 }),
                 'nullable',
                 'date',
