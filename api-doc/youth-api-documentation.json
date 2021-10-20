@@ -376,8 +376,8 @@
                                             "loc_upazila_id": null,
                                             "does_belong_to_ethnic_group": 0,
                                             "freedom_fighter_status": 0,
-                                            "youth_bio": null,
-                                            "youth_bio_en": null,
+                                            "bio": null,
+                                            "bio_en": null,
                                             "photo": null,
                                             "cv_path": null,
                                             "row_status": 1,
@@ -3580,10 +3580,10 @@
                     "zip_or_postal_code": {
                         "type": "string"
                     },
-                    "youth_bio": {
+                    "bio": {
                         "type": "string"
                     },
-                    "youth_bio_en": {
+                    "bio_en": {
                         "type": "string"
                     },
                     "photo": {
@@ -3736,10 +3736,10 @@
                     "zip_or_postal_code": {
                         "type": "string"
                     },
-                    "youth_bio": {
+                    "bio": {
                         "type": "string"
                     },
-                    "youth_bio_en": {
+                    "bio_en": {
                         "type": "string"
                     },
                     "photo": {
