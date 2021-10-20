@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class YouthService
 {
@@ -30,7 +31,7 @@ class YouthService
         $isFreelanceProfile = $request['is_freelance_profile'] ?? "";
         $divisionId = $request['loc_division_id'] ?? "";
         $districtId = $request['loc_district_id'] ?? "";
-
+        $skillIds = $request['skill_ids'] ?? [];
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
@@ -106,7 +107,7 @@ class YouthService
             $youthBuilder->where('youths.last_name', 'like', '%' . $lastName . '%');
         }
 
-        if ($isFreelanceProfile !== '' && is_integer($isFreelanceProfile)) {
+        if (!empty($isFreelanceProfile)){
             $youthBuilder->where('youths.is_freelance_profile', '=', $isFreelanceProfile);
         }
 
@@ -114,12 +115,17 @@ class YouthService
             $youthBuilder->where('youths.row_status', $rowStatus);
         }
 
-        if (is_integer($divisionId) && $divisionId) {
+        if (is_integer($divisionId)) {
             $youthBuilder->where('youths.loc_division_id', $divisionId);
         }
 
         if (is_integer($districtId) && $districtId) {
             $youthBuilder->where('youths.loc_district_id', $districtId);
+        }
+
+        if (is_array($skillIds) && count($skillIds) > 0) {
+            $youthBuilder->join('youth_skills', 'youth_skills.youth_id', '=', 'youths.id');
+            $youthBuilder->whereIn('youth_skills.skill_id', $skillIds);
         }
 
         /** @var Collection $youths */
@@ -245,7 +251,7 @@ class YouthService
     /**
      * @param array $data
      * @return Youth
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function store(array $data): Youth
     {
@@ -259,7 +265,7 @@ class YouthService
      * @param Youth $youth
      * @param array $data
      * @return Youth
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function update(Youth $youth, array $data): Youth
     {
@@ -272,7 +278,7 @@ class YouthService
     /**
      * @param Youth $youth
      * @return bool
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function destroy(Youth $youth): bool
     {
@@ -296,7 +302,13 @@ class YouthService
             $request->offsetSet('order', strtoupper($request->get('order')));
         }
 
-        return Validator::make($request->all(), [
+        $requestData = $request->all();
+
+        if (isset($requestData['skill_ids'])) {
+            $requestData['skill_ids'] = is_array($requestData['skill_ids']) ? $requestData['skill_ids'] : explode(',', $requestData['skill_ids']);
+        }
+
+        return Validator::make($requestData, [
             'first_name' => 'nullable|max:300|min:2',
             'first_name_en' => 'nullable|max:150|min:2',
             'last_name' => 'nullable|max:300|min:2',
@@ -315,6 +327,18 @@ class YouthService
                 "nullable",
                 "int",
                 "exists:loc_districts,id,deleted_at,NULL",
+            ],
+            "skill_ids" => [
+                'nullable',
+                'array',
+                'min:1',
+                'max:10'
+            ],
+            "skill_ids.*" => [
+                'required',
+                'integer',
+                'distinct',
+                'min:1'
             ],
             'page' => 'integer|gt:0',
             'pageSize' => 'integer|gt:0',
