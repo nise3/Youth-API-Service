@@ -463,8 +463,8 @@
                                             "upazila_title": null,
                                             "upazila_title_en": null,
                                             "gender": 1,
-                                            "religion": null,
-                                            "marital_status": null,
+                                            "religion": 1,
+                                            "marital_status": 1,
                                             "nationality": 1,
                                             "email": "lorena28@example.org",
                                             "mobile": "01749761462",
@@ -905,14 +905,14 @@
                                         "upazila_title_en": null,
                                         "gender": 2,
                                         "is_freelance_profile": false,
-                                        "religion": null,
-                                        "marital_status": null,
+                                        "religion": 1,
+                                        "marital_status": 1,
                                         "nationality": 1,
                                         "email": "vwitting@example.com",
                                         "mobile": "01724643197",
-                                        "identity_number_type": null,
-                                        "identity_number": null,
-                                        "date_of_birth": "-000001-11-30T00:00:00.000000Z",
+                                        "identity_number_type": 1,
+                                        "identity_number": "7865498709876",
+                                        "date_of_birth": "1987-01-06",
                                         "freedom_fighter_status": 0,
                                         "physical_disability_status": 0,
                                         "does_belong_to_ethnic_group": 0,
@@ -1616,27 +1616,55 @@
                                     },
                                     "religion": {
                                         "type": "integer",
-                                        "example": 2
+                                        "enum": [
+                                            1,
+                                            2,
+                                            3,
+                                            4,
+                                            5,
+                                            6,
+                                            7,
+                                            8
+                                        ],
+                                        "description": "1=>ISLAM,2=>HINDUISM,3=>CHRISTIANITY,4=>BUDDHISM,5=>JUDAISM,6=>SIKHISM,7=>ETHNIC,8=>AGNOSTIC_ATHEIST",
+                                        "default": 1
                                     },
                                     "marital_status": {
                                         "type": "integer",
-                                        "example": 2
+                                        "enum": [
+                                            1,
+                                            2,
+                                            3,
+                                            4
+                                        ],
+                                        "description": "1=>Single,2=>Married,3=>Widowed,4=>Divorced",
+                                        "default": 1
                                     },
                                     "nationality": {
                                         "type": "integer",
-                                        "example": 2
+                                        "example": 1
                                     },
                                     "identity_number": {
                                         "type": "string",
-                                        "example": "kkkk"
+                                        "example": "9087687678987"
                                     },
                                     "identity_number_type": {
                                         "type": "integer",
-                                        "example": 2
+                                        "enum": [
+                                            1,
+                                            2,
+                                            3
+                                        ],
+                                        "description": "1=>NID, 2=>Birth Certificate, 3=>Passport"
                                     },
                                     "freedom_fighter_status": {
                                         "type": "integer",
-                                        "example": 2
+                                        "enum": [
+                                            0,
+                                            1
+                                        ],
+                                        "description": "0=>No,1=>Yes",
+                                        "default": 0
                                     },
                                     "physical_disability_status": {
                                         "type": "integer",
@@ -1649,11 +1677,16 @@
                                     },
                                     "does_belong_to_ethnic_group": {
                                         "type": "integer",
-                                        "example": 2
+                                        "enum": [
+                                            0,
+                                            1
+                                        ],
+                                        "description": "0=>No,1=>Yes",
+                                        "default": 0
                                     },
                                     "email": {
                                         "type": "string",
-                                        "example": "gg@gmail.com"
+                                        "format": "email"
                                     },
                                     "password": {
                                         "type": "string",
@@ -1668,8 +1701,7 @@
                                     "mobile": {
                                         "type": "string",
                                         "maxLength": 11,
-                                        "uniqueItems": true,
-                                        "example": "01456988998"
+                                        "uniqueItems": true
                                     },
                                     "date_of_birth": {
                                         "type": "string",
@@ -1686,30 +1718,25 @@
                                     },
                                     "loc_upazila_id": {
                                         "type": "integer",
-                                        "example": 1
+                                        "example": 18
                                     },
                                     "village_or_area": {
-                                        "type": "string",
-                                        "maximum": 500
+                                        "type": "string"
                                     },
                                     "village_or_area_en": {
                                         "type": "string",
-                                        "maximum": 500,
                                         "example": "new area"
                                     },
                                     "house_n_road": {
                                         "type": "string",
-                                        "maximum": 500,
                                         "example": "new road"
                                     },
                                     "house_n_road_en": {
                                         "type": "string",
-                                        "maximum": 500,
                                         "example": "jj"
                                     },
                                     "zip_or_postal_code": {
                                         "type": "string",
-                                        "maximum": 10,
                                         "example": "asasa"
                                     },
                                     "bio": {
@@ -1719,16 +1746,13 @@
                                         "type": "string"
                                     },
                                     "photo": {
-                                        "type": "string",
-                                        "maximum": 300
+                                        "type": "string"
                                     },
                                     "signature_image_path": {
-                                        "type": "string",
-                                        "maximum": 600
+                                        "type": "string"
                                     },
                                     "cv_path": {
-                                        "type": "string",
-                                        "maximum": 300
+                                        "type": "string"
                                     },
                                     "skills": {
                                         "type": "array",
@@ -1741,8 +1765,7 @@
                                         "minItems": 1,
                                         "items": {
                                             "type": "integer",
-                                            "uniqueItems": true,
-                                            "example": 1
+                                            "uniqueItems": true
                                         },
                                         "description": "1=> Visual Disabilities, 2=> Hearing Disabilities, 3=> Mental Health Disabilities,4=> Intellectual Disabilities, 5=> Social Disabilities"
                                     }
@@ -1792,13 +1815,13 @@
                                         "loc_upazila_id": "1",
                                         "date_of_birth": "2021-10-05T00:00:00.000000Z",
                                         "gender": "1",
-                                        "religion": "2",
+                                        "religion": "1",
                                         "marital_status": "2",
                                         "nationality": "2",
                                         "email": "gddg@gmail.com",
                                         "mobile": "01356988998",
                                         "identity_number_type": "2",
-                                        "identity_number": "kkkk",
+                                        "identity_number": "9087656789065",
                                         "freedom_fighter_status": "1",
                                         "physical_disability_status": "1",
                                         "does_belong_to_ethnic_group": "2",
@@ -1840,7 +1863,7 @@
                         "in": "query",
                         "schema": {
                             "type": "string",
-                            "example": "test14@gmail.com",
+                            "format": "email",
                             "description": "If youth select email as verification type then email is required"
                         }
                     },
@@ -1849,7 +1872,6 @@
                         "in": "query",
                         "schema": {
                             "type": "string",
-                            "example": "01767000124",
                             "description": "If youth select mobile as verification type then mobile is required"
                         }
                     },
@@ -3437,20 +3459,17 @@
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "example": 4,
                         "readOnly": true
                     },
                     "name": {
-                        "type": "string",
-                        "example": "Ryan Pinkman"
+                        "type": "string"
                     },
                     "name_en": {
-                        "type": "string",
-                        "example": "Ryan Pinkman2"
+                        "type": "string"
                     },
                     "nid": {
                         "type": "string",
-                        "example": "1aas345-poiu989-ssv56@@er5"
+                        "example": "5467893421678"
                     },
                     "mobile": {
                         "type": "string",
@@ -3458,15 +3477,21 @@
                     },
                     "date_of_birth": {
                         "type": "string",
-                        "example": "12/12/1987"
+                        "example": "1987-09-23"
                     },
                     "relationship_type": {
                         "type": "integer",
-                        "example": 1
+                        "enum": [
+                            1,
+                            2,
+                            3,
+                            4,
+                            5
+                        ],
+                        "description": "1=>Father, 2=>Mother, 3=>Uncle, 4=>Aunt, 5=> Other"
                     },
                     "relationship_title": {
-                        "type": "string",
-                        "example": "father"
+                        "type": "string"
                     },
                     "relationship_title_en": {
                         "type": "string",
@@ -3483,7 +3508,8 @@
                 "description": "Provide Youth Profile Information",
                 "properties": {
                     "id": {
-                        "type": "integer"
+                        "type": "integer",
+                        "readOnly": true
                     },
                     "username": {
                         "type": "string"
@@ -3510,7 +3536,8 @@
                         "type": "integer"
                     },
                     "email": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "email"
                     },
                     "mobile": {
                         "type": "string"
@@ -3519,10 +3546,22 @@
                         "type": "string"
                     },
                     "physical_disability_status": {
-                        "type": "integer"
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "description": "0=>No,1=>Yes",
+                        "default": 0
                     },
                     "identity_number_type": {
-                        "type": "integer"
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
+                        "description": "1=>NID, 2=>Birth Certificate, 3=>Passport"
                     },
                     "identity_number": {
                         "type": "string"
@@ -3629,7 +3668,8 @@
                 "description": "Youth List response structure",
                 "properties": {
                     "id": {
-                        "type": "integer"
+                        "type": "integer",
+                        "readOnly": true
                     },
                     "username": {
                         "type": "string"
@@ -3656,7 +3696,8 @@
                         "type": "integer"
                     },
                     "email": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "email"
                     },
                     "mobile": {
                         "type": "string"
@@ -3665,10 +3706,22 @@
                         "type": "string"
                     },
                     "physical_disability_status": {
-                        "type": "integer"
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "description": "0=>No,1=>Yes",
+                        "default": 0
                     },
                     "identity_number_type": {
-                        "type": "integer"
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
+                        "description": "1=>NID, 2=>Birth Certificate, 3=>Passport"
                     },
                     "identity_number": {
                         "type": "string"
@@ -4218,7 +4271,8 @@
                         "description": "1=>male,2=>female,3=>others"
                     },
                     "email": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "email"
                     },
                     "mobile": {
                         "type": "string"
@@ -4320,32 +4374,26 @@
                     },
                     "email": {
                         "type": "string",
-                        "format": "email",
-                        "example": "test.123@gmail.com"
+                        "format": "email"
                     },
                     "mobile": {
-                        "type": "string",
-                        "example": "01767111434"
+                        "type": "string"
                     },
                     "city": {
-                        "type": "string",
-                        "example": "1/2 Dhaka Bangladesh"
+                        "type": "string"
                     },
                     "zip_or_postal_code": {
-                        "type": "string",
-                        "example": "12345"
+                        "type": "string"
                     },
                     "bio": {
                         "type": "string",
                         "example": "A required Microsoft Windows system directory, the System32 directory is located in either C:\\Windows\\System32 or C:\\Winnt\\system32 directory. The system32 directory contains Windows system files and software program files, vital to the operation of the Windows operating system and software programs running in Windows. The most common types of files found in the system32 directory are DLL (Dynamic Link Library) and EXE (executable) files."
                     },
                     "photo": {
-                        "type": "string",
-                        "example": "photo.png"
+                        "type": "string"
                     },
                     "cv_path": {
-                        "type": "string",
-                        "example": "cv_path.png"
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -4369,16 +4417,11 @@
                     },
                     "title": {
                         "type": "string",
-                        "description": "Title in native",
-                        "maxLength": 400,
-                        "minLength": 2,
-                        "example": "native title"
+                        "description": "Title in native"
                     },
                     "title_en": {
                         "type": "string",
-                        "description": "Title in english",
-                        "maxLength": 300,
-                        "minLength": 2
+                        "description": "Title in english"
                     },
                     "description": {
                         "type": "string",
@@ -4400,6 +4443,10 @@
                 "type": "object",
                 "description": "Job Experience",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
                     "company_name": {
                         "type": "string"
                     },
@@ -4436,11 +4483,11 @@
                     },
                     "start_date": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date"
                     },
                     "end_date": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date"
                     },
                     "is_currently_working": {
                         "type": "integer",
@@ -4464,6 +4511,10 @@
                 "type": "object",
                 "description": "Provide references of a youth",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
                     "referrer_first_name": {
                         "type": "string"
                     },
@@ -4552,8 +4603,7 @@
                         "format": "date"
                     },
                     "certificate_file_path": {
-                        "type": "string",
-                        "maxLength": 500
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -4569,8 +4619,7 @@
                 "description": "Verify youth profile",
                 "properties": {
                     "mobile": {
-                        "type": "string",
-                        "maxLength": 20
+                        "type": "string"
                     },
                     "email": {
                         "type": "string",
@@ -4633,12 +4682,10 @@
                         "description": "Only for PSC, JSC, SSC, HSC etc"
                     },
                     "institute_name": {
-                        "type": "string",
-                        "maxLength": 400
+                        "type": "string"
                     },
                     "institute_name_en": {
-                        "type": "string",
-                        "maxLength": 400
+                        "type": "string"
                     },
                     "is_foreign_institute": {
                         "type": "boolean",
@@ -4668,8 +4715,7 @@
                     },
                     "year_of_passing": {
                         "type": "integer",
-                        "format": "year",
-                        "example": 2015
+                        "format": "year"
                     },
                     "duration": {
                         "type": "integer"
@@ -4693,28 +4739,40 @@
                 "type": "object",
                 "description": "Provide language Proficiency info",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
                     "language_id": {
                         "type": "integer"
                     },
                     "reading_proficiency_level": {
                         "type": "integer",
-                        "minimum": 1,
-                        "maximum": 2
+                        "enum": [
+                            1,
+                            2
+                        ]
                     },
                     "writing_proficiency_level": {
                         "type": "integer",
-                        "minimum": 1,
-                        "maximum": 2
+                        "enum": [
+                            1,
+                            2
+                        ]
                     },
                     "speaking_proficiency_level": {
                         "type": "integer",
-                        "minimum": 1,
-                        "maximum": 2
+                        "enum": [
+                            1,
+                            2
+                        ]
                     },
                     "understand_proficiency_level": {
                         "type": "integer",
-                        "minimum": 1,
-                        "maximum": 2
+                        "enum": [
+                            1,
+                            2
+                        ]
                     }
                 },
                 "required": [
@@ -4732,9 +4790,7 @@
                 "in": "query",
                 "description": "The name of guardian returned",
                 "schema": {
-                    "type": "string",
-                    "default": "",
-                    "example": "Donald"
+                    "type": "string"
                 }
             },
             "title": {
@@ -4742,9 +4798,7 @@
                 "in": "query",
                 "description": "The title of youth-portfolio",
                 "schema": {
-                    "type": "string",
-                    "default": "",
-                    "example": "Donald"
+                    "type": "string"
                 }
             },
             "title_en": {
@@ -4752,9 +4806,7 @@
                 "in": "query",
                 "description": "The title_en of youth-portfolio",
                 "schema": {
-                    "type": "string",
-                    "default": "",
-                    "example": "title"
+                    "type": "string"
                 }
             },
             "skillId": {
@@ -4884,8 +4936,7 @@
                 "required": true,
                 "style": "form",
                 "schema": {
-                    "type": "integer",
-                    "example": 1
+                    "type": "integer"
                 }
             },
             "portfolioId": {
@@ -4893,8 +4944,7 @@
                 "in": "path",
                 "required": true,
                 "schema": {
-                    "type": "integer",
-                    "example": 1
+                    "type": "integer"
                 }
             },
             "company_name_en": {
@@ -4920,8 +4970,7 @@
                 "required": true,
                 "in": "path",
                 "schema": {
-                    "type": "integer",
-                    "example": 1
+                    "type": "integer"
                 }
             },
             "languageProficiencyId": {
@@ -4929,8 +4978,7 @@
                 "required": true,
                 "in": "path",
                 "schema": {
-                    "type": "integer",
-                    "example": 1
+                    "type": "integer"
                 }
             }
         }
