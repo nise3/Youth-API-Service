@@ -7,6 +7,8 @@ use App\Models\EduBoard;
 use App\Models\EducationLevel;
 use App\Models\EduGroup;
 use App\Models\Youth;
+use App\Models\YouthAddress;
+use App\Models\YouthGuardian;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -342,4 +344,71 @@ class YouthService
         ];
     }
 
+
+    public function updateYouthProfileAfterCourseEnroll(Request $request)
+    {
+        $data = $request->all();
+        //dd($data);
+        if (!empty($data['youth_id'])) {
+            $youth = Youth::findOrFail($data['youth_id']);
+            $youth->fill($data);
+            $youth->save();
+
+            /** Youth Address Update**/
+            if (!empty($data['address_info'])) {
+                if (!empty($data['address_info']['present_address'])) {
+                    $youthPresentAddress = YouthAddress::where('youth_id', $youth->id)->where('address_type', YouthAddress::ADDRESS_TYPE_PRESENT)->first();
+                    $addressValues = $data['address_info']['present_address'];
+                    if (empty($youthPresentAddress)) {
+                        $youthPresentAddress = app(YouthAddress::class);
+                        $addressValues['youth_id'] = $youth->id;
+                        $addressValues['address_type'] = YouthAddress::ADDRESS_TYPE_PRESENT;
+                    }
+                    $youthPresentAddress->fill($addressValues);
+                    $youthPresentAddress->save();
+
+                }
+                if (!empty($data['address_info']['is_permanent_address'])) {
+                    $youthPermanentAddress = YouthAddress::where('youth_id', $youth->id)->where('address_type', YouthAddress::ADDRESS_TYPE_PERMANENT)->first();
+                    $addressValues = $data['address_info']['permanent_address'];
+                    if (empty($youthPermanentAddress)) {
+                        $youthPermanentAddress = app(YouthAddress::class);
+                        $addressValues['youth_id'] = $youth->id;
+                        $addressValues['address_type'] = YouthAddress::ADDRESS_TYPE_PERMANENT;
+                    }
+                    $youthPermanentAddress->fill($addressValues);
+                    $youthPermanentAddress->save();
+                }
+            }
+
+            if (!empty($data['guardian_info'])) {
+                $youthFather = YouthGuardian::where('youth_id', $youth->id)->where('relationship_type', YouthGuardian::RELATIONSHIP_TYPE_FATHER)->first();
+                $youthMother = YouthGuardian::where('youth_id', $youth->id)->where('relationship_type', YouthGuardian::RELATIONSHIP_TYPE_MOTHER)->first();
+                $guardian = $data['guardian_info'];
+                if (empty($youthFather)) {
+                    $youthFather = app(YouthGuardian::class);
+                }
+                if (empty($youthMother)) {
+                    $youthMother = app(YouthGuardian::class);
+                }
+                $this->storeYouthGuardian($youthFather, $guardian, YouthGuardian::RELATIONSHIP_TYPE_FATHER, $youth->id);
+                $this->storeYouthGuardian($youthMother, $guardian, YouthGuardian::RELATIONSHIP_TYPE_MOTHER, $youth->id);
+
+            }
+        }
+    }
+
+    private function storeYouthGuardian(YouthGuardian $youthGuardian, array $guardian, int $relationshipType, int $youthId)
+    {
+        $relationshipStr = $relationshipType == YouthGuardian::RELATIONSHIP_TYPE_FATHER ? "father" : "mother";
+        $youthGuardian->name = !empty($guardian[$relationshipStr . '_name']) ? $guardian[$relationshipStr . '_name'] : $youthGuardian->name;
+        $youthGuardian->name_en = !empty($guardian[$relationshipStr . '_name_en']) ? $guardian[$relationshipStr . '_name_en'] : $youthGuardian->name_en;
+        $youthGuardian->nid = !empty($guardian[$relationshipStr . '_nid']) ? $guardian[$relationshipStr . '_nid'] : $youthGuardian->nid;
+        $youthGuardian->mobile = !empty($guardian[$relationshipStr . '_mobile']) ? $guardian[$relationshipStr . '_mobile'] : $youthGuardian->mobile;
+        $youthGuardian->date_of_birth = !empty($guardian[$relationshipStr . '_date_of_birth']) ? $guardian[$relationshipStr . '_date_of_birth'] : $youthGuardian->date_of_birth;
+        $youthGuardian->relationship_type = $relationshipType;
+        $youthGuardian->youth_id = $youthId;
+
+        $youthGuardian->save();
+    }
 }

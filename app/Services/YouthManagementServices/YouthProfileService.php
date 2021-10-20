@@ -196,7 +196,7 @@ class YouthProfileService
         /** @var Youth $youth */
         $youth = Youth::where($conditionalAttribute, $conditionalValue)
             ->where("verification_code", $code)
-            ->where("row_status", BaseModel::ROW_STATUS_INACTIVE)
+            ->where("row_status", BaseModel::ROW_STATUS_PENDING)
             ->first();
 
         if ($youth) {

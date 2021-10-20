@@ -6,6 +6,7 @@ use App\Services\YouthManagementServices\YouthService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -69,6 +70,14 @@ class  YouthController extends Controller
             "query_time" => $this->startTime->diffForHumans(Carbon::now())
         ];
         return Response::json($response, ResponseAlias::HTTP_OK);
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function updateYouthAfterCourseEnrollment(Request $request)
+    {
+        $this->youthService->updateYouthProfileAfterCourseEnroll($request);
     }
 
 }
