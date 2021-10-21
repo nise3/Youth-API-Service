@@ -240,6 +240,7 @@ class YouthPortfolioService
             'page_size' => 'int|gt:0',
             'order' => [
                 'string',
+                'nullable',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
             ]
         ], $customMessage);
