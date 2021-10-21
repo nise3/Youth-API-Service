@@ -65,8 +65,8 @@ class LanguageService
         }
 
         return \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'page' => 'int|gt:0',
-            'pageSize' => 'int|gt:0',
+            'page' => 'nullable|int|gt:0',
+            'page_size' => 'nullable|int|gt:0',
             'name' => 'nullable|string',
             'name_en' => 'nullable|string',
             'order' => [

@@ -168,7 +168,7 @@ class FreelanceService
                 "int",
                 "distinct",
                 "min:1",
-                "exists:skills,id"
+                "exists:skills,id,deleted_at,NULL"
             ],
         ], $customMessage);
     }

@@ -72,9 +72,6 @@
                         "$ref": "#/components/parameters/page_size"
                     },
                     {
-                        "$ref": "#/components/parameters/row_status_optional"
-                    },
-                    {
                         "$ref": "#/components/parameters/order"
                     },
                     {
@@ -292,8 +289,7 @@
                             "enum": [
                                 1,
                                 0
-                            ],
-                            "example": 0
+                            ]
                         }
                     },
                     {
@@ -334,8 +330,7 @@
                             "enum": [
                                 1,
                                 0
-                            ],
-                            "example": 0
+                            ]
                         }
                     },
                     {
@@ -3337,13 +3332,13 @@
                         "description": "The Id of the employee",
                         "schema": {
                             "type": "integer",
-                            "example": 12
+                            "example": 1
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "successfull",
+                        "description": "successful",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4824,7 +4819,6 @@
                 "name": "title",
                 "in": "query",
                 "required": false,
-                "style": "form",
                 "schema": {
                     "type": "string"
                 }
@@ -4833,7 +4827,6 @@
                 "name": "title_en",
                 "in": "query",
                 "required": false,
-                "style": "form",
                 "schema": {
                     "type": "string"
                 }
@@ -4843,7 +4836,11 @@
                 "in": "query",
                 "required": false,
                 "schema": {
-                    "type": "integer"
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        0
+                    ]
                 }
             },
             "page_size": {
@@ -4864,7 +4861,6 @@
                 }
             },
             "name_en": {
-                "style": "form",
                 "name": "name_en",
                 "in": "query",
                 "schema": {
@@ -4872,7 +4868,6 @@
                 }
             },
             "name_bn": {
-                "style": "form",
                 "name": "name_bn",
                 "in": "query",
                 "schema": {
@@ -4880,7 +4875,6 @@
                 }
             },
             "name_bn_optional": {
-                "style": "form",
                 "name": "name_bn",
                 "in": "query",
                 "schema": {
@@ -4888,7 +4882,6 @@
                 }
             },
             "name_en_optional": {
-                "style": "form",
                 "name": "name_en",
                 "in": "query",
                 "schema": {
@@ -4899,7 +4892,6 @@
                 "name": "page",
                 "in": "query",
                 "required": false,
-                "style": "form",
                 "schema": {
                     "type": "integer"
                 }
@@ -4908,7 +4900,6 @@
                 "in": "query",
                 "name": "order",
                 "required": false,
-                "style": "form",
                 "schema": {
                     "type": "string",
                     "enum": [
@@ -4921,21 +4912,18 @@
                 "name": "row_status",
                 "in": "query",
                 "required": false,
-                "style": "form",
                 "schema": {
                     "type": "integer",
                     "enum": [
                         1,
                         0
-                    ],
-                    "example": 1
+                    ]
                 }
             },
             "youth_id": {
                 "name": "youth_id",
                 "in": "query",
                 "required": true,
-                "style": "form",
                 "schema": {
                     "type": "integer"
                 }
@@ -4952,7 +4940,6 @@
                 "name": "company_name_en",
                 "in": "query",
                 "required": false,
-                "style": "form",
                 "schema": {
                     "type": "string"
                 }
@@ -4961,7 +4948,6 @@
                 "name": "company_name_bn",
                 "in": "query",
                 "required": false,
-                "style": "form",
                 "schema": {
                     "type": "string"
                 }

@@ -234,10 +234,10 @@ class YouthPortfolioService
         }
 
         return Validator::make($request->all(), [
-            'page' => 'integer|gt:0',
+            'page' => 'nullable|integer|gt:0',
             'title' => 'nullable|max:400|min:2',
             'title_en' => 'nullable|max:300|min:2',
-            'page_size' => 'int|gt:0',
+            'page_size' => 'nullable|integer|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])

@@ -469,8 +469,8 @@ class YouthEducationService
 
         return \Illuminate\Support\Facades\Validator::make($request->all(), [
 
-            'page' => 'integer|gt:0',
-            'pageSize' => 'integer|gt:0',
+            'page' => 'nullable|integer|gt:0',
+            'page_size' => 'nullable|integer|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
