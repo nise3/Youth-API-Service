@@ -111,7 +111,7 @@ class YouthProfileService
         $youth->fill($data);
         $youth->save();
         $this->assignSkills($youth, $data["skills"]);
-        if (array_key_exists('physical_disabilities', $data)) {
+        if (!empty($data['physical_disabilities'])) {
             $this->assignPhysicalDisabilities($youth, $data['physical_disabilities']);
         }
         return $youth;

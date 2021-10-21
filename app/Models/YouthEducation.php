@@ -42,12 +42,6 @@ class YouthEducation extends BaseModel
 
     protected $table = "youth_educations";
 
-    public function getResultAttribute($value)
-    {
-        return config("nise3.exam_degree_results." . $value . ".title");
-    }
-
-
     /**  CGPA SCALE */
     const GPA_OUT_OF_FIVE = 5;
     const GPA_OUT_OF_FOUR = 4;
@@ -74,5 +68,10 @@ class YouthEducation extends BaseModel
     public function youth(): BelongsTo
     {
         return $this->belongsTo(Youth::class);
+    }
+
+    public function getResultAttribute($value)
+    {
+        return config("nise3.exam_degree_results." . $value);
     }
 }
