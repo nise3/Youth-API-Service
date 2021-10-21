@@ -239,8 +239,8 @@ class YouthPortfolioService
             'title_en' => 'nullable|max:300|min:2',
             'page_size' => 'int|gt:0',
             'order' => [
-                'string',
                 'nullable',
+                'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
             ]
         ], $customMessage);
