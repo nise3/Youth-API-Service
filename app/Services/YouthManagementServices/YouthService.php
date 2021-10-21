@@ -358,6 +358,7 @@ class YouthService
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
             ],
             'row_status' => [
+                "nullable",
                 "integer",
                 Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
             ],
@@ -400,7 +401,7 @@ class YouthService
         if (!empty($data["physical_disabilities"])) {
             $data["physical_disabilities"] = isset($data['physical_disabilities']) && is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
         }
-       // dd($data);
+        // dd($data);
         if (!empty($data['youth_id'])) {
             $youth = Youth::findOrFail($data['youth_id']);
             $youth->fill($data);
@@ -415,10 +416,10 @@ class YouthService
 
     private function updateYouthEducations(array $data, Youth $youth)
     {
-        if(!empty($data['education_info'])){
-            foreach ($data['education_info'] as $eduLabelId=>$values){
-                $youthEducation = YouthEducation::where('youth_id',$youth->id)->where('education_level_id',$eduLabelId)->first();
-                if(empty($youthEducation)){
+        if (!empty($data['education_info'])) {
+            foreach ($data['education_info'] as $eduLabelId => $values) {
+                $youthEducation = YouthEducation::where('youth_id', $youth->id)->where('education_level_id', $eduLabelId)->first();
+                if (empty($youthEducation)) {
                     $youthEducation = app(YouthEducation::class);
                     $values['youth_id'] = $youth->id;
                     $values['education_level_id'] = $eduLabelId;
@@ -476,7 +477,8 @@ class YouthService
         }
     }
 
-    public function updateYouthPhysicalDisabilities(array $data, Youth $youth){
+    public function updateYouthPhysicalDisabilities(array $data, Youth $youth)
+    {
         if ($data['physical_disability_status'] == BaseModel::FALSE) {
             $this->detachPhysicalDisabilities($youth);
         } else if ($data['physical_disability_status'] == BaseModel::TRUE) {
