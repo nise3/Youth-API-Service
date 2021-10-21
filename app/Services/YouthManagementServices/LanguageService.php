@@ -31,7 +31,7 @@ class LanguageService
 
         /** @var Collection $languages */
         $response = [];
-        if (is_integer($paginate) || is_integer($pageSize)) {
+        if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $languages = $languageBuilder->paginate($pageSize);
             $paginateData = (object)$languageBuilder->toArray();

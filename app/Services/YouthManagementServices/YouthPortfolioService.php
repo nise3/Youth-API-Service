@@ -45,7 +45,7 @@ class YouthPortfolioService
         ]);
         $portfolioBuilder->orderBy('youth_portfolios.id', $order);
 
-        if (is_integer($youthId)) {
+        if (is_numeric($youthId)) {
             $portfolioBuilder->where('youth_portfolios.youth_id', $youthId);
         }
 
@@ -234,7 +234,7 @@ class YouthPortfolioService
         }
 
         return Validator::make($request->all(), [
-            'page' => 'numeric|gt:0',
+            'page' => 'integer|gt:0',
             'title' => 'nullable|max:400|min:2',
             'title_en' => 'nullable|max:300|min:2',
             'page_size' => 'int|gt:0',

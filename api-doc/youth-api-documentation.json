@@ -285,14 +285,15 @@
                     {
                         "name": "nearby",
                         "in": "query",
-                        "required": true,
+                        "required": false,
                         "description": "1=>nearby_true,0=>nearby_false ",
                         "schema": {
                             "type": "integer",
                             "enum": [
-                                0,
-                                1
-                            ]
+                                1,
+                                0
+                            ],
+                            "example": 0
                         }
                     },
                     {
@@ -317,7 +318,8 @@
                                     "type": "array",
                                     "items": {
                                         "type": "integer",
-                                        "uniqueItems": true
+                                        "uniqueItems": true,
+                                        "example": 1
                                     }
                                 }
                             }
@@ -328,7 +330,12 @@
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "enum": [
+                                1,
+                                0
+                            ],
+                            "example": 0
                         }
                     },
                     {

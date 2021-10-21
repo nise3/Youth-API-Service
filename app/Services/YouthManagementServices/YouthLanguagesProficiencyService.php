@@ -50,13 +50,13 @@ class YouthLanguagesProficiencyService
                 ->whereNull('languages.deleted_at');
         });
 
-        if (is_integer($youthId)) {
+        if (is_numeric($youthId)) {
             $languageProficiencyBuilder->where('youth_languages_proficiencies.youth_id', $youthId);
         }
 
         /** @var Collection $languagesProficiencies */
 
-        if (is_integer($paginate) || is_integer($pageSize)) {
+        if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $languagesProficiencies = $languageProficiencyBuilder->paginate($pageSize);
             $paginateData = (object)$languagesProficiencies->toArray();

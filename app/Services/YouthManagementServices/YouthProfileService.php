@@ -654,7 +654,7 @@ class YouthProfileService
             ],
             "skills.*" => [
                 "required",
-                'numeric',
+                'integer',
                 "distinct",
                 "min:1"
             ],

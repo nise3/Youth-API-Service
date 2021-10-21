@@ -6,6 +6,7 @@ use App\Services\YouthManagementServices\YouthService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -33,6 +34,7 @@ class  YouthController extends Controller
      */
     public function getList(Request $request): JsonResponse
     {
+
         $filter = $this->youthService->filterValidator($request)->validate();
         $response = $this->youthService->getYouthProfileList($filter, $this->startTime);
         return Response::json($response);

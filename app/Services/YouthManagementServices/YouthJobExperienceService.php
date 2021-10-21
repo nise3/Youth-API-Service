@@ -50,7 +50,7 @@ class YouthJobExperienceService
             'youth_job_experiences.updated_at'
         ]);
 
-        if (is_integer($youthId)) {
+        if (is_numeric($youthId)) {
             $jobExperienceBuilder->where('youth_job_experiences.youth_id', $youthId);
         }
 
@@ -65,7 +65,7 @@ class YouthJobExperienceService
 
         /** @var Collection $jobExperiences */
 
-        if (is_integer($paginate) || is_integer($pageSize)) {
+        if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $jobExperiences = $jobExperienceBuilder->paginate($pageSize);
             $paginateData = (object)$jobExperiences->toArray();

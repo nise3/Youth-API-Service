@@ -71,13 +71,13 @@ class YouthAddressService
                 ->whereNull('loc_upazilas.deleted_at');
         });
 
-        if (is_integer($youthId)) {
+        if (is_numeric($youthId)) {
             $youthAddressBuilder->where('youth_addresses.youth_id', $youthId);
         }
 
         $response = [];
         /** @var Collection $youthAddresses */
-        if (is_integer($paginate) || is_integer($pageSize)) {
+        if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $youthAddresses = $youthAddressBuilder->paginate($pageSize);
             $paginateData = (object)$youthAddresses->toArray();

@@ -52,7 +52,7 @@ class YouthGuardianService
             ]
         );
 
-        if (is_integer($youthId)) {
+        if (is_numeric($youthId)) {
             $guardianBuilder->where('youth_guardians.youth_id', $youthId);
         }
         if (!empty($guardianName)) {
@@ -63,7 +63,7 @@ class YouthGuardianService
         }
 
         /** @var Collection $guardians */
-        if (is_integer($paginate) || is_integer($pageSize)) {
+        if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $guardians = $guardianBuilder->paginate($pageSize);
             $paginateData = (object)$guardians->toArray();

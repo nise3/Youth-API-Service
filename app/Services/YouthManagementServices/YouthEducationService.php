@@ -142,7 +142,7 @@ class YouthEducationService
         $educationBuilder->where("youth_educations.youth_id", Auth::id());
 
         /** @var Collection $youth_educations */
-        if (is_integer($paginate) || is_integer($pageSize)) {
+        if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $youth_educations = $educationBuilder->paginate($pageSize);
             $paginateData = (object)$youth_educations->toArray();
