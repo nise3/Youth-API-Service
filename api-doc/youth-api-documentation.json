@@ -3505,6 +3505,261 @@
                     "Youth Guardians"
                 ]
             }
+        },
+        "/youth-addresses": {
+            "get": {
+                "summary": "get_list",
+                "description": "API endpoint to get the list of Youth Address. A successful request response will show 200 HTTP status code ",
+                "parameters": [
+
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page_size"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "MODELING Youth Address",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/youthAddress"
+                                    }
+                                },
+                                "example": {
+                                    "youth_id": 1,
+                                    "page": 1,
+                                    "page_size": 10,
+                                    "order": "ASC",
+                                    "data": [
+                                        {
+                                            "youth_id": 21,
+                                            "address_type": 1,
+                                            "loc_division_id": 1,
+                                            "loc_division_title": "বরিশাল",
+                                            "loc_division_title_en": "Barisal",
+                                            "loc_district_id": 1,
+                                            "loc_upazila_id": 1,
+                                            "loc_district_title_en": "BARGUNA",
+                                            "loc_upazila_title": "Barguna",
+                                            "loc_upazila_title_en": "BAGERHAT SADAR",
+                                            "loc_district_title": "বরগুনা",
+                                            "village_or_area": null,
+                                            "village_or_area_en": null,
+                                            "house_n_road": null,
+                                            "house_n_road_en": null,
+                                            "zip_or_postal_code": null,
+                                            "created_at": "1999-98-12",
+                                            "updated_at": "1999-98-12",
+                                            "deleted_at": "1999-98-12"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Address"
+                ]
+            },
+            "post": {
+                "summary": "Create a new Youth Address",
+                "description": "API endpoint to create a Youth Address.A successful request response will show 200 HTTP status code.",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/youthAddress_Create"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "A new Youth Address",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "youth_id": "21",
+                                        "address_type": "1",
+                                        "loc_division_id": "1",
+                                        "loc_district_id": "1",
+                                        "loc_upazila_id": "1",
+                                        "village_or_area": "null",
+                                        "village_or_area_en": "null",
+                                        "house_n_road": "null",
+                                        "house_n_road_en": "null",
+                                        "zip_or_postal_code": "null",
+                                        "updated_at": "2021-10-19T07:20:50.000000Z",
+                                        "created_at": "2021-10-19T07:20:50.000000Z",
+                                        "id": 4
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 201,
+                                        "message": "Youth Address Added Successfully",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Address"
+                ]
+            }
+        },
+        "/youth-addresses/{youthAddressesId}": {
+            "get": {
+                "summary": "get_by_ID",
+                "description": "API endpoint to get the list of Youth Address. A successful request response will show 200 HTTP status code ",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/youthAddressesId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "MODELING Youth Address",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "$ref": "#/components/schemas/youthAddress"
+                                    }
+                                },
+                                "example": {
+                                    "data": {
+                                        "youth_id": 21,
+                                        "address_type": 1,
+                                        "loc_division_id": 1,
+                                        "loc_division_title": "বরিশাল",
+                                        "loc_division_title_en": "Barisal",
+                                        "loc_district_id": 1,
+                                        "loc_upazila_id": 1,
+                                        "loc_district_title_en": "BARGUNA",
+                                        "loc_upazila_title": "Barguna",
+                                        "loc_upazila_title_en": "BAGERHAT SADAR",
+                                        "loc_district_title": "বরগুনা",
+                                        "village_or_area": null,
+                                        "village_or_area_en": null,
+                                        "house_n_road": null,
+                                        "house_n_road_en": null,
+                                        "zip_or_postal_code": null,
+                                        "created_at": "1999-98-12",
+                                        "updated_at": "1999-98-12",
+                                        "deleted_at": "1999-98-12"
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Address"
+                ]
+            },
+            "put": {
+                "summary": "update",
+                "description": "API endpoint to update the specified Reference. A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/youthAddressesId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/youthAddress_Create"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "A new Youth Address",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "youth_id": "21",
+                                        "address_type": "1",
+                                        "loc_division_id": "1",
+                                        "loc_district_id": "1",
+                                        "loc_upazila_id": "1",
+                                        "village_or_area": "null",
+                                        "village_or_area_en": "null",
+                                        "house_n_road": "null",
+                                        "house_n_road_en": "null",
+                                        "zip_or_postal_code": "null",
+                                        "updated_at": "2021-10-19T07:20:50.000000Z",
+                                        "created_at": "2021-10-19T07:20:50.000000Z",
+                                        "id": 4
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 201,
+                                        "message": "Youth updated Added Successfully",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Address"
+                ]
+            },
+            "delete": {
+                "summary": "delete",
+                "description": "API endpoint to delete the specified Youth Address....A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/youthAddressesId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthAddress_Create"
+                                },
+                                "example": {
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Youth Address deleted successfully.",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Address"
+                ]
+            }
         }
     },
     "components": {
@@ -3516,6 +3771,146 @@
             }
         },
         "schemas": {
+            "youthAddress": {
+                "type": "object",
+                "properties": {
+                    "address_type": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
+                        "description": "1=>Present,2=>Permanent,3=>Others",
+                        "default": 1
+                    },
+                    "loc_division_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "loc_district_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "loc_upazila_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "loc_district_title_en": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "loc_upazila_title": {
+                        "type": "string",
+                        "example": "Barguna"
+                    },
+                    "loc_district_title": {
+                        "type": "string",
+                        "example": "বরগুনা"
+                    },
+                    "village_or_area": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "village_or_area_en": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "house_n_road": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "house_n_road_en": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "zip_or_postal_code": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "example": "1999-98-12"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "example": "1999-98-12"
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "example": "1999-98-12"
+                    }
+                },
+                "required": [
+                    "address_type",
+                    "loc_division_id",
+                    "loc_district_id"
+                ]
+            },
+            "youthAddress_Create": {
+                "type": "object",
+                "properties": {
+                    "address_type": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
+                        "description": "1=>Present,2=>Permanent,3=>Others",
+                        "default": 1
+                    },
+                    "loc_division_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "loc_district_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "loc_upazila_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "village_or_area": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "village_or_area_en": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "house_n_road": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "house_n_road_en": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "zip_or_postal_code": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "example": "1999-98-12"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "example": "1999-98-12"
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "example": "1999-98-12"
+                    }
+                },
+                "required": [
+                    "address_type",
+                    "loc_division_id",
+                    "loc_district_id"
+                ]
+            },
             "youthGuardian": {
                 "type": "object",
                 "properties": {
@@ -4814,6 +5209,14 @@
             }
         },
         "parameters": {
+            "youthAddressesId": {
+                "name": "youthAddressesId",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "integer"
+                }
+            },
             "name": {
                 "name": "name",
                 "in": "query",
