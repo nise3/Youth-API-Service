@@ -57,7 +57,7 @@ class LanguageService
     public function filterValidator(Request $request): Validator
     {
         $customMessage = [
-            'order.in' => 'Order must be within ASC or DESC. [30000]'
+            'order.in' => 'Order must be within ASC or DESC.[30000]'
         ];
 
         if ($request->filled('order')) {

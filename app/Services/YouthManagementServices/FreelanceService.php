@@ -130,12 +130,11 @@ class FreelanceService
     {
         $customMessage = [
             'order.in' => [
-                'code' => 30000,
-                "message" => 'Order must be either ASC or DESC',
+                "message" => 'Order must be either ASC or DESC.[30000]',
             ],
             'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
+                'message' => 'Row status must be within 1 or 0.[30000]'
+
             ]
         ];
 
@@ -148,8 +147,8 @@ class FreelanceService
         }
 
         return Validator::make($request->all(), [
-            'page' => 'int|gt:0',
-            'page_size' => 'int|gt:0',
+            'page' => 'nullable|int|gt:0',
+            'page_size' => 'nullable|int|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])

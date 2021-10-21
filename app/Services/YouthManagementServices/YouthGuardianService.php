@@ -287,6 +287,7 @@ class YouthGuardianService
                 Rule::in(YouthGuardian::RELATIONSHIP_TYPES)
             ],
             'order' => [
+                'nullable',
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
             ]

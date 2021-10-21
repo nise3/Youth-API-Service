@@ -292,8 +292,8 @@ class YouthAddressService
         }
 
         return Validator::make($request->all(), [
-            'page' => 'integer|gt:0',
-            'page_size' => 'integer|gt:0',
+            'page' => 'nullable|integer|gt:0',
+            'page_size' => 'nullable|integer|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])

@@ -314,8 +314,7 @@
                                     "type": "array",
                                     "items": {
                                         "type": "integer",
-                                        "uniqueItems": true,
-                                        "example": 1
+                                        "uniqueItems": true
                                     }
                                 }
                             }
@@ -4214,12 +4213,12 @@
                     "password": {
                         "type": "string",
                         "format": "password",
-                        "description": "Min Len: 8, Max len: 50"
+                        "description": "Must contain uppercase ,lowercase letter and number.Min Len: 8, Max len: 50"
                     },
                     "password_confirmation": {
                         "type": "string",
                         "format": "password",
-                        "description": "Min Len: 8, Max len: 50"
+                        "description": "Must contain uppercase ,lowercase letter and number.Min Len: 8, Max len: 50"
                     }
                 },
                 "required": [
