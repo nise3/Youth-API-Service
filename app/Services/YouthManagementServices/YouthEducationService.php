@@ -204,6 +204,7 @@ class YouthEducationService
                 'youth_educations.marks_in_percentage',
                 'youth_educations.cgpa_scale',
                 'youth_educations.cgpa',
+                'youth_educations.expected_year_of_passing',
                 'youth_educations.year_of_passing',
                 'youth_educations.duration',
                 'youth_educations.achievements',
