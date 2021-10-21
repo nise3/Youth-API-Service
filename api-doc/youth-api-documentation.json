@@ -3249,13 +3249,49 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "MODELING EMPLOYEE",
+                        "description": "List of guardians",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
                                         "$ref": "#/components/schemas/youthGuardian"
+                                    }
+                                },
+                                "example": {
+                                    "order": "ASC",
+                                    "data": [
+                                        {
+                                            "id": 2,
+                                            "name": "Prof. Johann Dooley",
+                                            "name_en": "Kaley Hodkiewicz",
+                                            "nid": null,
+                                            "mobile": "01745244928",
+                                            "date_of_birth": null,
+                                            "relationship_type": 0,
+                                            "relationship_title": null,
+                                            "relationship_title_en": null,
+                                            "created_at": "2021-10-19T11:51:41.000000Z",
+                                            "updated_at": "2021-10-19T11:51:41.000000Z"
+                                        },
+                                        {
+                                            "id": 13,
+                                            "name": "Duane Weber MD",
+                                            "name_en": "Audreanne Hermann",
+                                            "nid": null,
+                                            "mobile": "01707184903",
+                                            "date_of_birth": null,
+                                            "relationship_type": 0,
+                                            "relationship_title": null,
+                                            "relationship_title_en": null,
+                                            "created_at": "2021-10-19T11:51:41.000000Z",
+                                            "updated_at": "2021-10-19T11:51:41.000000Z"
+                                        }
+                                    ],
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
                                     }
                                 }
                             }
@@ -3493,16 +3529,16 @@
                         "type": "string"
                     },
                     "nid": {
-                        "type": "string",
-                        "example": "5467893421678"
+                        "type": "string"
                     },
                     "mobile": {
                         "type": "string",
-                        "example": "01714556677"
+                        "description": "11 digits"
                     },
                     "date_of_birth": {
                         "type": "string",
-                        "example": "1987-09-23"
+                        "format": "date",
+                        "description": "xxxx-xx-xx : Year-Month-Day"
                     },
                     "relationship_type": {
                         "type": "integer",
@@ -4784,7 +4820,6 @@
             "name": {
                 "name": "name",
                 "in": "query",
-                "description": "The name of guardian returned",
                 "schema": {
                     "type": "string"
                 }
