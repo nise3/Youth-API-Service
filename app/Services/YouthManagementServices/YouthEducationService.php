@@ -85,7 +85,7 @@ class YouthEducationService
                 'youth_educations.updated_at',
             ]
         );
-        $educationBuilder->join('education_levels', function ($join) use ($rowStatus) {
+        $educationBuilder->leftJoin('education_levels', function ($join) use ($rowStatus) {
             $join->on('education_levels.id', '=', 'youth_educations.education_level_id')
                 ->whereNull('education_levels.deleted_at');
             if (is_numeric($rowStatus)) {
@@ -93,19 +93,19 @@ class YouthEducationService
             }
         });
 
-        $educationBuilder->join('exam_degrees', function ($join) use ($rowStatus) {
+        $educationBuilder->leftJoin('exam_degrees', function ($join) use ($rowStatus) {
             $join->on('exam_degrees.id', '=', 'youth_educations.exam_degree_id')
                 ->whereNull('exam_degrees.deleted_at');
             if (is_numeric($rowStatus)) {
                 $join->where('exam_degrees.row_status', $rowStatus);
             }
         });
-        $educationBuilder->join('edu_boards', function ($join) {
+        $educationBuilder->leftJoin('edu_boards', function ($join) {
             $join->on('edu_boards.id', '=', 'youth_educations.edu_board_id')
                 ->whereNull('edu_boards.deleted_at');
         });
 
-        $educationBuilder->join('edu_groups', function ($join) {
+        $educationBuilder->leftJoin('edu_groups', function ($join) {
             $join->on('edu_groups.id', '=', 'youth_educations.edu_group_id')
                 ->whereNull('edu_groups.deleted_at');
         });
