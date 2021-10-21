@@ -138,15 +138,16 @@ class FreelanceService
             ]
         ];
 
-        if (!empty($request['order'])) {
-            $request['order'] = strtoupper($request['order']);
+        if ($request->filled('order')) {
+            $request->offsetSet('order', strtoupper($request->get('order')));
+        }
+        $requestData = $request->all();
+
+        if (!empty($requestData["skills"])) {
+            $requestData["skills"] = is_array($requestData['skills']) ? $requestData['skills'] : explode(',', $requestData['skills']);
         }
 
-        if (!empty($request["skills"])) {
-            $request["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
-        }
-
-        return Validator::make($request->all(), [
+        return Validator::make($requestData, [
             'page' => 'nullable|int|gt:0',
             'page_size' => 'nullable|int|gt:0',
             'order' => [
