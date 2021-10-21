@@ -420,6 +420,7 @@ class YouthEducationService
                 Rule::requiredIf(function () use ($request) {
                     return $this->getRequiredStatus(YouthEducation::CGPA, $request->result);
                 }),
+                'nullable',
                 'numeric',
                 'max:5'
             ],
