@@ -187,7 +187,7 @@ class YouthLanguagesProficiencyService
      */
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
-        $request['deleted_at'] = null;
+        $request->offsetSet('deleted_at', null);
         $customMessage = [];
         $rules = [
             'youth_id' => [
