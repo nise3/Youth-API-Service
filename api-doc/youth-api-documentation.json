@@ -3005,9 +3005,6 @@
                         "$ref": "#/components/parameters/page_size"
                     },
                     {
-                        "$ref": "#/components/parameters/row_status"
-                    },
-                    {
                         "$ref": "#/components/parameters/order"
                     }
                 ],
@@ -4944,6 +4941,18 @@
             },
             "row_status": {
                 "name": "row_status",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        0
+                    ]
+                }
+            },
+            "is_currently_working": {
+                "name": "is_currently_working",
                 "in": "query",
                 "required": false,
                 "schema": {
