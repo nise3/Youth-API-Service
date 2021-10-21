@@ -287,13 +287,7 @@ class YouthProfileService
 
     private function prepareIdpPayload($data)
     {
-        $userEmailNo = trim($data['username']);
-        $cleanUserName = trim($data['username']);
-        if (!str_contains($userEmailNo, '@')) {
-            $userEmailNo = 'y_' . $data['username'] . '@youth.nise3.com';
-        } else {
-            $cleanUserName = str_replace('@', '', $cleanUserName);
-        }
+        $cleanUserName = trim($data['username']);  // At present only email is selected as username from frontend team
         return [
             'schemas' => [
                 "urn:ietf:params:scim:schemas:core:2.0:User",
@@ -310,7 +304,7 @@ class YouthProfileService
             'userType' => $data['user_type'],
             'country' => 'BD',
             'emails' => [
-                0 => $userEmailNo
+                0 => $data['email']
             ]
         ];
     }
