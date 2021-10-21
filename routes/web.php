@@ -31,10 +31,11 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     $router->post('youth-profile-verification', ["as" => "youth-profile.verify", "uses" => "YouthProfileController@youthVerification"]);
     $router->post('youth-resend-verification-code', ["as" => "youth-profile.youth-resend-verify-code", "uses" => "YouthProfileController@resendVerificationCode"]);
 
-    /** freelance corner */
-    $router->get('freelancers', ["as" => "freelancers.get-all-freelancers", "uses" => "YouthFreelanceController@getAllFreelancers"]);
+    /** Youth update after course enrollment from institute service  */
+    $router->post('youth-update-after-course-enrollment', ["as" => "youth-profile.youth-update-after-course-enrollment", "uses" => "YouthController@updateYouthAfterCourseEnrollment"]);
 
-    // data from examinations, boards , edu groups, major or subjects table
+    /** freelance corner */
+    //$router->get('freelancers', ["as" => "freelancers.get-all-freelancers", "uses" => "YouthFreelanceController@getAllFreelancers"]);
 
     /**
      * Cv download corner

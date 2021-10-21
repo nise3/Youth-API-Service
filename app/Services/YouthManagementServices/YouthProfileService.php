@@ -111,7 +111,7 @@ class YouthProfileService
         $youth->fill($data);
         $youth->save();
         $this->assignSkills($youth, $data["skills"]);
-        if (array_key_exists('physical_disabilities', $data)) {
+        if (!empty($data['physical_disabilities'])) {
             $this->assignPhysicalDisabilities($youth, $data['physical_disabilities']);
         }
         return $youth;
@@ -196,7 +196,7 @@ class YouthProfileService
         /** @var Youth $youth */
         $youth = Youth::where($conditionalAttribute, $conditionalValue)
             ->where("verification_code", $code)
-            ->where("row_status", BaseModel::ROW_STATUS_INACTIVE)
+            ->where("row_status", BaseModel::ROW_STATUS_PENDING)
             ->first();
 
         if ($youth) {

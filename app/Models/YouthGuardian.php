@@ -12,18 +12,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property int id
  * @property int youth_id
- * @property string father_name
- * @property string|null father_name_en
- * @property string|null father_nid
- * @property string|null father_mobile
- * @property Carbon|null father_date_of_birth
- * @property string mother_name
- * @property string mother_name_en
- * @property string mother_nid
- * @property string mother_mobile
- * @property Carbon mother_date_of_birth
+ * @property string name
+ * @property string|null name_en
+ * @property string|null nid
+ * @property string|null mobile
+ * @property Carbon|null date_of_birth
+ * @property int relationship_type
+ * @property string|null relationship_title
+ * @property string|null relationship_title_en
  * @property Carbon created_at
  * @property Carbon updated_at
+ * @property Carbon deleted_at
  */
 class YouthGuardian extends BaseModel
 {

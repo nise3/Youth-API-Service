@@ -118,6 +118,7 @@ class YouthProfileController extends Controller
 
         Log::info("Youth user create in db----->email-->" . $validated['email']);
 
+        //TODO:: Need to optimize this code
         $addressData['youth_id'] = $youth->id;
         $addressData['address_type'] = YouthAddress::ADDRESS_TYPE_PRESENT;
         $addressData['loc_division_id'] = $validated['loc_division_id'];
@@ -264,7 +265,6 @@ class YouthProfileController extends Controller
             throw $e;
         }
     }
-
 
     /**
      * Cv download function

@@ -73,4 +73,12 @@ class  YouthController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
+    /**
+     * @param Request $request
+     */
+    public function updateYouthAfterCourseEnrollment(Request $request)
+    {
+        $this->youthService->updateYouthProfileAfterCourseEnroll($request);
+    }
+
 }
