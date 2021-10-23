@@ -270,9 +270,10 @@ class YouthProfileController extends Controller
         $validated = $this->youthProfileService->youthEnrollCoursesFilterValidator($request)->validate();
         $validated['youth_id'] = Auth::id();
         $data = $this->youthProfileService->getYouthEnrollCourses($validated);
+        //dd($data['data']);
 
         $response = [
-            'data' => $data ?: [],
+            'data' => $data ? $data['data'] : [],
             '_response_status' => [
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK ,
