@@ -75,7 +75,8 @@ $app->configure('httpclientendpoint');
 */
 
 $app->middleware([
-    App\Http\Middleware\CorsMiddleware::class,
+//    App\Http\Middleware\CorsMiddleware::class,
+    Fruitcake\Cors\HandleCors::class,
     LumenMiddlewareTrimOrConvertString\TrimStrings::class,
     LumenMiddlewareTrimOrConvertString\ConvertEmptyStringsToNull::class,
 ]);
@@ -96,9 +97,15 @@ $app->routeMiddleware([
 */
 
 $app->register(App\Providers\AppServiceProvider::class);
+$app->register(Fruitcake\Cors\CorsServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
-$app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(Felixkiss\UniqueWithValidator\ServiceProvider::class);
+
+if (app()->environment('local')) {
+    $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
+}
+
+
 
 //$app->register(Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
