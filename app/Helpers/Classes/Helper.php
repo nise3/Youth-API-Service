@@ -4,6 +4,9 @@ namespace App\Helpers\Classes;
 
 class Helper
 {
+    /**
+     * @throws \Exception
+     */
     public static function randomPassword($length, $onlyDigit = false): string
     {
         $alphabet = $onlyDigit ? '1234567890' : 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
