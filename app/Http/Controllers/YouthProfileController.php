@@ -270,9 +270,10 @@ class YouthProfileController extends Controller
         $validated = $this->youthProfileService->youthEnrollCoursesFilterValidator($request)->validate();
         $validated['youth_id'] = Auth::id();
         $data = $this->youthProfileService->getYouthEnrollCourses($validated);
+        //dd($data['data']);
 
         $response = [
-            'data' => $data ?: [],
+            'data' => $data ? $data['data'] : [],
             '_response_status' => [
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK ,
@@ -284,11 +285,11 @@ class YouthProfileController extends Controller
     }
 
     public function getYouthFeedStatistics(Request $request): JsonResponse{
-        $response = $this->youthProfileService->getYouthFeedStatisticsData();
+        $data = $this->youthProfileService->getYouthFeedStatisticsData();
 
         $response = [
+            'data'=> $data,
             '_response_status' => [
-                "data"=> $response,
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK ,
                 "message" => "Youth statistics fetch successfully",
