@@ -39,27 +39,18 @@ class YouthLanguagesProficiencyController extends Controller
     public function getList(Request $request): JsonResponse
     {
         $filter = $this->languagesProficiencyService->filterValidator($request)->validate();
-        try {
-            $response = $this->languagesProficiencyService->getLanguagesProficiencyList($filter, $this->startTime);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->languagesProficiencyService->getLanguagesProficiencyList($filter, $this->startTime);
         return Response::json($response);
     }
 
     /**
      * Display the specified resource.
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
-     * @throws Throwable
+     * @return JsonResponse
      */
     public function read(int $id): JsonResponse
     {
-        try {
-            $response = $this->languagesProficiencyService->getOneLanguagesProficiency($id, $this->startTime);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->languagesProficiencyService->getOneLanguagesProficiency($id, $this->startTime);
         return Response::json($response);
     }
 
@@ -67,27 +58,24 @@ class YouthLanguagesProficiencyController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return Exception|JsonResponse|Throwable
-     * @throws ValidationException|Throwable
+     * @return JsonResponse
+     * @throws Throwable
+     * @throws ValidationException
      */
     public function store(Request $request): JsonResponse
     {
         $request['youth_id'] = Auth::id();
         $validated = $this->languagesProficiencyService->validator($request)->validate();
-        try {
-            $languageProficiency = $this->languagesProficiencyService->store($validated);
-            $response = [
-                'data' => $languageProficiency,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "YouthLanguagesProficiency added successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $languageProficiency = $this->languagesProficiencyService->store($validated);
+        $response = [
+            'data' => $languageProficiency,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_CREATED,
+                "message" => "YouthLanguagesProficiency added successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
@@ -95,54 +83,46 @@ class YouthLanguagesProficiencyController extends Controller
      * Update the specified resource in storage.
      * @param Request $request
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
-     * @throws ValidationException
+     * @return JsonResponse
      * @throws Throwable
+     * @throws ValidationException
      */
     public function update(Request $request, int $id): JsonResponse
     {
         $request['youth_id'] = Auth::id();
         $languageProficiency = YouthLanguagesProficiency::findOrFail($id);
         $validated = $this->languagesProficiencyService->validator($request, $id)->validate();
-        try {
-            $language = $this->languagesProficiencyService->update($languageProficiency, $validated);
-            $response = [
-                'data' => $language,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "YouthLanguagesProficiency updated successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $language = $this->languagesProficiencyService->update($languageProficiency, $validated);
+        $response = [
+            'data' => $language,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "YouthLanguagesProficiency updated successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return Exception|JsonResponse|Throwable
+     * @return JsonResponse
      * @throws Throwable
      */
     public function destroy(int $id): JsonResponse
     {
         $languageProficiency = YouthLanguagesProficiency::findOrFail($id);
-        try {
-            $this->languagesProficiencyService->destroy($languageProficiency);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "YouthLanguagesProficiency deleted successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $this->languagesProficiencyService->destroy($languageProficiency);
+        $response = [
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "YouthLanguagesProficiency deleted successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 }

@@ -308,16 +308,9 @@
                         "name": "skill_ids",
                         "in": "query",
                         "required": false,
-                        "content": {
-                            "multipart/form-data": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "integer",
-                                        "uniqueItems": true
-                                    }
-                                }
-                            }
+                        "description": "sent skill ids as comma separated string",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     {
@@ -1948,7 +1941,11 @@
                         "name": "is_freelance_profile",
                         "in": "query",
                         "schema": {
-                            "type": "string",
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1
+                            ],
                             "default": 0
                         }
                     }
@@ -3511,7 +3508,6 @@
                 "summary": "get_list",
                 "description": "API endpoint to get the list of Youth Address. A successful request response will show 200 HTTP status code ",
                 "parameters": [
-
                     {
                         "$ref": "#/components/parameters/page"
                     },
@@ -5083,8 +5079,7 @@
                 "description": "Provide educational info of a youth",
                 "properties": {
                     "education_level_id": {
-                        "type": "integer",
-                        "description": "PSC, JSC, SSC, HSC, Degree, B.Sc. (Pass), Honours, Preliminary Masters, Masters etc"
+                        "type": "integer"
                     },
                     "exam_degree_id": {
                         "type": "integer"

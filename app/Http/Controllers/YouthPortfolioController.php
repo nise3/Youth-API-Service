@@ -44,14 +44,10 @@ class YouthPortfolioController extends Controller
      * @return JsonResponse
      * @throws ValidationException|Throwable
      */
-    public function getList(Request $request)
+    public function getList(Request $request): JsonResponse
     {
         $filter = $this->portfolioService->filterValidator($request)->validate();
-        try {
-            $response = $this->portfolioService->getAllPortfolios($filter, $this->startTime);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->portfolioService->getAllPortfolios($filter, $this->startTime);
         return Response::json($response);
     }
 
@@ -64,11 +60,7 @@ class YouthPortfolioController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        try {
-            $response = $this->portfolioService->getOnePortfolio($id, $this->startTime);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->portfolioService->getOnePortfolio($id, $this->startTime);
         return Response::json($response);
     }
 
@@ -84,20 +76,16 @@ class YouthPortfolioController extends Controller
     {
         $request['youth_id'] = Auth::id();
         $validated = $this->portfolioService->validator($request)->validate();
-        try {
-            $portfolio = $this->portfolioService->store($validated);
-            $response = [
-                'data' => $portfolio,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "YouthPortfolio added successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $portfolio = $this->portfolioService->store($validated);
+        $response = [
+            'data' => $portfolio,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_CREATED,
+                "message" => "YouthPortfolio added successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
@@ -115,20 +103,16 @@ class YouthPortfolioController extends Controller
         $portfolio = YouthPortfolio::findOrFail($id);
         $request['youth_id'] = Auth::id();
         $validated = $this->portfolioService->validator($request, $id)->validate();
-        try {
-            $portfolio = $this->portfolioService->update($portfolio, $validated);
-            $response = [
-                'data' => $portfolio,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "YouthPortfolio updated successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $portfolio = $this->portfolioService->update($portfolio, $validated);
+        $response = [
+            'data' => $portfolio,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "YouthPortfolio updated successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
@@ -141,19 +125,15 @@ class YouthPortfolioController extends Controller
     public function destroy(int $id): JsonResponse
     {
         $portfolio = YouthPortfolio::findOrFail($id);
-        try {
-            $this->portfolioService->destroy($portfolio);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "YouthPortfolio deleted successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $this->portfolioService->destroy($portfolio);
+        $response = [
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "YouthPortfolio deleted successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 }

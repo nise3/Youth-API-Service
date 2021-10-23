@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Services\YouthManagementServices\FreelanceService;
 use App\Services\YouthManagementServices\YouthJobExperienceService;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class YouthFreelanceController extends Controller
@@ -32,14 +34,14 @@ class YouthFreelanceController extends Controller
         $this->startTime = Carbon::now();
     }
 
-    public function getAllFreelancers(Request $request)
+    /**
+     * @throws Throwable
+     * @throws ValidationException
+     */
+    public function getAllFreelancers(Request $request): JsonResponse
     {
         $filter = $this->freelanceService->filterValidator($request)->validate();
-        try {
-            $response = $this->freelanceService->getAllFreelancerList($filter, $this->startTime);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->freelanceService->getAllFreelancerList($filter, $this->startTime);
         return Response::json($response);
     }
 

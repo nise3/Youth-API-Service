@@ -41,7 +41,7 @@ class YouthJobExperienceController extends Controller
      * @return JsonResponse
      * @throws ValidationException|Throwable
      */
-    public function getList(Request $request)
+    public function getList(Request $request): JsonResponse
     {
         $filter = $this->jobExperienceService->filterValidator($request)->validate();
         $response = $this->jobExperienceService->getAllJobExperiences($filter, $this->startTime);

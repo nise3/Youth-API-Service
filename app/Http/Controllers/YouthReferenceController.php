@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\YouthReference;
 use App\Services\YouthManagementServices\YouthReferenceService;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

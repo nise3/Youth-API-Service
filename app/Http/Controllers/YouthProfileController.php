@@ -196,19 +196,15 @@ class YouthProfileController extends Controller
 
         $validator = $this->youthProfileService->freelanceStatusValidator($request)->validate();
 
-        try {
-            $this->youthProfileService->setFreelanceStatus($youth, $validator);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Successfully set your profile as a freelance profile",
-                    "query_time" => $this->startTime->diffForHumans(Carbon::now())
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $this->youthProfileService->setFreelanceStatus($youth, $validator);
+        $response = [
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Successfully set your profile as a freelance profile",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ]
+        ];
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
@@ -221,19 +217,15 @@ class YouthProfileController extends Controller
     public function youthVerification(Request $request): JsonResponse
     {
         $validated = $this->youthProfileService->verifyYouthValidator($request)->validate();
-        try {
-            $status = $this->youthProfileService->verifyYouth($validated);
-            $response = [
-                '_response_status' => [
-                    "success" => $status,
-                    "code" => $status ? ResponseAlias::HTTP_OK : ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
-                    "message" => $status ? "You have successfully verified." : "Unable to verify",
-                    "query_time" => $this->startTime->diffForHumans(Carbon::now())
-                ]
-            ];
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $status = $this->youthProfileService->verifyYouth($validated);
+        $response = [
+            '_response_status' => [
+                "success" => $status,
+                "code" => $status ? ResponseAlias::HTTP_OK : ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
+                "message" => $status ? "You have successfully verified." : "Unable to verify",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ]
+        ];
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
@@ -247,23 +239,17 @@ class YouthProfileController extends Controller
     {
         $validated = $this->youthProfileService->resendCodeValidator($request)->validate();
 
-        try {
+        $status = $this->youthProfileService->resendCode($validated);
+        $response = [
+            '_response_status' => [
+                "success" => $status,
+                "code" => $status ? ResponseAlias::HTTP_OK : ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
+                "message" => $status ? "Your verification code is successfully sent" : "Unable to send",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ]
+        ];
 
-            $status = $this->youthProfileService->resendCode($validated);
-            $response = [
-                '_response_status' => [
-                    "success" => $status,
-                    "code" => $status ? ResponseAlias::HTTP_OK : ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
-                    "message" => $status ? "Your verification code is successfully sent" : "Unable to send",
-                    "query_time" => $this->startTime->diffForHumans(Carbon::now())
-                ]
-            ];
-
-            return Response::json($response, ResponseAlias::HTTP_OK);
-
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**

@@ -30,27 +30,23 @@ class LanguageController extends Controller
     public function getList(Request $request): JsonResponse
     {
         $filter = $this->languageService->filterValidator($request)->validate();
-        try {
-            $returnedData = $this->languageService->getAllLanguageList($filter, $this->startTime);
-            $response = [
-                'order' => $returnedData['order'],
-                'data' => $returnedData['data'],
-                '_response_status' => [
-                    "success" => true,
-                    "code" => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
-                    'query_time' => $returnedData['query_time']
-                ]
-            ];
+        $returnedData = $this->languageService->getAllLanguageList($filter, $this->startTime);
+        $response = [
+            'order' => $returnedData['order'],
+            'data' => $returnedData['data'],
+            '_response_status' => [
+                "success" => true,
+                "code" => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                'query_time' => $returnedData['query_time']
+            ]
+        ];
 
-            if (isset($returnedData['total_page'])) {
-                $response['total'] = $returnedData['total'];
-                $response['current_page'] = $returnedData['current_page'];
-                $response['total_page'] = $returnedData['total_page'];
-                $response['page_size'] = $returnedData['page_size'];
-            }
-            return Response::json($response, \Symfony\Component\HttpFoundation\Response::HTTP_OK);
-        } catch (Throwable $e) {
-            throw $e;
+        if (isset($returnedData['total_page'])) {
+            $response['total'] = $returnedData['total'];
+            $response['current_page'] = $returnedData['current_page'];
+            $response['total_page'] = $returnedData['total_page'];
+            $response['page_size'] = $returnedData['page_size'];
         }
+        return Response::json($response, \Symfony\Component\HttpFoundation\Response::HTTP_OK);
     }
 }
