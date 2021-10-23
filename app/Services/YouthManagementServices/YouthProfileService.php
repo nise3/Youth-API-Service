@@ -14,6 +14,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -722,7 +723,7 @@ class YouthProfileService
             ->first();
     }
 
-    public function getYouthEnrollCourses(array $data){
+    public function getYouthEnrollCourses(array $data): array {
         $url = clientUrl(BaseModel::INSTITUTE_URL_CLIENT_TYPE) . 'youth-enroll-courses';
         $queryStr = http_build_query($data);
         $urlWithQueryStr = $url.'?'.$queryStr;
@@ -769,5 +770,16 @@ class YouthProfileService
         ];
 
         return \Illuminate\Support\Facades\Validator::make($requestData, $rules, $customMessage);
+    }
+
+    public function getYouthFeedStatisticsData() : array{
+        return [
+            'enrolled_courses' => 5,
+            'skill_matching_courses' => 50,
+            'total_courses' => 550,
+            'jobs_apply' => 320,
+            'total_jobs' => 2500,
+            'skill_matching_jobs' => 100,
+        ];
     }
 }
