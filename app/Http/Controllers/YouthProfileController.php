@@ -272,8 +272,8 @@ class YouthProfileController extends Controller
         $data = $this->youthProfileService->getYouthEnrollCourses($validated);
 
         $response = [
+            'data' => $data ?: [],
             '_response_status' => [
-                "data"=> $data,
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK ,
                 "message" => "My courses fetch successfully",
