@@ -252,6 +252,40 @@ class YouthProfileController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
+    public function getYouthEnrollCourses(Request $request): JsonResponse{
+        $validated = $this->youthProfileService->youthEnrollCoursesFilterValidator($request)->validate();
+        $validated['youth_id'] = Auth::id();
+        $data = $this->youthProfileService->getYouthEnrollCourses($validated);
+        //dd($data['data']);
+
+        $response = [
+            'data' => $data ? $data['data'] : [],
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK ,
+                "message" => "My courses fetch successfully",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ]
+        ];
+        return Response::json($response);
+    }
+
+    public function getYouthFeedStatistics(Request $request): JsonResponse{
+        $data = $this->youthProfileService->getYouthFeedStatisticsData();
+
+        $response = [
+            'data'=> $data,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK ,
+                "message" => "Youth statistics fetch successfully",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ]
+        ];
+
+        return Response::json($response, ResponseAlias::HTTP_OK);
+    }
+
     /**
      * Cv download function
      */

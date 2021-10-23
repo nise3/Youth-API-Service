@@ -29,7 +29,7 @@ abstract class BaseModel extends Model
     public const ROW_STATUS_INACTIVE = 0;
     public const ROW_STATUS_ACTIVE = 1;
     public const ROW_STATUS_PENDING = 2;
-    public const ROW_STATUS_REJECT = 3;
+    public const ROW_STATUS_REJECTED = 3;
 
     /** Row Status */
     public const ROW_ORDER_ASC = 'ASC';

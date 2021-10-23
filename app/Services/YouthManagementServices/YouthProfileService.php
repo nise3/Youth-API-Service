@@ -4,6 +4,7 @@
 namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
+use App\Models\CourseEnrollment;
 use App\Models\PhysicalDisability;
 use App\Models\Skill;
 use App\Models\Youth;
@@ -13,6 +14,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -719,5 +721,65 @@ class YouthProfileService
         return Youth::where('idp_user_id', $id)
             ->where("row_status", BaseModel::ROW_STATUS_ACTIVE)
             ->first();
+    }
+
+    public function getYouthEnrollCourses(array $data): array {
+        $url = clientUrl(BaseModel::INSTITUTE_URL_CLIENT_TYPE) . 'youth-enroll-courses';
+        $queryStr = http_build_query($data);
+        $urlWithQueryStr = $url.'?'.$queryStr;
+
+        return Http::withOptions([
+            'verify' => false,
+            'timeout' => 60
+        ])
+            ->get($urlWithQueryStr)
+            ->throw(function ($response, $e) use ($url) {
+                Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ', (array)$response);
+                return $e;
+            })
+            ->json();
+    }
+
+    public function youthEnrollCoursesFilterValidator(Request $request): Validator
+    {
+        if ($request->filled('order')) {
+            $request->offsetSet('order', strtoupper($request->get('order')));
+        }
+
+        $customMessage = [
+            'order.in' => 'Order must be either ASC or DESC. [30000]',
+            'row_status.in' => 'Row status must be between 0 to 3. [30000]'
+        ];
+
+        $requestData = $request->all();
+
+        $rules = [
+            'course_id' => 'nullable|int|gt:0',
+            'page_size' => 'int|gt:0',
+            'page' => 'int|gt:0',
+            'order' => [
+                'nullable',
+                'string',
+                Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
+            ],
+            'row_status' => [
+                'nullable',
+                "int",
+                Rule::in(Youth::ROW_STATUSES),
+            ]
+        ];
+
+        return \Illuminate\Support\Facades\Validator::make($requestData, $rules, $customMessage);
+    }
+
+    public function getYouthFeedStatisticsData() : array{
+        return [
+            'enrolled_courses' => 5,
+            'skill_matching_courses' => 50,
+            'total_courses' => 550,
+            'jobs_apply' => 320,
+            'total_jobs' => 2500,
+            'skill_matching_jobs' => 100,
+        ];
     }
 }

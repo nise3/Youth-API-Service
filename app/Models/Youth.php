@@ -51,6 +51,14 @@ class Youth extends AuthBaseModel
 {
     use SoftDeletes, HasFactory;
 
+
+    public const ROW_STATUSES = [
+        self::ROW_STATUS_INACTIVE,
+        self::ROW_STATUS_ACTIVE, /** Approved Status */
+        self::ROW_STATUS_PENDING,
+        self::ROW_STATUS_REJECTED
+    ];
+
     const YOUTH_NEARBY_FILTER_TRUE = 1;
     const YOUTH_NEARBY_FILTER_FALSE = 0;
 
