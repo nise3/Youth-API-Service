@@ -284,11 +284,11 @@ class YouthProfileController extends Controller
     }
 
     public function getYouthFeedStatistics(Request $request): JsonResponse{
-        $response = $this->youthProfileService->getYouthFeedStatisticsData();
+        $data = $this->youthProfileService->getYouthFeedStatisticsData();
 
         $response = [
+            'data'=> $data,
             '_response_status' => [
-                "data"=> $response,
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK ,
                 "message" => "Youth statistics fetch successfully",
