@@ -266,6 +266,13 @@ class YouthProfileController extends Controller
         }
     }
 
+    public function getYouthEnrollCourses(Request $request): JsonResponse{
+        $validated = $this->youthProfileService->youthEnrollCoursesFilterValidator($request)->validate();
+        $validated['youth_id'] = Auth::id();
+        $response = $this->youthProfileService->getYouthEnrollCourses($validated);
+        return Response::json($response);
+    }
+
     /**
      * Cv download function
      */

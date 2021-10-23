@@ -58,6 +58,7 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
     $customRouter()->resourceRoute('youth-addresses', 'YouthAddressController')->render();
 
     $router->get('youth-profile', ["as" => "youth-profile.get-profile", "uses" => "YouthProfileController@getYouthProfile"]);
+    $router->get('youth-my-courses', ["as" => "youth-profile.get-my-courses", "uses" => "YouthProfileController@getYouthEnrollCourses"]);
     $router->put('youth-personal-info-update', ["as" => "youth-profile.update", "uses" => "YouthProfileController@youthProfileInfoUpdate"]);
     $router->put('youth-change-freelance-status', ["as" => "youth-profile.youth-change-freelance-status", "uses" => "YouthProfileController@setFreelanceStatus"]);
 
