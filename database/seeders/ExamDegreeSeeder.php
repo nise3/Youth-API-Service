@@ -122,6 +122,24 @@ class ExamDegreeSeeder extends Seeder
                 "code" => "OTHERS",
                 "title" => "Others",
                 "title_en" => "Others"
+            ],
+            [
+                "education_level_id" => 5,
+                "code" => "DIPLOMA_ENG",
+                "title" => "Diploma in Engineering",
+                "title_en" => "Diploma in Engineering"
+            ],
+            [
+                "education_level_id" => 6,
+                "code" => "BSC",
+                "title" => "Bachelor of Science",
+                "title_en" => "Bachelor of Science"
+            ],
+            [
+                "education_level_id" => 7,
+                "code" => "MSC",
+                "title" => "Masters of Science",
+                "title_en" => "Masters of Science"
             ]
         ];
         ExamDegree::insert($examDegrees);
