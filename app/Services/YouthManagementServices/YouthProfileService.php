@@ -4,7 +4,6 @@
 namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
-use App\Models\CourseEnrollment;
 use App\Models\PhysicalDisability;
 use App\Models\Skill;
 use App\Models\Youth;
@@ -14,7 +13,6 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\Response;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
