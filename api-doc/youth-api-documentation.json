@@ -3823,18 +3823,6 @@
                     "zip_or_postal_code": {
                         "type": "string",
                         "example": null
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "example": "1999-98-12"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "example": "1999-98-12"
-                    },
-                    "deleted_at": {
-                        "type": "string",
-                        "example": "1999-98-12"
                     }
                 },
                 "required": [
@@ -3887,18 +3875,6 @@
                     "zip_or_postal_code": {
                         "type": "string",
                         "example": null
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "example": "1999-98-12"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "example": "1999-98-12"
-                    },
-                    "deleted_at": {
-                        "type": "string",
-                        "example": "1999-98-12"
                     }
                 },
                 "required": [
