@@ -4,10 +4,13 @@ namespace App\Providers;
 
 use App\Facade\AuthTokenUtility;
 use App\Models\Youth;
+use App\Models\YouthCertification;
+use App\Policies\YouthCertificationPolicy;
+use App\Policies\YouthPolicy;
 use App\Services\YouthManagementServices\YouthProfileService;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Throwable;
@@ -34,6 +37,9 @@ class AuthServiceProvider extends ServiceProvider
         // application. The callback which receives the incoming request instance
         // should return either a User instance or null. You're free to obtain
         // the User instance via an API token or any other method necessary.
+
+        Gate::policy(Youth::class, YouthPolicy::class);
+        Gate::policy(YouthCertification::class, YouthCertificationPolicy::class);
 
         $this->app['auth']->viaRequest('token', function (Request $request) {
 

@@ -44,6 +44,8 @@ class YouthCertificationController extends Controller
      */
     public function getList(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', YouthCertification::class);
+
         $filter = $this->certificationService->filterValidator($request)->validate();
         $returnedData = $this->certificationService->getAllCertifications($filter, $this->startTime);
 
