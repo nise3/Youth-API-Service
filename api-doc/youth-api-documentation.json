@@ -3867,7 +3867,7 @@
                 "description": "An Http method to get youth feed statistics. Asuccessful request response will return 200 status code\" ",
                 "responses": {
                     "200": {
-                        "description": "successful",
+                        "description": "Successfull",
                         "content": {
                             "application/json": {
                                 "example": {
@@ -5501,6 +5501,7 @@
                 "name": "company_name_bn",
                 "in": "query",
                 "required": false,
+                "style": "form",
                 "schema": {
                     "type": "string"
                 }
