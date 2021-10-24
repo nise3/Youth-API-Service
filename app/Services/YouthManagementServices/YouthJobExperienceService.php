@@ -285,7 +285,7 @@ class YouthJobExperienceService
                 'date_format:Y-m-d'
             ],
             'is_currently_working' => [
-                'nullable',
+                'required',
                 'integer',
                 Rule::in([YouthJobExperience::CURRENTLY_NOT_WORKING, YouthJobExperience::CURRENTLY_WORKING])
             ],

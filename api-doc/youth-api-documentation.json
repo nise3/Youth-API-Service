@@ -4980,10 +4980,6 @@
                 "type": "object",
                 "description": "Job Experience",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
                     "company_name": {
                         "type": "string"
                     },
@@ -5041,7 +5037,8 @@
                     "position",
                     "employment_type_id",
                     "location",
-                    "start_date"
+                    "start_date",
+                    "is_currently_working"
                 ]
             },
             "Reference": {
