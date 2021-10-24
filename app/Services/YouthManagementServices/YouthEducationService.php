@@ -433,7 +433,7 @@ class YouthEducationService
                 'nullable',
                 'string'
             ],
-            "expected_year_of_passing"=>[
+            "expected_year_of_passing" => [
                 Rule::requiredIf(function () use ($request) {
                     return $this->getRequiredStatus(YouthEducation::EXPECTED_YEAR_OF_PASSING, $request->result);
                 }),
@@ -501,7 +501,7 @@ class YouthEducationService
             }
             case YouthEducation::MAJOR:
             {
-                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [EducationLevel::EDUCATION_LEVEL_DIPLOMA, EducationLevel::EDUCATION_LEVEL_BACHELOR, EducationLevel::EDUCATION_LEVEL_MASTERS]);
+                return in_array($this->getCodeById(YouthEducation::EDUCATION_LEVEL_TRIGGER, $id), [EducationLevel::EDUCATION_LEVEL_DIPLOMA, EducationLevel::EDUCATION_LEVEL_BACHELOR, EducationLevel::EDUCATION_LEVEL_MASTERS, EducationLevel::EDUCATION_LEVEL_PHD]);
             }
             case YouthEducation::EXAM_DEGREE_NAME:
             {
