@@ -12,6 +12,7 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -264,6 +265,7 @@ class YouthProfileService
     /**
      * @param array $data
      * @return PromiseInterface|Response
+     * @throws RequestException
      */
     public function idpUserCreate(array $data): PromiseInterface|Response
     {
@@ -274,9 +276,15 @@ class YouthProfileService
                 'Content-Type' => 'application/json'
             ])
             ->withOptions([
-                'verify' => false
+                'verify' => config("nise3.should_ssl_verify"),
+                'debug' => config('nise3.http_debug'),
+                'timeout' => config("nise3.http_timeout")
             ])
-            ->post($url, $payload);
+            ->post($url, $payload)
+            ->throw(function ($response, $e) use ($url) {
+                Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . json_encode($response));
+                return $e;
+            });
 
         Log::channel('idp_user')->info('idp_user_payload', $payload);
         Log::channel('idp_user')->debug($client->json());
@@ -721,18 +729,22 @@ class YouthProfileService
             ->first();
     }
 
+    /**
+     * @throws RequestException
+     */
     public function getYouthEnrollCourses(array $data): array {
         $url = clientUrl(BaseModel::INSTITUTE_URL_CLIENT_TYPE) . 'youth-enroll-courses';
         $queryStr = http_build_query($data);
         $urlWithQueryStr = $url.'?'.$queryStr;
 
         return Http::withOptions([
-            'verify' => false,
-            'timeout' => 60
+            'verify' => config("nise3.should_ssl_verify"),
+            'debug' => config('nise3.http_debug'),
+            'timeout' => config("nise3.http_timeout")
         ])
             ->get($urlWithQueryStr)
             ->throw(function ($response, $e) use ($url) {
-                Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ', (array)$response);
+                Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . json_encode($response));
                 return $e;
             })
             ->json();
