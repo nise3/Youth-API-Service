@@ -53,7 +53,7 @@ class YouthReferenceService
         ]);
         $referenceBuilder->orderBy('youth_references.id', $order);
 
-        if (is_integer($youthId)) {
+        if (is_numeric($youthId)) {
             $referenceBuilder->where('youth_references.youth_id', $youthId);
         }
 

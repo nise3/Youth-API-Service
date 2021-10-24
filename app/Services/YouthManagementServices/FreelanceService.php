@@ -130,26 +130,26 @@ class FreelanceService
     {
         $customMessage = [
             'order.in' => [
-                'code' => 30000,
-                "message" => 'Order must be either ASC or DESC',
+                "message" => 'Order must be either ASC or DESC.[30000]',
             ],
             'row_status.in' => [
-                'code' => 30000,
-                'message' => 'Row status must be within 1 or 0'
+                'message' => 'Row status must be within 1 or 0.[30000]'
+
             ]
         ];
 
-        if (!empty($request['order'])) {
-            $request['order'] = strtoupper($request['order']);
+        if ($request->filled('order')) {
+            $request->offsetSet('order', strtoupper($request->get('order')));
+        }
+        $requestData = $request->all();
+
+        if (!empty($requestData["skills"])) {
+            $requestData["skills"] = is_array($requestData['skills']) ? $requestData['skills'] : explode(',', $requestData['skills']);
         }
 
-        if (!empty($request["skills"])) {
-            $request["skills"] = is_array($request['skills']) ? $request['skills'] : explode(',', $request['skills']);
-        }
-
-        return Validator::make($request->all(), [
-            'page' => 'int|gt:0',
-            'page_size' => 'int|gt:0',
+        return Validator::make($requestData, [
+            'page' => 'nullable|int|gt:0',
+            'page_size' => 'nullable|int|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
@@ -168,7 +168,7 @@ class FreelanceService
                 "int",
                 "distinct",
                 "min:1",
-                "exists:skills,id"
+                "exists:skills,id,deleted_at,NULL"
             ],
         ], $customMessage);
     }

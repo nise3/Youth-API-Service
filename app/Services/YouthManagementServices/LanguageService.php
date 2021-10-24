@@ -31,7 +31,7 @@ class LanguageService
 
         /** @var Collection $languages */
         $response = [];
-        if (is_integer($paginate) || is_integer($pageSize)) {
+        if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $languages = $languageBuilder->paginate($pageSize);
             $paginateData = (object)$languageBuilder->toArray();
@@ -57,7 +57,7 @@ class LanguageService
     public function filterValidator(Request $request): Validator
     {
         $customMessage = [
-            'order.in' => 'Order must be within ASC or DESC. [30000]'
+            'order.in' => 'Order must be within ASC or DESC.[30000]'
         ];
 
         if ($request->filled('order')) {
@@ -65,8 +65,8 @@ class LanguageService
         }
 
         return \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'page' => 'int|gt:0',
-            'pageSize' => 'int|gt:0',
+            'page' => 'nullable|int|gt:0',
+            'page_size' => 'nullable|int|gt:0',
             'name' => 'nullable|string',
             'name_en' => 'nullable|string',
             'order' => [

@@ -71,13 +71,13 @@ class YouthAddressService
                 ->whereNull('loc_upazilas.deleted_at');
         });
 
-        if (is_integer($youthId)) {
+        if (is_numeric($youthId)) {
             $youthAddressBuilder->where('youth_addresses.youth_id', $youthId);
         }
 
         $response = [];
         /** @var Collection $youthAddresses */
-        if (is_integer($paginate) || is_integer($pageSize)) {
+        if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $youthAddresses = $youthAddressBuilder->paginate($pageSize);
             $paginateData = (object)$youthAddresses->toArray();
@@ -292,8 +292,8 @@ class YouthAddressService
         }
 
         return Validator::make($request->all(), [
-            'page' => 'integer|gt:0',
-            'page_size' => 'integer|gt:0',
+            'page' => 'nullable|integer|gt:0',
+            'page_size' => 'nullable|integer|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])

@@ -49,31 +49,26 @@ class SkillController extends Controller
     public function getList(Request $request): JsonResponse
     {
         $filter = $this->skillService->filterValidator($request)->validate();
-        try {
-            $returnedData = $this->skillService->getSkillList($filter, $this->startTime);
+        $returnedData = $this->skillService->getSkillList($filter, $this->startTime);
 
-            $response = [
-                'order' => $returnedData['order'],
-                'data' => $returnedData['data'],
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    'query_time' => $returnedData['query_time']
-                ]
-            ];
+        $response = [
+            'order' => $returnedData['order'],
+            'data' => $returnedData['data'],
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                'query_time' => $returnedData['query_time']
+            ]
+        ];
 
-            if (isset($returnedData['total_page'])) {
-                $response['total'] = $returnedData['total'];
-                $response['current_page'] = $returnedData['current_page'];
-                $response['total_page'] = $returnedData['total_page'];
-                $response['page_size'] = $returnedData['page_size'];
-            }
-
-            return Response::json($response, ResponseAlias::HTTP_OK);
-
-        } catch (Throwable $e) {
-            throw $e;
+        if (isset($returnedData['total_page'])) {
+            $response['total'] = $returnedData['total'];
+            $response['current_page'] = $returnedData['current_page'];
+            $response['total_page'] = $returnedData['total_page'];
+            $response['page_size'] = $returnedData['page_size'];
         }
+
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**
@@ -83,17 +78,13 @@ class SkillController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        try {
-            $response = $this->skillService->getOneSkill($id, $this->startTime);
-            $response['_response_status'] = [
-                "success" => true,
-                "code" => ResponseAlias::HTTP_OK,
-                'query_time' => $response['query_time']
-            ];
-            return Response::json($response, ResponseAlias::HTTP_OK);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->skillService->getOneSkill($id, $this->startTime);
+        $response['_response_status'] = [
+            "success" => true,
+            "code" => ResponseAlias::HTTP_OK,
+            'query_time' => $response['query_time']
+        ];
+        return Response::json($response, ResponseAlias::HTTP_OK);
 
     }
 
@@ -158,20 +149,16 @@ class SkillController extends Controller
     {
         $skill = Skill::findOrFail($id);
 
-        try {
-             $this->skillService->destroy($skill);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Skill deleted successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-            return Response::json($response, ResponseAlias::HTTP_OK);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $this->skillService->destroy($skill);
+        $response = [
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Skill deleted successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**
@@ -181,12 +168,8 @@ class SkillController extends Controller
      */
     public function getTrashedData(Request $request): JsonResponse
     {
-        try {
-            $response = $this->skillService->getTrashedSkillList($request, $this->startTime);
-            return Response::json($response);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $response = $this->skillService->getTrashedSkillList($request, $this->startTime);
+        return Response::json($response);
     }
 
 
@@ -198,21 +181,16 @@ class SkillController extends Controller
     public function restore(int $id): JsonResponse
     {
         $skill = Skill::onlyTrashed()->findOrFail($id);
-        try {
-            $this->skillService->restore($skill);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Skill restored successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-            return Response::json($response, ResponseAlias::HTTP_OK);
-
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $this->skillService->restore($skill);
+        $response = [
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Skill restored successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**
@@ -223,20 +201,16 @@ class SkillController extends Controller
     public function forceDelete(int $id): JsonResponse
     {
         $skill = Skill::onlyTrashed()->findOrFail($id);
-        try {
-            $this->skillService->forceDelete($skill);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "Skill permanently deleted successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
+        $this->skillService->forceDelete($skill);
+        $response = [
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Skill permanently deleted successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
 
-            return Response::json($response, ResponseAlias::HTTP_OK);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 }

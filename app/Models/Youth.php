@@ -59,6 +59,9 @@ class Youth extends AuthBaseModel
         self::ROW_STATUS_REJECTED
     ];
 
+    const YOUTH_NEARBY_FILTER_TRUE = 1;
+    const YOUTH_NEARBY_FILTER_FALSE = 0;
+
     /** Marital Statuses */
     public const MARITAL_STATUS_SINGLE = 1;
     public const MARITAL_STATUS_MARRIED = 2;

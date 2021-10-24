@@ -52,7 +52,7 @@ class YouthGuardianService
             ]
         );
 
-        if (is_integer($youthId)) {
+        if (is_numeric($youthId)) {
             $guardianBuilder->where('youth_guardians.youth_id', $youthId);
         }
         if (!empty($guardianName)) {
@@ -63,7 +63,7 @@ class YouthGuardianService
         }
 
         /** @var Collection $guardians */
-        if (is_integer($paginate) || is_integer($pageSize)) {
+        if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $guardians = $guardianBuilder->paginate($pageSize);
             $paginateData = (object)$guardians->toArray();
@@ -278,8 +278,8 @@ class YouthGuardianService
         }
 
         return \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'page' => 'int|gt:0',
-            'pageSize' => 'int|gt:0',
+            'page' => 'nullable|int|gt:0',
+            'page_size' => 'nullable|int|gt:0',
             'name' => 'nullable|string',
             'name_en' => 'nullable|string',
             'relationship_type' => [
@@ -287,6 +287,7 @@ class YouthGuardianService
                 Rule::in(YouthGuardian::RELATIONSHIP_TYPES)
             ],
             'order' => [
+                'nullable',
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
             ]

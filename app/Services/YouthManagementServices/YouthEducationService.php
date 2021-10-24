@@ -143,7 +143,7 @@ class YouthEducationService
         $educationBuilder->where("youth_educations.youth_id", Auth::id());
 
         /** @var Collection $youth_educations */
-        if (is_integer($paginate) || is_integer($pageSize)) {
+        if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $youth_educations = $educationBuilder->paginate($pageSize);
             $paginateData = (object)$youth_educations->toArray();
@@ -473,8 +473,8 @@ class YouthEducationService
 
         return \Illuminate\Support\Facades\Validator::make($request->all(), [
 
-            'page' => 'integer|gt:0',
-            'pageSize' => 'integer|gt:0',
+            'page' => 'nullable|integer|gt:0',
+            'page_size' => 'nullable|integer|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])

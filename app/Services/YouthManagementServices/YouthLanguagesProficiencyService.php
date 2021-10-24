@@ -50,13 +50,13 @@ class YouthLanguagesProficiencyService
                 ->whereNull('languages.deleted_at');
         });
 
-        if (is_integer($youthId)) {
+        if (is_numeric($youthId)) {
             $languageProficiencyBuilder->where('youth_languages_proficiencies.youth_id', $youthId);
         }
 
         /** @var Collection $languagesProficiencies */
 
-        if (is_integer($paginate) || is_integer($pageSize)) {
+        if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $languagesProficiencies = $languageProficiencyBuilder->paginate($pageSize);
             $paginateData = (object)$languagesProficiencies->toArray();
@@ -187,7 +187,7 @@ class YouthLanguagesProficiencyService
      */
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
-        $request['deleted_at'] = null;
+        $request->offsetSet('deleted_at', null);
         $customMessage = [];
         $rules = [
             'youth_id' => [

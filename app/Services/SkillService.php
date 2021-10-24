@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,9 +50,9 @@ class SkillService
             $skillBuilder->where('skills.title_en', 'like', '%' . $titleEn . '%');
         }
 
-        /** @var Collection $skills */
         $response = [];
-        if (is_integer($paginate) || is_integer($pageSize)) {
+        /** @var Collection $skills */
+        if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $skills = $skillBuilder->paginate($pageSize);
             $paginateData = (object)$skills->toArray();
@@ -62,6 +63,7 @@ class SkillService
         } else {
             $skills = $skillBuilder->get();
         }
+
 
         $response['order'] = $order;
         $response['data'] = $skills->toArray()['data'] ?? $skills->toArray();
@@ -269,15 +271,15 @@ class SkillService
             'order.in' => 'Order must be within ASC or DESC. [30000]'
         ];
 
-        if (!empty($request['order'])) {
-            $request['order'] = strtoupper($request['order']);
+        if ($request->filled('order')) {
+            $request->offsetSet('order', strtoupper($request->get('order')));
         }
 
         return Validator::make($request->all(), [
             'title_en' => 'nullable|max:200|min:2',
             'title' => 'nullable|max:400|min:2',
-            'page' => 'integer|gt:0',
-            'pageSize' => 'integer|gt:0',
+            'page' => 'nullable|integer|gt:0',
+            'page_size' => 'nullable|integer|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])

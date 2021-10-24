@@ -50,7 +50,7 @@ class YouthJobExperienceService
             'youth_job_experiences.updated_at'
         ]);
 
-        if (is_integer($youthId)) {
+        if (is_numeric($youthId)) {
             $jobExperienceBuilder->where('youth_job_experiences.youth_id', $youthId);
         }
 
@@ -65,7 +65,7 @@ class YouthJobExperienceService
 
         /** @var Collection $jobExperiences */
 
-        if (is_integer($paginate) || is_integer($pageSize)) {
+        if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $jobExperiences = $jobExperienceBuilder->paginate($pageSize);
             $paginateData = (object)$jobExperiences->toArray();
@@ -210,8 +210,9 @@ class YouthJobExperienceService
             'location_en' => 'nullable|max:300|min:2',
             'position' => 'nullable|max:300|min:2',
             'position_en' => 'nullable|max:150|min:2',
-            'page_size' => 'integer|gt:0',
+            'page_size' => 'nullable|integer|gt:0',
             'order' => [
+                'nullable',
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
             ]

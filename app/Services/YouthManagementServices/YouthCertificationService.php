@@ -44,7 +44,7 @@ class YouthCertificationService
             'youth_certifications.updated_at'
         ]);
 
-        if (is_integer($youthId)) {
+        if (is_numeric($youthId)) {
             $certificationBuilder->where('youth_certifications.youth_id', $youthId);
         }
 
@@ -53,7 +53,7 @@ class YouthCertificationService
         $response = [];
         /** @var Collection $certifications */
 
-        if (is_int($paginate) || is_int($pageSize)) {
+        if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $certifications = $certificationBuilder->paginate($pageSize);
             $paginateData = (object)$certifications->toArray();
@@ -182,8 +182,8 @@ class YouthCertificationService
         }
 
         return Validator::make($request->all(), [
-            'page' => 'integer|gt:0',
-            'page_size' => 'integer|gt:0',
+            'page' => 'nullable|integer|gt:0',
+            'page_size' => 'nullable|integer|gt:0',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])

@@ -69,21 +69,17 @@ class YouthEducationController extends Controller
         $youthEducation = app(YouthEducation::class);
         $request['youth_id'] = $request['youth_id'] ?? Auth::id();
         $validated = $this->youthEducationService->validator($request)->validate();
-        try {
-            $data = $this->youthEducationService->createEducation($youthEducation, $validated);
-            $response = [
-                'data' => $data,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_CREATED,
-                    "message" => "YouthEducation added successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-            return Response::json($response, ResponseAlias::HTTP_CREATED);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $data = $this->youthEducationService->createEducation($youthEducation, $validated);
+        $response = [
+            'data' => $data,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_CREATED,
+                "message" => "YouthEducation added successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_CREATED);
 
     }
 
@@ -102,21 +98,17 @@ class YouthEducationController extends Controller
         $request['youth_id'] = Auth::id();
         $validated = $this->youthEducationService->validator($request, $id)->validate();
 
-        try {
-            $data = $this->youthEducationService->update($education, $validated);
-            $response = [
-                'data' => $data ?: null,
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "YouthEducation updated successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-            return Response::json($response, ResponseAlias::HTTP_CREATED);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $data = $this->youthEducationService->update($education, $validated);
+        $response = [
+            'data' => $data ?: null,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "YouthEducation updated successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_CREATED);
 
     }
 
@@ -130,20 +122,16 @@ class YouthEducationController extends Controller
     {
         $education = YouthEducation::findOrFail($id);
 
-        try {
-            $this->youthEducationService->destroy($education);
-            $response = [
-                '_response_status' => [
-                    "success" => true,
-                    "code" => ResponseAlias::HTTP_OK,
-                    "message" => "YouthEducation deleted successfully",
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-                ]
-            ];
-            return Response::json($response, ResponseAlias::HTTP_OK);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $this->youthEducationService->destroy($education);
+        $response = [
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "YouthEducation deleted successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_OK);
 
     }
 
