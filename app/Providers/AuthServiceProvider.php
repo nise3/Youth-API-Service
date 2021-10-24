@@ -6,14 +6,14 @@ use App\Facade\AuthTokenUtility;
 use App\Models\Youth;
 use App\Services\YouthManagementServices\YouthProfileService;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
+use Throwable;
 
 class AuthServiceProvider extends ServiceProvider
 {
-
-
     /**
      * Register any application services.
      *
@@ -26,8 +26,8 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * @throws BindingResolutionException
-     * @throws \Throwable
-     */
+     * @throws Throwable
+     **/
     public function boot()
     {
         // Here you may define how you wish users to be authenticated for your Lumen
@@ -35,28 +35,34 @@ class AuthServiceProvider extends ServiceProvider
         // should return either a User instance or null. You're free to obtain
         // the User instance via an API token or any other method necessary.
 
-//        $token = Request::capture()->header('Authorization');
-        $token =  request()->bearerToken();
-        Auth::setUser(app(Youth::class));
+        $this->app['auth']->viaRequest('token', function (Request $request) {
 
-        if ($token) {
-            $idpServerId = AuthTokenUtility::getIdpServerIdFromToken($token);
-            Log::info("Auth idp user id-->" . $idpServerId);
+            $token = $request->bearerToken();
+
+            if (!$token) {
+                return null;
+            }
+
+            Log::info('Bearer Token: ' . $token);
+            $authUser = null;
+            $idpServerUserId = AuthTokenUtility::getIdpServerIdFromToken($token);
+            Log::info("Auth idp user id-->" . $idpServerUserId);
+
             /** @var YouthProfileService $youthService */
             $youthService = $this->app->make(YouthProfileService::class);
-            if ($idpServerId) {
-                $authUser = $youthService->getAuthYouth($idpServerId);
 
-                if ($authUser) {
+            if ($idpServerUserId) {
+                $authUser = $youthService->getAuthYouth($idpServerUserId);
+                if ($authUser && $authUser->id) {
                     Log::info("Youth Auth User fetched:" . json_encode($authUser));
-                    Auth::setUser($authUser);
                 } else {
                     Log::info("Youth Auth User Null");
                 }
             }
-        }
-        Log::info("userInfoWithIdpId:" . json_encode(Auth::user()));
+
+            return $authUser;
+
+        });
+
     }
-
-
 }

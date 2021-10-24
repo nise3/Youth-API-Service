@@ -720,22 +720,25 @@ class YouthProfileService
 
     /**
      * @param string $id
-     * @return  Youth|null
+     * @return  Youth
      */
-    public function getAuthYouth(string $id): Youth|null
+    public function getAuthYouth(string $id): Youth
     {
-        return Youth::where('idp_user_id', $id)
-            ->where("row_status", BaseModel::ROW_STATUS_ACTIVE)
-            ->first();
+        /** @var Builder $youthBuilder */
+        $youthBuilder = Youth::where('idp_user_id', $id)
+            ->where("row_status", BaseModel::ROW_STATUS_ACTIVE);
+
+        return $youthBuilder->firstOrFail();
     }
 
     /**
      * @throws RequestException
      */
-    public function getYouthEnrollCourses(array $data): array {
+    public function getYouthEnrollCourses(array $data): array
+    {
         $url = clientUrl(BaseModel::INSTITUTE_URL_CLIENT_TYPE) . 'youth-enroll-courses';
         $queryStr = http_build_query($data);
-        $urlWithQueryStr = $url.'?'.$queryStr;
+        $urlWithQueryStr = $url . '?' . $queryStr;
 
         return Http::withOptions([
             'verify' => config("nise3.should_ssl_verify"),
@@ -782,7 +785,8 @@ class YouthProfileService
         return \Illuminate\Support\Facades\Validator::make($requestData, $rules, $customMessage);
     }
 
-    public function getYouthFeedStatisticsData() : array{
+    public function getYouthFeedStatisticsData(): array
+    {
         return [
             'enrolled_courses' => 5,
             'skill_matching_courses' => 50,

@@ -5,6 +5,9 @@ namespace App\Models;
 
 use Carbon\Carbon;
 
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -12,6 +15,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Lumen\Auth\Authorizable;
 use PHPUnit\Util\Json;
 
 /**
@@ -46,11 +50,11 @@ use PHPUnit\Util\Json;
  * @property Carbon updated_at
  * @property-read  Collection skills
  */
-class Youth extends AuthBaseModel
-
+class Youth extends AuthBaseModel implements
+    AuthenticatableContract,
+    AuthorizableContract
 {
-    use SoftDeletes, HasFactory;
-
+    use SoftDeletes, HasFactory, Authenticatable, Authorizable;
 
     public const ROW_STATUSES = [
         self::ROW_STATUS_INACTIVE,
