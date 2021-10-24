@@ -249,7 +249,7 @@ class YouthCertificationService
                 'after:start_date',
             ],
             'certificate_file_path' => [
-                'nullable',
+                'required',
                 'string',
                 'max:600'
             ]

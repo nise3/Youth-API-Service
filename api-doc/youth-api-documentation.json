@@ -72,9 +72,6 @@
                         "$ref": "#/components/parameters/page_size"
                     },
                     {
-                        "$ref": "#/components/parameters/row_status_optional"
-                    },
-                    {
                         "$ref": "#/components/parameters/order"
                     },
                     {
@@ -353,7 +350,23 @@
                         }
                     },
                     {
+                        "name": "first_name_en",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "last_name",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "last_name_en",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -1347,9 +1360,6 @@
                         "$ref": "#/components/parameters/page_size"
                     },
                     {
-                        "$ref": "#/components/parameters/row_status"
-                    },
-                    {
                         "$ref": "#/components/parameters/order"
                     }
                 ],
@@ -1976,9 +1986,6 @@
                     },
                     {
                         "$ref": "#/components/parameters/order"
-                    },
-                    {
-                        "$ref": "#/components/parameters/row_status"
                     }
                 ],
                 "responses": {
@@ -4622,15 +4629,11 @@
                 "properties": {
                     "title_en": {
                         "type": "string",
-                        "description": "title in English",
-                        "minLength": 2,
-                        "maxLength": 191
+                        "description": "title in English"
                     },
                     "title": {
                         "type": "string",
                         "description": " title in Native",
-                        "minLength": 2,
-                        "maxLength": 600,
                         "example": "Native title"
                     }
                 },
