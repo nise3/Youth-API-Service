@@ -77,7 +77,18 @@ class  YouthController extends Controller
      */
     public function updateYouthAfterCourseEnrollment(Request $request)
     {
-        $this->youthService->updateYouthProfileAfterCourseEnroll($request);
+        $status = $this->youthService->updateYouthProfileAfterCourseEnroll($request);
+
+        $code = $status ? ResponseAlias::HTTP_OK : ResponseAlias::HTTP_INTERNAL_SERVER_ERROR;
+        $response['response_status'] = [
+            "success" => $status,
+            "code" => $code,
+            "message" => $status ? "Successfully update youth after enrollment" : "Failed to update youth after enrollment",
+            "query_time" => $this->startTime->diffForHumans(Carbon::now())
+        ];
+
+        return Response::json($response, $code);
+
     }
 
 }

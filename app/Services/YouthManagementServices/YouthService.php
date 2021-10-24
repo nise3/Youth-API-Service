@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
@@ -349,21 +350,33 @@ class YouthService
 
     public function updateYouthProfileAfterCourseEnroll(Request $request)
     {
-        $data = $request->all();
-        if (!empty($data["physical_disabilities"])) {
-            $data["physical_disabilities"] = isset($data['physical_disabilities']) && is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
-        }
-       // dd($data);
-        if (!empty($data['youth_id'])) {
-            $youth = Youth::findOrFail($data['youth_id']);
-            $youth->fill($data);
-            $youth->save();
+        try {
+            DB::beginTransaction();
+            $data = $request->all();
+            Log::info('update Youth Profile After Course Enroll function call');
+            if (!empty($data["physical_disabilities"])) {
+                $data["physical_disabilities"] = isset($data['physical_disabilities']) && is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
+            }
+            if (!empty($data['youth_id'])) {
+                $youth = Youth::findOrFail($data['youth_id']);
+                $youth->fill($data);
+                $youth->save();
 
-            $this->updateYouthAddresses($data, $youth);
-            $this->updateYouthGuardian($data, $youth);
-            $this->updateYouthEducations($data, $youth);
-            $this->updateYouthPhysicalDisabilities($data, $youth);
+                $this->updateYouthAddresses($data, $youth);
+                $this->updateYouthGuardian($data, $youth);
+                $this->updateYouthEducations($data, $youth);
+                $this->updateYouthPhysicalDisabilities($data, $youth);
+
+                DB::commit();
+                return true;
+            }
+        }catch (\Exception $e){
+            DB::rollBack();
+            Log::debug($e->getMessage());
         }
+
+
+        return false;
     }
 
     private function updateYouthEducations(array $data, Youth $youth)
