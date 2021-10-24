@@ -38,12 +38,13 @@ class AuthServiceProvider extends ServiceProvider
         $this->app['auth']->viaRequest('token', function (Request $request) {
 
             $token = $request->bearerToken();
+            Log::info('Bearer Token: ' . $token);
 
             if (!$token) {
                 return null;
             }
 
-            Log::info('Bearer Token: ' . $token);
+
             $authUser = null;
             $idpServerUserId = AuthTokenUtility::getIdpServerIdFromToken($token);
             Log::info("Auth idp user id-->" . $idpServerUserId);
