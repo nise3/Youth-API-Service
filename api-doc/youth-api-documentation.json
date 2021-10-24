@@ -1614,21 +1614,17 @@
                                     },
                                     "first_name": {
                                         "type": "string",
-                                        "maximum": 500,
                                         "example": "new name"
                                     },
                                     "first_name_en": {
-                                        "type": "string",
-                                        "maximum": 500
+                                        "type": "string"
                                     },
                                     "last_name": {
                                         "type": "string",
-                                        "maximum": 500,
                                         "example": "new lastname"
                                     },
                                     "last_name_en": {
-                                        "type": "string",
-                                        "maximum": 500
+                                        "type": "string"
                                     },
                                     "gender": {
                                         "type": "integer",
@@ -1685,10 +1681,10 @@
                                     "freedom_fighter_status": {
                                         "type": "integer",
                                         "enum": [
-                                            0,
-                                            1
+                                            1,2,3,4
+
                                         ],
-                                        "description": "0=>No,1=>Yes",
+                                        "description": "1=>Non Freedom Fighter,2=>Freedom Fighter 3=>Child of Freedom Fighter 4=>Grand Child of Freedom Fighter",
                                         "default": 0
                                     },
                                     "physical_disability_status": {
@@ -1711,22 +1707,15 @@
                                     },
                                     "email": {
                                         "type": "string",
-                                        "format": "email"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "#Piyal_15021#"
-                                    },
-                                    "password_confirmation": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "#Piyal_15021#"
+                                        "format": "email",
+                                        "uniqueItems": true,
+                                        "description": "Required when user_name_type = 2"
                                     },
                                     "mobile": {
                                         "type": "string",
                                         "maxLength": 11,
-                                        "uniqueItems": true
+                                        "uniqueItems": true,
+                                        "description": "Required when user_name_type = 1"
                                     },
                                     "date_of_birth": {
                                         "type": "string",
@@ -1762,7 +1751,7 @@
                                     },
                                     "zip_or_postal_code": {
                                         "type": "string",
-                                        "example": "asasa"
+                                        "example": "asas"
                                     },
                                     "bio": {
                                         "type": "string"
@@ -1792,7 +1781,7 @@
                                             "type": "integer",
                                             "uniqueItems": true
                                         },
-                                        "description": "1=> Visual Disabilities, 2=> Hearing Disabilities, 3=> Mental Health Disabilities,4=> Intellectual Disabilities, 5=> Social Disabilities"
+                                        "description": "Required when physical_disability_status=True . 1=> Visual Disabilities, 2=> Hearing Disabilities, 3=> Mental Health Disabilities,4=> Intellectual Disabilities, 5=> Social Disabilities."
                                     }
                                 },
                                 "required": [
@@ -1800,18 +1789,15 @@
                                     "last_name",
                                     "does_belong_to_ethnic_group",
                                     "freedom_fighter_status",
-                                    "gender",
-                                    "email",
+
                                     "nationality",
                                     "mobile",
                                     "skills",
-                                    "password",
-                                    "password_confirmation",
                                     "physical_disability_status",
-                                    "date_of_birth",
+
                                     "loc_division_id",
-                                    "loc_district_id",
-                                    "physical_disabilities"
+                                    "loc_district_id"
+
                                 ]
                             }
                         }
