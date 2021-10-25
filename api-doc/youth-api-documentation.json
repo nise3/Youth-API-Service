@@ -2254,9 +2254,6 @@
                         "$ref": "#/components/parameters/page_size"
                     },
                     {
-                        "$ref": "#/components/parameters/row_status_optional"
-                    },
-                    {
                         "$ref": "#/components/parameters/order"
                     }
                 ],
@@ -2538,9 +2535,6 @@
                     },
                     {
                         "$ref": "#/components/parameters/page_size"
-                    },
-                    {
-                        "$ref": "#/components/parameters/row_status_optional"
                     },
                     {
                         "$ref": "#/components/parameters/order"
@@ -5094,6 +5088,7 @@
                     "referrer_designation",
                     "referrer_organization_name",
                     "referrer_address",
+                    "referrer_email",
                     "referrer_mobile",
                     "referrer_relation"
                 ]

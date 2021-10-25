@@ -263,6 +263,7 @@ class YouthReferenceService
             ],
             'referrer_email' => [
                 'nullable',
+                'required',
                 'email'
             ],
             'referrer_mobile' => [
