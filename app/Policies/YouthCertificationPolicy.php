@@ -4,24 +4,22 @@ namespace App\Policies;
 
 use App\Models\Youth;
 use App\Models\YouthCertification;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Auth\Access\Response;
 
-class YouthCertificationPolicy
+class YouthCertificationPolicy extends BasePolicy
 {
-    use HandlesAuthorization;
-
     /**
      * Determine whether the user can view any youthCertifications.
-     *
      * @param Youth $youth
-     * @return bool
+     * @return Response
      */
     public function viewAny(Youth $youth)
     {
+        // Example: return Response::deny('You do not own this post.');
         Log::debug('-----------------------');
         Log::debug($youth);
-        return true;
+        return Response::allow();
     }
 
     /**
@@ -29,22 +27,22 @@ class YouthCertificationPolicy
      *
      * @param Youth $user
      * @param YouthCertification $youthCertification
-     * @return bool
+     * @return Response
      */
     public function view(Youth $user, YouthCertification $youthCertification)
     {
-        return true;
+        return Response::allow();
     }
 
     /**
      * Determine whether the user can create youthCertifications.
      *
      * @param Youth $user
-     * @return bool
+     * @return Response
      */
     public function create(Youth $user)
     {
-        return true;
+        return Response::allow();
     }
 
     /**
@@ -52,11 +50,11 @@ class YouthCertificationPolicy
      *
      * @param Youth $user
      * @param YouthCertification $youthCertification
-     * @return bool
+     * @return Response
      */
     public function update(Youth $user, YouthCertification $youthCertification)
     {
-        return true;
+        return Response::allow();
     }
 
     /**
@@ -64,10 +62,10 @@ class YouthCertificationPolicy
      *
      * @param Youth $user
      * @param YouthCertification $youthCertification
-     * @return bool
+     * @return Response
      */
     public function delete(Youth $user, YouthCertification $youthCertification)
     {
-        return true;
+        return Response::allow();
     }
 }

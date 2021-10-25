@@ -3,23 +3,24 @@
 namespace App\Policies;
 
 use App\Models\Youth;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Log;
 
-class YouthPolicy
+class YouthPolicy  extends BasePolicy
 {
-    use HandlesAuthorization;
 
     /**
      * Determine whether the user can view any youths.
      *
      * @param Youth $youth
-     * @return bool
+     * @return Response
      */
-    public function viewAny(Youth $youth)
+    public function viewAny(Youth $youth): Response
     {
+        // Example: return Response::deny('You do not own this post.');
         Log::debug('-----------------------');
         Log::debug($youth);
+        return Response::allow();
     }
 
     /**
@@ -27,22 +28,22 @@ class YouthPolicy
      *
      * @param Youth $user
      * @param Youth $youth
-     * @return bool
+     * @return Response
      */
-    public function view(Youth $user, Youth $youth)
+    public function view(Youth $user, Youth $youth): Response
     {
-        return true;
+        return Response::allow();
     }
 
     /**
      * Determine whether the user can create youths.
      *
      * @param Youth $user
-     * @return bool
+     * @return Response
      */
-    public function create(Youth $user)
+    public function create(Youth $user): Response
     {
-        return true;
+        return Response::allow();
     }
 
     /**
@@ -50,11 +51,11 @@ class YouthPolicy
      *
      * @param Youth $user
      * @param Youth $youth
-     * @return bool
+     * @return Response
      */
-    public function update(Youth $user, Youth $youth)
+    public function update(Youth $user, Youth $youth): Response
     {
-        return true;
+        return Response::allow();
     }
 
     /**
@@ -62,10 +63,10 @@ class YouthPolicy
      *
      * @param Youth $user
      * @param Youth $youth
-     * @return bool
+     * @return Response
      */
-    public function delete(Youth $user, Youth $youth)
+    public function delete(Youth $user, Youth $youth): Response
     {
-        return true;
+        return Response::allow();
     }
 }
