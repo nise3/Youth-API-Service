@@ -3,18 +3,6 @@
 namespace App\Providers;
 
 use App\Facade\AuthTokenUtility;
-use App\Models\Youth;
-use App\Models\YouthAddress;
-use App\Models\YouthCertification;
-use App\Models\YouthEducation;
-use App\Models\YouthGuardian;
-use App\Models\YouthJobExperience;
-use App\Policies\YouthAddressPolicy;
-use App\Policies\YouthCertificationPolicy;
-use App\Policies\YouthEducationPolicy;
-use App\Policies\YouthGuardianPolicy;
-use App\Policies\YouthJobExperiencePolicy;
-use App\Policies\YouthPolicy;
 use App\Services\YouthManagementServices\YouthProfileService;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
@@ -26,12 +14,7 @@ use Throwable;
 class AuthServiceProvider extends ServiceProvider
 {
     private array $policies = [
-        Youth::class => YouthPolicy::class,
-        YouthCertification::class => YouthCertificationPolicy::class,
-        YouthJobExperience::class => YouthJobExperiencePolicy::class,
-        YouthEducation::class => YouthEducationPolicy::class,
-        YouthAddress::class => YouthAddressPolicy::class,
-        YouthGuardian::class => YouthGuardianPolicy::class,
+
     ];
 
     /**
@@ -54,12 +37,14 @@ class AuthServiceProvider extends ServiceProvider
         // should return either a User instance or null. You're free to obtain
         // the User instance via an API token or any other method necessary.
 
-        /** Registering Policies
-         * @var string $modelName
-         * @var string $policyName
-         */
-        foreach ($this->policies as $modelName => $policyName) {
-            Gate::policy($modelName, $policyName);
+        if (count($this->policies)) {
+            /** Registering Policies
+             * @var string $modelName
+             * @var string $policyName
+             */
+            foreach ($this->policies as $modelName => $policyName) {
+                Gate::policy($modelName, $policyName);
+            }
         }
 
         $this->app['auth']->viaRequest('token', function (Request $request) {
@@ -70,7 +55,6 @@ class AuthServiceProvider extends ServiceProvider
             if (!$token) {
                 return null;
             }
-
 
             $authUser = null;
             $idpServerUserId = AuthTokenUtility::getIdpServerIdFromToken($token);
