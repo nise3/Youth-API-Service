@@ -88,7 +88,7 @@ class YouthPortfolioService
      */
     public function getOnePortfolio(int $id): YouthPortfolio
     {
-        /** @var Builder $portfolioBuilder */
+        /** @var Builder|YouthPortfolio $portfolioBuilder */
         $portfolioBuilder = YouthPortfolio::select([
             'youth_portfolios.id',
             'youth_portfolios.title',
@@ -103,9 +103,7 @@ class YouthPortfolioService
         $portfolioBuilder->where('youth_portfolios.id', $id);
 
         /** @var YouthPortfolio $portfolio */
-        $portfolio = $portfolioBuilder->firstOrFail();
-
-        return $portfolio;
+        return $portfolioBuilder->firstOrFail();
     }
 
     /**

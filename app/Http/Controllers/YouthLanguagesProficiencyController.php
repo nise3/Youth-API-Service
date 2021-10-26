@@ -40,7 +40,7 @@ class YouthLanguagesProficiencyController extends Controller
     {
         $filter = $this->languagesProficiencyService->filterValidator($request)->validate();
         $response = $this->languagesProficiencyService->getLanguagesProficiencyList($filter, $this->startTime);
-        return Response::json($response);
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**
@@ -56,12 +56,12 @@ class YouthLanguagesProficiencyController extends Controller
             "data" => $languagesProficiency,
             "_response_status" => [
                 "success" => true,
-                "code" => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                "code" => ResponseAlias::HTTP_OK,
                 "query_time" => $this->startTime->diffInSeconds(Carbon::now())
             ]
         ];
 
-        return Response::json($response);
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**

@@ -36,7 +36,7 @@ class YouthReferenceController extends Controller
     {
         $filter = $this->referenceService->filterValidator($request)->validate();
         $response = $this->referenceService->getReferenceList($filter, $this->startTime);
-        return Response::json($response);
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**
@@ -48,8 +48,16 @@ class YouthReferenceController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        $response = $this->referenceService->getOneReference($id, $this->startTime);
-        return Response::json($response);
+        $data = $this->referenceService->getOneReference($id);
+        $response = [
+            "data" => $data,
+            "_response_status" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**

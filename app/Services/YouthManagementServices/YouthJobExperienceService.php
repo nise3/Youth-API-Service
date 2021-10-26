@@ -89,12 +89,11 @@ class YouthJobExperienceService
 
     /**
      * @param int $id
-     * @param Carbon $startTime
-     * @return array
+     * @return YouthJobExperience
      */
-    public function getOneJobExperience(int $id, Carbon $startTime): array
+    public function getOneJobExperience(int $id): YouthJobExperience
     {
-        /** @var Builder $jobExperienceBuilder */
+        /** @var Builder|YouthJobExperience $jobExperienceBuilder */
         $jobExperienceBuilder = YouthJobExperience::select([
             'youth_job_experiences.id',
             'youth_job_experiences.company_name',
@@ -118,14 +117,7 @@ class YouthJobExperienceService
         /** @var YouthJobExperience $jobExperience */
         $jobExperience = $jobExperienceBuilder->firstOrFail();
 
-        return [
-            "data" => $jobExperience,
-            "_response_status" => [
-                "success" => true,
-                "code" => Response::HTTP_OK,
-                "query_time" => $startTime->diffInSeconds(Carbon::now())
-            ]
-        ];
+        return $jobExperience;
 
     }
 
