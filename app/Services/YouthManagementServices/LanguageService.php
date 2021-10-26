@@ -43,7 +43,7 @@ class LanguageService
         if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $languages = $languageBuilder->paginate($pageSize);
-            $paginateData = (object)$languageBuilder->toArray();
+            $paginateData = (object)$languages->toArray();
             $response['current_page'] = $paginateData->current_page;
             $response['total_page'] = $paginateData->last_page;
             $response['page_size'] = $paginateData->per_page;
@@ -76,8 +76,8 @@ class LanguageService
         return \Illuminate\Support\Facades\Validator::make($request->all(), [
             'page' => 'nullable|int|gt:0',
             'page_size' => 'nullable|int|gt:0',
-            'name' => 'nullable|string',
-            'name_en' => 'nullable|string',
+            'title' => 'nullable|string',
+            'title_en' => 'nullable|string',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])

@@ -3892,12 +3892,6 @@
                         "$ref": "#/components/parameters/page_size"
                     },
                     {
-                        "$ref": "#/components/parameters/name"
-                    },
-                    {
-                        "$ref": "#/components/parameters/name_en"
-                    },
-                    {
                         "$ref": "#/components/parameters/order"
                     }
                 ],
