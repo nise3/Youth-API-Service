@@ -47,7 +47,7 @@ class  YouthController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        $youth = $this->youthService->getOneYouthProfile($id, $this->startTime);
+        $youth = $this->youthService->getOneYouthProfile($id);
 
         $response = [
             "data" => $youth,
