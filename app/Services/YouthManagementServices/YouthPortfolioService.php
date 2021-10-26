@@ -84,10 +84,9 @@ class YouthPortfolioService
 
     /**
      * @param int $id
-     * @param Carbon $startTime
-     * @return array
+     * @return YouthPortfolio
      */
-    public function getOnePortfolio(int $id, Carbon $startTime): array
+    public function getOnePortfolio(int $id): YouthPortfolio
     {
         /** @var Builder $portfolioBuilder */
         $portfolioBuilder = YouthPortfolio::select([
@@ -106,15 +105,7 @@ class YouthPortfolioService
         /** @var YouthPortfolio $portfolio */
         $portfolio = $portfolioBuilder->firstOrFail();
 
-        return [
-            "data" => $portfolio,
-            "_response_status" => [
-                "success" => true,
-                "code" => Response::HTTP_OK,
-                "query_time" => $startTime->diffInSeconds(Carbon::now())
-            ]
-        ];
-
+        return $portfolio;
     }
 
     /**

@@ -60,7 +60,16 @@ class YouthPortfolioController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        $response = $this->portfolioService->getOnePortfolio($id, $this->startTime);
+        $portfolio = $this->portfolioService->getOnePortfolio($id);
+
+        $response = [
+            "data" => $portfolio,
+            "_response_status" => [
+                "success" => true,
+                "code" => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
         return Response::json($response);
     }
 

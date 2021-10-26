@@ -50,7 +50,17 @@ class YouthLanguagesProficiencyController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        $response = $this->languagesProficiencyService->getOneLanguagesProficiency($id, $this->startTime);
+        $languagesProficiency = $this->languagesProficiencyService->getOneLanguagesProficiency($id);
+
+        $response = [
+            "data" => $languagesProficiency,
+            "_response_status" => [
+                "success" => true,
+                "code" => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+
         return Response::json($response);
     }
 
