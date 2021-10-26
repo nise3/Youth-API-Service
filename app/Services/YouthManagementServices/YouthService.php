@@ -161,10 +161,9 @@ class YouthService
 
     /**
      * @param int $id
-     * @param Carbon $startTime
-     * @return array
+     * @return Youth
      */
-    public function getOneYouthProfile(int $id, Carbon $startTime): Youth
+    public function getOneYouthProfile(int $id): Youth
     {
         /** @var Builder $youthBuilder */
         $youthBuilder = Youth::select(
