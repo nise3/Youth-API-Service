@@ -4,6 +4,7 @@ namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
 use App\Models\Language;
+use App\Models\Skill;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,11 +25,20 @@ class LanguageService
         $pageSize = $request['page_size'] ?? "";
         $order = $request['order'] ?? "ASC";
 
-        /** @var \Illuminate\Database\Query\Builder $languageBuilder */
-        $languageBuilder = Language::query();
+        $languageBuilder = Language::select(
+        [
+            'languages.id',
+            'languages.lang_code',
+            'languages.title',
+            'languages.title_en',
+            'languages.row_status',
+            'languages.created_at',
+            'languages.updated_at',
+            'languages.deleted_at'
+        ]
+    );
         $languageBuilder->orderBy('languages.id', $order);
 
-        /** @var Collection $languages */
         $response = [];
         if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
