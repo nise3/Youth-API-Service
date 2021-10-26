@@ -5,6 +5,7 @@ namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
 use App\Models\EducationLevel;
+use App\Models\EnrollmentEducation;
 use App\Models\ExamDegree;
 use App\Models\YouthEducation;
 use Carbon\Carbon;
@@ -333,6 +334,7 @@ class YouthEducationService
                 Rule::in(ExamDegree::where("education_level_id", $request->education_level_id)->pluck('id')->toArray()),
                 'min:1',
                 'unique_with:youth_educations,youth_id,deleted_at,' . $id,
+                'exists:exam_degrees,id,deleted_at,NULL,education_level_id,'.$request->education_level_id,
                 'integer'
 
             ],
@@ -523,7 +525,7 @@ class YouthEducationService
             }
             case YouthEducation::YEAR_OF_PASS:
             {
-                return in_array($this->getCodeById(YouthEducation::RESULT_TRIGGER, $id), [EducationLevel::RESULT_GRADE, EducationLevel::RESULT_ENROLLED, EducationLevel::RESULT_AWARDED, EducationLevel::RESULT_PASS]);
+                return $this->getCodeById(YouthEducation::RESULT_TRIGGER, $id) !== EducationLevel::RESULT_APPEARED;
             }
             case YouthEducation::EXPECTED_YEAR_OF_PASSING:
             {
