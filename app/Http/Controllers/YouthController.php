@@ -47,7 +47,18 @@ class  YouthController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        $response = $this->youthService->getOneYouthProfile($id, $this->startTime);
+        $youth = $this->youthService->getOneYouthProfile($id, $this->startTime);
+
+        $response = [
+            "data" => $youth,
+            "_response_status" => [
+                "success" => true,
+                "code" => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                "started" => $this->startTime->format('H i s'),
+                "finished" => Carbon::now()->format('H i s'),
+            ]
+        ];
+
         return Response::json($response);
     }
 

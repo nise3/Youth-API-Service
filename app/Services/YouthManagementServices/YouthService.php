@@ -164,7 +164,7 @@ class YouthService
      * @param Carbon $startTime
      * @return array
      */
-    public function getOneYouthProfile(int $id, Carbon $startTime): array
+    public function getOneYouthProfile(int $id, Carbon $startTime): Youth
     {
         /** @var Builder $youthBuilder */
         $youthBuilder = Youth::select(
@@ -238,20 +238,9 @@ class YouthService
             "youthReferences"
         ]);
 
-
         /** @var Youth $youth */
         $youth = $youthBuilder->firstOrFail();
-
-        return [
-            "data" => $youth ?: [],
-            "_response_status" => [
-                "success" => true,
-                "code" => Response::HTTP_OK,
-                "started" => $startTime->format('H i s'),
-                "finished" => Carbon::now()->format('H i s'),
-            ]
-        ];
-
+        return $youth;
     }
 
     /**
