@@ -24,9 +24,8 @@ class LanguageService
         $pageSize = $request['page_size'] ?? "";
         $order = $request['order'] ?? "ASC";
 
-        /** @var Builder $languageBuilder */
-        $languageBuilder = Language::all();
-
+        /** @var \Illuminate\Database\Query\Builder $languageBuilder */
+        $languageBuilder = Language::query();
         $languageBuilder->orderBy('languages.id', $order);
 
         /** @var Collection $languages */
