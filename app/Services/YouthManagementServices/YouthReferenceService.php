@@ -83,12 +83,11 @@ class YouthReferenceService
 
     /**
      * @param int $id
-     * @param Carbon $startTime
-     * @return array
+     * @return YouthReference
      */
-    public function getOneReference(int $id, Carbon $startTime): array
+    public function getOneReference(int $id): YouthReference
     {
-        /** @var  Builder $referenceBuilder */
+        /** @var  Builder|YouthReference $referenceBuilder */
         $referenceBuilder = YouthReference::select([
             'youth_references.id',
             'youth_references.youth_id',
@@ -113,16 +112,7 @@ class YouthReferenceService
         $referenceBuilder->where('youth_references.id', $id);
 
         /** @var YouthReference $reference */
-        $reference = $referenceBuilder->firstOrFail();
-
-        return [
-            "data" => $reference,
-            "_response_status" => [
-                "success" => true,
-                "code" => Response::HTTP_OK,
-                "query_time" => $startTime->diffInSeconds(Carbon::now())
-            ]
-        ];
+        return $referenceBuilder->firstOrFail();
     }
 
 

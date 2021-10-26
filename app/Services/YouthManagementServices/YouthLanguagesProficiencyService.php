@@ -84,7 +84,7 @@ class YouthLanguagesProficiencyService
      */
     public function getOneLanguagesProficiency(int $id): YouthLanguagesProficiency
     {
-        /** @var Builder $languageBuilder */
+        /** @var Builder|YouthLanguagesProficiency $languageBuilder */
         $languageProficiencyBuilder = YouthLanguagesProficiency::select([
             'youth_languages_proficiencies.id',
             'youth_languages_proficiencies.youth_id',
@@ -107,9 +107,7 @@ class YouthLanguagesProficiencyService
         $languageProficiencyBuilder->where('youth_languages_proficiencies.id', $id);
 
         /** @var $languageProficiency $language */
-        $languageProficiency = $languageProficiencyBuilder->firstOrFail();
-
-        return $languageProficiency;
+        return $languageProficiencyBuilder->firstOrFail();
     }
 
     /**

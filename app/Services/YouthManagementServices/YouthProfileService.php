@@ -29,12 +29,11 @@ use Illuminate\Validation\Rules\Password;
 class YouthProfileService
 {
     /**
-     * @return Builder|Model|object
+     * @return Youth
      */
-    public function getYouthProfile()
+    public function getYouthProfile(): Youth
     {
-
-        /** @var Builder $youthProfileBuilder */
+        /** @var Builder|Youth $youthProfileBuilder */
         $youthProfileBuilder = Youth::select(
             [
                 'youths.id',
@@ -98,8 +97,7 @@ class YouthProfileService
         $youthProfileBuilder->where('youths.id', '=', Auth::id());
         $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences", "youthCertifications", "youthPortfolios", "youthAddresses"]);
 
-        return $youthProfileBuilder->first();
-
+        return $youthProfileBuilder->firstOrFail();
     }
 
     /**
