@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Throwable;
 
 class YouthCertificationService
 {
@@ -74,12 +75,11 @@ class YouthCertificationService
 
     /**
      * @param int $id
-     * @param Carbon $startTime
-     * @return array
+     * @return YouthCertification
      */
-    public function getOneCertification(int $id, Carbon $startTime): array
+    public function getOneCertification(int $id): YouthCertification
     {
-        /** @var Builder $certificationBuilder */
+        /** @var YouthCertification|Builder $certificationBuilder */
         $certificationBuilder = YouthCertification::select([
             'youth_certifications.id',
             'youth_certifications.youth_id',
@@ -98,19 +98,13 @@ class YouthCertificationService
 
         $certificationBuilder->where('youth_certifications.id', $id);
 
-        /** @var YouthCertification $certification */
-        $certification = $certificationBuilder->firstOrFail();
-
-        return [
-            "data" => $certification,
-            "query_time" => $startTime->diffInSeconds(Carbon::now())
-        ];
+        return $certificationBuilder->firstOrFail();
     }
 
     /**
      * @param array $data
      * @return YouthCertification
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function store(array $data): YouthCertification
     {
@@ -125,7 +119,7 @@ class YouthCertificationService
      * @param YouthCertification $certification
      * @param array $data
      * @return YouthCertification
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function update(YouthCertification $certification, array $data): YouthCertification
     {
@@ -137,7 +131,7 @@ class YouthCertificationService
     /**
      * @param YouthCertification $certification
      * @return bool
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function destroy(YouthCertification $certification): bool
     {
@@ -148,7 +142,7 @@ class YouthCertificationService
     /**
      * @param YouthCertification $certification
      * @return bool
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function restore(YouthCertification $certification): bool
     {
@@ -159,7 +153,7 @@ class YouthCertificationService
     /**
      * @param YouthCertification $certification
      * @return bool
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function forceDelete(YouthCertification $certification): bool
     {

@@ -74,12 +74,11 @@ class SkillService
 
     /**
      * @param int $id
-     * @param Carbon $startTime
-     * @return array
+     * @return Skill
      */
-    public function getOneSkill(int $id, Carbon $startTime): array
+    public function getOneSkill(int $id): Skill
     {
-        /** @var Builder $skillBuilder */
+        /** @var Skill| Builder $skillBuilder */
         $skillBuilder = Skill::select(
             [
                 'skills.id',
@@ -90,13 +89,8 @@ class SkillService
 
         $skillBuilder->where('skills.id', '=', $id);
 
-        /** @var Skill $skill */
-        $skill = $skillBuilder->firstOrFail();
+        return $skillBuilder->firstOrFail();
 
-        return [
-            "data" => $skill,
-            "query_time" => $startTime->diffInSeconds(Carbon::now())
-        ];
     }
 
     /**

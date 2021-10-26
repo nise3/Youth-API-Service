@@ -169,12 +169,11 @@ class YouthEducationService
 
     /**
      * @param int $id
-     * @param Carbon $startTime
-     * @return array
+     * @return YouthEducation
      */
-    public function getOneEducation(int $id, Carbon $startTime): array
+    public function getOneEducation(int $id): YouthEducation
     {
-        /** @var Builder $educationBuilder */
+        /** @var YouthEducation|Builder $educationBuilder */
         $educationBuilder = YouthEducation::select(
             [
                 'youth_educations.id',
@@ -233,16 +232,10 @@ class YouthEducationService
                 ->whereNull('edu_groups.deleted_at');
         });
 
-        $education = $educationBuilder->where("youth_educations.id", $id)->firstOrFail();
+        $educationBuilder->where("youth_educations.id", $id);
 
-        return [
-            "data" => $education,
-            "_response_status" => [
-                "success" => true,
-                "code" => Response::HTTP_OK,
-                "query_time" => $startTime->diffInSeconds(Carbon::now())
-            ]
-        ];
+        return $educationBuilder->firstOrFail();
+
     }
 
     /**
@@ -334,7 +327,7 @@ class YouthEducationService
                 Rule::in(ExamDegree::where("education_level_id", $request->education_level_id)->pluck('id')->toArray()),
                 'min:1',
                 'unique_with:youth_educations,youth_id,deleted_at,' . $id,
-                'exists:exam_degrees,id,deleted_at,NULL,education_level_id,'.$request->education_level_id,
+                'exists:exam_degrees,id,deleted_at,NULL,education_level_id,' . $request->education_level_id,
                 'integer'
 
             ],

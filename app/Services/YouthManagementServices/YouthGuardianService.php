@@ -88,12 +88,11 @@ class YouthGuardianService
 
     /**
      * @param int $id
-     * @param Carbon $startTime
-     * @return array
+     * @return YouthGuardian
      */
-    public function getOneGuardian(int $id, Carbon $startTime): array
+    public function getOneGuardian(int $id): YouthGuardian
     {
-        /** @var Builder $guardianBuilder */
+        /** @var YouthGuardian|Builder $guardianBuilder */
         $guardianBuilder = YouthGuardian::select(
             [
                 'youth_guardians.id',
@@ -112,17 +111,7 @@ class YouthGuardianService
 
         $guardianBuilder->where('youth_guardians.id', $id);
 
-        /** @var YouthGuardian $guardian */
-        $guardian = $guardianBuilder->firstOrFail();
-
-        return [
-            "data" => $guardian,
-            "_response_status" => [
-                "success" => true,
-                "code" => Response::HTTP_OK,
-                "query_time" => $startTime->diffInSeconds(Carbon::now())
-            ]
-        ];
+        return $guardianBuilder->firstOrFail();
     }
 
     /**

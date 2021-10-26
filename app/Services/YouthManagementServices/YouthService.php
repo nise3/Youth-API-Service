@@ -165,7 +165,7 @@ class YouthService
      */
     public function getOneYouthProfile(int $id): Youth
     {
-        /** @var Builder $youthBuilder */
+        /** @var Youth|Builder $youthBuilder */
         $youthBuilder = Youth::select(
             [
                 'youths.id',
@@ -238,8 +238,7 @@ class YouthService
         ]);
 
         /** @var Youth $youth */
-        $youth = $youthBuilder->firstOrFail();
-        return $youth;
+        return $youthBuilder->firstOrFail();
     }
 
     /**
@@ -405,7 +404,7 @@ class YouthService
                 DB::commit();
                 return true;
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
             Log::debug($e->getMessage());
         }

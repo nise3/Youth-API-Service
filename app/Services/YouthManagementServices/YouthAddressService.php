@@ -98,12 +98,11 @@ class YouthAddressService
 
     /**
      * @param int $id
-     * @param Carbon $startTime
-     * @return array
+     * @return YouthAddress
      */
-    public function getOneYouthAddress(int $id, Carbon $startTime): array
+    public function getOneYouthAddress(int $id): YouthAddress
     {
-        /** @var Builder $youthAddressBuilder */
+        /** @var YouthAddress|Builder $youthAddressBuilder */
         $youthAddressBuilder = YouthAddress::select([
             'youth_addresses.id',
             'youth_addresses.youth_id',
@@ -141,12 +140,8 @@ class YouthAddressService
 
         $youthAddressBuilder->where('youth_addresses.id', $id);
 
-        $youthAddress = $youthAddressBuilder->firstOrFail();
+        return $youthAddressBuilder->firstOrFail();
 
-        return [
-            "data" => $youthAddress,
-            "query_time" => $startTime->diffInSeconds(Carbon::now())
-        ];
     }
 
     /**

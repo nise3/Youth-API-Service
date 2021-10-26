@@ -52,8 +52,16 @@ class YouthEducationController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        $response = $this->youthEducationService->getOneEducation($id, $this->startTime);
-        return Response::json($response);
+        $education = $this->youthEducationService->getOneEducation($id);
+        $response = [
+            "data" => $education,
+            "_response_status" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_OK);
 
     }
 
