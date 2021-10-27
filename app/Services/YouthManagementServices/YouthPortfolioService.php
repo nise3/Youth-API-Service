@@ -201,7 +201,7 @@ class YouthPortfolioService
                 'min:2'
             ],
             'file_path' => [
-                'nullable',
+                'required',
                 'string'
             ]
         ];
