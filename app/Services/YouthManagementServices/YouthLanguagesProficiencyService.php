@@ -80,12 +80,11 @@ class YouthLanguagesProficiencyService
 
     /**
      * @param int $id
-     * @param Carbon $startTime
-     * @return array
+     * @return YouthLanguagesProficiency
      */
-    public function getOneLanguagesProficiency(int $id, Carbon $startTime): array
+    public function getOneLanguagesProficiency(int $id): YouthLanguagesProficiency
     {
-        /** @var Builder $languageBuilder */
+        /** @var Builder|YouthLanguagesProficiency $languageBuilder */
         $languageProficiencyBuilder = YouthLanguagesProficiency::select([
             'youth_languages_proficiencies.id',
             'youth_languages_proficiencies.youth_id',
@@ -108,17 +107,7 @@ class YouthLanguagesProficiencyService
         $languageProficiencyBuilder->where('youth_languages_proficiencies.id', $id);
 
         /** @var $languageProficiency $language */
-        $languagesProficiency = $languageProficiencyBuilder->first();
-
-        return [
-            "data" => $languagesProficiency ?: [],
-            "_response_status" => [
-                "success" => true,
-                "code" => Response::HTTP_OK,
-                "query_time" => $startTime->diffInSeconds(Carbon::now())
-            ]
-        ];
-
+        return $languageProficiencyBuilder->firstOrFail();
     }
 
     /**

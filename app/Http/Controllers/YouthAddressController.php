@@ -62,14 +62,16 @@ class YouthAddressController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        $response = $this->youthAddressService->getOneYouthAddress($id, $this->startTime);
-        $response['_response_status'] = [
-            "success" => true,
-            "code" => ResponseAlias::HTTP_OK,
-            'query_time' => $response['query_time']
+        $address = $this->youthAddressService->getOneYouthAddress($id);
+        $response = [
+            "data" => $address ?: [],
+            "_response_status" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
         ];
         return Response::json($response, ResponseAlias::HTTP_OK);
-
     }
 
     /**
@@ -112,7 +114,7 @@ class YouthAddressController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $guardian = YouthAddress::findOrFail($id);
+        $address = YouthAddress::findOrFail($id);
 
         if (!$request->filled('youth_id')) {
             $youthId = Auth::id();
@@ -121,7 +123,7 @@ class YouthAddressController extends Controller
 
         $validated = $this->youthAddressService->validator($request, $id)->validate();
 
-        $data = $this->youthAddressService->update($guardian, $validated);
+        $data = $this->youthAddressService->update($address, $validated);
         $response = [
             'data' => $data,
             '_response_status' => [

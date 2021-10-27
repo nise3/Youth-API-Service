@@ -78,14 +78,16 @@ class SkillController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        $response = $this->skillService->getOneSkill($id, $this->startTime);
-        $response['_response_status'] = [
-            "success" => true,
-            "code" => ResponseAlias::HTTP_OK,
-            'query_time' => $response['query_time']
+        $skill = $this->skillService->getOneSkill($id);
+        $response = [
+            "data" => $skill ?: [],
+            "_response_status" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
         ];
         return Response::json($response, ResponseAlias::HTTP_OK);
-
     }
 
     /**

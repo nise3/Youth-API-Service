@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
 class YouthFreelanceController extends Controller
@@ -42,7 +43,7 @@ class YouthFreelanceController extends Controller
     {
         $filter = $this->freelanceService->filterValidator($request)->validate();
         $response = $this->freelanceService->getAllFreelancerList($filter, $this->startTime);
-        return Response::json($response);
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
 }

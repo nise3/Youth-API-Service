@@ -48,7 +48,7 @@ class YouthPortfolioController extends Controller
     {
         $filter = $this->portfolioService->filterValidator($request)->validate();
         $response = $this->portfolioService->getAllPortfolios($filter, $this->startTime);
-        return Response::json($response);
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**
@@ -60,7 +60,16 @@ class YouthPortfolioController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        $response = $this->portfolioService->getOnePortfolio($id, $this->startTime);
+        $portfolio = $this->portfolioService->getOnePortfolio($id);
+
+        $response = [
+            "data" => $portfolio,
+            "_response_status" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
         return Response::json($response);
     }
 

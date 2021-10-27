@@ -45,7 +45,7 @@ class YouthJobExperienceController extends Controller
     {
         $filter = $this->jobExperienceService->filterValidator($request)->validate();
         $response = $this->jobExperienceService->getAllJobExperiences($filter, $this->startTime);
-        return Response::json($response);
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**
@@ -57,8 +57,16 @@ class YouthJobExperienceController extends Controller
      */
     public function read(int $id = null): JsonResponse
     {
-        $response = $this->jobExperienceService->getOneJobExperience($id, $this->startTime);
-        return Response::json($response);
+        $data = $this->jobExperienceService->getOneJobExperience($id);
+        $response = [
+            "data" => $data,
+            "_response_status" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**

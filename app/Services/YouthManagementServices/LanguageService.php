@@ -4,6 +4,7 @@ namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
 use App\Models\Language;
+use App\Models\Skill;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,17 +25,25 @@ class LanguageService
         $pageSize = $request['page_size'] ?? "";
         $order = $request['order'] ?? "ASC";
 
-        /** @var Builder $languageBuilder */
-        $languageBuilder = Language::all();
-
+        $languageBuilder = Language::select(
+        [
+            'languages.id',
+            'languages.lang_code',
+            'languages.title',
+            'languages.title_en',
+            'languages.row_status',
+            'languages.created_at',
+            'languages.updated_at',
+            'languages.deleted_at'
+        ]
+    );
         $languageBuilder->orderBy('languages.id', $order);
 
-        /** @var Collection $languages */
         $response = [];
         if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $languages = $languageBuilder->paginate($pageSize);
-            $paginateData = (object)$languageBuilder->toArray();
+            $paginateData = (object)$languages->toArray();
             $response['current_page'] = $paginateData->current_page;
             $response['total_page'] = $paginateData->last_page;
             $response['page_size'] = $paginateData->per_page;
@@ -67,8 +76,8 @@ class LanguageService
         return \Illuminate\Support\Facades\Validator::make($request->all(), [
             'page' => 'nullable|int|gt:0',
             'page_size' => 'nullable|int|gt:0',
-            'name' => 'nullable|string',
-            'name_en' => 'nullable|string',
+            'title' => 'nullable|string',
+            'title_en' => 'nullable|string',
             'order' => [
                 'string',
                 Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])

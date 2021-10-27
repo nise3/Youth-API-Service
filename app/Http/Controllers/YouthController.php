@@ -36,7 +36,7 @@ class  YouthController extends Controller
 
         $filter = $this->youthService->filterValidator($request)->validate();
         $response = $this->youthService->getYouthProfileList($filter, $this->startTime);
-        return Response::json($response);
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
 
@@ -47,8 +47,19 @@ class  YouthController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        $response = $this->youthService->getOneYouthProfile($id, $this->startTime);
-        return Response::json($response);
+        $youth = $this->youthService->getOneYouthProfile($id);
+
+        $response = [
+            "data" => $youth,
+            "_response_status" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "started" => $this->startTime->format('H i s'),
+                "finished" => Carbon::now()->format('H i s'),
+            ]
+        ];
+
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
 

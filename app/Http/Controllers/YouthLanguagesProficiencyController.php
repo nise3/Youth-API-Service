@@ -40,7 +40,7 @@ class YouthLanguagesProficiencyController extends Controller
     {
         $filter = $this->languagesProficiencyService->filterValidator($request)->validate();
         $response = $this->languagesProficiencyService->getLanguagesProficiencyList($filter, $this->startTime);
-        return Response::json($response);
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**
@@ -50,8 +50,18 @@ class YouthLanguagesProficiencyController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        $response = $this->languagesProficiencyService->getOneLanguagesProficiency($id, $this->startTime);
-        return Response::json($response);
+        $languagesProficiency = $this->languagesProficiencyService->getOneLanguagesProficiency($id);
+
+        $response = [
+            "data" => $languagesProficiency,
+            "_response_status" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**

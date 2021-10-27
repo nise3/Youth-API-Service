@@ -46,8 +46,16 @@ class YouthGuardianController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        $response = $this->youthGuardianService->getOneGuardian($id, $this->startTime);
-        return Response::json($response);
+        $guardian = $this->youthGuardianService->getOneGuardian($id);
+        $response = [
+            "data" => $guardian ?: [],
+            "_response_status" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     /**

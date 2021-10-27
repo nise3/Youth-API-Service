@@ -161,12 +161,11 @@ class YouthService
 
     /**
      * @param int $id
-     * @param Carbon $startTime
-     * @return array
+     * @return Youth
      */
-    public function getOneYouthProfile(int $id, Carbon $startTime): array
+    public function getOneYouthProfile(int $id): Youth
     {
-        /** @var Builder $youthBuilder */
+        /** @var Youth|Builder $youthBuilder */
         $youthBuilder = Youth::select(
             [
                 'youths.id',
@@ -238,20 +237,8 @@ class YouthService
             "youthReferences"
         ]);
 
-
         /** @var Youth $youth */
-        $youth = $youthBuilder->firstOrFail();
-
-        return [
-            "data" => $youth ?: [],
-            "_response_status" => [
-                "success" => true,
-                "code" => Response::HTTP_OK,
-                "started" => $startTime->format('H i s'),
-                "finished" => Carbon::now()->format('H i s'),
-            ]
-        ];
-
+        return $youthBuilder->firstOrFail();
     }
 
     /**
@@ -417,7 +404,7 @@ class YouthService
                 DB::commit();
                 return true;
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
             Log::debug($e->getMessage());
         }

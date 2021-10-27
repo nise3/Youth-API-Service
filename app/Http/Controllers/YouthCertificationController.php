@@ -78,11 +78,14 @@ class YouthCertificationController extends Controller
      */
     public function read(int $id): JsonResponse
     {
-        $response = $this->certificationService->getOneCertification($id, $this->startTime);
-        $response['_response_status'] = [
-            "success" => true,
-            "code" => ResponseAlias::HTTP_OK,
-            'query_time' => $response['query_time']
+        $certification = $this->certificationService->getOneCertification($id);
+        $response = [
+            "data" => $certification ?: [],
+            "_response_status" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
         ];
 
         return Response::json($response, ResponseAlias::HTTP_OK);
@@ -127,7 +130,7 @@ class YouthCertificationController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        if(!$request->filled('youth_id')){
+        if (!$request->filled('youth_id')) {
             $youthId = Auth::id();
             $request->offsetSet('youth_id', $youthId);
         }
