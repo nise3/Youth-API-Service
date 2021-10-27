@@ -5022,7 +5022,8 @@
                     }
                 },
                 "required": [
-                    "title"
+                    "title",
+                    "file_path"
                 ]
             },
             "jobExperience": {
