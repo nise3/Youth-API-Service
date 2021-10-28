@@ -31,7 +31,7 @@ class YouthService
      */
     public function getYouthProfileList(array $request, Carbon $startTime): array
     {
-        $firstName = $requestp['first_name'] ?? "";
+        $firstName = $request['first_name'] ?? "";
         $lastName = $request['last_name'] ?? "";
         $isFreelanceProfile = $request['is_freelance_profile'] ?? "";
         $locDistrictId = $request['loc_district_id'] ?? "";
