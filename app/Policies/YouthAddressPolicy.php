@@ -55,6 +55,7 @@ class YouthAddressPolicy extends BasePolicy
      */
     public function update(Youth $user, YouthAddress $youthAddress)
     {
+
         return Response::allow();
     }
 

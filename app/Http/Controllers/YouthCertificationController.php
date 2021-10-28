@@ -104,6 +104,7 @@ class YouthCertificationController extends Controller
             $youthId = Auth::id();
             $request->offsetSet('youth_id', $youthId);
         }
+        $this->authorize('create', YouthCertification::class);
 
         $validated = $this->certificationService->validator($request)->validate();
         $certification = $this->certificationService->store($validated);
@@ -136,6 +137,9 @@ class YouthCertificationController extends Controller
         }
 
         $certification = YouthCertification::findOrFail($id);
+
+        $this->authorize('update', $certification);
+
         $validated = $this->certificationService->validator($request, $id)->validate();
 
         $certification = $this->certificationService->update($certification, $validated);

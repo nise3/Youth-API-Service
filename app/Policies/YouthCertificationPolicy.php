@@ -40,9 +40,9 @@ class YouthCertificationPolicy extends BasePolicy
      * @param Youth $user
      * @return Response
      */
-    public function create(Youth $user)
+    public function create(Youth $user): bool
     {
-        return Response::allow();
+        return $user != null;
     }
 
     /**
@@ -52,9 +52,10 @@ class YouthCertificationPolicy extends BasePolicy
      * @param YouthCertification $youthCertification
      * @return Response
      */
-    public function update(Youth $user, YouthCertification $youthCertification)
+    public function update(Youth $user, YouthCertification $youthCertification) : bool
     {
-        return Response::allow();
+        Log::debug($youthCertification);
+        return $user->id == $youthCertification->youth_id;
     }
 
     /**
@@ -64,8 +65,8 @@ class YouthCertificationPolicy extends BasePolicy
      * @param YouthCertification $youthCertification
      * @return Response
      */
-    public function delete(Youth $user, YouthCertification $youthCertification)
+    public function delete(Youth $user, YouthCertification $youthCertification) : bool
     {
-        return Response::allow();
+        return $user->id == $youthCertification->youth_id;
     }
 }
