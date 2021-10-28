@@ -4700,7 +4700,8 @@
                             1,
                             2
                         ],
-                        "description": "1=>Email Type, 2=>Mobile Number"
+                        "description": "1=>Email Type, 2=>Mobile Number",
+                        "example": 2
                     },
                     "first_name": {
                         "type": "string",
