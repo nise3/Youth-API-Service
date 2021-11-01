@@ -59,6 +59,17 @@ if (!function_exists('formatApiResponse')) {
     }
 }
 
+if (!function_exists('generateOtp')) {
+    /**
+     * @param $digits
+     * @return int
+     */
+    function generateOtp(int $digits)
+    {
+        return rand(pow(10, $digits - 1), pow(10, $digits) - 1);
+    }
+}
+
 if (!function_exists("idpUserErrorMessage")) {
 
     /**
