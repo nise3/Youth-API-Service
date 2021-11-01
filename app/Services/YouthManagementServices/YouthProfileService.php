@@ -16,6 +16,7 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
@@ -785,17 +786,25 @@ class YouthProfileService
     }
 
     /**
-     * @return array
+     * @throws RequestException
      */
-    public function getYouthFeedStatisticsData(): array
+    public function getYouthFeedStatisticsData($youthId): array
     {
-        return [
-            'enrolled_courses' => 5,
-            'skill_matching_courses' => 50,
-            'total_courses' => 550,
-            'jobs_apply' => 320,
-            'total_jobs' => 2500,
-            'skill_matching_jobs' => 100,
-        ];
+        $url = clientUrl(BaseModel::INSTITUTE_URL_CLIENT_TYPE) . 'youth-feed-statistics/' . $youthId;
+        $skillIds = DB::table('youth_skills')->where('youth_id', $youthId)->pluck('skill_id')->toArray();
+        $skillIds = implode(",", $skillIds);
+        $urlWithSkillIds = $url . '?' . "skill_ids=" . $skillIds;
+        Log::info($urlWithSkillIds);
+        return Http::withOptions([
+            'verify' => config("nise3.should_ssl_verify"),
+            'debug' => config('nise3.http_debug'),
+            'timeout' => config("nise3.http_timeout")
+        ])
+            ->get($urlWithSkillIds)
+            ->throw(function ($response, $e) use ($url) {
+                Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . json_encode($response));
+                return $e;
+            })
+            ->json();
     }
 }

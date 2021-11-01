@@ -6,6 +6,7 @@ use App\Models\BaseModel;
 use App\Models\Youth;
 use App\Models\YouthAddress;
 use App\Services\YouthManagementServices\YouthAddressService;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -270,10 +271,16 @@ class YouthProfileController extends Controller
         return Response::json($response);
     }
 
-    public function getYouthFeedStatistics(Request $request): JsonResponse
+    /**
+     * @throws RequestException
+     */
+    public function getYouthFeedStatistics(): JsonResponse
     {
-        $data = $this->youthProfileService->getYouthFeedStatisticsData();
-
+        $youthId = Auth::id();
+        $data = $this->youthProfileService->getYouthFeedStatisticsData($youthId);
+        $data ['applied_jobs'] = 0;
+        $data ['total_jobs'] = 0;
+        $data['skill_matching_jobs'] = 0;
         $response = [
             'data' => $data,
             '_response_status' => [
