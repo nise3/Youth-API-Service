@@ -4089,7 +4089,9 @@
                             2,
                             3,
                             4,
-                            5
+                            5,
+                            6,
+                            7
                         ],
                         "description": "1 => Father, 2 => Mother, 3 => Brother, 4 => Sister, 5 => Uncle, 6 => Aunt, 7 => Other"
                     },
