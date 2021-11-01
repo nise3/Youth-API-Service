@@ -6,6 +6,7 @@ use App\Models\BaseModel;
 use App\Models\Youth;
 use App\Models\YouthAddress;
 use App\Services\YouthManagementServices\YouthAddressService;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -251,7 +252,8 @@ class YouthProfileController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
-    public function getYouthEnrollCourses(Request $request): JsonResponse{
+    public function getYouthEnrollCourses(Request $request): JsonResponse
+    {
         $validated = $this->youthProfileService->youthEnrollCoursesFilterValidator($request)->validate();
         $validated['youth_id'] = Auth::id();
         $data = $this->youthProfileService->getYouthEnrollCourses($validated);
@@ -261,7 +263,7 @@ class YouthProfileController extends Controller
             'data' => $data ? $data['data'] : [],
             '_response_status' => [
                 "success" => true,
-                "code" => ResponseAlias::HTTP_OK ,
+                "code" => ResponseAlias::HTTP_OK,
                 "message" => "My courses fetch successfully",
                 "query_time" => $this->startTime->diffForHumans(Carbon::now())
             ]
@@ -269,14 +271,21 @@ class YouthProfileController extends Controller
         return Response::json($response);
     }
 
-    public function getYouthFeedStatistics(Request $request): JsonResponse{
-        $data = $this->youthProfileService->getYouthFeedStatisticsData();
-
+    /**
+     * @throws RequestException
+     */
+    public function getYouthFeedStatistics(): JsonResponse
+    {
+        $youthId = Auth::id();
+        $data = $this->youthProfileService->getYouthFeedStatisticsData($youthId);
+        $data ['applied_jobs'] = 0;
+        $data ['total_jobs'] = 0;
+        $data['skill_matching_jobs'] = 0;
         $response = [
-            'data'=> $data,
+            'data' => $data,
             '_response_status' => [
                 "success" => true,
-                "code" => ResponseAlias::HTTP_OK ,
+                "code" => ResponseAlias::HTTP_OK,
                 "message" => "Youth statistics fetch successfully",
                 "query_time" => $this->startTime->diffForHumans(Carbon::now())
             ]
