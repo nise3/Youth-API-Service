@@ -209,17 +209,22 @@ class YouthProfileService
 
     /**
      * @param array $data
+     * @param string $code
      * @return bool
+     * @throws \Exception
      */
-    public function sendVerifyCode(array $data): bool
+    public function sendVerifyCode(array $data, string $code): bool
     {
         $email = $data["email"] ?? null;
         $mobile_number = $data["mobile"] ?? null;
+        $message = "Welcome to NISE-3. Your OTP code : " . $code;
         if ($email) {
             return true;
         }
         if ($mobile_number) {
-            return true;
+            if(sms()->send($mobile_number, $message)->is_successful()){
+                return true;
+            }
         }
         return false;
     }
@@ -235,7 +240,7 @@ class YouthProfileService
         $attributeField = $email ? "email" : "mobile";
         $payLoad[$attributeField] = $email ?: $mobile;
 
-        $code = $this->generateCode();
+        $code = generateOtp(4);
 
         /** @var Youth $youth */
         $youth = Youth::where($attributeField, $payLoad[$attributeField])
@@ -253,19 +258,11 @@ class YouthProfileService
     }
 
     /**
-     * @return string
-     */
-    public function generateCode(): string
-    {
-        return "1234";
-    }
-
-    /**
      * @param array $data
      * @return PromiseInterface|Response
      * @throws RequestException
      */
-    public function idpUserCreate(array $data): PromiseInterface|Response
+    public function idpUserCreate(array $data): PromiseInterface|Response|array
     {
         $url = clientUrl(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
         $payload = $this->prepareIdpPayload($data);
@@ -291,6 +288,10 @@ class YouthProfileService
 
     }
 
+    /**
+     * @param $data
+     * @return array
+     */
     private function prepareIdpPayload($data)
     {
         $cleanUserName = trim($data['username']);  // At present only email is selected as username from frontend team
@@ -367,6 +368,10 @@ class YouthProfileService
         return \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $customMessage);
     }
 
+    /**
+     * @param Request $request
+     * @return Validator
+     */
     public function resendCodeValidator(Request $request): Validator
     {
         $customMessage = [
@@ -562,22 +567,14 @@ class YouthProfileService
         return \Illuminate\Support\Facades\Validator::make($data, $rules);
     }
 
+    /**
+     * @param Request $request
+     * @param int|null $id
+     * @return Validator
+     */
     public function youthRegisterValidation(Request $request, int $id = null): Validator
     {
         $data = $request->all();
-
-        /*        $customMessage = [
-                    "password.regex" => [
-                        "message" => [
-                            "Have At least one Uppercase letter",
-                            "At least one Lower case letter",
-                            "Also,At least one numeric value",
-                            "And, At least one special character",
-                            "Must be more than 8 characters long"
-                        ]
-                    ]
-                ];
-        */
 
         if (!empty($data["skills"])) {
             $data["skills"] = isset($data['skills']) && is_array($data['skills']) ? $data['skills'] : explode(',', $data['skills']);
@@ -728,12 +725,15 @@ class YouthProfileService
     }
 
     /**
+     * @param array $data
+     * @return array
      * @throws RequestException
      */
-    public function getYouthEnrollCourses(array $data): array {
+    public function getYouthEnrollCourses(array $data): array
+    {
         $url = clientUrl(BaseModel::INSTITUTE_URL_CLIENT_TYPE) . 'youth-enroll-courses';
         $queryStr = http_build_query($data);
-        $urlWithQueryStr = $url.'?'.$queryStr;
+        $urlWithQueryStr = $url . '?' . $queryStr;
 
         return Http::withOptions([
             'verify' => config("nise3.should_ssl_verify"),
@@ -748,6 +748,10 @@ class YouthProfileService
             ->json();
     }
 
+    /**
+     * @param Request $request
+     * @return Validator
+     */
     public function youthEnrollCoursesFilterValidator(Request $request): Validator
     {
         if ($request->filled('order')) {
@@ -780,7 +784,11 @@ class YouthProfileService
         return \Illuminate\Support\Facades\Validator::make($requestData, $rules, $customMessage);
     }
 
-    public function getYouthFeedStatisticsData() : array{
+    /**
+     * @return array
+     */
+    public function getYouthFeedStatisticsData(): array
+    {
         return [
             'enrolled_courses' => 5,
             'skill_matching_courses' => 50,

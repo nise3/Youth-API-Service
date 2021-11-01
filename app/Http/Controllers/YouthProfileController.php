@@ -82,7 +82,7 @@ class YouthProfileController extends Controller
         $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
 
         $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
-        Log::debug('-- Youth Registration After Validation -- ');
+        Log::debug('-- Youth Registration Validation Ok -- ');
 
         DB::beginTransaction();
         $idpUserPayLoad = [
@@ -110,7 +110,7 @@ class YouthProfileController extends Controller
 
         Log::info("Youth create for idp user--->" . $httpClient->json("id") . "----->email-->" . $validated['email']);
         $validated['idp_user_id'] = $httpClient->json("id");
-        $validated["verification_code"] = $this->youthProfileService->generateCode();
+        $validated["verification_code"] = generateOtp(4);
         $validated['verification_code_sent_at'] = Carbon::now();
         $validated['row_status'] = BaseModel::ROW_STATUS_PENDING;
         $youth = $this->youthProfileService->store($youth, $validated);
@@ -132,12 +132,12 @@ class YouthProfileController extends Controller
 
         /*Log::info("Youth user address create for user");*/
 
-        /** @var  $sendVeryCodePayLoad */
-        $sendVeryCodePayLoad["code"] = $validated['verification_code'];
+        /** @var  $sendVerifyCodePayLoad */
+        $sendVerifyCodePayLoad["code"] = $validated['verification_code'];
         $payloadField = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? "email" : "mobile";
-        $sendVeryCodePayLoad[$payloadField] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
+        $sendVerifyCodePayLoad[$payloadField] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
 
-        $send_status = $this->youthProfileService->sendVerifyCode($sendVeryCodePayLoad);
+        $send_status = $this->youthProfileService->sendVerifyCode($sendVerifyCodePayLoad, $validated['verification_code']);
 
         $response = [
             'data' => $youth ?? new stdClass(),
@@ -251,7 +251,8 @@ class YouthProfileController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
-    public function getYouthEnrollCourses(Request $request): JsonResponse{
+    public function getYouthEnrollCourses(Request $request): JsonResponse
+    {
         $validated = $this->youthProfileService->youthEnrollCoursesFilterValidator($request)->validate();
         $validated['youth_id'] = Auth::id();
         $data = $this->youthProfileService->getYouthEnrollCourses($validated);
@@ -261,7 +262,7 @@ class YouthProfileController extends Controller
             'data' => $data ? $data['data'] : [],
             '_response_status' => [
                 "success" => true,
-                "code" => ResponseAlias::HTTP_OK ,
+                "code" => ResponseAlias::HTTP_OK,
                 "message" => "My courses fetch successfully",
                 "query_time" => $this->startTime->diffForHumans(Carbon::now())
             ]
@@ -269,14 +270,15 @@ class YouthProfileController extends Controller
         return Response::json($response);
     }
 
-    public function getYouthFeedStatistics(Request $request): JsonResponse{
+    public function getYouthFeedStatistics(Request $request): JsonResponse
+    {
         $data = $this->youthProfileService->getYouthFeedStatisticsData();
 
         $response = [
-            'data'=> $data,
+            'data' => $data,
             '_response_status' => [
                 "success" => true,
-                "code" => ResponseAlias::HTTP_OK ,
+                "code" => ResponseAlias::HTTP_OK,
                 "message" => "Youth statistics fetch successfully",
                 "query_time" => $this->startTime->diffForHumans(Carbon::now())
             ]
