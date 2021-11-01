@@ -22,7 +22,7 @@ class CreateYouthGuardiansTable extends Migration
             $table->string('nid', 30)->nullable();
             $table->string('mobile', 20)->nullable();
             $table->date('date_of_birth')->nullable();
-            $table->unsignedTinyInteger('relationship_type')->comment("1 => Father, 2 => Mother, 3 => Uncle, 4=> Aunt, 5=>Other");
+            $table->unsignedTinyInteger('relationship_type')->comment("1 => Father, 2 => Mother, 3 => Brother, 4 => Sister, 5 => Uncle, 6 => Aunt, 7 => Other");
             $table->string('relationship_title')->nullable();
             $table->string('relationship_title_en')->nullable();
 

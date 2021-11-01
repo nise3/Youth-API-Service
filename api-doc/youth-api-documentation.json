@@ -4091,7 +4091,7 @@
                             4,
                             5
                         ],
-                        "description": "1=>Father, 2=>Mother, 3=>Uncle, 4=>Aunt, 5=> Other"
+                        "description": "1 => Father, 2 => Mother, 3 => Brother, 4 => Sister, 5 => Uncle, 6 => Aunt, 7 => Other"
                     },
                     "relationship_title": {
                         "type": "string"

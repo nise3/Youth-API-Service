@@ -28,13 +28,17 @@ class YouthGuardian extends BaseModel
 {
     public const  RELATIONSHIP_TYPE_FATHER = 1;
     public const  RELATIONSHIP_TYPE_MOTHER = 2;
-    public const  RELATIONSHIP_TYPE_UNCLE = 3;
-    public const  RELATIONSHIP_TYPE_AUNT = 4;
-    public const  RELATIONSHIP_TYPE_OTHER = 5;
+    public const  RELATIONSHIP_TYPE_BROTHER = 3;
+    public const  RELATIONSHIP_TYPE_SISTER = 4;
+    public const  RELATIONSHIP_TYPE_UNCLE = 5;
+    public const  RELATIONSHIP_TYPE_AUNT = 6;
+    public const  RELATIONSHIP_TYPE_OTHER = 7;
 
     public const RELATIONSHIP_TYPES = [
         self::RELATIONSHIP_TYPE_FATHER,
         self::RELATIONSHIP_TYPE_MOTHER,
+        self::RELATIONSHIP_TYPE_BROTHER,
+        self::RELATIONSHIP_TYPE_SISTER,
         self::RELATIONSHIP_TYPE_UNCLE,
         self::RELATIONSHIP_TYPE_AUNT,
         self::RELATIONSHIP_TYPE_OTHER,
