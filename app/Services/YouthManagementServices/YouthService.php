@@ -105,29 +105,50 @@ class YouthService
         $youthBuilder->with(['skills', 'physicalDisabilities']);
 
         if (!empty($firstName)) {
-            $youthBuilder->orWhere('youths.first_name', 'like', '%' . $firstName . '%');
+            $youthBuilder->where('youths.first_name', 'like', '%' . $firstName . '%');
         }
 
         if (!empty($lastName)) {
-            $youthBuilder->orWhere('youths.last_name', 'like', '%' . $lastName . '%');
+            $youthBuilder->where('youths.last_name', 'like', '%' . $lastName . '%');
         }
 
-        if (!empty($searchText)) {
-            $youthBuilder->orWhere('youths.first_name', 'like', '%' . $searchText . '%');
-            $youthBuilder->orWhere('youths.first_name_en', 'like', '%' . $searchText . '%');
-            $youthBuilder->orWhere('youths.last_name', 'like', '%' . $searchText . '%');
-            $youthBuilder->orWhere('youths.last_name_en', 'like', '%' . $searchText . '%');
-            $youthBuilder->orWhere('loc_divisions.title', 'like', '%' . $searchText . '%');
-            $youthBuilder->orWhere('loc_divisions.title_en', 'like', '%' . $searchText . '%');
-            $youthBuilder->orWhere('loc_districts.title', 'like', '%' . $searchText . '%');
-            $youthBuilder->orWhere('loc_districts.title_en', 'like', '%' . $searchText . '%');
-            $youthBuilder->orWhere('loc_upazilas.title', 'like', '%' . $searchText . '%');
-            $youthBuilder->orWhere('loc_upazilas.title_en', 'like', '%' . $searchText . '%');
+        if (is_numeric($isFreelanceProfile)) {
+            $youthBuilder->where('youths.is_freelance_profile', '=', $isFreelanceProfile);
         }
 
-        /** Search youth by skill */
+        if (is_numeric($rowStatus)) {
+            $youthBuilder->where('youths.row_status', $rowStatus);
+        }
+
+        if (is_numeric($locUpazilaId)) {
+            $youthBuilder->where('youths.loc_upazila_id', '=', $locUpazilaId);
+        } else if (is_numeric($locDistrictId)) {
+            $youthBuilder->where('youths.loc_district_id', '=', $locDistrictId);
+        }
+
         if (!empty($searchText) || (is_array($skillIds) && count($skillIds) > 0)) {
             $youthBuilder->leftJoin('youth_skills', 'youth_skills.youth_id', '=', 'youths.id');
+
+            if(!empty($searchText)){
+                $youthBuilder->leftJoin('skills', 'skills.id', '=', 'youth_skills.skill_id');
+
+                $youthBuilder->where(function ($builder) use ($searchText){
+                    $builder->where('youths.first_name', 'like', '%' . $searchText . '%');
+                    $builder->orWhere('youths.first_name_en', 'like', '%' . $searchText . '%');
+                    $builder->orWhere('youths.last_name', 'like', '%' . $searchText . '%');
+                    $builder->orWhere('youths.last_name_en', 'like', '%' . $searchText . '%');
+                    $builder->orWhere('loc_divisions.title', 'like', '%' . $searchText . '%');
+                    $builder->orWhere('loc_divisions.title_en', 'like', '%' . $searchText . '%');
+                    $builder->orWhere('loc_districts.title', 'like', '%' . $searchText . '%');
+                    $builder->orWhere('loc_districts.title_en', 'like', '%' . $searchText . '%');
+                    $builder->orWhere('loc_upazilas.title', 'like', '%' . $searchText . '%');
+                    $builder->orWhere('loc_upazilas.title_en', 'like', '%' . $searchText . '%');
+
+                    /** Search youth by Skill name */
+                    $builder->orWhere('skills.title', 'like', '%' . $searchText . '%');
+                    $builder->orWhere('skills.title_en', 'like', '%' . $searchText . '%');
+                });
+            }
 
             /** Search youth by skill IDs */
             if(is_array($skillIds) && count($skillIds) > 0){
@@ -135,30 +156,9 @@ class YouthService
                 $youthBuilder->groupBy('youths.id');
             }
 
-            /** Search youth by Skill name */
-            if(!empty($searchText)){
-                $youthBuilder->leftJoin('skills', 'skills.id', '=', 'youth_skills.skill_id');
-                $youthBuilder->orWhere('skills.title', 'like', '%' . $searchText . '%');
-                $youthBuilder->orWhere('skills.title_en', 'like', '%' . $searchText . '%');
-            }
-        }
-
-        if (is_numeric($isFreelanceProfile)) {
-            $youthBuilder->orWhere('youths.is_freelance_profile', '=', $isFreelanceProfile);
-        }
-
-        if (is_numeric($rowStatus)) {
-            $youthBuilder->orWhere('youths.row_status', $rowStatus);
-        }
-
-        if (is_numeric($locUpazilaId)) {
-            $youthBuilder->orWhere('youths.loc_upazila_id', '=', $locUpazilaId);
-        } else if (is_numeric($locDistrictId)) {
-            $youthBuilder->orWhere('youths.loc_district_id', '=', $locDistrictId);
         }
 
         /** @var Collection $youths */
-
         if (is_numeric($paginate) || is_numeric($pageSize)) {
             $pageSize = $pageSize ?: 10;
             $youths = $youthBuilder->paginate($pageSize);
