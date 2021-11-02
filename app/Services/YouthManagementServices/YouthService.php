@@ -33,11 +33,11 @@ class YouthService
     {
         $firstName = $request['first_name'] ?? "";
         $lastName = $request['last_name'] ?? "";
+        $searchText = $request['search_text'] ?? "";
         $isFreelanceProfile = $request['is_freelance_profile'] ?? "";
         $locDistrictId = $request['loc_district_id'] ?? "";
         $locUpazilaId = $request['loc_upazila_id'] ?? "";
         $skillIds = $request['skill_ids'] ?? [];
-        $nearby = $request['nearby'] ?? "";
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
@@ -105,33 +105,56 @@ class YouthService
         $youthBuilder->with(['skills', 'physicalDisabilities']);
 
         if (!empty($firstName)) {
-            $youthBuilder->where('youths.first_name', 'like', '%' . $firstName . '%');
+            $youthBuilder->orWhere('youths.first_name', 'like', '%' . $firstName . '%');
         }
 
         if (!empty($lastName)) {
-            $youthBuilder->where('youths.last_name', 'like', '%' . $lastName . '%');
+            $youthBuilder->orWhere('youths.last_name', 'like', '%' . $lastName . '%');
+        }
+
+        if (!empty($searchText)) {
+            $youthBuilder->orWhere('youths.first_name', 'like', '%' . $searchText . '%');
+            $youthBuilder->orWhere('youths.first_name_en', 'like', '%' . $searchText . '%');
+            $youthBuilder->orWhere('youths.last_name', 'like', '%' . $searchText . '%');
+            $youthBuilder->orWhere('youths.last_name_en', 'like', '%' . $searchText . '%');
+            $youthBuilder->orWhere('loc_divisions.title', 'like', '%' . $searchText . '%');
+            $youthBuilder->orWhere('loc_divisions.title_en', 'like', '%' . $searchText . '%');
+            $youthBuilder->orWhere('loc_districts.title', 'like', '%' . $searchText . '%');
+            $youthBuilder->orWhere('loc_districts.title_en', 'like', '%' . $searchText . '%');
+            $youthBuilder->orWhere('loc_upazilas.title', 'like', '%' . $searchText . '%');
+            $youthBuilder->orWhere('loc_upazilas.title_en', 'like', '%' . $searchText . '%');
+        }
+
+        /** Search youth by skill */
+        if (!empty($searchText) || (is_array($skillIds) && count($skillIds) > 0)) {
+            $youthBuilder->leftJoin('youth_skills', 'youth_skills.youth_id', '=', 'youths.id');
+
+            /** Search youth by skill IDs */
+            if(is_array($skillIds) && count($skillIds) > 0){
+                $youthBuilder->whereIn('youth_skills.skill_id', $skillIds);
+                $youthBuilder->groupBy('youths.id');
+            }
+
+            /** Search youth by Skill name */
+            if(!empty($searchText)){
+                $youthBuilder->leftJoin('skills', 'skills.id', '=', 'youth_skills.skill_id');
+                $youthBuilder->orWhere('skills.title', 'like', '%' . $searchText . '%');
+                $youthBuilder->orWhere('skills.title_en', 'like', '%' . $searchText . '%');
+            }
         }
 
         if (is_numeric($isFreelanceProfile)) {
-            $youthBuilder->where('youths.is_freelance_profile', '=', $isFreelanceProfile);
+            $youthBuilder->orWhere('youths.is_freelance_profile', '=', $isFreelanceProfile);
         }
 
         if (is_numeric($rowStatus)) {
-            $youthBuilder->where('youths.row_status', $rowStatus);
+            $youthBuilder->orWhere('youths.row_status', $rowStatus);
         }
-        if ($nearby == Youth::YOUTH_NEARBY_FILTER_TRUE) {
-            if (!empty($locUpazilaId)) {
-                $youthBuilder->where('youths.loc_upazila_id', '=', $locUpazilaId);
-            } else if (!empty($locDistrictId)) {
-                $youthBuilder->where('youths.loc_district_id', '=', $locDistrictId);
-            }
-        }
-        Log::info(json_encode($skillIds));
-        if (is_array($skillIds) && count($skillIds) > 0) {
 
-            $youthBuilder->join('youth_skills', 'youth_skills.youth_id', '=', 'youths.id');
-            $youthBuilder->whereIn('youth_skills.skill_id', $skillIds);
-            $youthBuilder->groupBy('youths.id');
+        if (is_numeric($locUpazilaId)) {
+            $youthBuilder->orWhere('youths.loc_upazila_id', '=', $locUpazilaId);
+        } else if (is_numeric($locDistrictId)) {
+            $youthBuilder->orWhere('youths.loc_district_id', '=', $locDistrictId);
         }
 
         /** @var Collection $youths */
@@ -306,6 +329,7 @@ class YouthService
             'first_name_en' => 'nullable|max:150|min:2',
             'last_name' => 'nullable|max:300|min:2',
             'last_name_en' => 'nullable|max:150|min:2',
+            'search_text' => 'nullable|max:150|min:2',
             'nearby' => [
                 'nullable',
                 'int',
@@ -316,15 +340,13 @@ class YouthService
                 'int',
                 Rule::in([0, 1])
             ],
-            "loc_division_id" => [
-                "nullable",
-                "int",
-                "exists:loc_divisions,id,deleted_at,NULL",
-            ],
             "loc_district_id" => [
                 "nullable",
-                "int",
-                "exists:loc_districts,id,deleted_at,NULL",
+                "int"
+            ],
+            "loc_upazila_id" => [
+                "nullable",
+                "int"
             ],
             "skill_ids" => [
                 'nullable',
@@ -350,21 +372,6 @@ class YouthService
                 Rule::in([BaseModel::ROW_STATUS_ACTIVE, BaseModel::ROW_STATUS_INACTIVE]),
             ],
         ];
-        if (!empty($requestData['nearby']) && $requestData['nearby'] == Youth::YOUTH_NEARBY_FILTER_TRUE) {
-            $rules['loc_district_id'] = [
-                Rule::requiredIf(function () use ($requestData) {
-                    return (!isset($requestData['loc_upazila_id']));
-                }),
-                'nullable',
-                'exists:loc_districts,id,deleted_at,NULL',
-                'integer'
-            ];
-            $rules['loc_upazila_id'] = [
-                'nullable',
-                'exists:loc_districts,id,deleted_at,NULL',
-                'integer'
-            ];
-        }
         return Validator::make($requestData, $rules, $customMessage);
     }
 
