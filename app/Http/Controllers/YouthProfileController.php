@@ -67,7 +67,7 @@ class YouthProfileController extends Controller
             ]
         ];
 
-        return Response::json($response, ResponseAlias::HTTP_OK);
+        return Response::json($response, $response['_response_status']['code']);
     }
 
     /**
@@ -194,7 +194,7 @@ class YouthProfileController extends Controller
                 "query_time" => $this->startTime->diffForHumans(Carbon::now())
             ]
         ];
-        return Response::json($response, ResponseAlias::HTTP_CREATED);
+        return Response::json($response, $response['_response_status']['code']);
     }
 
     /**
@@ -222,7 +222,7 @@ class YouthProfileController extends Controller
                 "query_time" => $this->startTime->diffForHumans(Carbon::now())
             ]
         ];
-        return Response::json($response, ResponseAlias::HTTP_OK);
+        return Response::json($response, $response['_response_status']['code']);
     }
 
     /**
@@ -235,6 +235,7 @@ class YouthProfileController extends Controller
     {
         $validated = $this->youthProfileService->verifyYouthValidator($request)->validate();
         $status = $this->youthProfileService->verifyYouth($validated);
+
         $response = [
             '_response_status' => [
                 "success" => $status,
@@ -243,7 +244,8 @@ class YouthProfileController extends Controller
                 "query_time" => $this->startTime->diffForHumans(Carbon::now())
             ]
         ];
-        return Response::json($response, ResponseAlias::HTTP_OK);
+
+        return Response::json($response, $response['_response_status']['code']);
     }
 
     /**
@@ -266,7 +268,7 @@ class YouthProfileController extends Controller
             ]
         ];
 
-        return Response::json($response, ResponseAlias::HTTP_OK);
+        return Response::json($response, $response['_response_status']['code']);
     }
 
     public function getYouthEnrollCourses(Request $request): JsonResponse
@@ -274,7 +276,6 @@ class YouthProfileController extends Controller
         $validated = $this->youthProfileService->youthEnrollCoursesFilterValidator($request)->validate();
         $validated['youth_id'] = Auth::id();
         $data = $this->youthProfileService->getYouthEnrollCourses($validated);
-        //dd($data['data']);
 
         $response = [
             'data' => $data ? $data['data'] : [],
@@ -285,7 +286,7 @@ class YouthProfileController extends Controller
                 "query_time" => $this->startTime->diffForHumans(Carbon::now())
             ]
         ];
-        return Response::json($response);
+        return Response::json($response, $response['_response_status']['code']);
     }
 
     /**
