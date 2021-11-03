@@ -279,17 +279,14 @@
                 "summary": "get_list",
                 "description": " API endpoint to get the list of Youth profile.A successful request response will show 200 HTTP status code",
                 "parameters": [
+
                     {
-                        "name": "nearby",
+                        "name": "search_text",
                         "in": "query",
                         "required": false,
-                        "description": "1=>nearby_true,0=>nearby_false ",
+                        "description": "Seach by text against these keys => first_name,first_name_en,last_name,last_name_en,division_title,division_title_en,district_title,district_title_en,upazilas_title,upazilas_title_en,skill_title,skill_title_en",
                         "schema": {
-                            "type": "integer",
-                            "enum": [
-                                1,
-                                0
-                            ]
+                            "type": "string"
                         }
                     },
                     {
@@ -350,23 +347,7 @@
                         }
                     },
                     {
-                        "name": "first_name_en",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "last_name",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "last_name_en",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -5423,6 +5404,7 @@
                 "name": "row_status",
                 "in": "query",
                 "required": false,
+                "description": "1=>Active 0=>Inactive",
                 "schema": {
                     "type": "integer",
                     "enum": [

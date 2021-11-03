@@ -325,16 +325,9 @@ class YouthService
         }
 
         $rules = [
-            'first_name' => 'nullable|max:300|min:2',
-            'first_name_en' => 'nullable|max:150|min:2',
-            'last_name' => 'nullable|max:300|min:2',
-            'last_name_en' => 'nullable|max:150|min:2',
-            'search_text' => 'nullable|max:150|min:2',
-            'nearby' => [
-                'nullable',
-                'int',
-                Rule::in([Youth::YOUTH_NEARBY_FILTER_TRUE, Youth::YOUTH_NEARBY_FILTER_FALSE])
-            ],
+            'first_name' => 'nullable|string|max:300|min:2',
+            'last_name' => 'nullable|string|max:300|min:2',
+            'search_text' => 'nullable|string|max:150|min:2',
             'is_freelance_profile' => [
                 'nullable',
                 'int',
