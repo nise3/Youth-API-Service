@@ -159,15 +159,7 @@ class YouthProfileController extends Controller
             return Response::json($response, $response['_response_status']['code']);
         } catch (\Exception $e) {
             DB::rollBack();
-            $response = [
-                '_response_status' => [
-                    "success" => false,
-                    "code" => ResponseAlias::HTTP_INTERNAL_SERVER_ERROR,
-                    "message" => $e->getMessage(),
-                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-                ]
-            ];
-            return Response::json($response, $response['_response_status']['code']);
+            throw $e;
         }
     }
 

@@ -106,6 +106,12 @@ if (!function_exists("idpUserErrorMessage")) {
                 $errors['_response_status']['message'] = "HTTP 401 Unauthorized Error in IDP server";
                 return $errors;
             }
+            case ResponseAlias::HTTP_CONFLICT:
+            {
+                $errors['_response_status']['code'] = ResponseAlias::HTTP_CONFLICT;
+                $errors['_response_status']['message'] = "Username already exists in IDP server";
+                return $errors;
+            }
             case 0:
             {
                 $errors['_response_status']['message'] = $exception->getHandlerContext()['error'] ?? " SSL Certificate Error: An expansion of the 400 Bad Request response code, used when the client has provided an invalid client certificate";
