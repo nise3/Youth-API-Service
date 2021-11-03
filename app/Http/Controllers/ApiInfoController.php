@@ -14,6 +14,7 @@ class ApiInfoController extends Controller
 
     public function apiInfo(): JsonResponse
     {
+        sms()->send('01308899699','HI anis');
         $response = [
             'service_name' => self::SERVICE_NAME,
             'service_version' => self::SERVICE_VERSION,
