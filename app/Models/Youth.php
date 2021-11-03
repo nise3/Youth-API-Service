@@ -161,7 +161,12 @@ class Youth extends AuthBaseModel
      */
     public function youthLanguagesProficiencies(): HasMany
     {
-        return $this->hasMany(YouthLanguagesProficiency::class, 'youth_id', 'id');
+        return $this->hasMany(YouthLanguagesProficiency::class, 'youth_id', 'id')
+            ->leftJoin('languages', 'languages.id', '=', 'youth_languages_proficiencies.language_id')
+            ->select(['youth_languages_proficiencies.*',
+                'languages.title as language_title',
+                'languages.title_en as language_title_en'
+            ]);
     }
 
     /**
