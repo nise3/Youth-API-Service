@@ -109,7 +109,7 @@ if (!function_exists("idpUserErrorMessage")) {
             case ResponseAlias::HTTP_CONFLICT:
             {
                 $errors['_response_status']['code'] = ResponseAlias::HTTP_CONFLICT;
-                $errors['_response_status']['message'] = "Username already exists.";
+                $errors['_response_status']['message'] = "Already exists";
                 return $errors;
             }
             case 0:
