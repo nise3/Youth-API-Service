@@ -97,7 +97,23 @@ class YouthProfileService
         $youthProfileBuilder->where('youths.id', '=', Auth::id());
         $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences", "youthCertifications", "youthPortfolios", "youthAddresses"]);
 
-        return $youthProfileBuilder->firstOrFail();
+        $profileInfo = $youthProfileBuilder->firstOrFail();
+
+        /** Calculate profile complete in percentage */
+        $totalFields = count(Youth::PROFILE_COMPLETE_FIELDS);
+        $filled = 0;
+        if($profileInfo){
+            foreach (Youth::PROFILE_COMPLETE_FIELDS as $field){
+                $value = json_decode(json_encode($profileInfo[$field]));
+                if(!empty($value)){
+                    $filled++;
+                }
+            }
+        }
+        $completedProfile = floor((100/$totalFields) * $filled);
+        $profileInfo->offsetSet('profile_completed',$completedProfile);
+
+        return $profileInfo;
     }
 
     /**

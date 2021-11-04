@@ -118,6 +118,9 @@ class Youth extends AuthBaseModel
         self::PASSPORT
     ];
 
+    /** Profile Complete Fields */
+    public const PROFILE_COMPLETE_FIELDS = ['email', 'mobile', 'identity_number', 'youthLanguagesProficiencies', 'youthPortfolios', 'youthEducations'];
+
     /**
      * @var string
      */
