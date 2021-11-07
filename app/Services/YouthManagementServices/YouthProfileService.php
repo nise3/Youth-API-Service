@@ -142,7 +142,7 @@ class YouthProfileService
             $totalExperience["year"] = $year;
             $totalExperience["month"] = $month;
         }
-        $profileInfo['total_job-experience'] = $totalExperience;
+        $profileInfo['total_job_experience'] = $totalExperience;
 
         return $profileInfo;
     }
