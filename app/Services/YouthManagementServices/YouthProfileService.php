@@ -113,6 +113,37 @@ class YouthProfileService
         $completedProfile = floor((100/$totalFields) * $filled);
         $profileInfo->offsetSet('profile_completed',$completedProfile);
 
+        /** Calculate Total Job Experience */
+        $totalJobExperiencesInMonth = 0;
+        $totalExperience = [
+            "year" => 0,
+            "month" => 0
+        ];
+        if(!empty($profileInfo['youthJobExperiences'])){
+            $jobExperiences = json_decode(json_encode($profileInfo['youthJobExperiences']));
+            if(is_array($jobExperiences) && count($jobExperiences) > 0){
+                foreach ($jobExperiences as $key => $value){
+                    if($value->start_date){
+                        $startDate = Carbon::parse($value->start_date);
+                        if($value->end_date){
+                            $difference = $startDate->diffInMonths($value->end_date);
+                        } else {
+                            $currentDate = new Carbon();
+                            $difference = $startDate->diffInMonths($currentDate);
+                        }
+                        $totalJobExperiencesInMonth += $difference;
+                    }
+                }
+            }
+        }
+        if($totalJobExperiencesInMonth > 0){
+            $year = floor($totalJobExperiencesInMonth/12);
+            $month = $totalJobExperiencesInMonth % 12;
+            $totalExperience["year"] = $year;
+            $totalExperience["month"] = $month;
+        }
+        $profileInfo['total_job-experience'] = $totalExperience;
+
         return $profileInfo;
     }
 
