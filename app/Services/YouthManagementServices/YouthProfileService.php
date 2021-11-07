@@ -128,7 +128,7 @@ class YouthProfileService
                         if($value->end_date){
                             $difference = $startDate->diffInMonths($value->end_date);
                         } else {
-                            $currentDate = new Carbon();
+                            $currentDate = Carbon::now();
                             $difference = $startDate->diffInMonths($currentDate);
                         }
                         $totalJobExperiencesInMonth += $difference;
