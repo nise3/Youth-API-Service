@@ -1916,6 +1916,41 @@
                 ]
             }
         },
+        "/youth-resend-verification-code": {
+            "post": {
+                "summary": "Create a new resend verification code",
+                "description": "API endpoint to create a new resend verfication code.A successful request response will show 200 HTTP status code",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/resend-verification-code"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successfull",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Your verification code is successfully sent",
+                                        "query_time": "1 second before"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Profile"
+                ]
+            }
+        },
         "/youth-change-freelance-status": {
             "put": {
                 "summary": "Youth change freelance status",
@@ -3939,6 +3974,18 @@
             }
         },
         "schemas": {
+            "resend-verification-code": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "mobile": {
+                        "type": "string"
+                    }
+                }
+            },
             "youthAddress": {
                 "type": "object",
                 "properties": {

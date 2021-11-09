@@ -299,7 +299,7 @@ class YouthProfileService
             $youth->verification_code_sent_at = Carbon::now();
             $youth->save();
             $payLoad["verification_code"] = $code;
-            return $this->sendVerifyCode($payLoad);
+            return $this->sendVerifyCode($payLoad,$code);
         }
         return false;
     }
@@ -422,8 +422,8 @@ class YouthProfileService
     public function resendCodeValidator(Request $request): Validator
     {
         $customMessage = [
-            "email.exists" => "The email is not exists in the system. [24000]",
-            "mobile.exists" => "The mobile is not exists in the system. [24000]"
+            "email.exists" => "The email does not exist in the system. [24000]",
+            "mobile.exists" => "The mobile does not exist in the system. [24000]"
         ];
 
         $rules = [
