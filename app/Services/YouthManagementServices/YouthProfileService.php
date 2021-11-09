@@ -11,11 +11,11 @@ use Carbon\Carbon;
 use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
@@ -97,7 +97,54 @@ class YouthProfileService
         $youthProfileBuilder->where('youths.id', '=', Auth::id());
         $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences", "youthCertifications", "youthPortfolios", "youthAddresses"]);
 
-        return $youthProfileBuilder->firstOrFail();
+        $profileInfo = $youthProfileBuilder->firstOrFail();
+
+        /** Calculate profile complete in percentage */
+        $totalFields = count(Youth::PROFILE_COMPLETE_FIELDS);
+        $filled = 0;
+        if($profileInfo){
+            foreach (Youth::PROFILE_COMPLETE_FIELDS as $field){
+                $value = json_decode(json_encode($profileInfo[$field]));
+                if(!empty($value)){
+                    $filled++;
+                }
+            }
+        }
+        $completedProfile = floor((100/$totalFields) * $filled);
+        $profileInfo->offsetSet('profile_completed',$completedProfile);
+
+        /** Calculate Total Job Experience */
+        $totalJobExperiencesInMonth = 0;
+        $totalExperience = [
+            "year" => 0,
+            "month" => 0
+        ];
+        if(!empty($profileInfo['youthJobExperiences'])){
+            $jobExperiences = json_decode(json_encode($profileInfo['youthJobExperiences']));
+            if(is_array($jobExperiences) && count($jobExperiences) > 0){
+                foreach ($jobExperiences as $key => $value){
+                    if($value->start_date){
+                        $startDate = Carbon::parse($value->start_date);
+                        if($value->end_date){
+                            $difference = $startDate->diffInMonths($value->end_date);
+                        } else {
+                            $currentDate = Carbon::now();
+                            $difference = $startDate->diffInMonths($currentDate);
+                        }
+                        $totalJobExperiencesInMonth += $difference;
+                    }
+                }
+            }
+        }
+        if($totalJobExperiencesInMonth > 0){
+            $year = floor($totalJobExperiencesInMonth/12);
+            $month = $totalJobExperiencesInMonth % 12;
+            $totalExperience["year"] = $year;
+            $totalExperience["month"] = $month;
+        }
+        $profileInfo['total_job_experience'] = $totalExperience;
+
+        return $profileInfo;
     }
 
     /**
@@ -209,17 +256,22 @@ class YouthProfileService
 
     /**
      * @param array $data
+     * @param string $code
      * @return bool
+     * @throws \Exception
      */
-    public function sendVerifyCode(array $data): bool
+    public function sendVerifyCode(array $data, string $code): bool
     {
         $email = $data["email"] ?? null;
         $mobile_number = $data["mobile"] ?? null;
+        $message = "Welcome to NISE-3. Your OTP code : " . $code;
         if ($email) {
             return true;
         }
         if ($mobile_number) {
-            return true;
+            if(sms()->send($mobile_number, $message)->is_successful()){
+                return true;
+            }
         }
         return false;
     }
@@ -235,7 +287,7 @@ class YouthProfileService
         $attributeField = $email ? "email" : "mobile";
         $payLoad[$attributeField] = $email ?: $mobile;
 
-        $code = $this->generateCode();
+        $code = generateOtp(4);
 
         /** @var Youth $youth */
         $youth = Youth::where($attributeField, $payLoad[$attributeField])
@@ -253,19 +305,11 @@ class YouthProfileService
     }
 
     /**
-     * @return string
-     */
-    public function generateCode(): string
-    {
-        return "1234";
-    }
-
-    /**
      * @param array $data
      * @return PromiseInterface|Response
      * @throws RequestException
      */
-    public function idpUserCreate(array $data): PromiseInterface|Response
+    public function idpUserCreate(array $data): PromiseInterface|Response|array
     {
         $url = clientUrl(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
         $payload = $this->prepareIdpPayload($data);
@@ -291,6 +335,10 @@ class YouthProfileService
 
     }
 
+    /**
+     * @param $data
+     * @return array
+     */
     private function prepareIdpPayload($data)
     {
         $cleanUserName = trim($data['username']);  // At present only email is selected as username from frontend team
@@ -367,6 +415,10 @@ class YouthProfileService
         return \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $customMessage);
     }
 
+    /**
+     * @param Request $request
+     * @return Validator
+     */
     public function resendCodeValidator(Request $request): Validator
     {
         $customMessage = [
@@ -562,22 +614,14 @@ class YouthProfileService
         return \Illuminate\Support\Facades\Validator::make($data, $rules);
     }
 
+    /**
+     * @param Request $request
+     * @param int|null $id
+     * @return Validator
+     */
     public function youthRegisterValidation(Request $request, int $id = null): Validator
     {
         $data = $request->all();
-
-        /*        $customMessage = [
-                    "password.regex" => [
-                        "message" => [
-                            "Have At least one Uppercase letter",
-                            "At least one Lower case letter",
-                            "Also,At least one numeric value",
-                            "And, At least one special character",
-                            "Must be more than 8 characters long"
-                        ]
-                    ]
-                ];
-        */
 
         if (!empty($data["skills"])) {
             $data["skills"] = isset($data['skills']) && is_array($data['skills']) ? $data['skills'] : explode(',', $data['skills']);
@@ -718,18 +762,18 @@ class YouthProfileService
 
     /**
      * @param string $id
-     * @return  Youth
+     * @return  Youth|null
      */
-    public function getAuthYouth(string $id): Youth
+    public function getAuthYouth(string $id): Youth|null
     {
-        /** @var Builder $youthBuilder */
-        $youthBuilder = Youth::where('idp_user_id', $id)
-            ->where("row_status", BaseModel::ROW_STATUS_ACTIVE);
-
-        return $youthBuilder->firstOrFail();
+        return Youth::where('idp_user_id', $id)
+            ->where("row_status", BaseModel::ROW_STATUS_ACTIVE)
+            ->first();
     }
 
     /**
+     * @param array $data
+     * @return array
      * @throws RequestException
      */
     public function getYouthEnrollCourses(array $data): array
@@ -751,6 +795,10 @@ class YouthProfileService
             ->json();
     }
 
+    /**
+     * @param Request $request
+     * @return Validator
+     */
     public function youthEnrollCoursesFilterValidator(Request $request): Validator
     {
         if ($request->filled('order')) {
@@ -783,15 +831,26 @@ class YouthProfileService
         return \Illuminate\Support\Facades\Validator::make($requestData, $rules, $customMessage);
     }
 
-    public function getYouthFeedStatisticsData(): array
+    /**
+     * @throws RequestException
+     */
+    public function getYouthFeedStatisticsData($youthId): array
     {
-        return [
-            'enrolled_courses' => 5,
-            'skill_matching_courses' => 50,
-            'total_courses' => 550,
-            'jobs_apply' => 320,
-            'total_jobs' => 2500,
-            'skill_matching_jobs' => 100,
-        ];
+        $url = clientUrl(BaseModel::INSTITUTE_URL_CLIENT_TYPE) . 'youth-feed-statistics/' . $youthId;
+        $skillIds = DB::table('youth_skills')->where('youth_id', $youthId)->pluck('skill_id')->toArray();
+        $skillIds = implode(",", $skillIds);
+        $urlWithSkillIds = $url . '?' . "skill_ids=" . $skillIds;
+        Log::info($urlWithSkillIds);
+        return Http::withOptions([
+            'verify' => config("nise3.should_ssl_verify"),
+            'debug' => config('nise3.http_debug'),
+            'timeout' => config("nise3.http_timeout")
+        ])
+            ->get($urlWithSkillIds)
+            ->throw(function ($response, $e) use ($url) {
+                Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . json_encode($response));
+                return $e;
+            })
+            ->json();
     }
 }

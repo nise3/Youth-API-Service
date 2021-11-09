@@ -279,17 +279,14 @@
                 "summary": "get_list",
                 "description": " API endpoint to get the list of Youth profile.A successful request response will show 200 HTTP status code",
                 "parameters": [
+
                     {
-                        "name": "nearby",
+                        "name": "search_text",
                         "in": "query",
                         "required": false,
-                        "description": "1=>nearby_true,0=>nearby_false ",
+                        "description": "Seach by text against these keys => first_name,first_name_en,last_name,last_name_en,division_title,division_title_en,district_title,district_title_en,upazilas_title,upazilas_title_en,skill_title,skill_title_en",
                         "schema": {
-                            "type": "integer",
-                            "enum": [
-                                1,
-                                0
-                            ]
+                            "type": "string"
                         }
                     },
                     {
@@ -350,23 +347,7 @@
                         }
                     },
                     {
-                        "name": "first_name_en",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "last_name",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "last_name_en",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -926,11 +907,11 @@
                                 "example": {
                                     "data": {
                                         "id": 1,
-                                        "username": "vwitting@example.com",
+                                        "username": "mrau@example.com",
                                         "user_name_type": 1,
-                                        "first_name": "Prof. Barbara Altenwerth DDS",
+                                        "first_name": "first_name",
                                         "first_name_en": null,
-                                        "last_name": "Prof. Barbara Altenwerth DDS",
+                                        "last_name": "last_name",
                                         "last_name_en": null,
                                         "loc_division_id": null,
                                         "division_title": null,
@@ -941,27 +922,32 @@
                                         "loc_upazila_id": null,
                                         "upazila_title": null,
                                         "upazila_title_en": null,
-                                        "gender": 2,
-                                        "is_freelance_profile": false,
+                                        "gender": 1,
                                         "religion": 1,
+                                        "is_freelance_profile": 0,
                                         "marital_status": 1,
                                         "nationality": 1,
-                                        "email": "vwitting@example.com",
-                                        "mobile": "01724643197",
-                                        "identity_number_type": 1,
-                                        "identity_number": "7865498709876",
-                                        "date_of_birth": "1987-01-06",
-                                        "freedom_fighter_status": 0,
-                                        "physical_disability_status": 0,
-                                        "does_belong_to_ethnic_group": 0,
+                                        "email": "dfvc@gmail.com",
+                                        "mobile": "01308899567",
+                                        "identity_number_type": null,
+                                        "identity_number": "34r343r3er3",
+                                        "date_of_birth": "2010-08-12T00:00:00.000000Z",
+                                        "freedom_fighter_status": 1,
+                                        "physical_disability_status": 1,
+                                        "does_belong_to_ethnic_group": 1,
                                         "bio": null,
                                         "bio_en": null,
                                         "photo": null,
                                         "cv_path": null,
                                         "signature_image_path": null,
                                         "row_status": 1,
-                                        "created_at": "2021-10-17T06:23:35.000000Z",
-                                        "updated_at": "2021-10-17T06:23:35.000000Z",
+                                        "created_at": "2021-10-24T12:22:44.000000Z",
+                                        "updated_at": "2021-10-25T17:03:12.000000Z",
+                                        "profile_completed": 100,
+                                        "total_job-experience": {
+                                            "year": 0,
+                                            "month": 2
+                                        },
                                         "physical_disabilities": [],
                                         "youth_languages_proficiencies": [
                                             {
@@ -1691,8 +1677,10 @@
                                     "freedom_fighter_status": {
                                         "type": "integer",
                                         "enum": [
-                                            1,2,3,4
-
+                                            1,
+                                            2,
+                                            3,
+                                            4
                                         ],
                                         "description": "1=>Non Freedom Fighter,2=>Freedom Fighter 3=>Child of Freedom Fighter 4=>Grand Child of Freedom Fighter",
                                         "default": 0
@@ -1799,15 +1787,12 @@
                                     "last_name",
                                     "does_belong_to_ethnic_group",
                                     "freedom_fighter_status",
-
                                     "nationality",
                                     "mobile",
                                     "skills",
                                     "physical_disability_status",
-
                                     "loc_division_id",
                                     "loc_district_id"
-
                                 ]
                             }
                         }
@@ -3791,7 +3776,10 @@
                         "schema": {
                             "type": "integer",
                             "enum": [
-                                0,1,2,3
+                                0,
+                                1,
+                                2,
+                                3
                             ]
                         }
                     }
@@ -3851,20 +3839,20 @@
         "/youth-feed-statistics": {
             "get": {
                 "summary": "Get youth feed statistics",
-                "description": "An Http method to get youth feed statistics. Asuccessful request response will return 200 status code\" ",
+                "description": "An Http method to get youth feed statistics. Successful request response will return 200 status code",
                 "responses": {
                     "200": {
-                        "description": "Successfull",
+                        "description": "Successful",
                         "content": {
                             "application/json": {
                                 "example": {
                                     "data": {
-                                        "enrolled_courses": 5,
-                                        "skill_matching_courses": 50,
-                                        "total_courses": 550,
-                                        "jobs_apply": 320,
-                                        "total_jobs": 2500,
-                                        "skill_matching_jobs": 100
+                                        "total_courses": 12,
+                                        "enrolled_courses": 8,
+                                        "skill_matching_courses": 2,
+                                        "applied_jobs": 0,
+                                        "total_jobs": 0,
+                                        "skill_matching_jobs": 0
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -3877,7 +3865,9 @@
                         }
                     }
                 },
-                "tags": ["youth feed statistics"]
+                "tags": [
+                    "youth feed statistics"
+                ]
             }
         },
         "/languages": {
@@ -3902,16 +3892,17 @@
                             "application/json": {
                                 "example": {
                                     "order": "ASC",
-                                    "data": [{
-                                        "id": 1,
-                                        "lang_code": "bn",
-                                        "title": "বাংলা",
-                                        "title_en": "Bengali",
-                                        "row_status": 1,
-                                        "created_at": null,
-                                        "updated_at": null,
-                                        "deleted_at": null
-                                    },
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "lang_code": "bn",
+                                            "title": "বাংলা",
+                                            "title_en": "Bengali",
+                                            "row_status": 1,
+                                            "created_at": null,
+                                            "updated_at": null,
+                                            "deleted_at": null
+                                        },
                                         {
                                             "id": 2,
                                             "lang_code": "en",
@@ -3921,7 +3912,8 @@
                                             "created_at": null,
                                             "updated_at": null,
                                             "deleted_at": null
-                                        }],
+                                        }
+                                    ],
                                     "_response_status": {
                                         "success": true,
                                         "code": 200,
@@ -3932,7 +3924,9 @@
                         }
                     }
                 },
-                "tags": ["Languages"]
+                "tags": [
+                    "Languages"
+                ]
             }
         }
     },
@@ -4089,9 +4083,11 @@
                             2,
                             3,
                             4,
-                            5
+                            5,
+                            6,
+                            7
                         ],
-                        "description": "1=>Father, 2=>Mother, 3=>Uncle, 4=>Aunt, 5=> Other"
+                        "description": "1 => Father, 2 => Mother, 3 => Brother, 4 => Sister, 5 => Uncle, 6 => Aunt, 7 => Other"
                     },
                     "relationship_title": {
                         "type": "string"
@@ -4700,7 +4696,8 @@
                             1,
                             2
                         ],
-                        "description": "1=>Email Type, 2=>Mobile Number"
+                        "description": "1=>Email Type, 2=>Mobile Number",
+                        "example": 2
                     },
                     "first_name": {
                         "type": "string",
@@ -5022,7 +5019,8 @@
                     }
                 },
                 "required": [
-                    "title"
+                    "title",
+                    "file_path"
                 ]
             },
             "jobExperience": {
@@ -5411,6 +5409,7 @@
                 "name": "row_status",
                 "in": "query",
                 "required": false,
+                "description": "1=>Active 0=>Inactive",
                 "schema": {
                     "type": "integer",
                     "enum": [

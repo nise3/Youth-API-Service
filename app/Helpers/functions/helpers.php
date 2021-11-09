@@ -59,6 +59,17 @@ if (!function_exists('formatApiResponse')) {
     }
 }
 
+if (!function_exists('generateOtp')) {
+    /**
+     * @param $digits
+     * @return int
+     */
+    function generateOtp(int $digits)
+    {
+        return rand(pow(10, $digits - 1), pow(10, $digits) - 1);
+    }
+}
+
 if (!function_exists("idpUserErrorMessage")) {
 
     /**
@@ -93,6 +104,12 @@ if (!function_exists("idpUserErrorMessage")) {
             {
                 $errors['_response_status']['code'] = ResponseAlias::HTTP_UNAUTHORIZED;
                 $errors['_response_status']['message'] = "HTTP 401 Unauthorized Error in IDP server";
+                return $errors;
+            }
+            case ResponseAlias::HTTP_CONFLICT:
+            {
+                $errors['_response_status']['code'] = ResponseAlias::HTTP_CONFLICT;
+                $errors['_response_status']['message'] = "Already exists";
                 return $errors;
             }
             case 0:

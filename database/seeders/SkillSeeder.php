@@ -158,6 +158,21 @@ class SkillSeeder extends Seeder
                 'id' => '28',
                 "title" => "কম্পিউটার প্রশিক্ষণ",
                 "title_en" => "Computer Training"
+            ],
+            [
+                'id' => '29',
+                "title" => "সাংগঠনিক সংস্কৃতি",
+                "title_en" => "Organizational Culture"
+            ],
+            [
+                'id' => '30',
+                "title" => "ব্যবসায়িক লেখা",
+                "title_en" => "Business Writing"
+            ],
+            [
+                'id' => '31',
+                "title" => "কুকিং",
+                "title_en" => "Cooking"
             ]
         ];
 

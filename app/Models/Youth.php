@@ -122,6 +122,9 @@ class Youth extends AuthBaseModel implements
         self::PASSPORT
     ];
 
+    /** Profile Complete Fields */
+    public const PROFILE_COMPLETE_FIELDS = ['email', 'mobile', 'identity_number', 'youthLanguagesProficiencies', 'youthPortfolios', 'youthEducations'];
+
     /**
      * @var string
      */
@@ -165,7 +168,12 @@ class Youth extends AuthBaseModel implements
      */
     public function youthLanguagesProficiencies(): HasMany
     {
-        return $this->hasMany(YouthLanguagesProficiency::class, 'youth_id', 'id');
+        return $this->hasMany(YouthLanguagesProficiency::class, 'youth_id', 'id')
+            ->leftJoin('languages', 'languages.id', '=', 'youth_languages_proficiencies.language_id')
+            ->select(['youth_languages_proficiencies.*',
+                'languages.title as language_title',
+                'languages.title_en as language_title_en'
+            ]);
     }
 
     /**
@@ -181,7 +189,21 @@ class Youth extends AuthBaseModel implements
      */
     public function youthEducations(): HasMany
     {
-        return $this->hasMany(YouthEducation::class, 'youth_id', 'id');
+        return $this->hasMany(YouthEducation::class, 'youth_id', 'id')
+            ->leftJoin('exam_degrees', 'exam_degrees.id', '=', 'youth_educations.exam_degree_id')
+            ->leftJoin('edu_groups', 'edu_groups.id', '=', 'youth_educations.edu_group_id')
+            ->leftJoin('edu_boards', 'edu_boards.id', '=', 'youth_educations.edu_board_id')
+            ->leftJoin('education_levels', 'education_levels.id', '=', 'youth_educations.education_level_id')
+            ->select(['youth_educations.*',
+                'exam_degrees.title as exam_degree_title',
+                'exam_degrees.title_en as exam_degree_title_en',
+                'edu_groups.title as edu_group_title',
+                'edu_groups.title_en as edu_group_title_en',
+                'edu_boards.title as edu_board_title',
+                'edu_boards.title_en as edu_board_title_en',
+                'education_levels.title as education_level_title',
+                'education_levels.title_en as education_level_title_en',
+            ]);
     }
 
 
@@ -206,7 +228,17 @@ class Youth extends AuthBaseModel implements
      */
     public function youthAddresses(): HasMany
     {
-        return $this->hasMany(YouthAddress::class, 'youth_id', 'id');
+        return $this->hasMany(YouthAddress::class, 'youth_id', 'id')
+            ->leftJoin('loc_divisions', 'loc_divisions.id', '=', 'youth_addresses.loc_division_id')
+            ->leftJoin('loc_districts', 'loc_districts.id', '=', 'youth_addresses.loc_district_id')
+            ->leftJoin('loc_upazilas', 'loc_upazilas.id', '=', 'youth_addresses.loc_upazila_id')
+            ->select(['youth_addresses.*',
+                'loc_divisions.title as loc_division_title',
+                'loc_divisions.title_en as loc_division_title_en',
+                'loc_districts.title as loc_district_title',
+                'loc_districts.title_en as loc_district_title_en',
+                'loc_upazilas.title as loc_upazila_title',
+                'loc_upazilas.title_en as loc_upazila_tile_en']);
     }
 
     /**
