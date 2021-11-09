@@ -42,7 +42,7 @@ class YouthCertificationPolicy extends BasePolicy
      */
     public function create(Youth $user): bool
     {
-        return $user != null;
+        return $this->isUserLoggedIn($user);
     }
 
     /**
@@ -54,8 +54,7 @@ class YouthCertificationPolicy extends BasePolicy
      */
     public function update(Youth $user, YouthCertification $youthCertification) : bool
     {
-        Log::debug($youthCertification);
-        return $user->id == $youthCertification->youth_id;
+        return $this->isOwner($user,$youthCertification->youth_id);
     }
 
     /**
@@ -67,6 +66,6 @@ class YouthCertificationPolicy extends BasePolicy
      */
     public function delete(Youth $user, YouthCertification $youthCertification) : bool
     {
-        return $user->id == $youthCertification->youth_id;
+        return $this->isOwner($user,$youthCertification->youth_id);
     }
 }
