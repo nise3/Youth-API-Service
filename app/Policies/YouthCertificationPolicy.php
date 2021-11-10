@@ -14,7 +14,7 @@ class YouthCertificationPolicy extends BasePolicy
      * @param Youth $youth
      * @return Response
      */
-    public function viewAny(Youth $youth)
+    public function viewAny(Youth $youth): Response
     {
         // Example: return Response::deny('You do not own this post.');
         Log::debug('-----------------------');
@@ -29,7 +29,7 @@ class YouthCertificationPolicy extends BasePolicy
      * @param YouthCertification $youthCertification
      * @return Response
      */
-    public function view(Youth $user, YouthCertification $youthCertification)
+    public function view(Youth $user, YouthCertification $youthCertification): Response
     {
         return Response::allow();
     }
@@ -38,7 +38,7 @@ class YouthCertificationPolicy extends BasePolicy
      * Determine whether the user can create youthCertifications.
      *
      * @param Youth $user
-     * @return Response
+     * @return bool
      */
     public function create(Youth $user): bool
     {
@@ -50,7 +50,7 @@ class YouthCertificationPolicy extends BasePolicy
      *
      * @param Youth $user
      * @param YouthCertification $youthCertification
-     * @return Response
+     * @return bool
      */
     public function update(Youth $user, YouthCertification $youthCertification) : bool
     {
@@ -62,7 +62,7 @@ class YouthCertificationPolicy extends BasePolicy
      *
      * @param Youth $user
      * @param YouthCertification $youthCertification
-     * @return Response
+     * @return bool
      */
     public function delete(Youth $user, YouthCertification $youthCertification) : bool
     {
