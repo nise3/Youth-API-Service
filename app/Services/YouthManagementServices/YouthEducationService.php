@@ -359,7 +359,7 @@ class YouthEducationService
                 }),
                 'nullable',
                 'exists:edu_groups,id,deleted_at,NULL',
-                'unique_with:youth_educations,exam_degree_id,,deleted_at,' . $id,
+                'unique_with:youth_educations,exam_degree_id,youth_id,deleted_at,' . $id,
                 "integer"
             ],
             'edu_board_id' => [
