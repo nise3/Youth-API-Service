@@ -33,6 +33,7 @@ class YouthService
     {
         $firstName = $request['first_name'] ?? "";
         $lastName = $request['last_name'] ?? "";
+        $email = $request['email'] ?? "";
         $searchText = $request['search_text'] ?? "";
         $isFreelanceProfile = $request['is_freelance_profile'] ?? "";
         $locDistrictId = $request['loc_district_id'] ?? "";
@@ -110,6 +111,10 @@ class YouthService
 
         if (!empty($lastName)) {
             $youthBuilder->where('youths.last_name', 'like', '%' . $lastName . '%');
+        }
+
+        if (!empty($email)) {
+            $youthBuilder->where('youths.email', 'like', '%' . $email . '%');
         }
 
         if (is_numeric($isFreelanceProfile)) {
@@ -329,6 +334,7 @@ class YouthService
         $rules = [
             'first_name' => 'nullable|string|max:300|min:2',
             'last_name' => 'nullable|string|max:300|min:2',
+            'email' => 'nullable|string|min:2',
             'search_text' => 'nullable|string|max:150|min:2',
             'is_freelance_profile' => [
                 'nullable',
