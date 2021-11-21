@@ -279,12 +279,19 @@
                 "summary": "get_list",
                 "description": " API endpoint to get the list of Youth profile.A successful request response will show 200 HTTP status code",
                 "parameters": [
-
                     {
                         "name": "search_text",
                         "in": "query",
                         "required": false,
                         "description": "Seach by text against these keys => first_name,first_name_en,last_name,last_name_en,division_title,division_title_en,district_title,district_title_en,upazilas_title,upazilas_title_en,skill_title,skill_title_en",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }
