@@ -384,11 +384,12 @@ class YouthService
     }
 
 
-    public function updateYouthProfileAfterCourseEnroll(Request $request)
+    public function updateYouthProfileAfterCourseEnroll($request)
     {
+        $dddd = json_decode(json_encode($request), true);
         try {
             DB::beginTransaction();
-            $data = $request->all();
+            $data = $dddd['courseEnrollment'];
             Log::info('update Youth Profile After Course Enroll function call');
             if (!empty($data["physical_disabilities"])) {
                 $data["physical_disabilities"] = isset($data['physical_disabilities']) && is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
