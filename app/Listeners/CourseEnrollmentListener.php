@@ -13,6 +13,7 @@ class CourseEnrollmentListener implements ShouldQueue
 
     public function __construct(YouthService $youthService)
     {
+        Log::info("pppppppppppppppppppppp course enrollment controller");
         $this->youthService = $youthService;
     }
 
