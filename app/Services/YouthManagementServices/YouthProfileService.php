@@ -291,7 +291,7 @@ class YouthProfileService
 
         /** @var Youth $youth */
         $youth = Youth::where($attributeField, $payLoad[$attributeField])
-            ->where("row_status", BaseModel::ROW_STATUS_INACTIVE)
+            ->where("row_status", BaseModel::ROW_STATUS_PENDING)
             ->first();
 
         if ($youth) {
