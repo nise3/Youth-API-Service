@@ -431,12 +431,14 @@ class YouthProfileService
                 Rule::requiredIf(function () use ($request) {
                     return !$request->exists('mobile');
                 }),
+                'nullable',
                 "exists:youths,email,deleted_at,NULL"
             ],
             "mobile" => [
                 Rule::requiredIf(function () use ($request) {
                     return !$request->exists('email');
                 }),
+                'nullable',
                 "exists:youths,mobile,deleted_at,NULL"
             ],
         ];
