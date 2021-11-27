@@ -50,6 +50,9 @@ return [
                     'exchange_routing_key' => env('EXCHANGE_ROUTING_KEY','nise3.routing.key'),
                     'prioritize_delayed_messages' =>  false,
                     'queue_max_priority' => 10,
+                    'enable_retry_limit' => env('RABBITMQ_ENABLE_RETRY_LIMIT', true),
+                    'dlx_x_death_limit' => env('RABBITMQ_DLX_X_DEATH_LIMIT', 5),
+                    'error_exchange_name' => env('RABBITMQ_ERROR_EXCHANGE_NAME', 'nise3.error.exchange')
                 ],
                 'exchange' => [
                     'name' => env('RABBITMQ_EXCHANGE_NAME','nise3.exchange'),
