@@ -158,10 +158,9 @@ class YouthService
             /** Search youth by skill IDs */
             if(is_array($skillIds) && count($skillIds) > 0){
                 $youthBuilder->whereIn('youth_skills.skill_id', $skillIds);
-                $youthBuilder->groupBy('youths.id');
             }
-
         }
+        $youthBuilder->groupBy('youths.id');
 
         /** @var Collection $youths */
         if (is_numeric($paginate) || is_numeric($pageSize)) {

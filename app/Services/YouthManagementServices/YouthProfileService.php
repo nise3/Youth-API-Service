@@ -291,7 +291,7 @@ class YouthProfileService
 
         /** @var Youth $youth */
         $youth = Youth::where($attributeField, $payLoad[$attributeField])
-            ->where("row_status", BaseModel::ROW_STATUS_INACTIVE)
+            ->where("row_status", BaseModel::ROW_STATUS_PENDING)
             ->first();
 
         if ($youth) {
@@ -431,12 +431,14 @@ class YouthProfileService
                 Rule::requiredIf(function () use ($request) {
                     return !$request->exists('mobile');
                 }),
+                'nullable',
                 "exists:youths,email,deleted_at,NULL"
             ],
             "mobile" => [
                 Rule::requiredIf(function () use ($request) {
                     return !$request->exists('email');
                 }),
+                'nullable',
                 "exists:youths,mobile,deleted_at,NULL"
             ],
         ];
