@@ -100,4 +100,6 @@ abstract class BaseModel extends Model
 
     public const DEFAULT_PAGE_SIZE = 10;
 
+    public const SELF_EXCHANGE = 'youth';
+
 }

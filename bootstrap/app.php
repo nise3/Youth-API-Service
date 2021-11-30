@@ -65,6 +65,7 @@ $app->configure('nise3');
 $app->configure('httpclientendpoint');
 $app->configure('sms');
 $app->configure('queue');
+$app->configure('nise3RabbitMq');
 
 /*
 |--------------------------------------------------------------------------

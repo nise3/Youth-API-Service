@@ -2,6 +2,8 @@
 
 namespace App\Services\YouthManagementServices;
 
+use App\Events\CourseEnrollmentSuccessEvent;
+use App\Events\MailSendEvent;
 use App\Models\BaseModel;
 use App\Models\EduBoard;
 use App\Models\EducationLevel;
@@ -388,13 +390,15 @@ class YouthService
         ];
     }
 
-
-    public function updateYouthProfileAfterCourseEnroll($request)
+    /**
+     * @param array $event
+     * @return bool
+     */
+    public function updateYouthProfileAfterCourseEnroll(array $event): bool
     {
-        $dddd = json_decode(json_encode($request), true);
         try {
             DB::beginTransaction();
-            $data = $dddd['courseEnrollment'];
+            $data = $event['courseEnrollment'];
             Log::info('update Youth Profile After Course Enroll function call');
             if (!empty($data["physical_disabilities"])) {
                 $data["physical_disabilities"] = isset($data['physical_disabilities']) && is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
@@ -410,13 +414,32 @@ class YouthService
                 $this->updateYouthPhysicalDisabilities($data, $youth);
 
                 DB::commit();
+                Log::info("Anisss");
+
+                /** Trigger EVENT to Institute Service via RabbitMQ  */
+                event(new CourseEnrollmentSuccessEvent($event));
+
+                /** Trigger EVENT to MailSms Service to send Mail via RabbitMQ */
+                event(new MailSendEvent($event));
+
+                /** Store the event into Database */
+                /*$exchange = $job->getRabbitMQMessage();
+                Log::info("Message paiciccccccccccccccc ccccccccccccccc");
+                Log::info(json_encode($exchange));*/
+                /*$sagaEventPayload = [
+                    'uuid' => $event['uuid'],
+                    'connection' => 'rabbitMq',
+                    ''
+                ];
+                $sagaEvent = app(SagaEvent::class);
+                $sagaEvent->fill();*/
+
                 return true;
             }
         } catch (\Exception $e) {
             DB::rollBack();
             Log::debug($e->getMessage());
         }
-
 
         return false;
     }
