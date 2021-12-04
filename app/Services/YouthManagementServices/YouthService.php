@@ -393,15 +393,15 @@ class YouthService
     }
 
     /**
-     * @param array $event
+     * @param array $eventData
      * @param array $sagaPayload
      * @return bool
      */
-    public function updateYouthProfileAfterCourseEnroll(array $event, array $sagaPayload): bool
+    public function updateYouthProfileAfterCourseEnroll(array $eventData, array $sagaPayload): bool
     {
         try {
             DB::beginTransaction();
-            $data = $event['courseEnrollment'];
+            $data = $eventData['courseEnrollment'];
             Log::info('update Youth Profile After Course Enroll function call');
             if (!empty($data["physical_disabilities"])) {
                 $data["physical_disabilities"] = isset($data['physical_disabilities']) && is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
@@ -419,7 +419,7 @@ class YouthService
                 DB::commit();
 
                 /** Trigger EVENT to Institute Service via RabbitMQ */
-                event(new CourseEnrollmentSuccessEvent($event));
+                event(new CourseEnrollmentSuccessEvent($eventData));
 
                 /** Trigger EVENT to MailSms Service to send Mail via RabbitMQ */
                 //TODO: Need to trigger MAIL service for Mail Event Firing
