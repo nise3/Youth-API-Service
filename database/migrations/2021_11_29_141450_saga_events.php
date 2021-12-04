@@ -16,10 +16,12 @@ class SagaEvents extends Migration
         Schema::create('saga_events', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
-            $table->text('connection');
-            $table->text('exchange');
-            $table->text('queue');
-            $table->text('listener');
+            $table->string('connection');
+            $table->string('publisher');
+            $table->string('listener');
+            $table->string('exchange');
+            $table->string('routing_key');
+            $table->string('consumer');
             $table->longText('payload');
             $table->timestamps();
         });

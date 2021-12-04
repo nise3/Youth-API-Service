@@ -394,9 +394,10 @@ class YouthService
 
     /**
      * @param array $event
+     * @param array $sagaPayload
      * @return bool
      */
-    public function updateYouthProfileAfterCourseEnroll(array $event): bool
+    public function updateYouthProfileAfterCourseEnroll(array $event, array $sagaPayload): bool
     {
         try {
             DB::beginTransaction();
@@ -421,19 +422,13 @@ class YouthService
                 event(new CourseEnrollmentSuccessEvent($event));
 
                 /** Trigger EVENT to MailSms Service to send Mail via RabbitMQ */
-//                event(new MailSendEvent($event));
+                //TODO: Need to trigger MAIL service for Mail Event Firing
 
                 /** Store the event into Database */
-                /*Log::info("Message paiciccccccccccccccc ccccccccccccccc 11111");
-
-                $message = "";
-                $sagaEventPayload = [
-                    'uuid' => $event['uuid'],
-                    'connection' => 'rabbitMq',
-                    ''
-                ];
                 $sagaEvent = app(SagaEvent::class);
-                $sagaEvent->fill();*/
+                Log::info(json_encode($sagaPayload));
+                $sagaEvent->fill($sagaPayload);
+                $sagaEvent->save();
 
                 return true;
             }

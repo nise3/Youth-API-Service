@@ -3,39 +3,46 @@
 use \App\Models\BaseModel;
 
 return [
-    'exchangeType' => [
-        'direct' => 'direct',
-        'topic' => 'topic',
-        'fanout' => 'fanout',
-        'headers' => 'headers'
-    ],
     'exchanges' => [
-        BaseModel::SELF_EXCHANGE => [
-            'name' => BaseModel::SELF_EXCHANGE.'.x',
+        'institute' => [
+            'name' => 'institute.x',
             'type' => 'topic',
             'durable' => true,
             'autoDelete' => false,
             'alternateExchange' => [
-                'name' => BaseModel::SELF_EXCHANGE.'.alternate.x',
+                'name' => 'institute.alternate.x',
                 'type' => 'fanout',
-                'queue' => BaseModel::SELF_EXCHANGE.'.alternate.q'
-            ],
-            'dlx' => [
-                'name' => BaseModel::SELF_EXCHANGE.'.dlx',
-                'type' => 'fanout',
-                'dlq' => BaseModel::SELF_EXCHANGE.'.dlq',
-                'x_message_ttl' => 120000
+                'queue' => 'institute.alternate.q'
             ],
             'queue' => [
                 'courseEnrollment' => [
-                    'name' => BaseModel::SELF_EXCHANGE.'.course.enrollment.q',
-                    'binding' => BaseModel::SELF_EXCHANGE.'.course.enrollment',
+                    'name' => 'institute.course.enrollment.q',
+                    'binding' => 'institute.course.enrollment',
                     'durable' => true,
                     'autoDelete' => false
                 ]
             ],
         ],
-        'mailSmsExchange' => [
+        'youth' => [
+            'name' => 'youth.x',
+            'type' => 'topic',
+            'durable' => true,
+            'autoDelete' => false,
+            'alternateExchange' => [
+                'name' => 'youth.alternate.x',
+                'type' => 'fanout',
+                'queue' => 'youth.alternate.q'
+            ],
+            'queue' => [
+                'courseEnrollment' => [
+                    'name' => 'youth.course.enrollment.q',
+                    'binding' => 'youth.course.enrollment',
+                    'durable' => true,
+                    'autoDelete' => false
+                ]
+            ],
+        ],
+        'mailSms' => [
             'name' => 'mail.sms.x',
             'type' => 'topic',
             'durable' => true,
@@ -67,5 +74,5 @@ return [
             ]
         ]
     ],
-    'consume' => 'institute.course.enrollment.q'
+    'consume' => 'youth.course.enrollment.q'
 ];

@@ -3,7 +3,10 @@
 namespace App\Services;
 
 use App\Models\BaseModel;
+use App\Models\SagaEvent;
+use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Exception\AMQPProtocolChannelException;
+use VladimirYuldashev\LaravelQueueRabbitMQ\Helpers\RabbitMQ;
 use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue;
 
 class RabbitMQService
@@ -188,5 +191,52 @@ class RabbitMQService
         } else {
             $this->createQueueAndBindWithoutRetry($queue, $payload);
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getRabbitMqMessage(): array {
+        $rabbitMq = app(RabbitMQ::class);
+        $rabbitMqJob = $rabbitMq->getRabbitMqJob();
+        return json_decode(json_encode($rabbitMqJob->getRabbitMQMessage()), true);
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkWeatherEventAlreadyConsumed(): bool {
+        $uuid = $this->getRabbitMqMessageUuid();
+
+        /** @var SagaEvent $sagaEvent */
+        $sagaEvent = SagaEvent::where('uuid', $uuid)->first();
+        return (bool) $sagaEvent;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRabbitMqMessageUuid(): string {
+        $message = $this->getRabbitMqMessage();
+        $messageBody = $message['body'] ? json_decode($message['body'], true) : "";
+        return $messageBody['uuid'] ?? "";
+    }
+
+    /**
+     * @return string
+     */
+    public function getRabbitMqMessageExchange(): string {
+        $message = $this->getRabbitMqMessage();
+        $messageDeliveryInfo = $message['delivery_info'] ?? "";
+        return $messageDeliveryInfo['exchange'] ?? "";
+    }
+
+    /**
+     * @return string
+     */
+    public function getRabbitMqMessageRoutingKey(): string {
+        $message = $this->getRabbitMqMessage();
+        $messageDeliveryInfo = $message['delivery_info'] ?? "";
+        return $messageDeliveryInfo['routing_key'] ?? "";
     }
 }
