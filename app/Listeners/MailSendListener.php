@@ -4,10 +4,15 @@ namespace App\Listeners;
 
 use App\Services\RabbitMQService;
 use Exception;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
+use PhpAmqpLib\Connection\AMQPLazyConnection;
 use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Connectors\RabbitMQConnector;
+use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue;
 
-class MailSendListener implements ShouldQueue
+class MailSendListener implements ShouldQueue, ShouldBeUnique
 {
     private RabbitMQConnector $connector;
     private RabbitMQService $rabbitmqService;
@@ -28,9 +33,6 @@ class MailSendListener implements ShouldQueue
      */
     private function publishEvent(): void
     {
-        $config = config('queue.connections.rabbitmq');
-        $queue = $this->connector->connect($config);
-
         /** Alternate Exchange related variables */
         $alternateExchange = config('nise3RabbitMq.exchanges.mailSmsExchange.alternateExchange.name');
         $alternateExchangeType = config('nise3RabbitMq.exchanges.mailSmsExchange.alternateExchange.type');
@@ -52,6 +54,26 @@ class MailSendListener implements ShouldQueue
         $dlxType = config('nise3RabbitMq.exchanges.mailSmsExchange.dlx.type');
         $dlq = config('nise3RabbitMq.exchanges.mailSmsExchange.dlx.dlq');
         $messageTtl = config('nise3RabbitMq.exchanges.mailSmsExchange.dlx.x_message_ttl');
+
+        /** Set Config to publish the event message */
+        config([
+            'queue.connections.rabbitmq.options.exchange.name' => $exchange,
+            'queue.connections.rabbitmq.options.queue.exchange' => $exchange,
+            'queue.connections.rabbitmq.options.exchange.type' => $type,
+            'queue.connections.rabbitmq.options.queue.exchange_type' => $type,
+            'queue.connections.rabbitmq.options.queue.exchange_routing_key' => $binding,
+        ]);
+
+        Log::info("bbbbbbbbbbbbbbbBBBBBBBBBBBBB");
+        Log::info(config('queue.connections.rabbitmq.options.queue.exchange_routing_key'));
+
+        $config = config('queue.connections.rabbitmq');
+        $queue = $this->connector->connect($config);
+
+        Log::info("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT 2");
+        Log::info(json_encode($queue));
+
+
 
         /** Create Alternate Exchange, Queue and Bind Queue for Mail-SMS Exchange */
         $payload = [
@@ -80,14 +102,9 @@ class MailSendListener implements ShouldQueue
         ];
         $this->rabbitmqService->createExchangeQueueAndBind($queue, $payload, true);
 
-        /** Set Config to publish the event message */
-        config([
-            'queue.connections.rabbitmq.options.exchange.name' => $exchange,
-            'queue.connections.rabbitmq.options.queue.exchange' => $exchange,
-            'queue.connections.rabbitmq.options.exchange.type' => $type,
-            'queue.connections.rabbitmq.options.queue.exchange_type' => $type,
-            'queue.connections.rabbitmq.options.queue.exchange_routing_key' => $binding,
-        ]);
+
+
+
     }
 
     public function handle($event)

@@ -5,9 +5,14 @@ namespace App\Listeners;
 use App\Models\BaseModel;
 use App\Services\RabbitMQService;
 use Exception;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
+use PhpAmqpLib\Connection\AMQPLazyConnection;
 use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Connectors\RabbitMQConnector;
+use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue;
 
 class CourseEnrollmentSuccessToInstituteListener implements ShouldQueue
 {
@@ -30,9 +35,6 @@ class CourseEnrollmentSuccessToInstituteListener implements ShouldQueue
      */
     private function publishEvent(): void
     {
-        $config = config('queue.connections.rabbitmq');
-        $queue = $this->connector->connect($config);
-
         /** Exchange Queue related variables */
         $exchange = config('nise3RabbitMq.exchanges.'.BaseModel::SELF_EXCHANGE.'.name');
         $type = config('nise3RabbitMq.exchanges.'.BaseModel::SELF_EXCHANGE.'.type');
@@ -40,6 +42,18 @@ class CourseEnrollmentSuccessToInstituteListener implements ShouldQueue
         $autoDelete = config('nise3RabbitMq.exchanges.'.BaseModel::SELF_EXCHANGE.'.autoDelete');
         $queueName = config('nise3RabbitMq.exchanges.'.BaseModel::SELF_EXCHANGE.'.queue.courseEnrollment.name');
         $binding = config('nise3RabbitMq.exchanges.'.BaseModel::SELF_EXCHANGE.'.queue.courseEnrollment.binding');
+
+        /** Set Config to publish the event message */
+        config([
+            'queue.connections.rabbitmq.options.exchange.name' => $exchange,
+            'queue.connections.rabbitmq.options.queue.exchange' => $exchange,
+            'queue.connections.rabbitmq.options.exchange.type' => $type,
+            'queue.connections.rabbitmq.options.queue.exchange_type' => $type,
+            'queue.connections.rabbitmq.options.queue.exchange_routing_key' => $binding,
+        ]);
+
+        $config = config('queue.connections.rabbitmq');
+        $queue = $this->connector->connect($config);
 
         /** Create all common entities in RabbitMQ server If they don't exist */
         $this->rabbitmqService->createRabbitMQCommonEntities($queue);
@@ -54,28 +68,18 @@ class CourseEnrollmentSuccessToInstituteListener implements ShouldQueue
         ];
         $this->rabbitmqService->createQueueAndBindWithoutRetry($queue, $payload);
 
-        /** Set Config to publish the event message */
-
-//        Artisan::call('cache:clear');
-//        Artisan::call('php artisan env:set EXCHANGE_ROUTING_KEY aaaaaaaaaaaaaaaaaaaaa');
-
-        config([
-            'queue.connections.rabbitmq.options.exchange.name' => $exchange,
-            'queue.connections.rabbitmq.options.queue.exchange' => $exchange,
-            'queue.connections.rabbitmq.options.exchange.type' => $type,
-            'queue.connections.rabbitmq.options.queue.exchange_type' => $type,
-            'queue.connections.rabbitmq.options.queue.exchange_routing_key' => 'aaaaaaaaaaaaaaaaaaaaaaaaaaa',
-        ]);
-
-            Log::info(config('queue.connections.rabbitmq.options.exchange.name'));
-            Log::info(config('queue.connections.rabbitmq.options.queue.exchange'));
-            Log::info(config('queue.connections.rabbitmq.options.exchange.type'));
-            Log::info(config('queue.connections.rabbitmq.options.queue.exchange_type'));
-            Log::info(config('queue.connections.rabbitmq.options.queue.exchange_routing_key'));
+        Log::info(config('queue.connections.rabbitmq.options.exchange.name'));
+        Log::info(config('queue.connections.rabbitmq.options.queue.exchange'));
+        Log::info(config('queue.connections.rabbitmq.options.exchange.type'));
+        Log::info(config('queue.connections.rabbitmq.options.queue.exchange_type'));
+        Log::info(config('queue.connections.rabbitmq.options.queue.exchange_routing_key'));
     }
 
     public function handle($event)
     {
-
+        Log::info("First Anis");
+        $event = [
+            "First" => "Anis"
+        ];
     }
 }

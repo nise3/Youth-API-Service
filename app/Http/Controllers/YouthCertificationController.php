@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CourseEnrollmentSuccessEvent;
+use App\Events\MailSendEvent;
 use App\Models\YouthCertification;
 use App\Services\YouthManagementServices\YouthCertificationService;
 use Carbon\Carbon;
@@ -105,6 +107,11 @@ class YouthCertificationController extends Controller
 
         $validated = $this->certificationService->validator($request)->validate();
         $certification = $this->certificationService->store($validated);
+
+        /** Trigger event to RabbitMQ */
+        event(new CourseEnrollmentSuccessEvent($validated));
+        event(new MailSendEvent($validated));
+
         $response = [
             'data' => $certification,
             '_response_status' => [
