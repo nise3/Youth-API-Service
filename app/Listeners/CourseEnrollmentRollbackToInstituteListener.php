@@ -8,15 +8,15 @@ use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Connectors\RabbitMQConnector;
 
-class SmsSendListener implements ShouldQueue
+class CourseEnrollmentRollbackToInstituteListener implements ShouldQueue
 {
     private RabbitMQConnector $connector;
     private RabbitMQService $rabbitmqService;
 
     /** Set rabbitmq config where this event is going to publish */
-    private const EXCHANGE_CONFIG_NAME = 'mailSms';
-    private const QUEUE_CONFIG_NAME = 'sms';
-    private const RETRY_MECHANISM = true;
+    private const EXCHANGE_CONFIG_NAME = 'institute';
+    private const QUEUE_CONFIG_NAME = 'courseEnrollment';
+    private const RETRY_MECHANISM = false;
 
     /**
      * @throws Exception

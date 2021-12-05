@@ -2,20 +2,21 @@
 
 namespace App\Listeners;
 
+use App\Helpers\Classes\RabbitMQ;
 use App\Services\RabbitMQService;
 use Exception;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
-use PhpAmqpLib\Connection\AMQPLazyConnection;
 use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Connectors\RabbitMQConnector;
-use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue;
 
-class MailSendListener implements ShouldQueue, ShouldBeUnique
+class MailSendListener implements ShouldQueue
 {
     private RabbitMQConnector $connector;
     private RabbitMQService $rabbitmqService;
+
+    /** Set rabbitmq config where this event is going to publish */
+    private const EXCHANGE_CONFIG_NAME = 'mailSms';
+    private const QUEUE_CONFIG_NAME = 'mail';
+    private const RETRY_MECHANISM = true;
 
     /**
      * @throws Exception
@@ -24,90 +25,16 @@ class MailSendListener implements ShouldQueue, ShouldBeUnique
     {
         $this->connector = $connector;
         $this->rabbitmqService = $rabbitmqService;
-        $this->publishEvent();
+        RabbitMQ::publishEvent(
+            $this->connector,
+            $this->rabbitmqService,
+            self::EXCHANGE_CONFIG_NAME,
+            self::QUEUE_CONFIG_NAME,
+            self::RETRY_MECHANISM
+        );
     }
 
-    /**
-     * @throws Exception
-     * @return void
-     */
-    private function publishEvent(): void
-    {
-        /** Alternate Exchange related variables */
-        $alternateExchange = config('nise3RabbitMq.exchanges.mailSmsExchange.alternateExchange.name');
-        $alternateExchangeType = config('nise3RabbitMq.exchanges.mailSmsExchange.alternateExchange.type');
-        $alternateQueue = config('nise3RabbitMq.exchanges.mailSmsExchange.alternateExchange.queue');
-
-        /** Exchange Queue related variables */
-        $exchange = config('nise3RabbitMq.exchanges.mailSmsExchange.name');
-        $type = config('nise3RabbitMq.exchanges.mailSmsExchange.type');
-        $durable = config('nise3RabbitMq.exchanges.mailSmsExchange.durable');
-        $autoDelete = config('nise3RabbitMq.exchanges.mailSmsExchange.autoDelete');
-        $exchangeArguments = [
-            'alternate-exchange' => $alternateExchange
-        ];
-        $queueName = config('nise3RabbitMq.exchanges.mailSmsExchange.queue.mail.name');
-        $binding = config('nise3RabbitMq.exchanges.mailSmsExchange.queue.mail.binding');
-
-        /** DlX-DLQ related variables */
-        $dlx = config('nise3RabbitMq.exchanges.mailSmsExchange.dlx.name');
-        $dlxType = config('nise3RabbitMq.exchanges.mailSmsExchange.dlx.type');
-        $dlq = config('nise3RabbitMq.exchanges.mailSmsExchange.dlx.dlq');
-        $messageTtl = config('nise3RabbitMq.exchanges.mailSmsExchange.dlx.x_message_ttl');
-
-        /** Set Config to publish the event message */
-        config([
-            'queue.connections.rabbitmq.options.exchange.name' => $exchange,
-            'queue.connections.rabbitmq.options.queue.exchange' => $exchange,
-            'queue.connections.rabbitmq.options.exchange.type' => $type,
-            'queue.connections.rabbitmq.options.queue.exchange_type' => $type,
-            'queue.connections.rabbitmq.options.queue.exchange_routing_key' => $binding,
-        ]);
-
-        Log::info("bbbbbbbbbbbbbbbBBBBBBBBBBBBB");
-        Log::info(config('queue.connections.rabbitmq.options.queue.exchange_routing_key'));
-
-        $config = config('queue.connections.rabbitmq');
-        $queue = $this->connector->connect($config);
-
-        Log::info("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT 2");
-        Log::info(json_encode($queue));
-
-
-
-        /** Create Alternate Exchange, Queue and Bind Queue for Mail-SMS Exchange */
-        $payload = [
-            'exchange' => $alternateExchange,
-            'type' => $alternateExchangeType,
-            'durable' => true,
-            'autoDelete' => false,
-            'queueName' => $alternateQueue,
-            'binding' => ""
-        ];
-        $this->rabbitmqService->createExchangeQueueAndBind($queue, $payload, false);
-
-        /** Create Exchange, Queue and Bind Queue with Retry by using DLX-DLQ for RETRY mechanism */
-        $payload = [
-            'exchange' => $exchange,
-            'type' => $type,
-            'durable' => $durable,
-            'autoDelete' => $autoDelete,
-            'exchangeArguments' => $exchangeArguments,
-            'queueName' => $queueName,
-            'binding' => $binding,
-            'dlx' => $dlx,
-            'dlxType' => $dlxType,
-            'dlq' => $dlq,
-            'messageTtl' => $messageTtl
-        ];
-        $this->rabbitmqService->createExchangeQueueAndBind($queue, $payload, true);
-
-
-
-
-    }
-
-    public function handle($event)
+    public function handle()
     {
 
     }

@@ -4,13 +4,14 @@ namespace App\Events;
 
 class SmsSendEvent
 {
+    private array $data;
     /**
-     * Create a new SMS event instance.
+     * Create a new Email event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(array $data)
     {
-
+        $this->data = $data;
     }
 }

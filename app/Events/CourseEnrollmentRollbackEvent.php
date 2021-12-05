@@ -2,11 +2,12 @@
 
 namespace App\Events;
 
-class MailSendEvent
+class CourseEnrollmentRollbackEvent
 {
     private array $data;
+
     /**
-     * Create a new Email event instance.
+     * Create a new event instance.
      *
      * @return void
      */

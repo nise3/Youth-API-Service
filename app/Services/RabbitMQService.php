@@ -84,7 +84,7 @@ class RabbitMQService
      * @return void
      * @throws AMQPProtocolChannelException
      */
-    public function createQueueAndBindWithoutRetry(RabbitMQQueue $queue, array $payload)
+    public function createQueueAndBindWithoutRetry(RabbitMQQueue $queue, array $payload): void
     {
         /** Exchange Queue related variables */
         $exchange = $payload['exchange'];
@@ -112,7 +112,7 @@ class RabbitMQService
      * @return void
      * @throws AMQPProtocolChannelException
      */
-    public function createQueueAndBindWithRetry(RabbitMQQueue $queue, array $payload)
+    public function createQueueAndBindWithRetry(RabbitMQQueue $queue, array $payload): void
     {
         /** Exchange Queue related variables */
         $exchange = $payload['exchange'];
@@ -171,7 +171,7 @@ class RabbitMQService
      * @return void
      * @throws AMQPProtocolChannelException
      */
-    public function createExchangeQueueAndBind(RabbitMQQueue $queue, array $payload, bool $retry = false)
+    public function createExchangeQueueAndBind(RabbitMQQueue $queue, array $payload, bool $retry = false): void
     {
         $exchange = $payload['exchange'];
         $exchangeType = $payload['type'];

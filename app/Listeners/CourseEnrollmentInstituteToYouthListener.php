@@ -49,7 +49,8 @@ class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
             ];
 
             $eventData = json_decode(json_encode($event), true);
-            $this->youthService->updateYouthProfileAfterCourseEnroll($eventData, $sagaPayload);
+            $data = $eventData['data'];
+            $this->youthService->updateYouthProfileAfterCourseEnroll($data, $sagaPayload);
         }
     }
 }

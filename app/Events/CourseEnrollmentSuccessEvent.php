@@ -4,15 +4,15 @@ namespace App\Events;
 
 class CourseEnrollmentSuccessEvent
 {
-    public array $courseEnrollment;
+    private array $data;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(array $courseEnrollment)
+    public function __construct(array $data)
     {
-        $this->courseEnrollment = $courseEnrollment;
+        $this->data = $data;
     }
 }

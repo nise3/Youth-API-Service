@@ -108,6 +108,7 @@ $app->register(Khbd\LaravelSmsBD\SMSServiceProvider::class);
 $app->register(Ixudra\Curl\CurlServiceProvider::class);
 
 $app->register(App\Providers\EventServiceProvider::class);
+$app->register(App\Providers\RabbitMQProvider::class);
 $app->register(VladimirYuldashev\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider::class);
 
 if (app()->environment('local')) {

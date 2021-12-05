@@ -2,8 +2,8 @@
 
 namespace App\Services\YouthManagementServices;
 
+use App\Events\CourseEnrollmentRollbackEvent;
 use App\Events\CourseEnrollmentSuccessEvent;
-use App\Events\MailSendEvent;
 use App\Models\BaseModel;
 use App\Models\EduBoard;
 use App\Models\EducationLevel;
@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
-use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue;
 
 class YouthService
 {
@@ -393,16 +392,14 @@ class YouthService
     }
 
     /**
-     * @param array $eventData
+     * @param array $data
      * @param array $sagaPayload
      * @return bool
      */
-    public function updateYouthProfileAfterCourseEnroll(array $eventData, array $sagaPayload): bool
+    public function updateYouthProfileAfterCourseEnroll(array $data, array $sagaPayload): bool
     {
         try {
             DB::beginTransaction();
-            $data = $eventData['courseEnrollment'];
-            Log::info('update Youth Profile After Course Enroll function call');
             if (!empty($data["physical_disabilities"])) {
                 $data["physical_disabilities"] = isset($data['physical_disabilities']) && is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
             }
@@ -419,14 +416,13 @@ class YouthService
                 DB::commit();
 
                 /** Trigger EVENT to Institute Service via RabbitMQ */
-                event(new CourseEnrollmentSuccessEvent($eventData));
+                event(new CourseEnrollmentSuccessEvent($data));
 
                 /** Trigger EVENT to MailSms Service to send Mail via RabbitMQ */
                 //TODO: Need to trigger MAIL service for Mail Event Firing
 
                 /** Store the event into Database */
                 $sagaEvent = app(SagaEvent::class);
-                Log::info(json_encode($sagaPayload));
                 $sagaEvent->fill($sagaPayload);
                 $sagaEvent->save();
 
@@ -434,6 +430,10 @@ class YouthService
             }
         } catch (\Exception $e) {
             DB::rollBack();
+
+            /** Trigger EVENT to Institute Service via RabbitMQ to Rollback */
+            event(new CourseEnrollmentRollbackEvent($data));
+
             Log::debug($e->getMessage());
         }
 
