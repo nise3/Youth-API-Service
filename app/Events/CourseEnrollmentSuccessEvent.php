@@ -2,9 +2,11 @@
 
 namespace App\Events;
 
+use Illuminate\Support\Facades\Log;
+
 class CourseEnrollmentSuccessEvent
 {
-    private array $data;
+    public array $data;
 
     /**
      * Create a new event instance.

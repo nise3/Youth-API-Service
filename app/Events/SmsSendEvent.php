@@ -4,7 +4,7 @@ namespace App\Events;
 
 class SmsSendEvent
 {
-    private array $data;
+    public array $data;
     /**
      * Create a new Email event instance.
      *

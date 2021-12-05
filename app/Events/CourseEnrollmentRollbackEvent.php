@@ -4,7 +4,7 @@ namespace App\Events;
 
 class CourseEnrollmentRollbackEvent
 {
-    private array $data;
+    public array $data;
 
     /**
      * Create a new event instance.
