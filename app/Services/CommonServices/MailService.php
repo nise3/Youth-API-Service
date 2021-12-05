@@ -5,8 +5,11 @@ namespace App\Services\CommonServices;
 use App\Events\MailSendEvent;
 use App\Models\BaseModel;
 use App\Models\Batch;
+use Faker\Provider\Base;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\View;
+use Throwable;
 
 class MailService
 {
@@ -140,6 +143,9 @@ class MailService
     }
 
 
+    /**
+     * @throws Throwable
+     */
     public function sendMail()
     {
         $sendMailPayload = [
@@ -153,7 +159,9 @@ class MailService
             $sendMailPayload['reply_to'] = $this->replyTo;
         }
         if (!empty($this->template)) {
-            $sendMailPayload['message_body'] = $this->templateView($this->messageBody);
+            $data = $this->messageBody;
+            $data['nise_3_url'] = BaseModel::NISE3_DEFAULT_URL;
+            $sendMailPayload['message_body'] = $this->templateView($data);
         }
         if (!empty($this->cc)) {
             $sendMailPayload['cc'] = $this->cc;
@@ -164,12 +172,14 @@ class MailService
         if (!empty($this->attachments)) {
             $sendMailPayload['attachment'] = $this->attachments;
         }
-
         event(new MailSendEvent($sendMailPayload));
     }
 
+    /**
+     * @throws Throwable
+     */
     private function templateView($data): string
     {
-        return '<p>UserName: ' . $data["user_name"] . '.</p><br/><p>Password: ' . $data["password"] . '.</p>';
+        return view($this->template, compact("data"))->render();
     }
 }

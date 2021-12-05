@@ -33,8 +33,8 @@ class MailSendListener implements ShouldQueue
     /** Exchange related variables */
     private const EXCHANGE = "mail.sms.x";
     private const EXCHANGE_TYPE = "topic";
-    private const EXCHANGE_QUEUE = "sms.q";
-    private const EXCHANGE_BINDING_KEY = "sms";
+    private const EXCHANGE_QUEUE = "mail.q";
+    private const EXCHANGE_BINDING_KEY = "mail";
 
     private const EXCHANGE_DURABLE = true;
     private const EXCHANGE_AUTO_DELETE = false;

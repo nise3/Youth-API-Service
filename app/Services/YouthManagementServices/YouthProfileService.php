@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use JetBrains\PhpStorm\ArrayShape;
+use Throwable;
 
 
 /**
@@ -862,22 +863,21 @@ class YouthProfileService
             ->json();
     }
 
+    /**
+     * @throws Throwable
+     */
     private function sendYouthUserInfoByMail(Youth $youth)
     {
         $mailService = new MailService();
         $mailService->setTo([
-            $mailPayload['contact_person_email']
+           $youth->email
         ]);
         $from = $mailPayload['from'] ?? BaseModel::NISE3_FROM_EMAIL;
-        $subject = $mailPayload['subject'] ?? "Institute Registration";
-
+        $subject = $mailPayload['subject'] ?? "Youth Registration";
         $mailService->setForm($from);
         $mailService->setSubject($subject);
-        $mailService->setMessageBody([
-            "user_name" => $mailPayload['contact_person_mobile'],
-            "password" => $mailPayload['password']
-        ]);
-        $instituteRegistrationTemplate = $mailPayload['template'] ?? 'mail.institute-create-default-template';
+        $mailService->setMessageBody($youth->toArray());
+        $instituteRegistrationTemplate = $mailPayload['template'] ?? 'mail.youth-create-default-template';
         $mailService->setTemplate($instituteRegistrationTemplate);
         $mailService->sendMail();
     }
