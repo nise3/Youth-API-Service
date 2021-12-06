@@ -834,6 +834,8 @@ class YouthProfileService
     }
 
     /**
+     * @param $youthId
+     * @return array
      * @throws RequestException
      */
     public function getYouthFeedStatisticsData($youthId): array
