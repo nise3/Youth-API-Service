@@ -60,7 +60,7 @@ class CreateYouthsTable extends Migration
 
             $table->unsignedTinyInteger('freedom_fighter_status')
                 ->comment('1 => No, 2 => Yes, 3=> child of a freedom fighter, 4 => grand child of a freedom fighter')
-                ->default(1);
+                ->default(0);
 
             $table->unsignedTinyInteger('physical_disability_status')
                 ->comment('0=>No, 1=>Yes')

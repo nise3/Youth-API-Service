@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\DBAL\TimestampType;
 use Illuminate\Support\Str;
 
 return [
@@ -79,6 +80,11 @@ return [
             'password' => env('DB_PASSWORD', ''),
             'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => env('DB_PREFIX', ''),
+        ],
+        'dbal' => [
+            'types' => [
+                'timestamp' => TimestampType::class,
+            ],
         ],
 
     ],
