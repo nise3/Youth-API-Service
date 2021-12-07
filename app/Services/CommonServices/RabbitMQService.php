@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\CommonServices;
 
 use App\Models\BaseModel;
 use App\Models\SagaEvent;
