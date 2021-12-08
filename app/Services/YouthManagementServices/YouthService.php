@@ -2,8 +2,8 @@
 
 namespace App\Services\YouthManagementServices;
 
-use App\Events\CourseEnrollmentRollbackEvent;
-use App\Events\CourseEnrollmentSuccessEvent;
+use App\Events\CourseEnrollment\CourseEnrollmentRollbackEvent;
+use App\Events\CourseEnrollment\CourseEnrollmentSuccessEvent;
 use App\Models\BaseModel;
 use App\Models\EduBoard;
 use App\Models\EducationLevel;
