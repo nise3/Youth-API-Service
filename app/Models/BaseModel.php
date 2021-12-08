@@ -100,4 +100,9 @@ abstract class BaseModel extends Model
 
     public const DEFAULT_PAGE_SIZE = 10;
 
+    public const SELF_EXCHANGE = 'youth';
+
+    public const NISE3_FROM_EMAIL = "info@nise3.com";
+    public const NISE3_DEFAULT_URL = "http://123.49.47.38/";
+
 }

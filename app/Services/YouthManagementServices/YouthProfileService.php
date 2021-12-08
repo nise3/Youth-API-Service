@@ -7,7 +7,10 @@ use App\Models\BaseModel;
 use App\Models\PhysicalDisability;
 use App\Models\Skill;
 use App\Models\Youth;
+use App\Services\CommonServices\MailService;
+use App\Services\CommonServices\SmsService;
 use Carbon\Carbon;
+use Exception;
 use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,6 +23,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use JetBrains\PhpStorm\ArrayShape;
+use Throwable;
 
 
 /**
@@ -249,6 +254,7 @@ class YouthProfileService
             $youth->row_status = BaseModel::ROW_STATUS_ACTIVE;
             $youth->verification_code_verified_at = Carbon::now();
             $youth->save();
+            $this->sendYouthUserInfoByMail($youth);
             return true;
         }
         return false;
@@ -258,7 +264,7 @@ class YouthProfileService
      * @param array $data
      * @param string $code
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function sendVerifyCode(array $data, string $code): bool
     {
@@ -269,9 +275,8 @@ class YouthProfileService
             return true;
         }
         if ($mobile_number) {
-            if(sms()->send($mobile_number, $message)->is_successful()){
-                return true;
-            }
+            $smsService=new SmsService($mobile_number,$message);
+            $smsService->sendSms();
         }
         return false;
     }
@@ -279,6 +284,7 @@ class YouthProfileService
     /**
      * @param array $data
      * @return bool
+     * @throws Exception
      */
     public function resendCode(array $data): bool
     {
@@ -306,7 +312,7 @@ class YouthProfileService
 
     /**
      * @param array $data
-     * @return PromiseInterface|Response
+     * @return PromiseInterface|Response|array
      * @throws RequestException
      */
     public function idpUserCreate(array $data): PromiseInterface|Response|array
@@ -339,7 +345,8 @@ class YouthProfileService
      * @param $data
      * @return array
      */
-    private function prepareIdpPayload($data)
+    #[ArrayShape(['schemas' => "string[]", 'name' => "array", 'active' => "string", 'organization' => "mixed", 'userName' => "string", 'password' => "mixed", 'userType' => "mixed", 'country' => "string", 'emails' => "array"])]
+    private function prepareIdpPayload($data): array
     {
         $cleanUserName = trim($data['username']);  // At present only email is selected as username from frontend team
         return [
@@ -856,5 +863,24 @@ class YouthProfileService
                 return $e;
             })
             ->json();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    private function sendYouthUserInfoByMail(Youth $youth)
+    {
+        $mailService = new MailService();
+        $mailService->setTo([
+           $youth->email
+        ]);
+        $from = $mailPayload['from'] ?? BaseModel::NISE3_FROM_EMAIL;
+        $subject = $mailPayload['subject'] ?? "Youth Registration";
+        $mailService->setForm($from);
+        $mailService->setSubject($subject);
+        $mailService->setMessageBody($youth->toArray());
+        $instituteRegistrationTemplate = $mailPayload['template'] ?? 'mail.youth-create-default-template';
+        $mailService->setTemplate($instituteRegistrationTemplate);
+        $mailService->sendMail();
     }
 }

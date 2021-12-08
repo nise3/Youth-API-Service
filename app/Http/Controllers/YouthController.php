@@ -85,8 +85,9 @@ class  YouthController extends Controller
 
     /**
      * @param Request $request
+     * @return JsonResponse
      */
-    public function updateYouthAfterCourseEnrollment(Request $request)
+    /*public function updateYouthAfterCourseEnrollment(Request $request): JsonResponse
     {
         $status = $this->youthService->updateYouthProfileAfterCourseEnroll($request);
 
@@ -100,6 +101,6 @@ class  YouthController extends Controller
 
         return Response::json($response, $code);
 
-    }
+    }*/
 
 }
