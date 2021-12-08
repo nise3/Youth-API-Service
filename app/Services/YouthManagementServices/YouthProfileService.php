@@ -866,6 +866,7 @@ class YouthProfileService
     }
 
     /**
+     * @param Youth $youth
      * @throws Throwable
      */
     private function sendYouthUserInfoByMail(Youth $youth)
