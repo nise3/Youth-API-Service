@@ -14,10 +14,7 @@ class ChangeFreedomFighterDefaultValueToYouths extends Migration
     public function up()
     {
         Schema::table('youths', function (Blueprint $table) {
-            $table->integer('freedom_fighter_status')
-                ->comment('1 => No, 2 => Yes, 3=> child of a freedom fighter, 4 => grand child of a freedom fighter')
-                ->default(1)
-                ->change();
+            DB::statement('ALTER TABLE youths MODIFY freedom_fighter_status UNSIGNEDINTEGER default 1');
         });
     }
 
