@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Services\CommonServices;
+namespace App\Services;
 
 use App\Models\BaseModel;
 use App\Models\SagaEvent;
-use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Exception\AMQPProtocolChannelException;
 use VladimirYuldashev\LaravelQueueRabbitMQ\Helpers\RabbitMQ;
 use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue;
