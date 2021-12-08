@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\CourseEnrollment;
 
 use App\Models\SagaEvent;
 use App\Services\RabbitMQService;

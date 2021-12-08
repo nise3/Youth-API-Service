@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Events;
-
-use Illuminate\Support\Facades\Log;
+namespace App\Events\CourseEnrollment;
 
 class CourseEnrollmentSuccessEvent
 {
