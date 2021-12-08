@@ -14,7 +14,7 @@ class CreateYouthsTable extends Migration
     {
         Schema::create('youths', function (Blueprint $table) {
             $table->increments('id');
-            $table->string("idp_user_id", 100)->nullable();
+            $table->string("idp_user_id", 100)->nullable()->index('youths_idp_user_idx');
             $table->unsignedTinyInteger("is_freelance_profile")
                 ->default(0)
                 ->comment('1 => Yes, 0 => No');
@@ -60,7 +60,7 @@ class CreateYouthsTable extends Migration
 
             $table->unsignedTinyInteger('freedom_fighter_status')
                 ->comment('1 => No, 2 => Yes, 3=> child of a freedom fighter, 4 => grand child of a freedom fighter')
-                ->default(1);
+                ->default(0);
 
             $table->unsignedTinyInteger('physical_disability_status')
                 ->comment('0=>No, 1=>Yes')

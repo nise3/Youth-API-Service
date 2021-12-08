@@ -16,7 +16,7 @@ class AddExpectedYearOfPassingToYouthEducations extends Migration
     {
         Schema::table('youth_educations', function (Blueprint $table) {
             $table->year("expected_year_of_passing")->nullable();
-            DB::statement('ALTER TABLE youth_educations MODIFY year_of_passing YEAR NULL');
+            $table->year("year_of_passing")->nullable()->change();
         });
     }
 

@@ -45,11 +45,11 @@ variables:
   APP_ENV: "local"
   APP_DEBUG: "false"
   APP_URL: "youthapi.bus.softbd.xyz"
-  DB_HOST: mysql-service.db
+  DB_HOST: 172.17.177.79
   DB_PORT: "3306"
-  DB_DATABASE: core_api
-  DB_USERNAME: n3_core
-  DB_PASSWORD: "kvzV3Y^7"
+  DB_DATABASE: youth
+  DB_USERNAME: n3_youth
+  DB_PASSWORD: "kvx7V3Y^7"
 
 
   #control git realese branch
