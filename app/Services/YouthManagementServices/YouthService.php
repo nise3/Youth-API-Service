@@ -14,7 +14,9 @@ use App\Models\Youth;
 use App\Models\YouthAddress;
 use App\Models\YouthEducation;
 use App\Models\YouthGuardian;
+use App\Services\CommonServices\MailService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -395,9 +397,11 @@ class YouthService
      * @param array $data
      * @param array $sagaPayload
      * @return bool
+     * @throws Throwable
      */
     public function updateYouthProfileAfterCourseEnroll(array $data, array $sagaPayload): bool
     {
+        Log::info("enrollment data from institute", $data);
         try {
             DB::beginTransaction();
             if (!empty($data["physical_disabilities"])) {
@@ -419,7 +423,7 @@ class YouthService
                 event(new CourseEnrollmentSuccessEvent($data));
 
                 /** Trigger EVENT to MailSms Service to send Mail via RabbitMQ */
-                // TODO: Need to trigger MAIL service for Mail Event Firing
+                $this->sendMailCourseEnrollmentSuccess($data);
 
                 /** Store the event into Database */
                 $sagaEvent = app(SagaEvent::class);
@@ -428,7 +432,7 @@ class YouthService
 
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
 
             /** Trigger EVENT to Institute Service via RabbitMQ to Rollback */
@@ -438,6 +442,33 @@ class YouthService
         }
 
         return false;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function sendMailCourseEnrollmentSuccess(array $mailPayload)
+    {
+        /** @var Youth $youth */
+        $youth = Youth::findOrFail($mailPayload['youth_id']);
+
+        $mailService = new MailService();
+        $mailService->setTo([
+            $youth->email
+        ]);
+        $from = BaseModel::NISE3_FROM_EMAIL;
+        $subject = "Course Enrollment Successful";
+
+        $mailService->setForm($from);
+        $mailService->setSubject($subject);
+
+        $mailService->setMessageBody([
+            "course_enrollment_info" => $mailPayload,
+        ]);
+
+        $courseEnrollmentSuccessfulTemplate = 'mail.course-enrollment-successful-template';
+        $mailService->setTemplate($courseEnrollmentSuccessfulTemplate);
+        $mailService->sendMail();
     }
 
     private function updateYouthEducations(array $data, Youth $youth)
