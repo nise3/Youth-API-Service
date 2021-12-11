@@ -2,11 +2,16 @@
 
 namespace App\Listeners\CourseEnrollment;
 
-use App\Models\SagaEvent;
+use App\Events\CourseEnrollment\CourseEnrollmentRollbackEvent;
+use App\Events\CourseEnrollment\CourseEnrollmentSuccessEvent;
+use App\Models\BaseModel;
+use App\Models\Youth;
 use App\Services\RabbitMQService;
 use App\Services\YouthManagementServices\YouthService;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
 {
@@ -26,31 +31,62 @@ class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
     /**
      * @param $event
      * @return void
-     * @throws Exception
+     * @throws Exception|Throwable
      */
     public function handle($event)
     {
         $alreadyConsumed = $this->rabbitMQService->checkWeatherEventAlreadyConsumed();
         if(!$alreadyConsumed){
-            /** Create Saga Payload */
-            $uuid = $this->rabbitMQService->getRabbitMqMessageUuid();
-            $exchange = $this->rabbitMQService->getRabbitMqMessageExchange();
-            $routingKey = $this->rabbitMQService->getRabbitMqMessageRoutingKey();
-            $listener = get_class($this);
-            $sagaPayload = [
-                'uuid' => $uuid,
-                'connection' => 'rabbitmq',
-                'publisher' => SagaEvent::INSTITUTE_SERVICE,
-                'listener' => $listener,
-                'exchange' => $exchange,
-                'routing_key' => $routingKey,
-                'consumer' => SagaEvent::YOUTH_SERVICE,
-                'payload' => json_encode($event)
-            ];
-
             $eventData = json_decode(json_encode($event), true);
-            $data = $eventData['data'];
-            $this->youthService->updateYouthProfileAfterCourseEnroll($data, $sagaPayload);
+            $data = $eventData['data'] ?? [];
+            try {
+                DB::beginTransaction();
+                if (!empty($data["physical_disabilities"])) {
+                    $data["physical_disabilities"] = isset($data['physical_disabilities']) && is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
+                }
+                if (!empty($data['youth_id'])) {
+                    $youth = Youth::findOrFail($data['youth_id']);
+                    $youth->fill($data);
+                    $youth->save();
+
+                    $this->youthService->updateYouthAddresses($data, $youth);
+                    $this->youthService->updateYouthGuardian($data, $youth);
+                    $this->youthService->updateYouthEducations($data, $youth);
+                    $this->youthService->updateYouthPhysicalDisabilities($data, $youth);
+                    DB::commit();
+
+                    /** Store the event as a Success event into Database */
+                    $this->rabbitMQService->sagaSuccessEvent(
+                        BaseModel::INSTITUTE_SERVICE,
+                        BaseModel::YOUTH_SERVICE,
+                        get_class($this),
+                        json_encode($data)
+                    );
+
+                    /** Trigger EVENT to Institute Service via RabbitMQ */
+                    event(new CourseEnrollmentSuccessEvent($data));
+
+                    /** Trigger EVENT to MailSms Service to send Mail via RabbitMQ */
+                    $this->youthService->sendMailCourseEnrollmentSuccess($data);
+                } else {
+                    throw new Exception("youth_id not provided!");
+                }
+            } catch (Exception $e) {
+                DB::rollBack();
+
+                /** Store the event as an Error event into Database */
+                $this->rabbitMQService->sagaErrorEvent(
+                    BaseModel::INSTITUTE_SERVICE,
+                    BaseModel::YOUTH_SERVICE,
+                    get_class($this),
+                    json_encode($data),
+                    $e
+                );
+
+                /** Trigger EVENT to Institute Service via RabbitMQ to Rollback */
+                $data['publisher_service'] = BaseModel::YOUTH_SERVICE;
+                event(new CourseEnrollmentRollbackEvent($data));
+            }
         }
     }
 }
