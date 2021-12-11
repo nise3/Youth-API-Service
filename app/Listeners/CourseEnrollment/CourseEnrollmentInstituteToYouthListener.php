@@ -57,8 +57,8 @@ class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
 
                     /** Store the event as a Success event into Database */
                     $this->rabbitMQService->sagaSuccessEvent(
-                        BaseModel::INSTITUTE_SERVICE,
-                        BaseModel::YOUTH_SERVICE,
+                        BaseModel::SAGA_INSTITUTE_SERVICE,
+                        BaseModel::SAGA_YOUTH_SERVICE,
                         get_class($this),
                         json_encode($data)
                     );
@@ -76,15 +76,15 @@ class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
 
                 /** Store the event as an Error event into Database */
                 $this->rabbitMQService->sagaErrorEvent(
-                    BaseModel::INSTITUTE_SERVICE,
-                    BaseModel::YOUTH_SERVICE,
+                    BaseModel::SAGA_INSTITUTE_SERVICE,
+                    BaseModel::SAGA_YOUTH_SERVICE,
                     get_class($this),
                     json_encode($data),
                     $e
                 );
 
                 /** Trigger EVENT to Institute Service via RabbitMQ to Rollback */
-                $data['publisher_service'] = BaseModel::YOUTH_SERVICE;
+                $data['publisher_service'] = BaseModel::SAGA_YOUTH_SERVICE;
                 event(new CourseEnrollmentRollbackEvent($data));
             }
         }
