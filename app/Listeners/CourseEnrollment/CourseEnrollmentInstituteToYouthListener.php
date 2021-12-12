@@ -35,7 +35,7 @@ class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
      */
     public function handle($event)
     {
-        $alreadyConsumed = $this->rabbitMQService->checkWeatherEventAlreadyConsumed();
+        $alreadyConsumed = $this->rabbitMQService->checkEventAlreadyConsumed();
         if(!$alreadyConsumed){
             $eventData = json_decode(json_encode($event), true);
             $data = $eventData['data'] ?? [];
