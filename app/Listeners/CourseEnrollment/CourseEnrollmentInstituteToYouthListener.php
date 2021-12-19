@@ -35,6 +35,12 @@ class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
      */
     public function handle($event)
     {
+        $this->rabbitMQService->receiveEventSuccessfully(
+            BaseModel::SAGA_INSTITUTE_SERVICE,
+            BaseModel::SAGA_YOUTH_SERVICE,
+            get_class($this),
+            json_encode($event)
+        );
         $alreadyConsumed = $this->rabbitMQService->checkEventAlreadyConsumed();
         if(!$alreadyConsumed){
             $eventData = json_decode(json_encode($event), true);
