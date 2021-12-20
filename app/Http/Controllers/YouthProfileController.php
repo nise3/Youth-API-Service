@@ -6,6 +6,7 @@ use App\Models\BaseModel;
 use App\Models\Youth;
 use App\Models\YouthAddress;
 use App\Services\YouthManagementServices\YouthAddressService;
+use Exception;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
+use RuntimeException;
 use stdClass;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
@@ -88,17 +90,23 @@ class YouthProfileController extends Controller
         try {
             DB::beginTransaction();
             $idpUserPayLoad = [
-                'name' => $validated['first_name'] . " " . $validated["last_name"],
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'mobile'=>$validated['mobile'],
                 'email' => $validated['email'],
                 'username' => $validated['username'],
                 'password' => $validated['password'],
                 'user_type' => BaseModel::YOUTH_USER_TYPE,
-                'active' => BaseModel::ROW_STATUS_PENDING,
+                'active' => (string)BaseModel::ROW_STATUS_PENDING,
             ];
 
-            $httpClient = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
+            $idpResponse = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
 
-            if (!$httpClient->json("id")) {
+            if (!empty($idpResponse['code']) && $idpResponse['code'] == ResponseAlias::HTTP_CONFLICT) {
+                throw new RuntimeException('Idp user already exists', 409);
+            }
+
+            if (empty($idpResponse['data']['id'])) {
                 $response = [
                     '_response_status' => [
                         "success" => false,
@@ -110,9 +118,9 @@ class YouthProfileController extends Controller
                 return Response::json($response, $response['_response_status']['code']);
             }
 
-            Log::info("Youth create for idp user--->" . $httpClient->json("id") . "----->email-->" . $validated['email']);
+            Log::info("Youth create for idp user--->" . $idpResponse['data']['id'] . "----->email-->" . $validated['email']);
 
-            $validated['idp_user_id'] = $httpClient->json("id");
+            $validated['idp_user_id'] = $idpResponse['data']['id'];
             $validated["verification_code"] = generateOtp(4);
             $validated['verification_code_sent_at'] = Carbon::now();
             $validated['row_status'] = BaseModel::ROW_STATUS_PENDING;
@@ -157,7 +165,7 @@ class YouthProfileController extends Controller
             ];
             DB::commit();
             return Response::json($response, $response['_response_status']['code']);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             throw $e;
         }
@@ -177,6 +185,18 @@ class YouthProfileController extends Controller
         $validated = $this->youthProfileService->youthUpdateValidation($request, $youth)->validate();
 
         $data = $this->youthProfileService->update($youth, $validated);
+        if ($data) {
+            $idpUserPayload = [
+                'id' => $youth->idp_user_id,
+                'username' => $youth->username,
+                'first_name' => $youth->first_name,
+                'last_name' => $youth->last_name,
+                'email' => $youth->email,
+                'mobile' => $youth->mobile,
+                'active' => (string)$youth->row_status
+            ];
+            $this->youthProfileService->idpUserUpdate($idpUserPayload);
+        }
         $response = [
             'data' => $data ?: [],
             '_response_status' => [
