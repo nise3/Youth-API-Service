@@ -43,6 +43,8 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     $router->post('youth-cv-download/{id}', ["as" => "youth.cv-download", "uses" => "YouthProfileController@youthCvDownload"]);
 
     $customRouter()->resourceRoute('languages', 'LanguageController')->render();
+
+    $router->post('auth-youth-info', ["as" => "youth.auth-info", "uses" => "YouthProfileController@getAuthYouthInfoByIdpId"]);
 });
 
 
