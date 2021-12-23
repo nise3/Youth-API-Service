@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\BaseModel;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,6 +46,8 @@ class Authenticate
                     "message" => "Unauthenticated action"
                 ]
             ], ResponseAlias::HTTP_UNAUTHORIZED);
+        }else{
+            $request->offsetSet('youth_id', Auth::id());
         }
 
         return $next($request);
