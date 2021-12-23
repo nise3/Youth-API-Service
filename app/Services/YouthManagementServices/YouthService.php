@@ -166,7 +166,7 @@ class YouthService
 
         /** @var Collection $youths */
         if (is_numeric($paginate) || is_numeric($pageSize)) {
-            $pageSize = $pageSize ?: 10;
+            $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $youths = $youthBuilder->paginate($pageSize);
             $paginateData = (object)$youths->toArray();
             $response['current_page'] = $paginateData->current_page;
