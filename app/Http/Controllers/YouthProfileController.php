@@ -341,4 +341,21 @@ class YouthProfileController extends Controller
         $mpdf->Output('MyPDF.pdf', 'D');
     }
 
+
+    public function getAuthYouthInfoByIdpId(Request $request): JsonResponse
+    {
+        $authYouthInfo = $this->youthProfileService->getAuthYouth($request->idp_user_id ?? null);
+        $response = [
+            'data' => $authYouthInfo,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Auth Youth Information",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
+
+        return Response::json($response, ResponseAlias::HTTP_OK);
+    }
+
 }
