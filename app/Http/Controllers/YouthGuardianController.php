@@ -32,7 +32,7 @@ class YouthGuardianController extends Controller
      */
     public function getList(Request $request): JsonResponse
     {
-
+        $this->authorize('viewAny', YouthGuardian::class);
         $filter = $this->youthGuardianService->filterValidator($request)->validate();
         $response = $this->youthGuardianService->getGuardianList($filter, $this->startTime);
         return Response::json($response);
@@ -47,6 +47,7 @@ class YouthGuardianController extends Controller
     public function read(int $id): JsonResponse
     {
         $guardian = $this->youthGuardianService->getOneGuardian($id);
+        $this->authorize('view', $guardian);
         $response = [
             "data" => $guardian ?: [],
             "_response_status" => [
@@ -71,7 +72,7 @@ class YouthGuardianController extends Controller
             $youthId = Auth::id();
             $request->offsetSet('youth_id', $youthId);
         }
-
+        $this->authorize('create', YouthGuardian::class);
         $validated = $this->youthGuardianService->validator($request)->validate();
         $data = $this->youthGuardianService->createGuardian($validated);
         $response = [
@@ -98,6 +99,9 @@ class YouthGuardianController extends Controller
     {
 
         $guardian = YouthGuardian::findOrFail($id);
+
+        $this->authorize('update', $guardian);
+
         if (!$request->filled('youth_id')) {
             $youthId = Auth::id();
             $request->offsetSet('youth_id', $youthId);
@@ -127,6 +131,7 @@ class YouthGuardianController extends Controller
     public function destroy(int $id): JsonResponse
     {
         $guardian = YouthGuardian::findOrFail($id);
+        $this->authorize('delete', $guardian);
         $this->youthGuardianService->destroy($guardian);
         $response = [
             '_response_status' => [

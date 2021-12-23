@@ -8,66 +8,57 @@ use Illuminate\Auth\Access\Response;
 
 class YouthAddressPolicy extends BasePolicy
 {
-
-
     /**
      * Determine whether the user can view any youthAddresses.
-     *
-     * @param Youth $user
+     * @param Youth $youth
      * @return Response
      */
-    public function viewAny(Youth $user)
+    public function viewAny(Youth $youth): Response
     {
         return Response::allow();
     }
 
     /**
      * Determine whether the user can view the youthAddress.
-     *
-     * @param Youth $user
+     * @param Youth $youth
      * @param YouthAddress $youthAddress
      * @return Response
      */
-    public function view(Youth $user, YouthAddress $youthAddress)
+    public function view(Youth $youth, YouthAddress $youthAddress): Response
     {
-
-        // Example: return Response::deny('You do not own this post.');
         return Response::allow();
     }
 
     /**
      * Determine whether the user can create youthAddresses.
      *
-     * @param Youth $user
-     * @return Response
+     * @param Youth $youth
+     * @return bool
      */
-    public function create(Youth $user)
+    public function create(Youth $youth)
     {
-        return Response::allow();
+        return $this->isUserLoggedIn($youth);
     }
 
     /**
      * Determine whether the user can update the youthAddress.
-     *
-     * @param Youth $user
+     * @param Youth $youth
      * @param YouthAddress $youthAddress
-     * @return Response
+     * @return bool
      */
-    public function update(Youth $user, YouthAddress $youthAddress)
+    public function update(Youth $youth, YouthAddress $youthAddress)
     {
-
-        return Response::allow();
+        return $this->isOwner($youth, $youthAddress->youth_id);
     }
 
     /**
      * Determine whether the user can delete the youthAddress.
-     *
-     * @param Youth $user
+     * @param Youth $youth
      * @param YouthAddress $youthAddress
-     * @return Response
+     * @return bool
      */
-    public function delete(Youth $user, YouthAddress $youthAddress): Response
+    public function delete(Youth $youth, YouthAddress $youthAddress): bool
     {
-        return Response::allow();
+        return $this->isOwner($youth, $youthAddress->youth_id);
     }
 }

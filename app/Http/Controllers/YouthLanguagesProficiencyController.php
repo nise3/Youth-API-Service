@@ -6,6 +6,7 @@ use App\Models\YouthLanguagesProficiency;
 use App\Services\YouthManagementServices\YouthLanguagesProficiencyService;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,6 +39,8 @@ class YouthLanguagesProficiencyController extends Controller
      */
     public function getList(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', YouthLanguagesProficiency::class);
+
         $filter = $this->languagesProficiencyService->filterValidator($request)->validate();
         $response = $this->languagesProficiencyService->getLanguagesProficiencyList($filter, $this->startTime);
         return Response::json($response, ResponseAlias::HTTP_OK);
@@ -47,10 +50,12 @@ class YouthLanguagesProficiencyController extends Controller
      * Display the specified resource.
      * @param int $id
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function read(int $id): JsonResponse
     {
         $languagesProficiency = $this->languagesProficiencyService->getOneLanguagesProficiency($id);
+        $this->authorize('view', $languagesProficiency);
 
         $response = [
             "data" => $languagesProficiency,
@@ -75,6 +80,8 @@ class YouthLanguagesProficiencyController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request['youth_id'] = Auth::id();
+        $this->authorize('create', YouthLanguagesProficiency::class);
+
         $validated = $this->languagesProficiencyService->validator($request)->validate();
         $languageProficiency = $this->languagesProficiencyService->store($validated);
         $response = [
@@ -101,6 +108,8 @@ class YouthLanguagesProficiencyController extends Controller
     {
         $request['youth_id'] = Auth::id();
         $languageProficiency = YouthLanguagesProficiency::findOrFail($id);
+        $this->authorize('update', $languageProficiency);
+
         $validated = $this->languagesProficiencyService->validator($request, $id)->validate();
         $language = $this->languagesProficiencyService->update($languageProficiency, $validated);
         $response = [
@@ -124,6 +133,8 @@ class YouthLanguagesProficiencyController extends Controller
     public function destroy(int $id): JsonResponse
     {
         $languageProficiency = YouthLanguagesProficiency::findOrFail($id);
+        $this->authorize('update', $languageProficiency);
+
         $this->languagesProficiencyService->destroy($languageProficiency);
         $response = [
             '_response_status' => [

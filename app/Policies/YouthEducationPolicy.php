@@ -12,10 +12,10 @@ class YouthEducationPolicy extends BasePolicy
     /**
      * Determine whether the user can view any youthEducations.
      *
-     * @param Youth $user
+     * @param Youth $youth
      * @return Response
      */
-    public function viewAny(Youth $user): Response
+    public function viewAny(Youth $youth): Response
     {
         return Response::allow();
     }
@@ -23,11 +23,11 @@ class YouthEducationPolicy extends BasePolicy
     /**
      * Determine whether the user can view the youthEducation.
      *
-     * @param Youth $user
+     * @param Youth $youth
      * @param YouthEducation $youthEducation
      * @return Response
      */
-    public function view(Youth $user, YouthEducation $youthEducation): Response
+    public function view(Youth $youth, YouthEducation $youthEducation): Response
     {
         return Response::allow();
     }
@@ -35,35 +35,35 @@ class YouthEducationPolicy extends BasePolicy
     /**
      * Determine whether the user can create youthEducations.
      *
-     * @param Youth $user
-     * @return Response
+     * @param Youth $youth
+     * @return bool
      */
-    public function create(Youth $user): Response
+    public function create(Youth $youth): bool
     {
-        return Response::allow();
+        return $this->isUserLoggedIn($youth);
     }
 
     /**
      * Determine whether the user can update the youthEducation.
      *
-     * @param Youth $user
+     * @param Youth $youth
      * @param YouthEducation $youthEducation
-     * @return Response
+     * @return bool
      */
-    public function update(Youth $user, YouthEducation $youthEducation): Response
+    public function update(Youth $youth, YouthEducation $youthEducation): bool
     {
-        return Response::allow();
+        return $this->isOwner($youth, $youthEducation->youth_id);
     }
 
     /**
      * Determine whether the user can delete the youthEducation.
      *
-     * @param Youth $user
+     * @param Youth $youth
      * @param YouthEducation $youthEducation
-     * @return Response
+     * @return bool
      */
-    public function delete(Youth $user, YouthEducation $youthEducation): Response
+    public function delete(Youth $youth, YouthEducation $youthEducation): bool
     {
-        return Response::allow();
+        return $this->isOwner($youth, $youthEducation->youth_id);
     }
 }

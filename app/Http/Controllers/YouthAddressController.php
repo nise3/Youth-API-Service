@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\YouthAddress;
 use App\Services\YouthManagementServices\YouthAddressService;
 use Carbon\Carbon;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,10 +28,11 @@ class YouthAddressController extends Controller
     /**
      * @param Request $request
      * @return JsonResponse
-     * @throws ValidationException
+     * @throws ValidationException|AuthorizationException
      */
     public function getList(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', YouthAddress::class);
 
         $filter = $this->youthAddressService->filterValidator($request)->validate();
         $returnedData = $this->youthAddressService->getAddressList($filter, $this->startTime);
@@ -63,6 +65,8 @@ class YouthAddressController extends Controller
     public function read(int $id): JsonResponse
     {
         $address = $this->youthAddressService->getOneYouthAddress($id);
+        $this->authorize('view', $address);
+
         $response = [
             "data" => $address ?: [],
             "_response_status" => [
@@ -83,6 +87,7 @@ class YouthAddressController extends Controller
      */
     function store(Request $request): JsonResponse
     {
+        $this->authorize('create', YouthAddress::class);
         if (!$request->filled('youth_id')) {
             $youthId = Auth::id();
             $request->offsetSet('youth_id', $youthId);
@@ -115,6 +120,7 @@ class YouthAddressController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         $address = YouthAddress::findOrFail($id);
+        $this->authorize('update', $address);
 
         if (!$request->filled('youth_id')) {
             $youthId = Auth::id();
@@ -145,9 +151,9 @@ class YouthAddressController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        // TODO: Check Policy so that an youth can not delete other youth's data
-        $guardian = YouthAddress::findOrFail($id);
-        $this->youthAddressService->destroy($guardian);
+        $youthAddress = YouthAddress::findOrFail($id);
+        $this->authorize('delete', $youthAddress);
+        $this->youthAddressService->destroy($youthAddress);
         $response = [
             '_response_status' => [
                 "success" => true,

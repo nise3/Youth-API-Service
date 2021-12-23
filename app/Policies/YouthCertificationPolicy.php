@@ -25,11 +25,11 @@ class YouthCertificationPolicy extends BasePolicy
     /**
      * Determine whether the user can view the youthCertification.
      *
-     * @param Youth $user
+     * @param Youth $youth
      * @param YouthCertification $youthCertification
      * @return Response
      */
-    public function view(Youth $user, YouthCertification $youthCertification): Response
+    public function view(Youth $youth, YouthCertification $youthCertification): Response
     {
         return Response::allow();
     }
@@ -37,35 +37,35 @@ class YouthCertificationPolicy extends BasePolicy
     /**
      * Determine whether the user can create youthCertifications.
      *
-     * @param Youth $user
+     * @param Youth $youth
      * @return bool
      */
-    public function create(Youth $user): bool
+    public function create(Youth $youth): bool
     {
-        return $this->isUserLoggedIn($user);
+        return $this->isUserLoggedIn($youth);
     }
 
     /**
      * Determine whether the user can update the youthCertification.
      *
-     * @param Youth $user
+     * @param Youth $youth
      * @param YouthCertification $youthCertification
      * @return bool
      */
-    public function update(Youth $user, YouthCertification $youthCertification) : bool
+    public function update(Youth $youth, YouthCertification $youthCertification) : bool
     {
-        return $this->isOwner($user,$youthCertification->youth_id);
+        return $this->isOwner($youth,$youthCertification->youth_id);
     }
 
     /**
      * Determine whether the user can delete the youthCertification.
      *
-     * @param Youth $user
+     * @param Youth $youth
      * @param YouthCertification $youthCertification
      * @return bool
      */
-    public function delete(Youth $user, YouthCertification $youthCertification) : bool
+    public function delete(Youth $youth, YouthCertification $youthCertification) : bool
     {
-        return $this->isOwner($user,$youthCertification->youth_id);
+        return $this->isOwner($youth,$youthCertification->youth_id);
     }
 }

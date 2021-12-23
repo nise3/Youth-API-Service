@@ -37,7 +37,7 @@ class YouthEducationController extends Controller
      */
     public function getList(Request $request): JsonResponse
     {
-
+        $this->authorize('viewAny', YouthEducation::class);
         $filter = $this->youthEducationService->filterValidator($request)->validate();
         $response = $this->youthEducationService->getEducationList($filter, $this->startTime);
         return Response::json($response);
@@ -53,6 +53,8 @@ class YouthEducationController extends Controller
     public function read(int $id): JsonResponse
     {
         $education = $this->youthEducationService->getOneEducation($id);
+        $this->authorize('view', $education);
+
         $response = [
             "data" => $education,
             "_response_status" => [
@@ -75,6 +77,9 @@ class YouthEducationController extends Controller
     function store(Request $request): JsonResponse
     {
         $youthEducation = app(YouthEducation::class);
+
+        $this->authorize('create', $youthEducation);
+
         $request['youth_id'] = $request['youth_id'] ?? Auth::id();
         $validated = $this->youthEducationService->validator($request)->validate();
         $data = $this->youthEducationService->createEducation($youthEducation, $validated);
@@ -103,6 +108,7 @@ class YouthEducationController extends Controller
     {
 
         $education = YouthEducation::findOrFail($id);
+        $this->authorize('update', $education);
         $request['youth_id'] = Auth::id();
         $validated = $this->youthEducationService->validator($request, $id)->validate();
 
@@ -129,6 +135,7 @@ class YouthEducationController extends Controller
     public function destroy(int $id): JsonResponse
     {
         $education = YouthEducation::findOrFail($id);
+        $this->authorize('delete', $education);
 
         $this->youthEducationService->destroy($education);
         $response = [
