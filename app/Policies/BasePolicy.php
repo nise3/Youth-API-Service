@@ -20,12 +20,12 @@ class BasePolicy
         return null;
     }
 
-    public function isOwner(Youth $user, int $youthId)
+    public function isOwner(Youth $user, int $youthId): bool
     {
         return $user->id == $youthId;
     }
 
-    public function isUserLoggedIn(Youth $user)
+    public function isUserLoggedIn(Youth $user): bool
     {
         return $user != null;
     }

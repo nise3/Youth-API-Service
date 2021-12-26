@@ -20,6 +20,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.3",
         "irazasyed/larasupport": "^1.7",
+        "khbd/laravel-wso2-identity-api-user": "^0.0.3",
         "laravel/lumen-framework": "^8.0",
         "laravel/tinker": "^2.6",
         "phabloraylan/lumen-middleware-trim-or-convert-strings": "^1.0",

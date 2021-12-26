@@ -43,6 +43,8 @@ class YouthJobExperienceController extends Controller
      */
     public function getList(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', YouthJobExperience::class);
+
         $filter = $this->jobExperienceService->filterValidator($request)->validate();
         $response = $this->jobExperienceService->getAllJobExperiences($filter, $this->startTime);
         return Response::json($response, ResponseAlias::HTTP_OK);
@@ -57,9 +59,11 @@ class YouthJobExperienceController extends Controller
      */
     public function read(int $id = null): JsonResponse
     {
-        $data = $this->jobExperienceService->getOneJobExperience($id);
+        $jobExperience = $this->jobExperienceService->getOneJobExperience($id);
+        $this->authorize('view', $jobExperience);
+
         $response = [
-            "data" => $data,
+            "data" => $jobExperience,
             "_response_status" => [
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK,
@@ -81,6 +85,9 @@ class YouthJobExperienceController extends Controller
     {
         /** @var YouthJobExperience  $jobExperience */
         $jobExperience = app(YouthJobExperience::class);
+
+        $this->authorize('create', YouthJobExperience::class);
+
         if (!$request->filled('youth_id')) {
             $youthId = Auth::id();
             $request->offsetSet('youth_id', $youthId);
@@ -114,6 +121,8 @@ class YouthJobExperienceController extends Controller
             $request->offsetSet('youth_id', $youthId);
         }
         $jobExperience = YouthJobExperience::findOrFail($id);
+        $this->authorize('update', $jobExperience);
+
         $validated = $this->jobExperienceService->validator($request, $id)->validate();
         $jobExperience = $this->jobExperienceService->update($jobExperience, $validated);
         $response = [
@@ -137,6 +146,8 @@ class YouthJobExperienceController extends Controller
     public function destroy(int $id): JsonResponse
     {
         $jobExperience = YouthJobExperience::findOrFail($id);
+        $this->authorize('delete', $jobExperience);
+
         $this->jobExperienceService->destroy($jobExperience);
         $response = [
             '_response_status' => [

@@ -65,6 +65,7 @@ $app->configure('nise3');
 $app->configure('httpclientendpoint');
 $app->configure('queue');
 $app->configure('nise3RabbitMq');
+$app->configure('IdpUser');
 
 /*
 |--------------------------------------------------------------------------
@@ -103,8 +104,7 @@ $app->register(App\Providers\AppServiceProvider::class);
 $app->register(Fruitcake\Cors\CorsServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Felixkiss\UniqueWithValidator\ServiceProvider::class);
-
-
+$app->register(Khbd\LaravelWso2IdentityApiUser\IdpUserServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
 $app->register(App\Providers\RabbitMQServiceProvider::class);
 $app->register(VladimirYuldashev\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider::class);
@@ -112,7 +112,6 @@ $app->register(VladimirYuldashev\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServic
 if (app()->environment('local')) {
     $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 }
-
 
 
 //$app->register(Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class);

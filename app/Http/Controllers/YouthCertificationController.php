@@ -81,6 +81,7 @@ class YouthCertificationController extends Controller
     public function read(int $id): JsonResponse
     {
         $certification = $this->certificationService->getOneCertification($id);
+        $this->authorize('viewAny', YouthCertification::class);
         $response = [
             "data" => $certification ?: [],
             "_response_status" => [

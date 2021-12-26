@@ -11,11 +11,9 @@ use App\Services\CommonServices\MailService;
 use App\Services\CommonServices\SmsService;
 use Carbon\Carbon;
 use Exception;
-use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Client\RequestException;
-use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -107,16 +105,16 @@ class YouthProfileService
         /** Calculate profile complete in percentage */
         $totalFields = count(Youth::PROFILE_COMPLETE_FIELDS);
         $filled = 0;
-        if($profileInfo){
-            foreach (Youth::PROFILE_COMPLETE_FIELDS as $field){
+        if ($profileInfo) {
+            foreach (Youth::PROFILE_COMPLETE_FIELDS as $field) {
                 $value = json_decode(json_encode($profileInfo[$field]));
-                if(!empty($value)){
+                if (!empty($value)) {
                     $filled++;
                 }
             }
         }
-        $completedProfile = floor((100/$totalFields) * $filled);
-        $profileInfo->offsetSet('profile_completed',$completedProfile);
+        $completedProfile = floor((100 / $totalFields) * $filled);
+        $profileInfo->offsetSet('profile_completed', $completedProfile);
 
         /** Calculate Total Job Experience */
         $totalJobExperiencesInMonth = 0;
@@ -124,13 +122,13 @@ class YouthProfileService
             "year" => 0,
             "month" => 0
         ];
-        if(!empty($profileInfo['youthJobExperiences'])){
+        if (!empty($profileInfo['youthJobExperiences'])) {
             $jobExperiences = json_decode(json_encode($profileInfo['youthJobExperiences']));
-            if(is_array($jobExperiences) && count($jobExperiences) > 0){
-                foreach ($jobExperiences as $key => $value){
-                    if($value->start_date){
+            if (is_array($jobExperiences) && count($jobExperiences) > 0) {
+                foreach ($jobExperiences as $key => $value) {
+                    if ($value->start_date) {
                         $startDate = Carbon::parse($value->start_date);
-                        if($value->end_date){
+                        if ($value->end_date) {
                             $difference = $startDate->diffInMonths($value->end_date);
                         } else {
                             $currentDate = Carbon::now();
@@ -141,8 +139,8 @@ class YouthProfileService
                 }
             }
         }
-        if($totalJobExperiencesInMonth > 0){
-            $year = floor($totalJobExperiencesInMonth/12);
+        if ($totalJobExperiencesInMonth > 0) {
+            $year = floor($totalJobExperiencesInMonth / 12);
             $month = $totalJobExperiencesInMonth % 12;
             $totalExperience["year"] = $year;
             $totalExperience["month"] = $month;
@@ -232,6 +230,7 @@ class YouthProfileService
     /**
      * @param array $data
      * @return bool
+     * @throws Throwable
      */
     public function verifyYouth(array $data): bool
     {
@@ -254,10 +253,30 @@ class YouthProfileService
             $youth->row_status = BaseModel::ROW_STATUS_ACTIVE;
             $youth->verification_code_verified_at = Carbon::now();
             $youth->save();
+
+            $idpUserPayload = [
+                'id' => $youth->idp_user_id,
+                'username' => $youth->username,
+                'active' => (string)$youth->row_status
+            ];
+            $this->idpUserUpdate($idpUserPayload);
             $this->sendYouthUserInfoByMail($youth);
             return true;
         }
         return false;
+    }
+
+
+    /**
+     * Update Idp User
+     * @throws Exception
+     */
+    public function idpUserUpdate(array $idpUserPayload): mixed
+    {
+        return IdpUser()
+            ->setPayload($idpUserPayload)
+            ->update()
+            ->get();
     }
 
     /**
@@ -275,7 +294,7 @@ class YouthProfileService
             return true;
         }
         if ($mobile_number) {
-            $smsService=new SmsService($mobile_number,$message);
+            $smsService = new SmsService($mobile_number, $message);
             $smsService->sendSms();
         }
         return false;
@@ -305,70 +324,30 @@ class YouthProfileService
             $youth->verification_code_sent_at = Carbon::now();
             $youth->save();
             $payLoad["verification_code"] = $code;
-            return $this->sendVerifyCode($payLoad,$code);
+            return $this->sendVerifyCode($payLoad, $code);
         }
         return false;
     }
 
     /**
-     * @param array $data
-     * @return PromiseInterface|Response|array
-     * @throws RequestException
+     * Idp User Create
+     * @param array $idpUserPayload
+     * @return mixed
+     * @throws Exception
      */
-    public function idpUserCreate(array $data): PromiseInterface|Response|array
+    public function idpUserCreate(array $idpUserPayload): mixed
     {
-        $url = clientUrl(BaseModel::IDP_SERVER_CLIENT_URL_TYPE);
-        $payload = $this->prepareIdpPayload($data);
-        $client = Http::withBasicAuth(BaseModel::IDP_USERNAME, BaseModel::IDP_USER_PASSWORD)
-            ->withHeaders([
-                'Content-Type' => 'application/json'
-            ])
-            ->withOptions([
-                'verify' => config("nise3.should_ssl_verify"),
-                'debug' => config('nise3.http_debug'),
-                'timeout' => config("nise3.http_timeout")
-            ])
-            ->post($url, $payload)
-            ->throw(function ($response, $e) use ($url) {
-                Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . json_encode($response));
-                return $e;
-            });
+        Log::info("IDP_Payload is bellow");
+        Log::info(json_encode($idpUserPayload));
 
-        Log::channel('idp_user')->info('idp_user_payload', $payload);
-        Log::channel('idp_user')->debug($client->json());
+        /** response from idp server after user creation */
+        $response = IdpUser()->setPayload($idpUserPayload)->create()->get();
+        Log::channel('idp_user')->info('idp_user_payload', $idpUserPayload);
+        Log::channel('idp_user')->info('idp_user_info', $response);
 
-        return $client;
-
+        return $response;
     }
 
-    /**
-     * @param $data
-     * @return array
-     */
-    #[ArrayShape(['schemas' => "string[]", 'name' => "array", 'active' => "string", 'organization' => "mixed", 'userName' => "string", 'password' => "mixed", 'userType' => "mixed", 'country' => "string", 'emails' => "array"])]
-    private function prepareIdpPayload($data): array
-    {
-        $cleanUserName = trim($data['username']);  // At present only email is selected as username from frontend team
-        return [
-            'schemas' => [
-                "urn:ietf:params:scim:schemas:core:2.0:User",
-                "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
-            ],
-            'name' => [
-                'familyName' => $data['name'],
-                'givenName' => $data['name']
-            ],
-            'active' => (string)$data['active'],
-            'organization' => $data['name'],
-            'userName' => $cleanUserName,
-            'password' => $data['password'],
-            'userType' => $data['user_type'],
-            'country' => 'BD',
-            'emails' => [
-                0 => $data['email']
-            ]
-        ];
-    }
 
     /**
      * @param Request $request
@@ -873,7 +852,7 @@ class YouthProfileService
     {
         $mailService = new MailService();
         $mailService->setTo([
-           $youth->email
+            $youth->email
         ]);
         $from = $mailPayload['from'] ?? BaseModel::NISE3_FROM_EMAIL;
         $subject = $mailPayload['subject'] ?? "Youth Registration";

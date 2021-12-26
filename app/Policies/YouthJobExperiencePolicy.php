@@ -35,11 +35,11 @@ class YouthJobExperiencePolicy extends BasePolicy
      * Determine whether the user can create youthJobExperiences.
      *
      * @param Youth $youth
-     * @return Response
+     * @return bool
      */
-    public function create(Youth $youth): Response
+    public function create(Youth $youth): bool
     {
-        return Response::allow();
+        return $this->isUserLoggedIn($youth);
     }
 
     /**
@@ -47,11 +47,11 @@ class YouthJobExperiencePolicy extends BasePolicy
      *
      * @param Youth $youth
      * @param YouthJobExperience $youthJobExperience
-     * @return Response
+     * @return bool
      */
-    public function update(Youth $youth, YouthJobExperience $youthJobExperience): Response
+    public function update(Youth $youth, YouthJobExperience $youthJobExperience): bool
     {
-        return Response::allow();
+        return $this->isOwner($youth, $youthJobExperience->youth_id);
     }
 
     /**
@@ -59,10 +59,10 @@ class YouthJobExperiencePolicy extends BasePolicy
      *
      * @param Youth $youth
      * @param YouthJobExperience $youthJobExperience
-     * @return Response
+     * @return bool
      */
-    public function delete(Youth $youth, YouthJobExperience $youthJobExperience): Response
+    public function delete(Youth $youth, YouthJobExperience $youthJobExperience): bool
     {
-        return Response::allow();
+        return $this->isOwner($youth, $youthJobExperience->youth_id);
     }
 }

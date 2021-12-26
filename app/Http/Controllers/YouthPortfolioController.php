@@ -46,6 +46,8 @@ class YouthPortfolioController extends Controller
      */
     public function getList(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', YouthPortfolio::class);
+
         $filter = $this->portfolioService->filterValidator($request)->validate();
         $response = $this->portfolioService->getAllPortfolios($filter, $this->startTime);
         return Response::json($response, ResponseAlias::HTTP_OK);
@@ -61,6 +63,7 @@ class YouthPortfolioController extends Controller
     public function read(int $id): JsonResponse
     {
         $portfolio = $this->portfolioService->getOnePortfolio($id);
+        $this->authorize('view', $portfolio);
 
         $response = [
             "data" => $portfolio,
@@ -83,6 +86,8 @@ class YouthPortfolioController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        $this->authorize('create', YouthPortfolio::class);
+
         $request['youth_id'] = Auth::id();
         $validated = $this->portfolioService->validator($request)->validate();
         $portfolio = $this->portfolioService->store($validated);
@@ -110,6 +115,9 @@ class YouthPortfolioController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         $portfolio = YouthPortfolio::findOrFail($id);
+
+        $this->authorize('update', $portfolio);
+
         $request['youth_id'] = Auth::id();
         $validated = $this->portfolioService->validator($request, $id)->validate();
         $portfolio = $this->portfolioService->update($portfolio, $validated);
@@ -134,6 +142,9 @@ class YouthPortfolioController extends Controller
     public function destroy(int $id): JsonResponse
     {
         $portfolio = YouthPortfolio::findOrFail($id);
+
+        $this->authorize('delete', $portfolio);
+
         $this->portfolioService->destroy($portfolio);
         $response = [
             '_response_status' => [
