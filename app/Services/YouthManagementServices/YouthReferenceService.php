@@ -25,13 +25,13 @@ class YouthReferenceService
      */
     public function getReferenceList(array $request, Carbon $startTime): array
     {
-        $youthId = $request['youth_id'] ?? Auth::id();
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $order = $request['order'] ?? "ASC";
 
         /** @var  Builder $referenceBuilder */
         $referenceBuilder = YouthReference::select([
+
             'youth_references.id',
             'youth_references.youth_id',
             'youth_references.referrer_first_name',
@@ -50,12 +50,10 @@ class YouthReferenceService
             'youth_references.referrer_relation_en',
             'youth_references.created_at',
             'youth_references.updated_at',
-        ]);
-        $referenceBuilder->orderBy('youth_references.id', $order);
 
-        if (is_numeric($youthId)) {
-            $referenceBuilder->where('youth_references.youth_id', $youthId);
-        }
+        ])->acl();
+
+        $referenceBuilder->orderBy('youth_references.id', $order);
 
         $response = [];
         /** @var Collection $references */

@@ -24,7 +24,6 @@ class YouthJobExperienceService
 
     public function getAllJobExperiences(array $request, Carbon $startTime): array
     {
-        $youthId = $request['youth_id'] ?? Auth::id();
         $companyNameEn = $request['company_name_en'] ?? "";
         $companyNameBn = $request['company_name_bn'] ?? "";
         $paginate = $request['page'] ?? "";
@@ -48,11 +47,8 @@ class YouthJobExperienceService
             'youth_job_experiences.is_currently_working',
             'youth_job_experiences.created_at',
             'youth_job_experiences.updated_at'
-        ]);
 
-        if (is_numeric($youthId)) {
-            $jobExperienceBuilder->where('youth_job_experiences.youth_id', $youthId);
-        }
+        ])->acl();
 
         $jobExperienceBuilder->orderBy('youth_job_experiences.id', $order);
 
@@ -66,7 +62,7 @@ class YouthJobExperienceService
         /** @var Collection $jobExperiences */
 
         if (is_numeric($paginate) || is_numeric($pageSize)) {
-            $pageSize = $pageSize ?: 10;
+            $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $jobExperiences = $jobExperienceBuilder->paginate($pageSize);
             $paginateData = (object)$jobExperiences->toArray();
             $response['current_page'] = $paginateData->current_page;

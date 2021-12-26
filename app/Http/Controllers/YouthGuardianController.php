@@ -49,7 +49,7 @@ class YouthGuardianController extends Controller
         $guardian = $this->youthGuardianService->getOneGuardian($id);
         $this->authorize('view', $guardian);
         $response = [
-            "data" => $guardian ?: [],
+            "data" => $guardian,
             "_response_status" => [
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK,
@@ -72,7 +72,7 @@ class YouthGuardianController extends Controller
         $validated = $this->youthGuardianService->validator($request)->validate();
         $data = $this->youthGuardianService->createGuardian($validated);
         $response = [
-            'data' => $data ?: null,
+            'data' => $data,
             '_response_status' => [
                 "success" => true,
                 "code" => ResponseAlias::HTTP_CREATED,
@@ -100,7 +100,7 @@ class YouthGuardianController extends Controller
 
         $data = $this->youthGuardianService->update($guardian, $validated);
         $response = [
-            'data' => $data ?: null,
+            'data' => $data,
             '_response_status' => [
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK,

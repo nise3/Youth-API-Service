@@ -7,7 +7,6 @@ use App\Services\YouthManagementServices\YouthCertificationService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -79,9 +78,11 @@ class YouthCertificationController extends Controller
     public function read(int $id): JsonResponse
     {
         $certification = $this->certificationService->getOneCertification($id);
-        $this->authorize('viewAny', YouthCertification::class);
+
+        $this->authorize('viewAny', $certification);
+
         $response = [
-            "data" => $certification ?: [],
+            "data" => $certification,
             "_response_status" => [
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK,
@@ -101,10 +102,6 @@ class YouthCertificationController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        if (!$request->filled('youth_id')) {
-            $youthId = Auth::id();
-            $request->offsetSet('youth_id', $youthId);
-        }
         $this->authorize('create', YouthCertification::class);
 
         $validated = $this->certificationService->validator($request)->validate();
@@ -132,11 +129,6 @@ class YouthCertificationController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        if (!$request->filled('youth_id')) {
-            $youthId = Auth::id();
-            $request->offsetSet('youth_id', $youthId);
-        }
-
         $certification = YouthCertification::findOrFail($id);
 
         $this->authorize('update', $certification);
@@ -144,6 +136,7 @@ class YouthCertificationController extends Controller
         $validated = $this->certificationService->validator($request, $id)->validate();
 
         $certification = $this->certificationService->update($certification, $validated);
+
         $response = [
             'data' => $certification,
             '_response_status' => [
@@ -153,8 +146,8 @@ class YouthCertificationController extends Controller
                 "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
             ]
         ];
-        return Response::json($response, ResponseAlias::HTTP_CREATED);
 
+        return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
 
@@ -165,9 +158,12 @@ class YouthCertificationController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        // TODO: Check Policy so that an youth can not delete other youth's data
         $certification = YouthCertification::findOrFail($id);
+
+        $this->authorize('delete', $certification);
+
         $this->certificationService->destroy($certification);
+
         $response = [
             '_response_status' => [
                 "success" => true,

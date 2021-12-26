@@ -17,9 +17,6 @@ class YouthPolicy  extends BasePolicy
      */
     public function viewAny(Youth $youth): Response
     {
-        // Example: return Response::deny('You do not own this post.');
-        Log::debug('-----------------------');
-        Log::debug($youth);
         return Response::allow();
     }
 

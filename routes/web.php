@@ -34,13 +34,10 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     /** Youth update after course enrollment from institute service  */
     $router->post('youth-update-after-course-enrollment', ["as" => "youth-profile.youth-update-after-course-enrollment", "uses" => "YouthController@updateYouthAfterCourseEnrollment"]);
 
-    /** freelance corner */
-    //$router->get('freelancers', ["as" => "freelancers.get-all-freelancers", "uses" => "YouthFreelanceController@getAllFreelancers"]);
-
-    /**
-     * Cv download corner
-     */
-    $router->post('youth-cv-download/{id}', ["as" => "youth.cv-download", "uses" => "YouthProfileController@youthCvDownload"]);
+//    /**
+//     * Cv download corner
+//     */
+//    $router->post('youth-cv-download/{id}', ["as" => "youth.cv-download", "uses" => "YouthProfileController@youthCvDownload"]);
 
     $customRouter()->resourceRoute('languages', 'LanguageController')->render();
 

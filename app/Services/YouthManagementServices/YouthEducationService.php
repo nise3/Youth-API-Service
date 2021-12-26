@@ -48,8 +48,7 @@ class YouthEducationService
 
 
         /** @var Builder $educationBuilder */
-        $educationBuilder = YouthEducation::select(
-            [
+        $educationBuilder = YouthEducation::select([
                 'youth_educations.id',
                 'youth_educations.youth_id',
                 'youth_educations.education_level_id',
@@ -85,8 +84,9 @@ class YouthEducationService
                 'youth_educations.achievements_en',
                 'youth_educations.created_at',
                 'youth_educations.updated_at',
-            ]
-        );
+
+            ])->acl();
+
         $educationBuilder->leftJoin('education_levels', function ($join) use ($rowStatus) {
             $join->on('education_levels.id', '=', 'youth_educations.education_level_id')
                 ->whereNull('education_levels.deleted_at');
@@ -141,11 +141,9 @@ class YouthEducationService
             $educationBuilder->where('edu_groups.title', 'like', '%' . $eduGroupTitleBn . '%');
         }
 
-        $educationBuilder->where("youth_educations.youth_id", Auth::id());
-
         /** @var Collection $youth_educations */
         if (is_numeric($paginate) || is_numeric($pageSize)) {
-            $pageSize = $pageSize ?: 10;
+            $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $youth_educations = $educationBuilder->paginate($pageSize);
             $paginateData = (object)$youth_educations->toArray();
             $response['current_page'] = $paginateData->current_page;
@@ -174,8 +172,7 @@ class YouthEducationService
     public function getOneEducation(int $id): YouthEducation
     {
         /** @var YouthEducation|Builder $educationBuilder */
-        $educationBuilder = YouthEducation::select(
-            [
+        $educationBuilder = YouthEducation::select([
                 'youth_educations.id',
                 'youth_educations.youth_id',
                 'youth_educations.education_level_id',
@@ -211,8 +208,8 @@ class YouthEducationService
                 'youth_educations.achievements_en',
                 'youth_educations.created_at',
                 'youth_educations.updated_at',
-            ]
-        );
+            ]);
+
         $educationBuilder->leftJoin('education_levels', function ($join) {
             $join->on('education_levels.id', '=', 'youth_educations.education_level_id')
                 ->whereNull('education_levels.deleted_at');

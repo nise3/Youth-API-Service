@@ -67,7 +67,7 @@ class YouthAddressController extends Controller
         $this->authorize('view', $address);
 
         $response = [
-            "data" => $address ?: [],
+            "data" => $address,
             "_response_status" => [
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK,
@@ -162,7 +162,6 @@ class YouthAddressController extends Controller
      */
     public function restore(int $id): JsonResponse
     {
-        // TODO: Check Policy so that an youth can not delete other youth's data
         $guardian = YouthAddress::onlyTrashed()->findOrFail($id);
         $this->youthAddressService->restore($guardian);
         $response = [
@@ -183,7 +182,6 @@ class YouthAddressController extends Controller
      */
     public function forceDelete(int $id): JsonResponse
     {
-        // TODO: Check Policy so that an youth can not delete other youth's data
         $guardian = YouthAddress::onlyTrashed()->findOrFail($id);
         $this->youthAddressService->forceDelete($guardian);
         $response = [

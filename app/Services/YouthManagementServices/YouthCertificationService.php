@@ -23,7 +23,6 @@ class YouthCertificationService
 
     public function getAllCertifications(array $request, Carbon $startTime): array
     {
-        $youthId = $request['youth_id'] ?? Auth::id();
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $order = $request['order'] ?? BaseModel::ROW_ORDER_ASC;
@@ -43,11 +42,8 @@ class YouthCertificationService
             'youth_certifications.certificate_file_path',
             'youth_certifications.created_at',
             'youth_certifications.updated_at'
-        ]);
 
-        if (is_numeric($youthId)) {
-            $certificationBuilder->where('youth_certifications.youth_id', $youthId);
-        }
+        ])->acl();
 
         $certificationBuilder->orderBy('youth_certifications.id', $order);
 

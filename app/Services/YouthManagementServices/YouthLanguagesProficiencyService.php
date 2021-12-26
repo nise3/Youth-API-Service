@@ -23,13 +23,13 @@ class YouthLanguagesProficiencyService
 
     public function getLanguagesProficiencyList(array $request, Carbon $startTime): array
     {
-        $youthId = $request['youth_id'] ?? Auth::id();
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $order = $request['order'] ?? "ASC";
 
         /** @var Builder $languageProficiencyBuilder */
         $languageProficiencyBuilder = YouthLanguagesProficiency::select([
+
             'youth_languages_proficiencies.id',
             'youth_languages_proficiencies.youth_id',
             'youth_languages_proficiencies.language_id',
@@ -42,7 +42,9 @@ class YouthLanguagesProficiencyService
             'youth_languages_proficiencies.understand_proficiency_level',
             'youth_languages_proficiencies.created_at',
             'youth_languages_proficiencies.updated_at'
-        ]);
+
+        ])->acl();
+
         $languageProficiencyBuilder->orderBy('youth_languages_proficiencies.id', $order);
 
         $languageProficiencyBuilder->join('languages', function ($join) {
@@ -50,14 +52,10 @@ class YouthLanguagesProficiencyService
                 ->whereNull('languages.deleted_at');
         });
 
-        if (is_numeric($youthId)) {
-            $languageProficiencyBuilder->where('youth_languages_proficiencies.youth_id', $youthId);
-        }
-
         /** @var Collection $languagesProficiencies */
 
         if (is_numeric($paginate) || is_numeric($pageSize)) {
-            $pageSize = $pageSize ?: 10;
+            $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $languagesProficiencies = $languageProficiencyBuilder->paginate($pageSize);
             $paginateData = (object)$languagesProficiencies->toArray();
             $response['current_page'] = $paginateData->current_page;
@@ -99,6 +97,7 @@ class YouthLanguagesProficiencyService
             'youth_languages_proficiencies.created_at',
             'youth_languages_proficiencies.updated_at'
         ]);
+
         $languageProficiencyBuilder->join('languages', function ($join) {
             $join->on('youth_languages_proficiencies.language_id', '=', 'languages.id')
                 ->whereNull('languages.deleted_at');

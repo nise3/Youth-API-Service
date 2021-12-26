@@ -103,14 +103,13 @@ class YouthEducationController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-
         $education = YouthEducation::findOrFail($id);
         $this->authorize('update', $education);
         $validated = $this->youthEducationService->validator($request, $id)->validate();
 
         $data = $this->youthEducationService->update($education, $validated);
         $response = [
-            'data' => $data ?: null,
+            'data' => $data,
             '_response_status' => [
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK,

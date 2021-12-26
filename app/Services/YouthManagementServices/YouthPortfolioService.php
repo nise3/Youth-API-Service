@@ -24,7 +24,6 @@ class YouthPortfolioService
 
     public function getAllPortfolios(array $request, Carbon $startTime): array
     {
-        $youthId = $request['youth_id'] ?? Auth::id();
         $title = $request['title'] ?? "";
         $titleEn = $request['title_en'] ?? "";
         $paginate = $request['page'] ?? "";
@@ -33,6 +32,7 @@ class YouthPortfolioService
 
         /** @var Builder $portfolioBuilder */
         $portfolioBuilder = YouthPortfolio::select([
+
             'youth_portfolios.id',
             'youth_portfolios.title',
             'youth_portfolios.title_en',
@@ -42,12 +42,10 @@ class YouthPortfolioService
             'youth_portfolios.youth_id',
             'youth_portfolios.created_at',
             'youth_portfolios.updated_at'
-        ]);
-        $portfolioBuilder->orderBy('youth_portfolios.id', $order);
 
-        if (is_numeric($youthId)) {
-            $portfolioBuilder->where('youth_portfolios.youth_id', $youthId);
-        }
+        ])->acl();
+
+        $portfolioBuilder->orderBy('youth_portfolios.id', $order);
 
         if (!empty($title)) {
             $portfolioBuilder->where('youth_portfolios.title', 'like', '%' . $title . '%');

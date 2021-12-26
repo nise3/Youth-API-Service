@@ -28,7 +28,6 @@ class YouthAddressService
      */
     public function getAddressList(array $request, Carbon $startTime): array
     {
-        $youthId = $request['youth_id'] ?? Auth::id();
         $paginate = $request['page'] ?? "";
         $pageSize = $request['page_size'] ?? "";
         $order = $request['order'] ?? "ASC";
@@ -54,7 +53,8 @@ class YouthAddressService
             'youth_addresses.zip_or_postal_code',
             'youth_addresses.created_at',
             'youth_addresses.updated_at'
-        ]);
+
+        ])->acl();
 
         $youthAddressBuilder->orderBy('youth_addresses.id', $order);
 
@@ -71,14 +71,10 @@ class YouthAddressService
                 ->whereNull('loc_upazilas.deleted_at');
         });
 
-        if (is_numeric($youthId)) {
-            $youthAddressBuilder->where('youth_addresses.youth_id', $youthId);
-        }
-
         $response = [];
         /** @var Collection $youthAddresses */
         if (is_numeric($paginate) || is_numeric($pageSize)) {
-            $pageSize = $pageSize ?: 10;
+            $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $youthAddresses = $youthAddressBuilder->paginate($pageSize);
             $paginateData = (object)$youthAddresses->toArray();
             $response['current_page'] = $paginateData->current_page;

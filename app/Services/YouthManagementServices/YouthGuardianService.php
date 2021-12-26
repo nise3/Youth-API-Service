@@ -27,7 +27,6 @@ class YouthGuardianService
      */
     public function getGuardianList(array $request, Carbon $startTime): array
     {
-        $youthId = $request['youth_id'] ?? Auth::id();
         $guardianName = $request['name'] ?? "";
         $guardianNameEn = $request['name_en'] ?? "";
 
@@ -36,25 +35,21 @@ class YouthGuardianService
         $order = $request['order'] ?? "ASC";
 
         /** @var Builder $guardianBuilder */
-        $guardianBuilder = YouthGuardian::select(
-            [
-                'youth_guardians.id',
-                'youth_guardians.name',
-                'youth_guardians.name_en',
-                'youth_guardians.nid',
-                'youth_guardians.mobile',
-                'youth_guardians.date_of_birth',
-                'youth_guardians.relationship_type',
-                'youth_guardians.relationship_title',
-                'youth_guardians.relationship_title_en',
-                'youth_guardians.created_at',
-                'youth_guardians.updated_at',
-            ]
-        );
+        $guardianBuilder = YouthGuardian::select([
+            'youth_guardians.id',
+            'youth_guardians.name',
+            'youth_guardians.name_en',
+            'youth_guardians.nid',
+            'youth_guardians.mobile',
+            'youth_guardians.date_of_birth',
+            'youth_guardians.relationship_type',
+            'youth_guardians.relationship_title',
+            'youth_guardians.relationship_title_en',
+            'youth_guardians.created_at',
+            'youth_guardians.updated_at',
 
-        if (is_numeric($youthId)) {
-            $guardianBuilder->where('youth_guardians.youth_id', $youthId);
-        }
+        ])->acl();
+
         if (!empty($guardianName)) {
             $guardianBuilder->where('youth_guardians.name', 'like', '%' . $guardianName . '%');
         }
@@ -64,7 +59,7 @@ class YouthGuardianService
 
         /** @var Collection $guardians */
         if (is_numeric($paginate) || is_numeric($pageSize)) {
-            $pageSize = $pageSize ?: 10;
+            $pageSize = $pageSize ?: BaseModel::DEFAULT_PAGE_SIZE;
             $guardians = $guardianBuilder->paginate($pageSize);
             $paginateData = (object)$guardians->toArray();
             $response['current_page'] = $paginateData->current_page;
