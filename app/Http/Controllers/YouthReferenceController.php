@@ -7,7 +7,6 @@ use App\Services\YouthManagementServices\YouthReferenceService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -75,11 +74,6 @@ class YouthReferenceController extends Controller
     public function store(Request $request): JsonResponse
     {
         $this->authorize('create', YouthReference::class);
-
-        if (!$request->filled('youth_id')) {
-            $youthId = Auth::id();
-            $request->offsetSet('youth_id', $youthId);
-        }
         $validated = $this->referenceService->validator($request)->validate();
         $reference = $this->referenceService->store($validated);
         $response = [
@@ -109,10 +103,6 @@ class YouthReferenceController extends Controller
 
         $this->authorize('update', $reference);
 
-        if (!$request->filled('youth_id')) {
-            $youthId = Auth::id();
-            $request->offsetSet('youth_id', $youthId);
-        }
         $validated = $this->referenceService->validator($request, $id)->validate();
         $reference = $this->referenceService->update($reference, $validated);
         $response = [

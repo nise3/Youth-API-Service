@@ -83,15 +83,10 @@ class YouthJobExperienceController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        /** @var YouthJobExperience  $jobExperience */
         $jobExperience = app(YouthJobExperience::class);
 
         $this->authorize('create', YouthJobExperience::class);
 
-        if (!$request->filled('youth_id')) {
-            $youthId = Auth::id();
-            $request->offsetSet('youth_id', $youthId);
-        }
         $validated = $this->jobExperienceService->validator($request)->validate();
         $jobExperience = $this->jobExperienceService->store($jobExperience, $validated);
         $response = [
@@ -116,10 +111,6 @@ class YouthJobExperienceController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        if (!$request->filled('youth_id')) {
-            $youthId = Auth::id();
-            $request->offsetSet('youth_id', $youthId);
-        }
         $jobExperience = YouthJobExperience::findOrFail($id);
         $this->authorize('update', $jobExperience);
 

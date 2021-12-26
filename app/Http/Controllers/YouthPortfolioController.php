@@ -87,8 +87,6 @@ class YouthPortfolioController extends Controller
     public function store(Request $request): JsonResponse
     {
         $this->authorize('create', YouthPortfolio::class);
-
-        $request['youth_id'] = Auth::id();
         $validated = $this->portfolioService->validator($request)->validate();
         $portfolio = $this->portfolioService->store($validated);
         $response = [
@@ -118,7 +116,6 @@ class YouthPortfolioController extends Controller
 
         $this->authorize('update', $portfolio);
 
-        $request['youth_id'] = Auth::id();
         $validated = $this->portfolioService->validator($request, $id)->validate();
         $portfolio = $this->portfolioService->update($portfolio, $validated);
         $response = [
@@ -142,9 +139,7 @@ class YouthPortfolioController extends Controller
     public function destroy(int $id): JsonResponse
     {
         $portfolio = YouthPortfolio::findOrFail($id);
-
         $this->authorize('delete', $portfolio);
-
         $this->portfolioService->destroy($portfolio);
         $response = [
             '_response_status' => [

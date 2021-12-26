@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -88,11 +87,6 @@ class YouthAddressController extends Controller
     function store(Request $request): JsonResponse
     {
         $this->authorize('create', YouthAddress::class);
-        if (!$request->filled('youth_id')) {
-            $youthId = Auth::id();
-            $request->offsetSet('youth_id', $youthId);
-        }
-
         $validated = $this->youthAddressService->validator($request)->validate();
         $data = $this->youthAddressService->store($validated);
 
@@ -121,11 +115,6 @@ class YouthAddressController extends Controller
     {
         $address = YouthAddress::findOrFail($id);
         $this->authorize('update', $address);
-
-        if (!$request->filled('youth_id')) {
-            $youthId = Auth::id();
-            $request->offsetSet('youth_id', $youthId);
-        }
 
         $validated = $this->youthAddressService->validator($request, $id)->validate();
 

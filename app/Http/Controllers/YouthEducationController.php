@@ -7,7 +7,6 @@ use App\Services\YouthManagementServices\YouthEducationService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -79,8 +78,6 @@ class YouthEducationController extends Controller
         $youthEducation = app(YouthEducation::class);
 
         $this->authorize('create', $youthEducation);
-
-        $request['youth_id'] = $request['youth_id'] ?? Auth::id();
         $validated = $this->youthEducationService->validator($request)->validate();
         $data = $this->youthEducationService->createEducation($youthEducation, $validated);
         $response = [
@@ -109,7 +106,6 @@ class YouthEducationController extends Controller
 
         $education = YouthEducation::findOrFail($id);
         $this->authorize('update', $education);
-        $request['youth_id'] = Auth::id();
         $validated = $this->youthEducationService->validator($request, $id)->validate();
 
         $data = $this->youthEducationService->update($education, $validated);

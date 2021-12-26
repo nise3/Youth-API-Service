@@ -68,10 +68,6 @@ class YouthGuardianController extends Controller
      */
     function store(Request $request): JsonResponse
     {
-        if (!$request->filled('youth_id')) {
-            $youthId = Auth::id();
-            $request->offsetSet('youth_id', $youthId);
-        }
         $this->authorize('create', YouthGuardian::class);
         $validated = $this->youthGuardianService->validator($request)->validate();
         $data = $this->youthGuardianService->createGuardian($validated);
@@ -99,14 +95,7 @@ class YouthGuardianController extends Controller
     {
 
         $guardian = YouthGuardian::findOrFail($id);
-
         $this->authorize('update', $guardian);
-
-        if (!$request->filled('youth_id')) {
-            $youthId = Auth::id();
-            $request->offsetSet('youth_id', $youthId);
-        }
-
         $validated = $this->youthGuardianService->validator($request, $id)->validate();
 
         $data = $this->youthGuardianService->update($guardian, $validated);

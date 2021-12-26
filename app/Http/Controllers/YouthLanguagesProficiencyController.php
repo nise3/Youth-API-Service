@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\YouthLanguagesProficiency;
 use App\Services\YouthManagementServices\YouthLanguagesProficiencyService;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -79,7 +77,6 @@ class YouthLanguagesProficiencyController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $request['youth_id'] = Auth::id();
         $this->authorize('create', YouthLanguagesProficiency::class);
 
         $validated = $this->languagesProficiencyService->validator($request)->validate();
@@ -106,7 +103,6 @@ class YouthLanguagesProficiencyController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $request['youth_id'] = Auth::id();
         $languageProficiency = YouthLanguagesProficiency::findOrFail($id);
         $this->authorize('update', $languageProficiency);
 

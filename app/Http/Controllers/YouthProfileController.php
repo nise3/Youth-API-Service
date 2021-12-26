@@ -25,19 +25,11 @@ use App\Services\YouthManagementServices\YouthProfileService;
 
 class YouthProfileController extends Controller
 {
-    /**
-     * @var YouthProfileService
-     */
+
     public YouthProfileService $youthProfileService;
 
-    /**
-     * @var YouthAddressService
-     */
     public YouthAddressService $youthAddressService;
 
-    /**
-     * @var Carbon
-     */
     private Carbon $startTime;
 
     /**
