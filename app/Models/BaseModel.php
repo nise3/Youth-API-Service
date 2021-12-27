@@ -123,4 +123,5 @@ abstract class BaseModel extends Model
     public const SAGA_CMS_SERVICE = 'cms_service';
     public const SAGA_MAIL_SMS_SERVICE = 'mail_sms_service';
 
+    public const DATABASE_CONNECTION_ERROR_CODE = 2002;
 }

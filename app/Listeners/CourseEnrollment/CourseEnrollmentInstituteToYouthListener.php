@@ -10,6 +10,7 @@ use App\Services\RabbitMQService;
 use App\Services\YouthManagementServices\YouthService;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -35,17 +36,18 @@ class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
      */
     public function handle($event)
     {
-        $this->rabbitMQService->receiveEventSuccessfully(
-            BaseModel::SAGA_INSTITUTE_SERVICE,
-            BaseModel::SAGA_YOUTH_SERVICE,
-            get_class($this),
-            json_encode($event)
-        );
-        $alreadyConsumed = $this->rabbitMQService->checkEventAlreadyConsumed();
-        if(!$alreadyConsumed){
-            $eventData = json_decode(json_encode($event), true);
-            $data = $eventData['data'] ?? [];
-            try {
+        $eventData = json_decode(json_encode($event), true);
+        $data = $eventData['data'] ?? [];
+        try {
+            $this->rabbitMQService->receiveEventSuccessfully(
+                BaseModel::SAGA_INSTITUTE_SERVICE,
+                BaseModel::SAGA_YOUTH_SERVICE,
+                get_class($this),
+                json_encode($event)
+            );
+
+            $alreadyConsumed = $this->rabbitMQService->checkEventAlreadyConsumed();
+            if (!$alreadyConsumed) {
                 DB::beginTransaction();
                 if (!empty($data["physical_disabilities"])) {
                     $data["physical_disabilities"] = isset($data['physical_disabilities']) && is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
@@ -59,7 +61,6 @@ class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
                     $this->youthService->updateYouthGuardian($data, $youth);
                     $this->youthService->updateYouthEducations($data, $youth);
                     $this->youthService->updateYouthPhysicalDisabilities($data, $youth);
-                    DB::commit();
 
                     /** Store the event as a Success event into Database */
                     $this->rabbitMQService->sagaSuccessEvent(
@@ -69,6 +70,8 @@ class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
                         json_encode($data)
                     );
 
+                    DB::commit();
+
                     /** Trigger EVENT to Institute Service via RabbitMQ */
                     event(new CourseEnrollmentSuccessEvent($data));
 
@@ -77,9 +80,13 @@ class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
                 } else {
                     throw new Exception("youth_id not provided!");
                 }
-            } catch (Exception $e) {
-                DB::rollBack();
-
+            }
+        } catch (Throwable $e) {
+            if ($e instanceof QueryException && $e->getCode() == BaseModel::DATABASE_CONNECTION_ERROR_CODE) {
+                /** Technical Recoverable Error Occurred. RETRY mechanism with DLX-DLQ apply now by sending a rejection */
+                throw new Exception("Database Connectivity Error");
+            } else {
+                /** Technical Non-recoverable Error "OR" Business Rule violation Error Occurred. Compensating Transactions apply now */
                 /** Store the event as an Error event into Database */
                 $this->rabbitMQService->sagaErrorEvent(
                     BaseModel::SAGA_INSTITUTE_SERVICE,
