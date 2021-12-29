@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class SagaEvents extends Migration
+class CreateSagaSuccessEvents extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class SagaEvents extends Migration
      */
     public function up()
     {
-        Schema::create('saga_events', function (Blueprint $table) {
+        Schema::create('saga_success_events', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
-            $table->text('connection');
-            $table->text('exchange');
-            $table->text('queue');
-            $table->text('listener');
-            $table->longText('payload');
+            $table->string('connection');
+            $table->string('publisher');
+            $table->string('listener');
+            $table->string('exchange');
+            $table->string('routing_key');
+            $table->string('consumer');
+            $table->longText('event_data');
             $table->timestamps();
         });
     }
@@ -32,6 +34,6 @@ class SagaEvents extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('saga_success_events');
     }
 }

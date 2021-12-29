@@ -108,4 +108,20 @@ abstract class BaseModel extends Model
     public const NISE3_FROM_EMAIL = "info@nise3.com";
     public const NISE3_DEFAULT_URL = "http://123.49.47.38/";
 
+    /** Saga Status */
+    public const SAGA_STATUS_CREATE_PENDING = 1;
+    public const SAGA_STATUS_UPDATE_PENDING = 2;
+    public const SAGA_STATUS_DESTROY_PENDING = 3;
+    public const SAGA_STATUS_COMMIT = 4;
+    public const SAGA_STATUS_ROLLBACK = 5;
+
+    /** SAGA events Publisher & Consumer */
+    public const SAGA_CORE_SERVICE = 'core_service';
+    public const SAGA_INSTITUTE_SERVICE = 'institute_service';
+    public const SAGA_ORGANIZATION_SERVICE = 'organization_service';
+    public const SAGA_YOUTH_SERVICE = 'youth_service';
+    public const SAGA_CMS_SERVICE = 'cms_service';
+    public const SAGA_MAIL_SMS_SERVICE = 'mail_sms_service';
+
+    public const DATABASE_CONNECTION_ERROR_CODE = 2002;
 }

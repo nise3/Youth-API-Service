@@ -35,6 +35,12 @@ return [
     */
 
     'channels' => [
+        'saga' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/saga-logs/' . date('Y/F/') . 'saga.log'),
+            'level' => 'info'
+        ],
+
         'stack' => [
             'driver' => 'stack',
             'channels' => ['daily'],

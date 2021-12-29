@@ -2,8 +2,6 @@
 
 namespace App\Services\YouthManagementServices;
 
-use App\Events\CourseEnrollmentSuccessEvent;
-use App\Events\MailSendEvent;
 use App\Models\BaseModel;
 use App\Models\EduBoard;
 use App\Models\EducationLevel;
@@ -13,12 +11,12 @@ use App\Models\Youth;
 use App\Models\YouthAddress;
 use App\Models\YouthEducation;
 use App\Models\YouthGuardian;
+use App\Services\CommonServices\MailService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
@@ -391,60 +389,33 @@ class YouthService
     }
 
     /**
-     * @param array $event
-     * @return bool
+     * @throws Throwable
      */
-    public function updateYouthProfileAfterCourseEnroll(array $event): bool
+    public function sendMailCourseEnrollmentSuccess(array $mailPayload)
     {
-        try {
-            DB::beginTransaction();
-            $data = $event['courseEnrollment'];
-            Log::info('update Youth Profile After Course Enroll function call');
-            if (!empty($data["physical_disabilities"])) {
-                $data["physical_disabilities"] = isset($data['physical_disabilities']) && is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
-            }
-            if (!empty($data['youth_id'])) {
-                $youth = Youth::findOrFail($data['youth_id']);
-                $youth->fill($data);
-                $youth->save();
+        /** @var Youth $youth */
+        $youth = Youth::findOrFail($mailPayload['youth_id']);
 
-                $this->updateYouthAddresses($data, $youth);
-                $this->updateYouthGuardian($data, $youth);
-                $this->updateYouthEducations($data, $youth);
-                $this->updateYouthPhysicalDisabilities($data, $youth);
+        $mailService = new MailService();
+        $mailService->setTo([
+            $youth->email
+        ]);
+        $from = BaseModel::NISE3_FROM_EMAIL;
+        $subject = "Course Enrollment Successful";
 
-                DB::commit();
-                Log::info("Anisss");
+        $mailService->setForm($from);
+        $mailService->setSubject($subject);
 
-                /** Trigger EVENT to Institute Service via RabbitMQ  */
-                event(new CourseEnrollmentSuccessEvent($event));
+        $mailService->setMessageBody([
+            "course_enrollment_info" => $mailPayload,
+        ]);
 
-                /** Trigger EVENT to MailSms Service to send Mail via RabbitMQ */
-                event(new MailSendEvent($event));
-
-                /** Store the event into Database */
-                /*$exchange = $job->getRabbitMQMessage();
-                Log::info("Message paiciccccccccccccccc ccccccccccccccc");
-                Log::info(json_encode($exchange));*/
-                /*$sagaEventPayload = [
-                    'uuid' => $event['uuid'],
-                    'connection' => 'rabbitMq',
-                    ''
-                ];
-                $sagaEvent = app(SagaEvent::class);
-                $sagaEvent->fill();*/
-
-                return true;
-            }
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::debug($e->getMessage());
-        }
-
-        return false;
+        $courseEnrollmentSuccessfulTemplate = 'mail.course-enrollment-successful-template';
+        $mailService->setTemplate($courseEnrollmentSuccessfulTemplate);
+        $mailService->sendMail();
     }
 
-    private function updateYouthEducations(array $data, Youth $youth)
+    public function updateYouthEducations(array $data, Youth $youth)
     {
         if (!empty($data['education_info'])) {
             foreach ($data['education_info'] as $eduLabelId => $values) {
@@ -460,7 +431,7 @@ class YouthService
         }
     }
 
-    private function updateYouthGuardian(array $data, Youth $youth): void
+    public function updateYouthGuardian(array $data, Youth $youth): void
     {
         if (!empty($data['guardian_info'])) {
             $youthFather = YouthGuardian::where('youth_id', $youth->id)->where('relationship_type', YouthGuardian::RELATIONSHIP_TYPE_FATHER)->first();
@@ -478,7 +449,7 @@ class YouthService
         }
     }
 
-    private function updateYouthAddresses(array $data, Youth $youth): void
+    public function updateYouthAddresses(array $data, Youth $youth): void
     {
         if (!empty($data['address_info'])) {
             if (!empty($data['address_info']['present_address'])) {

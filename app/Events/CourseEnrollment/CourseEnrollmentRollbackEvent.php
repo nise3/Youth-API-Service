@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Events;
+namespace App\Events\CourseEnrollment;
 
-class MailSendEvent
+class CourseEnrollmentRollbackEvent
 {
     public array $data;
+
     /**
-     * Create a new Email event instance.
+     * Create a new event instance.
      *
      * @return void
      */
