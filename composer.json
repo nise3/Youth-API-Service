@@ -22,7 +22,10 @@
         "irazasyed/larasupport": "^1.7",
         "khbd/laravel-wso2-identity-api-user": "^0.0.3",
         "laravel/lumen-framework": "^8.0",
+        "ixudra/curl": "6.*",
         "laravel/tinker": "^2.6",
+        "illuminate/redis": "^8.73",
+        "predis/predis": "~1.0",
         "phabloraylan/lumen-middleware-trim-or-convert-strings": "^1.0",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "dev-feat/give-accessibility-to-access-rabbitmqjob-instance"
     },
