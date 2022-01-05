@@ -7,6 +7,9 @@
     },
     "servers": [
         {
+            "url": "http://nise-youth.softbd/api/v1"
+        },
+        {
             "url": "https://youth.bus-staging.softbdltd.com/api/v1"
         },
         {
