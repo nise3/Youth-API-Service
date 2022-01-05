@@ -23,9 +23,9 @@ class DatabaseSeeder extends Seeder
             EmploymentTypeSeeder::class,
             LanguageSeeder::class,
             PhysicalDisabilitySeeder::class,
-            YouthSeeder::class,
-            YouthGuardianTableSeeder::class,
-            YouthLanguageProficiencySeeder::class
+//            YouthSeeder::class,
+//            YouthGuardianTableSeeder::class,
+//            YouthLanguageProficiencySeeder::class
 //            PortfolioSeeder::class,
 //            JobExperienceSeeder::class,
 //            ReferenceSeeder::class,
