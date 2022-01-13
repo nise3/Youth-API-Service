@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\CourseEnrollmentSuccessEvent;
 use App\Events\MailSendEvent;
 use App\Models\YouthCertification;
 use App\Services\YouthManagementServices\YouthCertificationService;
