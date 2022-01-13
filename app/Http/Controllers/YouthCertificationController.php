@@ -108,11 +108,6 @@ class YouthCertificationController extends Controller
 
         $validated = $this->certificationService->validator($request)->validate();
         $certification = $this->certificationService->store($validated);
-
-        /** Trigger event to RabbitMQ */
-       /** event(new CourseEnrollmentSuccessEvent($validated));
-        event(new MailSendEvent($validated)); */
-
         $response = [
             'data' => $certification,
             '_response_status' => [
