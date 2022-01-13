@@ -33,7 +33,7 @@ class YouthReferenceController extends Controller
      */
     public function getList(Request $request): JsonResponse
     {
-        $this->authorize('view', YouthReference::class);
+        $this->authorize('viewAny', YouthReference::class);
 
         $filter = $this->referenceService->filterValidator($request)->validate();
         $response = $this->referenceService->getReferenceList($filter, $this->startTime);
