@@ -260,7 +260,7 @@ class YouthProfileService
                 'active' => (string)$youth->row_status
             ];
             $this->idpUserUpdate($idpUserPayload);
-            $this->sendYouthUserInfoByMail($youth);
+            //$this->sendYouthUserInfoByMail($youth);
             return true;
         }
         return false;
