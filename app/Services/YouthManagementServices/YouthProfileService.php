@@ -249,7 +249,7 @@ class YouthProfileService
             ->where("row_status", BaseModel::ROW_STATUS_PENDING)
             ->first();
 
-        Log::info("youth" . json_encode($youth));
+        Log::info("youth" . json_encode([$youth,$data]));
 
         if ($youth) {
             $youth->row_status = BaseModel::ROW_STATUS_ACTIVE;
