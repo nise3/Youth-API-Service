@@ -293,6 +293,24 @@ class YouthProfileController extends Controller
         return Response::json($response, $response['_response_status']['code']);
     }
 
+    public function youthApplyToJob(Request $request): JsonResponse
+    {
+        $validated = $this->youthProfileService->youthApplyToJobFilterValidator($request)->validate();
+        $validated['youth_id'] = Auth::id();
+        $data = $this->youthProfileService->applyToJob($validated);
+
+        $response = [
+            'data' => $data ? $data : [],
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Applied to job successfully",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ]
+        ];
+        return Response::json($response, $response['_response_status']['code']);
+    }
+
     /**
      * @throws RequestException
      */
