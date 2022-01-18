@@ -16,9 +16,9 @@ class ServiceToServiceCallHandler
      * @return mixed
      * @throws RequestException
      */
-    public function getJobInfo(string $jobId): mixed
+    public function getMatchingCriteria(string $jobId): mixed
     {
-        $url = clientUrl(BaseModel::ORGANIZATION_CLIENT_URL_TYPE) . 'service-to-service-call/job-info/' . $jobId;
+        $url = clientUrl(BaseModel::ORGANIZATION_CLIENT_URL_TYPE) . 'service-to-service-call/matching-criteria/' . $jobId;
 
         return Http::withOptions(
             [
