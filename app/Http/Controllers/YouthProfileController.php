@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BaseModel;
 use App\Models\Youth;
 use App\Models\YouthAddress;
+use App\Services\CommonServices\CodeGeneratorService;
 use App\Services\YouthManagementServices\YouthAddressService;
 use Exception;
 use Illuminate\Http\Client\RequestException;
@@ -75,6 +76,7 @@ class YouthProfileController extends Controller
     {
         $youth = app(Youth::class);
         $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
+        $validated['code'] = CodeGeneratorService::getYouthCode();
 
         $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
         Log::debug('-- Youth Registration Validation Ok -- ');
@@ -84,7 +86,7 @@ class YouthProfileController extends Controller
             $idpUserPayLoad = [
                 'first_name' => $validated['first_name'],
                 'last_name' => $validated['last_name'],
-                'mobile'=>$validated['mobile'],
+                'mobile' => $validated['mobile'],
                 'email' => $validated['email'],
                 'username' => $validated['username'],
                 'password' => $validated['password'],
