@@ -7,6 +7,9 @@
     },
     "servers": [
         {
+            "url": "https://youth-phase1.nise.gov.bd/api/v1"
+        },
+        {
             "url": "http://nise-youth.softbd/api/v1"
         },
         {
@@ -3915,6 +3918,46 @@
                 ]
             }
         },
+        "/apply-job": {
+            "post": {
+                "tags": ["Apply Job"],
+                "summary": "Apply for job",
+                "description": "An Http method to post Apply for job. Successful request response will return 200 status code",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/jobApply"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "job_id": "qq-qq",
+                                        "youth_id": 1,
+                                        "updated_at": "2022-01-18T06:15:47.000000Z",
+                                        "created_at": "2022-01-18T06:15:47.000000Z",
+                                        "id": 1
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Applied to job successfully",
+                                        "query_time": "1 second before"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/languages": {
             "get": {
                 "summary": "Get All languages",
@@ -3984,6 +4027,36 @@
             }
         },
         "schemas": {
+            "jobApply": {
+                "type": "object",
+                "properties": {
+                    "job_id": {
+                        "type": "string"
+                    },
+                    "age_valid": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "experience_valid": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "gender_valid": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "location_valid": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "required": [
+                    "age_valid",
+                    "experience_valid",
+                    "gender_valid",
+                    "location_valid"
+                ]
+            },
             "resend-verification-code": {
                 "type": "object",
                 "properties": {
