@@ -142,7 +142,7 @@ class YouthProfileController extends Controller
             $payloadField = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? "email" : "mobile";
             $sendVerifyCodePayLoad[$payloadField] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
 
-            //$this->youthProfileService->sendVerifyCode($sendVerifyCodePayLoad, $validated['verification_code']);
+            $this->youthProfileService->sendVerifyCode($sendVerifyCodePayLoad, $validated['verification_code']);
 
             Log::info("Sms send successfully after registration");
 
