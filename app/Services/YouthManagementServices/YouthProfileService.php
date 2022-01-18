@@ -849,7 +849,7 @@ class YouthProfileService
     {
         $requestData = $request->all();
         $jobId = $requestData['job_id'];
-        $jobData = ServiceToServiceCall::getJobInfo($jobId);
+        $jobData = ServiceToServiceCall::getMatchingCriteria($jobId);
         $matchingCriteria = $jobData['matching_criteria'];
         $youthData = $this->getYouthProfile()->toArray();
 
