@@ -4032,29 +4032,10 @@
                 "properties": {
                     "job_id": {
                         "type": "string"
-                    },
-                    "age_valid": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "experience_valid": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "gender_valid": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "location_valid": {
-                        "type": "integer",
-                        "example": 1
                     }
                 },
                 "required": [
-                    "age_valid",
-                    "experience_valid",
-                    "gender_valid",
-                    "location_valid"
+                    "job_id"
                 ]
             },
             "resend-verification-code": {
