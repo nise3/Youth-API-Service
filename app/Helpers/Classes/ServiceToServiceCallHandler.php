@@ -26,7 +26,7 @@ class ServiceToServiceCallHandler
      */
     public function youthApplyToJob(string $jobId): mixed
     {
-        $url = clientUrl(BaseModel::ORGANIZATION_CLIENT_URL_TYPE) . 'service-to-service-call/youth-apply-to-job';
+        $url = clientUrl(BaseModel::ORGANIZATION_CLIENT_URL_TYPE) . 'service-to-service-call/apply-to-job';
         $postField = [
             "job_id" => $jobId,
             "youth_data" => $this->youthProfileService->getYouthProfile()->toArray()
