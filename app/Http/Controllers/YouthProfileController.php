@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facade\ServiceToServiceCall;
 use App\Models\BaseModel;
 use App\Models\Youth;
 use App\Models\YouthAddress;
@@ -84,7 +85,7 @@ class YouthProfileController extends Controller
             $idpUserPayLoad = [
                 'first_name' => $validated['first_name'],
                 'last_name' => $validated['last_name'],
-                'mobile'=>$validated['mobile'],
+                'mobile' => $validated['mobile'],
                 'email' => $validated['email'],
                 'username' => $validated['username'],
                 'password' => $validated['password'],
@@ -295,12 +296,12 @@ class YouthProfileController extends Controller
 
     public function youthApplyToJob(Request $request): JsonResponse
     {
-        $validated = $this->youthProfileService->youthApplyToJobFilterValidator($request)->validate();
-        $validated['youth_id'] = Auth::id();
-        $data = $this->youthProfileService->applyToJob($validated);
+        $requestData = $request->all();
+        $jobId = $requestData['job_id'];
+        $data = ServiceToServiceCall::youthApplyToJob($jobId);
 
         $response = [
-            'data' => $data ? $data : [],
+            'data' => $data ?? [],
             '_response_status' => [
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK,

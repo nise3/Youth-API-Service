@@ -3,6 +3,7 @@
 namespace App\Helpers\Classes;
 
 use App\Models\BaseModel;
+use App\Services\YouthManagementServices\YouthProfileService;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -10,28 +11,38 @@ use Illuminate\Support\Facades\Log;
 class ServiceToServiceCallHandler
 {
 
+    public YouthProfileService $youthProfileService;
+
+    public function __construct(YouthProfileService $youthProfileService)
+    {
+        $this->youthProfileService = $youthProfileService;
+    }
+
     /**
-     * Youth service to organization service call to get job data
+     * Youth service to organization service call to apply for job
      * @param string $jobId
      * @return mixed
      * @throws RequestException
      */
-    public function getMatchingCriteria(string $jobId): mixed
+    public function youthApplyToJob(string $jobId): mixed
     {
-        $url = clientUrl(BaseModel::ORGANIZATION_CLIENT_URL_TYPE) . 'service-to-service-call/matching-criteria/' . $jobId;
+        $url = clientUrl(BaseModel::ORGANIZATION_CLIENT_URL_TYPE) . 'service-to-service-call/youth-apply-to-job';
+        $postField = [
+            "job_id" => $jobId,
+            "youth_data" => $this->youthProfileService->getYouthProfile()->toArray()
+        ];
 
-        return Http::withOptions(
-            [
-                'verify' => config('nise3.should_ssl_verify'),
-                'debug' => config('nise3.http_debug'),
-                'timeout' => config('nise3.http_timeout'),
-            ])
+        $youthData = Http::withOptions([
+            'verify' => config("nise3.should_ssl_verify"),
+            'debug' => config('nise3.http_debug'),
+            'timeout' => config("nise3.http_timeout")
+        ])->post($url, $postField)->throw(function ($response, $e) use ($url) {
+            Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . json_encode($response));
+            return $e;
+        })->json('data');
 
-            ->get($url)
-            ->throw(function ($response, $e) use ($url) {
-                Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . json_encode($response));
-                throw $e;
-            })
-            ->json('data');
+        Log::info("youth info with job data:" . json_encode($youthData));
+
+        return $youthData;
     }
 }
