@@ -20,15 +20,18 @@ class ServiceToServiceCallHandler
 
     /**
      * Youth service to organization service call to apply for job
-     * @param string $jobId
+     * @param array $requestData
      * @return mixed
      * @throws RequestException
      */
-    public function youthApplyToJob(string $jobId): mixed
+    public function youthApplyToJob(array $requestData): mixed
     {
+        $jobId = $requestData['job_id'];
+
         $url = clientUrl(BaseModel::ORGANIZATION_CLIENT_URL_TYPE) . 'service-to-service-call/apply-to-job';
         $postField = [
             "job_id" => $jobId,
+            "expected_salary" => $requestData['expected_salary'] ?? null,
             "youth_data" => $this->youthProfileService->getYouthProfile()->toArray()
         ];
 

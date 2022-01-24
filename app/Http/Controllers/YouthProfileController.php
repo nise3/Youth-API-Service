@@ -294,11 +294,18 @@ class YouthProfileController extends Controller
         return Response::json($response, $response['_response_status']['code']);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function youthApplyToJob(Request $request): JsonResponse
     {
         $requestData = $request->all();
-        $jobId = $requestData['job_id'];
-        $data = ServiceToServiceCall::youthApplyToJob($jobId);
+
+        throw_if(!is_numeric($requestData['expected_salary']), ValidationException::withMessages([
+            "Expected Salary must be integer.[32000]"
+        ]));
+
+        $data = ServiceToServiceCall::youthApplyToJob($requestData);
 
         $response = [
             'data' => $data ?? [],

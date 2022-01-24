@@ -4032,6 +4032,9 @@
                 "properties": {
                     "job_id": {
                         "type": "string"
+                    },
+                    "expected_salary": {
+                        "type": "integer"
                     }
                 },
                 "required": [
