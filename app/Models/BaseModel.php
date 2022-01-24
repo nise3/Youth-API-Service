@@ -20,7 +20,7 @@ abstract class BaseModel extends Model
 
     /** Idp User Information */
     public const IDP_USERNAME = 'admin';
-    public const IDP_USER_PASSWORD = 'Iadmin';
+    public const IDP_USER_PASSWORD = 'admin';
 
     /** Client Url End Point Type*/
     public const ORGANIZATION_CLIENT_URL_TYPE = "ORGANIZATION";
