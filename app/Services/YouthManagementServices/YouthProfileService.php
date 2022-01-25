@@ -15,6 +15,8 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,10 +36,13 @@ use Throwable;
 class YouthProfileService
 {
     /**
-     * @return Youth
+     * @param array $youth_ids
+     * @return Youth | Collection
+     * @throws Exception
      */
-    public function getYouthProfile(): Youth
+    public function getYouthProfile(array $youth_ids=[]): Youth | Collection
     {
+        /** youth_ids only passed for bulk query */
         /** @var Builder|Youth $youthProfileBuilder */
         $youthProfileBuilder = Youth::select(
             [
@@ -99,11 +104,25 @@ class YouthProfileService
 
         });
 
-        $youthProfileBuilder->where('youths.id', '=', Auth::id());
+        if (count($youth_ids) > 0) $youthProfileBuilder->whereIn('youths.id', $youth_ids);
+        else $youthProfileBuilder->where('youths.id', '=', Auth::id());
         $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences", "youthCertifications", "youthPortfolios", "youthAddresses"]);
 
-        $profileInfo = $youthProfileBuilder->firstOrFail();
+        /** adding additional profile infos */
+        if (count($youth_ids) > 0) {
+            $profileInfos = $youthProfileBuilder->get();
+            if (empty($profileInfos) || count($profileInfos) != count($youth_ids)) throw new ModelNotFoundException();
+            return $profileInfos->map(function ($profileInfo) {
+                return $this->additionalProfileInfo($profileInfo);
+            });
+        } else {
+            $profileInfo = $youthProfileBuilder->firstOrFail();
+            return $this->additionalProfileInfo($profileInfo);
+        }
+    }
 
+    public function additionalProfileInfo($profileInfo)
+    {
         /** Calculate profile complete in percentage */
         $totalFields = count(Youth::PROFILE_COMPLETE_FIELDS);
         $filled = 0;

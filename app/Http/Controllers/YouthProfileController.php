@@ -66,6 +66,28 @@ class YouthProfileController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Throwable
+     */
+    public function youthProfiles(Request $request): JsonResponse
+    {
+        $requestData = $request->all();
+        $youth = $this->youthProfileService->getYouthProfile($requestData['youth_ids']);
+        $response = [
+            "data" => $youth ?: new stdClass(),
+            "_response_status" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Youth profile information from list",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+
+        return Response::json($response, $response['_response_status']['code']);
+    }
+
+    /**
      * Store a newly created resource in storage.
      * @param Request $request
      * @return JsonResponse

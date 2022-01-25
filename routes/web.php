@@ -42,6 +42,11 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     $customRouter()->resourceRoute('languages', 'LanguageController')->render();
 
     $router->post('auth-youth-info', ["as" => "youth.auth-info", "uses" => "YouthProfileController@getAuthYouthInfoByIdpId"]);
+
+    $router->group(['prefix' => 'service-to-service-call', 'as' => 'service-to-service-call'], function () use ($router) {
+        /** bulk youth profile details */
+        $router->post("youth-profiles", ["as" => "service-to-service-call.youth-profiles", "uses" => "YouthProfileController@youthProfiles"]);
+    });
 });
 
 
