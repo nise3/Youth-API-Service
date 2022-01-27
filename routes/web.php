@@ -67,6 +67,7 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1'], function () use ($rout
     $router->put('youth-change-freelance-status', ["as" => "youth-profile.youth-change-freelance-status", "uses" => "YouthProfileController@setFreelanceStatus"]);
     $router->get('youth-feed-statistics', ["as" => "youth-profile.feed-statistics", "uses" => "YouthProfileController@getYouthFeedStatistics"]);
     $router->post('apply-job', ["as" => "youth-profile.youth-apply-to-job", "uses" => "YouthProfileController@youthApplyToJob"]);
+    $router->put('youth-career-info', ["as" => "youth-career-info-update", "uses" => "YouthProfileController@youthCareerInfoUpdate"]);
 
 });
 
