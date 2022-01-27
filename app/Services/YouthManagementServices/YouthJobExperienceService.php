@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
@@ -214,6 +215,14 @@ class YouthJobExperienceService
      */
     public function validator(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
+        $data = $request->all();
+
+        if (!empty($data["area_of_experiences"])) {
+            $data["area_of_experiences"] = is_array($data['area_of_experiences']) ? $data['area_of_experiences'] : explode(',', $data['area_of_experiences']);
+        }
+        if (!empty($data["area_of_businesses"])) {
+            $data["area_of_businesses"] = is_array($data['area_of_businesses']) ? $data['area_of_businesses'] : explode(',', $data['area_of_businesses']);
+        }
         $customMessage = [
             'is_currently_working.in' => 'Row status must be either 1 or 0. [30000]'
         ];
@@ -267,6 +276,26 @@ class YouthJobExperienceService
                 'nullable',
                 'string',
             ],
+            "area_of_experiences" => [
+                "required",
+                "array",
+            ],
+            "area_of_experiences.*" => [
+                "required",
+                "distinct",
+                "integer",
+                "exists:area_of_experiences,id,deleted_at,NULL",
+            ],
+            "area_of_businesses" => [
+                "required",
+                "array",
+            ],
+            "area_of_businesses.*" => [
+                "integer",
+                "distinct",
+                "required",
+                "exists:area_of_business,id,deleted_at,NULL",
+            ],
             'start_date' => [
                 'required',
                 'date',
@@ -288,6 +317,42 @@ class YouthJobExperienceService
             ],
 
         ];
-        return Validator::make($request->all(), $rules, $customMessage);
+        return Validator::make($data, $rules, $customMessage);
+    }
+
+    /**
+     * @param YouthJobExperience $jobExperience
+     * @param array $areaOfExperience
+     */
+    public function syncWithAreaOfExperience(YouthJobExperience $jobExperience, array $areaOfExperience)
+    {
+//        $jobExperience->areaOfExperiences()->syncWithPivotValues($areaOfExperience, ['youth_id' => $jobExperience->youth_id]);
+        DB::table('youth_job_experience_area_of_experiences')->where('id', $jobExperience->id)->delete();
+        foreach ($areaOfExperience as $item) {
+            DB::table('youth_job_experience_area_of_experiences')->insert(
+                [
+                    'youth_id' => $jobExperience->youth_id,
+                    'area_of_experience_id' => $item
+                ]
+            );
+        }
+    }
+
+    /**
+     * @param YouthJobExperience $jobExperience
+     * @param array $areaOfBusiness
+     */
+    public function syncWithAreaOfBusiness(YouthJobExperience $jobExperience, array $areaOfBusiness)
+    {
+//        $jobExperience->areaOfBusinesses()->syncWithPivotValues($areaOfBusiness, ['youth_id' => $jobExperience->youth_id]);
+        DB::table('youth_job_experience_area_of_businesses')->where('id', $jobExperience->id)->delete();
+        foreach ($areaOfBusiness as $item) {
+            DB::table('youth_job_experience_area_of_businesses')->insert(
+                [
+                    'youth_id' => $jobExperience->youth_id,
+                    'area_of_business_id' => $item
+                ]
+            );
+        }
     }
 }

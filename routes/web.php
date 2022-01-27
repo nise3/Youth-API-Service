@@ -51,7 +51,7 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
 
 
 //youth profile info/update group
-$router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"], function () use ($router, $customRouter) {
+$router->group(['prefix' => 'api/v1/', 'as' => 'api.v1'], function () use ($router, $customRouter) {
     $customRouter()->resourceRoute('youth-portfolios', 'YouthPortfolioController')->render();
     $customRouter()->resourceRoute('youth-job-experiences', 'YouthJobExperienceController')->render();
     $customRouter()->resourceRoute('youth-references', 'YouthReferenceController')->render();
