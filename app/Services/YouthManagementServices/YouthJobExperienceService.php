@@ -327,7 +327,7 @@ class YouthJobExperienceService
     public function syncWithAreaOfExperience(YouthJobExperience $jobExperience, array $areaOfExperience)
     {
 //        $jobExperience->areaOfExperiences()->syncWithPivotValues($areaOfExperience, ['youth_id' => $jobExperience->youth_id]);
-        DB::table('youth_job_experience_area_of_experiences')->where('id', $jobExperience->id)->delete();
+        DB::table('youth_job_experience_area_of_experiences')->where('youth_job_experience_id', $jobExperience->id)->delete();
         foreach ($areaOfExperience as $item) {
             DB::table('youth_job_experience_area_of_experiences')->insert(
                 [
@@ -346,7 +346,7 @@ class YouthJobExperienceService
     public function syncWithAreaOfBusiness(YouthJobExperience $jobExperience, array $areaOfBusiness)
     {
 //        $jobExperience->areaOfBusinesses()->syncWithPivotValues($areaOfBusiness, ['youth_id' => $jobExperience->youth_id]);
-        DB::table('youth_job_experience_area_of_businesses')->where('id', $jobExperience->id)->delete();
+        DB::table('youth_job_experience_area_of_businesses')->where('youth_job_experience_id', $jobExperience->id)->delete();
         foreach ($areaOfBusiness as $item) {
             DB::table('youth_job_experience_area_of_businesses')->insert(
                 [
