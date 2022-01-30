@@ -4035,7 +4035,58 @@
                         "description": "successful",
                         "content": {
                             "application/json": {
-                                "example": {}
+                                "example": {
+                                    "data": {
+                                        "id": 1,
+                                        "is_freelance_profile": 0,
+                                        "username": "ADAM",
+                                        "job_level": {
+                                            "expected_salary": "10000",
+                                            "job_level": "1"
+                                        },
+                                        "expected_salary": {
+                                            "expected_salary": "10000",
+                                            "job_level": "1"
+                                        },
+                                        "user_name_type": 0,
+                                        "first_name": "Dave",
+                                        "first_name_en": "Dave",
+                                        "last_name": "Batista",
+                                        "last_name_en": "Batisata",
+                                        "loc_division_id": 1,
+                                        "loc_district_id": null,
+                                        "loc_upazila_id": 1,
+                                        "date_of_birth": "-000001-11-30T00:00:00.000000Z",
+                                        "gender": 1,
+                                        "religion": null,
+                                        "marital_status": null,
+                                        "nationality": 1,
+                                        "email": null,
+                                        "mobile": null,
+                                        "identity_number_type": null,
+                                        "identity_number": null,
+                                        "freedom_fighter_status": 1,
+                                        "physical_disability_status": 0,
+                                        "does_belong_to_ethnic_group": 0,
+                                        "bio": null,
+                                        "bio_en": null,
+                                        "photo": null,
+                                        "cv_path": null,
+                                        "signature_image_path": null,
+                                        "verification_code_sent_at": null,
+                                        "verification_code_verified_at": null,
+                                        "row_status": 1,
+                                        "created_at": null,
+                                        "updated_at": "2022-01-30T03:55:23.000000Z",
+                                        "deleted_at": null
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Youth career info updated successfully",
+                                        "query_time": 0
+                                    }
+                                }
                             }
                         }
                     }
