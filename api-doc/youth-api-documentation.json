@@ -33,7 +33,7 @@
     ],
     "security": [
         {
-            "bearerAuth": [
+            "User-Token": [
             ]
         }
     ],
@@ -4099,10 +4099,10 @@
     },
     "components": {
         "securitySchemes": {
-            "bearerAuth": {
-                "type": "http",
-                "scheme": "bearer",
-                "bearerFormat": "JWT"
+            "User-Token": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "User-Token"
             }
         },
         "schemas": {
