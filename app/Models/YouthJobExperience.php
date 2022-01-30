@@ -50,11 +50,11 @@ class YouthJobExperience extends BaseModel
     }
     public function areaOfExperiences(): hasMany
     {
-        return $this->hasMany(YouthJobExperienceAreaOfExperience::class, 'area_of_experience_id','id');
+        return $this->hasMany(YouthJobExperienceAreaOfExperience::class, 'youth_job_experience_id','id');
     }
 
     public function areaOfBusinesses(): hasMany
     {
-        return $this->hasMany(YouthJobExperienceAreaOfBusiness::class, 'area_of_business_id','id');
+        return $this->hasMany(YouthJobExperienceAreaOfBusiness::class, 'youth_job_experience_id','id');
     }
 }
