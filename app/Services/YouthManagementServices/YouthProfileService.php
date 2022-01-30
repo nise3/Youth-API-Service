@@ -53,6 +53,8 @@ class YouthProfileService
                 'youths.first_name_en',
                 'youths.last_name',
                 'youths.last_name_en',
+                'youths.expected_salary',
+                'youths.job_level',
                 'youths.loc_division_id',
                 'loc_divisions.title as division_title',
                 'loc_divisions.title_en as division_title_en',
@@ -933,8 +935,8 @@ class YouthProfileService
      */
     public function youthCareerInfoUpdate(Youth $youth, array $careerInfoData): Youth
     {
-        $youth->expected_salary = $careerInfoData;
-        $youth->job_level = $careerInfoData;
+        $youth->expected_salary = $careerInfoData['expected_salary'];
+        $youth->job_level = $careerInfoData['job_level'];
         $youth->save();
         return $youth;
     }

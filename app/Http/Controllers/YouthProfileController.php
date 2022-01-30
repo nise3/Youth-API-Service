@@ -407,7 +407,6 @@ class YouthProfileController extends Controller
     {
         $youthId = Auth::id();
         $youth = Youth::findOrFail($youthId);
-
         $validated = $this->youthProfileService->youthCareerInfoUpdateValidator($request)->validate();
         $youthCareerInfo = $this->youthProfileService->youthCareerInfoUpdate($youth, $validated);
         $response = [
