@@ -86,7 +86,7 @@ class YouthJobExperienceController extends Controller
     {
         $jobExperience = app(YouthJobExperience::class);
 
-//        $this->authorize('create', YouthJobExperience::class);
+        $this->authorize('create', YouthJobExperience::class);
 
         $validated = $this->jobExperienceService->validator($request)->validate();
 

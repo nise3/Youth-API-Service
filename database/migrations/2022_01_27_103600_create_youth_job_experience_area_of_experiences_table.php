@@ -16,6 +16,7 @@ class CreateYouthJobExperienceAreaOfExperiencesTable extends Migration
         Schema::create('youth_job_experience_area_of_experiences', function (Blueprint $table) {
             $table->increments('id');
             $table->string("youth_id")->index('index_area_bus_job_id');
+            $table->string("youth_job_experience_id")->index('indx_area_bus_exp_id');
             $table->integer("area_of_experience_id")->index('index_youth_area_exp_area_busi_id');
         });
     }

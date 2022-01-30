@@ -332,6 +332,7 @@ class YouthJobExperienceService
             DB::table('youth_job_experience_area_of_experiences')->insert(
                 [
                     'youth_id' => $jobExperience->youth_id,
+                    'youth_job_experience_id' => $jobExperience->id,
                     'area_of_experience_id' => $item
                 ]
             );
@@ -350,6 +351,7 @@ class YouthJobExperienceService
             DB::table('youth_job_experience_area_of_businesses')->insert(
                 [
                     'youth_id' => $jobExperience->youth_id,
+                    'youth_job_experience_id' => $jobExperience->id,
                     'area_of_business_id' => $item
                 ]
             );
