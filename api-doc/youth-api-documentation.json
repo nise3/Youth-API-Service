@@ -1371,28 +1371,89 @@
                                     "$ref": "#/components/schemas/jobExperience"
                                 },
                                 "example": {
-                                    "current_page": 1,
-                                    "total_page": 1,
-                                    "page_size": 10,
-                                    "total": 10,
                                     "order": "ASC",
                                     "data": [
                                         {
-                                            "id": 1,
-                                            "company_name": "Gerhold PLC",
-                                            "company_name_en": "Gerhold PLC",
-                                            "position": "Health Technologist",
-                                            "position_en": "Health Technologist",
+                                            "id": 5,
+                                            "company_name": "HurrayMania",
+                                            "company_name_en": null,
+                                            "position": "Ftv",
+                                            "position_en": null,
                                             "youth_id": 1,
-                                            "location": "51696 Amelie Drive Suite 001",
-                                            "location_en": "51696 Amelie Drive Suite 001",
-                                            "job_responsibilities": "Respiratory Therapist",
-                                            "job_responsibilities_en": "Respiratory Therapist",
-                                            "start_date": "1977-09-18T00:00:00.000000Z",
-                                            "end_date": "2011-09-24T00:00:00.000000Z",
-                                            "is_currently_working": 0,
-                                            "created_at": "2021-10-17T06:23:35.000000Z",
-                                            "updated_at": "2021-10-17T06:23:35.000000Z"
+                                            "location": "aaaa",
+                                            "location_en": null,
+                                            "job_responsibilities": null,
+                                            "job_responsibilities_en": null,
+                                            "start_date": "2020-09-09T00:00:00.000000Z",
+                                            "end_date": "2022-09-09T00:00:00.000000Z",
+                                            "is_currently_working": 1,
+                                            "created_at": "2022-01-30T06:20:32.000000Z",
+                                            "updated_at": "2022-01-30T06:20:32.000000Z",
+                                            "area_of_experiences": [
+                                                {
+                                                    "id": 3,
+                                                    "youth_job_experience_id": "5",
+                                                    "area_of_experience_id": 1
+                                                },
+                                                {
+                                                    "id": 4,
+                                                    "youth_job_experience_id": "5",
+                                                    "area_of_experience_id": 2
+                                                }
+                                            ],
+                                            "area_of_businesses": [
+                                                {
+                                                    "id": 1,
+                                                    "youth_job_experience_id": "5",
+                                                    "area_of_business_id": 1
+                                                },
+                                                {
+                                                    "id": 2,
+                                                    "youth_job_experience_id": "5",
+                                                    "area_of_business_id": 2
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": 7,
+                                            "company_name": "HurrayMania",
+                                            "company_name_en": null,
+                                            "position": "Ftv",
+                                            "position_en": null,
+                                            "youth_id": 1,
+                                            "location": "aaaa",
+                                            "location_en": null,
+                                            "job_responsibilities": null,
+                                            "job_responsibilities_en": null,
+                                            "start_date": "2020-09-09T00:00:00.000000Z",
+                                            "end_date": "2022-09-09T00:00:00.000000Z",
+                                            "is_currently_working": 1,
+                                            "created_at": "2022-01-30T08:31:46.000000Z",
+                                            "updated_at": "2022-01-30T08:31:46.000000Z",
+                                            "area_of_experiences": [
+                                                {
+                                                    "id": 9,
+                                                    "youth_job_experience_id": "7",
+                                                    "area_of_experience_id": 1
+                                                },
+                                                {
+                                                    "id": 10,
+                                                    "youth_job_experience_id": "7",
+                                                    "area_of_experience_id": 2
+                                                }
+                                            ],
+                                            "area_of_businesses": [
+                                                {
+                                                    "id": 7,
+                                                    "youth_job_experience_id": "7",
+                                                    "area_of_business_id": 1
+                                                },
+                                                {
+                                                    "id": 8,
+                                                    "youth_job_experience_id": "7",
+                                                    "area_of_business_id": 2
+                                                }
+                                            ]
                                         }
                                     ],
                                     "response_status": {
@@ -1432,26 +1493,21 @@
                                 "example": {
                                     "data": {
                                         "youth_id": 1,
-                                        "employment_type_id": "2",
-                                        "company_name": "sdgvdfh",
-                                        "company_name_en": null,
-                                        "position": "sdgfdg",
-                                        "position_en": null,
-                                        "location": "asdfgh",
-                                        "location_en": null,
-                                        "job_responsibilities": null,
-                                        "job_responsibilities_en": null,
-                                        "start_date": "2021-10-04T00:00:00.000000Z",
-                                        "end_date": null,
-                                        "is_currently_working": "0",
-                                        "updated_at": "2021-10-17T12:45:45.000000Z",
-                                        "created_at": "2021-10-17T12:45:45.000000Z",
-                                        "id": 21
+                                        "employment_type_id": "1",
+                                        "company_name": "HurrayMania",
+                                        "position": "Ftv",
+                                        "location": "aaaa",
+                                        "start_date": "2020-09-09T00:00:00.000000Z",
+                                        "is_currently_working": "1",
+                                        "end_date": "2022-09-09T00:00:00.000000Z",
+                                        "updated_at": "2022-01-30T08:31:46.000000Z",
+                                        "created_at": "2022-01-30T08:31:46.000000Z",
+                                        "id": 7
                                     },
                                     "_response_status": {
                                         "success": true,
                                         "code": 201,
-                                        "message": "Job experience added successfully",
+                                        "message": "Job Experience added successfully",
                                         "query_time": 0
                                     }
                                 }
@@ -1483,24 +1539,48 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 1,
-                                        "company_name": "Gerhold PLC",
-                                        "company_name_en": "Gerhold PLC",
-                                        "position": "Health Technologist",
-                                        "position_en": "Health Technologist",
+                                        "id": 6,
+                                        "company_name": "HurrayMania",
+                                        "company_name_en": null,
+                                        "position": "Ftv",
+                                        "position_en": null,
                                         "youth_id": 1,
-                                        "location": "51696 Amelie Drive Suite 001",
-                                        "location_en": "51696 Amelie Drive Suite 001",
-                                        "job_responsibilities": "Respiratory Therapist",
-                                        "job_responsibilities_en": "Respiratory Therapist",
-                                        "start_date": "1977-09-18T00:00:00.000000Z",
-                                        "end_date": "2011-09-24T00:00:00.000000Z",
+                                        "location": "aaaa",
+                                        "location_en": null,
+                                        "job_responsibilities": null,
+                                        "job_responsibilities_en": null,
+                                        "start_date": "2020-09-09T00:00:00.000000Z",
+                                        "end_date": "2022-09-09T00:00:00.000000Z",
                                         "employment_type_id": 1,
-                                        "is_currently_working": 0,
-                                        "created_at": "2021-10-17T06:23:35.000000Z",
-                                        "updated_at": "2021-10-17T06:23:35.000000Z"
+                                        "is_currently_working": 1,
+                                        "created_at": "2022-01-30T06:31:03.000000Z",
+                                        "updated_at": "2022-01-30T06:31:03.000000Z",
+                                        "area_of_experiences": [
+                                            {
+                                                "id": 7,
+                                                "youth_job_experience_id": "6",
+                                                "area_of_experience_id": 1
+                                            },
+                                            {
+                                                "id": 8,
+                                                "youth_job_experience_id": "6",
+                                                "area_of_experience_id": 2
+                                            }
+                                        ],
+                                        "area_of_businesses": [
+                                            {
+                                                "id": 5,
+                                                "youth_job_experience_id": "6",
+                                                "area_of_business_id": 1
+                                            },
+                                            {
+                                                "id": 6,
+                                                "youth_job_experience_id": "6",
+                                                "area_of_business_id": 2
+                                            }
+                                        ]
                                     },
-                                    "response_status": {
+                                    "_response_status": {
                                         "success": true,
                                         "code": 200,
                                         "query_time": 0
@@ -1541,28 +1621,28 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 1,
+                                        "id": 6,
                                         "youth_id": 1,
                                         "employment_type_id": "1",
-                                        "company_name": "annnnn",
+                                        "company_name": "HurrayMania",
                                         "company_name_en": null,
-                                        "position": "1",
+                                        "position": "Ftv",
                                         "position_en": null,
-                                        "location": "dfgdfghfgh dfgb",
+                                        "location": "aaaa",
                                         "location_en": null,
                                         "job_responsibilities": null,
                                         "job_responsibilities_en": null,
-                                        "start_date": "2021-10-04T00:00:00.000000Z",
-                                        "end_date": null,
-                                        "is_currently_working": "0",
-                                        "created_at": "2021-10-17T06:23:35.000000Z",
-                                        "updated_at": "2021-10-17T12:49:13.000000Z",
+                                        "start_date": "2020-09-09T00:00:00.000000Z",
+                                        "end_date": "2022-09-09T00:00:00.000000Z",
+                                        "is_currently_working": "1",
+                                        "created_at": "2022-01-30T06:31:03.000000Z",
+                                        "updated_at": "2022-01-30T06:31:03.000000Z",
                                         "deleted_at": null
                                     },
                                     "_response_status": {
                                         "success": true,
                                         "code": 200,
-                                        "message": "Job experience updated successfully.",
+                                        "message": "Job Experience updated successfully",
                                         "query_time": 0
                                     }
                                 }
