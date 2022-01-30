@@ -4113,7 +4113,9 @@
                         "type": "integer"
                     },
                     "job_level": {
-                        "type": "integer"
+                        "type": "integer",
+                        "enum": [1,2,3],
+                        "description": "1=>Entry Level 2=>Mid Level 3=>Top Level"
                     }
                 },
                 "required": [
