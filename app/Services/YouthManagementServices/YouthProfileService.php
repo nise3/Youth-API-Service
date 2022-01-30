@@ -105,7 +105,7 @@ class YouthProfileService
 
         if (count($youth_ids) > 0) $youthProfileBuilder->whereIn('youths.id', $youth_ids);
         else $youthProfileBuilder->where('youths.id', '=', Auth::id());
-        $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences", "youthCertifications", "youthPortfolios", "youthAddresses"]);
+        $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences.areaOfExperiences","youthJobExperiences.areaOfBusinesses", "youthCertifications", "youthPortfolios", "youthAddresses"]);
 
         /** adding additional profile infos */
         if (count($youth_ids) > 0) {
@@ -135,7 +135,6 @@ class YouthProfileService
         }
         $completedProfile = floor((100 / $totalFields) * $filled);
         $profileInfo->offsetSet('profile_completed', $completedProfile);
-
         /** Calculate Total Job Experience */
         $totalJobExperiencesInMonth = 0;
         $totalExperience = [
