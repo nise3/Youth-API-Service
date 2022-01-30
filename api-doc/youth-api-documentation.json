@@ -4040,14 +4040,8 @@
                                         "id": 1,
                                         "is_freelance_profile": 0,
                                         "username": "ADAM",
-                                        "job_level": {
-                                            "expected_salary": "10000",
-                                            "job_level": "1"
-                                        },
-                                        "expected_salary": {
-                                            "expected_salary": "10000",
-                                            "job_level": "1"
-                                        },
+                                        "job_level": 1,
+                                        "expected_salary": 5000,
                                         "user_name_type": 0,
                                         "first_name": "Dave",
                                         "first_name_en": "Dave",
@@ -4113,7 +4107,9 @@
                         "type": "integer"
                     },
                     "job_level": {
-                        "type": "integer"
+                        "type": "integer",
+                        "enum": [1,2,3],
+                        "description": "1=>Entry Level 2=>Mid Level 3=>Top Level"
                     }
                 },
                 "required": [
