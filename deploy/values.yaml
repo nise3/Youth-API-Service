@@ -53,7 +53,7 @@ variables:
   APP_ENV: "DEV"
   DEV:
     APP_ENV: "local"
-    APP_DEBUG: "false"
+    APP_DEBUG: "true"
     APP_URL: "youthapi-dev.nise3.xyz"
 
     DB_HOST: "db-service.default"
@@ -67,7 +67,7 @@ variables:
     REDIS_PORT: 6379
 
     RABBITMQ_HOST: "rabbitmqcluster.default"
-    RABBITMQ_PORT: "5672"
+    RABBITMQ_PORT: 5672
     RABBITMQ_VHOST: "/"
     RABBITMQ_USER: "default_user_8JE9yWDb4fHdn35Ua9w"
     RABBITMQ_PASSWORD: "OvK7CUJOlZHfLWbYeTjdTlbdG2GHfr1Q"
