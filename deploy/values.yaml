@@ -36,6 +36,12 @@ variables:
   #app buil image
   imageRepository: registry.nise3.xyz/nise3-youth-management-api-service
 
+  #git hub project id
+  githubProjectRepoID: "28710981"
+
+  #fetch laravel php artisan or bash command and run on run
+  enableGitCommitCommandFetch: true
+
   #auto scaling config
   #autoScalingEnabled: 0
 
