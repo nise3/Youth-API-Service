@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -88,16 +89,30 @@ class YouthJobExperienceController extends Controller
         $this->authorize('create', YouthJobExperience::class);
 
         $validated = $this->jobExperienceService->validator($request)->validate();
-        $jobExperience = $this->jobExperienceService->store($jobExperience, $validated);
-        $response = [
-            'data' => $jobExperience,
-            '_response_status' => [
-                "success" => true,
-                "code" => ResponseAlias::HTTP_CREATED,
-                "message" => "Job Experience added successfully",
-                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-            ]
-        ];
+
+        $areaOfExperience = $validated['area_of_experiences'] ?? [];
+        $areaOfBusiness = $validated['area_of_businesses'] ?? [];
+        DB::beginTransaction();
+        try {
+            $jobExperience = $this->jobExperienceService->store($jobExperience, $validated);
+
+            $this->jobExperienceService->syncWithAreaOfExperience($jobExperience, $areaOfExperience);
+            $this->jobExperienceService->syncWithAreaOfBusiness($jobExperience, $areaOfBusiness);
+
+            $response = [
+                'data' => $jobExperience,
+                '_response_status' => [
+                    "success" => true,
+                    "code" => ResponseAlias::HTTP_CREATED,
+                    "message" => "Job Experience added successfully",
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+                ]
+            ];
+            DB::commit();
+        } catch (Throwable $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
@@ -115,16 +130,33 @@ class YouthJobExperienceController extends Controller
         $this->authorize('update', $jobExperience);
 
         $validated = $this->jobExperienceService->validator($request, $id)->validate();
-        $jobExperience = $this->jobExperienceService->update($jobExperience, $validated);
-        $response = [
-            'data' => $jobExperience,
-            '_response_status' => [
-                "success" => true,
-                "code" => ResponseAlias::HTTP_OK,
-                "message" => "Job Experience updated successfully",
-                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-            ]
-        ];
+
+
+        $areaOfExperience = $validated['area_of_experiences'] ?? [];
+        $areaOfBusiness = $validated['area_of_businesses'] ?? [];
+
+        DB::beginTransaction();
+        try {
+            $jobExperience = $this->jobExperienceService->update($jobExperience, $validated);
+
+            $this->jobExperienceService->syncWithAreaOfExperience($jobExperience, $areaOfExperience);
+            $this->jobExperienceService->syncWithAreaOfBusiness($jobExperience, $areaOfBusiness);
+
+            $response = [
+                'data' => $jobExperience,
+                '_response_status' => [
+                    "success" => true,
+                    "code" => ResponseAlias::HTTP_OK,
+                    "message" => "Job Experience updated successfully",
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                ]
+            ];
+            DB::commit();
+        } catch (Throwable $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
+
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
