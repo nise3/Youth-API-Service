@@ -107,7 +107,7 @@ class YouthProfileService
 
         if (count($youth_ids) > 0) $youthProfileBuilder->whereIn('youths.id', $youth_ids);
         else $youthProfileBuilder->where('youths.id', '=', Auth::id());
-        $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences.areaOfExperiences","youthJobExperiences.areaOfBusinesses", "youthCertifications", "youthPortfolios", "youthAddresses"]);
+        $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences.areaOfExperiences", "youthJobExperiences.areaOfBusinesses", "youthCertifications", "youthPortfolios", "youthAddresses"]);
 
         /** adding additional profile infos */
         if (count($youth_ids) > 0) {
@@ -249,6 +249,17 @@ class YouthProfileService
     }
 
     /**
+     * @param Youth $youth
+     * @param array $data
+     * @return bool
+     */
+    public function setDefaultCvTemplateStatus(Youth $youth, array $data): bool
+    {
+        $youth->default_cv_template = $data['default_cv_template'];
+        return $youth->save();
+    }
+
+    /**
      * @param array $data
      * @return bool
      * @throws Throwable
@@ -384,6 +395,25 @@ class YouthProfileService
             "is_freelance_profile" => [
                 "required",
                 Rule::in(BaseModel::FREELANCE_PROFILE_STATUS)
+            ]
+        ];
+        return Validator::make($request->all(), $rules, $customMessage);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public function defaultCvTemplateStatusValidator(Request $request): \Illuminate\Contracts\Validation\Validator
+    {
+        $customMessage = [
+            "default_cv_template.in" => "The youth default cv template must be in " . implode(',', array_keys(config('nise3.youth_cv_template'))) . ". [30000]"
+        ];
+
+        $rules = [
+            "default_cv_template" => [
+                "required",
+                Rule::in(array_keys(config('nise3.youth_cv_template')))
             ]
         ];
         return Validator::make($request->all(), $rules, $customMessage);

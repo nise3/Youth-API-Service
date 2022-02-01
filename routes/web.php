@@ -47,6 +47,8 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
         /** bulk youth profile details */
         $router->post("youth-profiles", ["as" => "service-to-service-call.youth-profiles", "uses" => "YouthProfileController@youthProfiles"]);
     });
+
+    $router->put('youth-set-default-cv-template', ['as' => 'youth-profile.set-default-cv-template', 'uses' => 'YouthProfileController@setDefaultCvTemplate']);
 });
 
 
@@ -71,7 +73,5 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
 
 });
 
-$router->get("code", function () {
-    return ExamDegree::where("education_level_id", 2)->pluck('id');
-});
+
 

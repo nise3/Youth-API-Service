@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             AreaOfExperienceSeeder::class,
 //            YouthSeeder::class,
 //            YouthGuardianTableSeeder::class,
-//            YouthLanguageProficiencySeeder::class
+//            YouthLanguageProficiencySeeder::class,
 //            PortfolioSeeder::class,
 //            JobExperienceSeeder::class,
 //            ReferenceSeeder::class,
