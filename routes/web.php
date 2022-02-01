@@ -48,7 +48,6 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
         $router->post("youth-profiles", ["as" => "service-to-service-call.youth-profiles", "uses" => "YouthProfileController@youthProfiles"]);
     });
 
-    $router->put('youth-set-default-cv-template', ['as' => 'youth-profile.set-default-cv-template', 'uses' => 'YouthProfileController@setDefaultCvTemplate']);
 });
 
 
@@ -70,6 +69,7 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
     $router->get('youth-feed-statistics', ["as" => "youth-profile.feed-statistics", "uses" => "YouthProfileController@getYouthFeedStatistics"]);
     $router->post('apply-job', ["as" => "youth-profile.youth-apply-to-job", "uses" => "YouthProfileController@youthApplyToJob"]);
     $router->put('youth-career-info', ["as" => "youth-career-info-update", "uses" => "YouthProfileController@youthCareerInfoUpdate"]);
+    $router->put('youth-set-default-cv-template', ['as' => 'youth-profile.set-default-cv-template', 'uses' => 'YouthProfileController@setDefaultCvTemplate']);
 
 });
 
