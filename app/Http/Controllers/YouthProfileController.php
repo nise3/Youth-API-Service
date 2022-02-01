@@ -253,6 +253,34 @@ class YouthProfileController extends Controller
     }
 
     /**
+     * Remove the specified resource from storage
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Throwable
+     * @throws ValidationException
+     */
+    public function setDefaultCvTemplate(Request $request): JsonResponse
+    {
+        $id = Auth::id();
+
+        /** @var Youth $youth */
+        $youth = Youth::findOrFail($id);
+
+        $validator = $this->youthProfileService->defaultCvTemplateStatusValidator($request)->validate();
+
+        $this->youthProfileService->setDefaultCvTemplateStatus($youth, $validator);
+        $response = [
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Successfully set your cv template",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ]
+        ];
+        return Response::json($response, $response['_response_status']['code']);
+    }
+
+    /**
      * @param Request $request
      * @return JsonResponse
      * @throws Throwable

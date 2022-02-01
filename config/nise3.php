@@ -87,5 +87,17 @@ return [
             'title_bn' => 'Pass'
         ],
 
+    ],
+    'youth_cv_template' => [
+        'CLASSIC' => [
+            'code' => 'CLASSIC',
+            'title' => 'Classic Cv',
+            'description'=>"it's a classic type cv"
+        ],
+        'MODERN'=>[
+            'code' => 'MODERN',
+            'title' => 'Modern Cv',
+            'description'=>"it's a modern type cv"
+        ]
     ]
 ];

@@ -42,6 +42,7 @@ use PHPUnit\Util\Json;
  * @property string | null bio_en
  * @property string | null photo
  * @property string | null cv_path
+ * @property string | null default_cv_template
  * @property string password
  * @property string verification_code
  * @property Carbon verification_code_verified_at
@@ -151,6 +152,7 @@ class Youth extends AuthBaseModel implements
         "verification_code",
         "idp_user_id"
     ];
+
 
     /**
      * @return BelongsToMany
