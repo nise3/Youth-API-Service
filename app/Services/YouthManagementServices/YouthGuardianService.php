@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\YouthManagementServices;
+namespace App\Services;
 
 use App\Models\BaseModel;
 use App\Models\YouthGuardian;

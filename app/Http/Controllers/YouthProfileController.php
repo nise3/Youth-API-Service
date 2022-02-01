@@ -398,4 +398,28 @@ class YouthProfileController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
+
+    /**
+     * Update youth career info
+     * @throws ValidationException
+     */
+    public function youthCareerInfoUpdate(Request $request): JsonResponse
+    {
+        $youthId = Auth::id();
+        $youth = Youth::findOrFail($youthId);
+        $validated = $this->youthProfileService->youthCareerInfoUpdateValidator($request)->validate();
+        $youthCareerInfo = $this->youthProfileService->youthCareerInfoUpdate($youth, $validated);
+        $response = [
+            'data' => $youthCareerInfo,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Youth career info updated successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
+
+        return Response::json($response, ResponseAlias::HTTP_OK);
+    }
+
 }

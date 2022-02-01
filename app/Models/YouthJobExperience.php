@@ -5,6 +5,8 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -45,5 +47,14 @@ class YouthJobExperience extends BaseModel
     public function youth(): BelongsTo
     {
         return $this->belongsTo(Youth::class);
+    }
+    public function areaOfExperiences(): hasMany
+    {
+        return $this->hasMany(YouthJobExperienceAreaOfExperience::class, 'youth_job_experience_id','id');
+    }
+
+    public function areaOfBusinesses(): hasMany
+    {
+        return $this->hasMany(YouthJobExperienceAreaOfBusiness::class, 'youth_job_experience_id','id');
     }
 }

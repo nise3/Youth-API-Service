@@ -31,6 +31,8 @@ use PHPUnit\Util\Json;
  * @property string last_name
  * @property string last_name_en
  * @property int gender
+ * @property int expected_salary
+ * @property int job_level
  * @property string mobile
  * @property string email
  * @property Date date_of_birth
@@ -110,6 +112,17 @@ class Youth extends AuthBaseModel implements
         self::FREEDOM_FIGHTER,
         self::CHILD_OF_FREEDOM_FIGHTER,
         self::GRAND_CHILD_OF_FREEDOM_FIGHTER
+    ];
+
+    public const JOB_LEVEL_ENTRY = 1;
+    public const JOB_LEVEL_MID = 2;
+    public const JOB_LEVEL_TOP = 3;
+
+    /** Youth Job Levels  */
+    public const JOB_LEVELS = [
+        self::JOB_LEVEL_ENTRY,
+        self::JOB_LEVEL_MID,
+        self::JOB_LEVEL_TOP,
     ];
 
     /**  Identity Number Type  */

@@ -3,7 +3,6 @@
 
 namespace App\Services\YouthManagementServices;
 
-use App\Facade\ServiceToServiceCall;
 use App\Models\AppliedJob;
 use App\Models\BaseModel;
 use App\Models\PhysicalDisability;
@@ -13,7 +12,6 @@ use App\Services\CommonServices\MailService;
 use App\Services\CommonServices\SmsService;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -23,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use JetBrains\PhpStorm\ArrayShape;
@@ -40,7 +39,7 @@ class YouthProfileService
      * @return Youth | Collection
      * @throws Exception
      */
-    public function getYouthProfile(array $youth_ids=[]): Youth | Collection
+    public function getYouthProfile(array $youth_ids = []): Youth|Collection
     {
         /** youth_ids only passed for bulk query */
         /** @var Builder|Youth $youthProfileBuilder */
@@ -54,6 +53,8 @@ class YouthProfileService
                 'youths.first_name_en',
                 'youths.last_name',
                 'youths.last_name_en',
+                'youths.expected_salary',
+                'youths.job_level',
                 'youths.loc_division_id',
                 'loc_divisions.title as division_title',
                 'loc_divisions.title_en as division_title_en',
@@ -106,7 +107,7 @@ class YouthProfileService
 
         if (count($youth_ids) > 0) $youthProfileBuilder->whereIn('youths.id', $youth_ids);
         else $youthProfileBuilder->where('youths.id', '=', Auth::id());
-        $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences", "youthCertifications", "youthPortfolios", "youthAddresses"]);
+        $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences.areaOfExperiences","youthJobExperiences.areaOfBusinesses", "youthCertifications", "youthPortfolios", "youthAddresses"]);
 
         /** adding additional profile infos */
         if (count($youth_ids) > 0) {
@@ -136,7 +137,6 @@ class YouthProfileService
         }
         $completedProfile = floor((100 / $totalFields) * $filled);
         $profileInfo->offsetSet('profile_completed', $completedProfile);
-
         /** Calculate Total Job Experience */
         $totalJobExperiencesInMonth = 0;
         $totalExperience = [
@@ -372,9 +372,9 @@ class YouthProfileService
 
     /**
      * @param Request $request
-     * @return Validator
+     * @return \Illuminate\Contracts\Validation\Validator
      */
-    public function freelanceStatusValidator(Request $request): Validator
+    public function freelanceStatusValidator(Request $request): \Illuminate\Contracts\Validation\Validator
     {
         $customMessage = [
             "freelance_profile_status.in" => "The freelance_status is either 0 or 1. [30000]"
@@ -386,14 +386,14 @@ class YouthProfileService
                 Rule::in(BaseModel::FREELANCE_PROFILE_STATUS)
             ]
         ];
-        return \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $customMessage);
+        return Validator::make($request->all(), $rules, $customMessage);
     }
 
     /**
      * @param Request $request
-     * @return Validator
+     * @return \Illuminate\Contracts\Validation\Validator
      */
-    public function verifyYouthValidator(Request $request): Validator
+    public function verifyYouthValidator(Request $request): \Illuminate\Contracts\Validation\Validator
     {
         $customMessage = [
             "email.exists" => "The email is not exists in the system. [24000]",
@@ -419,14 +419,14 @@ class YouthProfileService
             ]
         ];
 
-        return \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $customMessage);
+        return Validator::make($request->all(), $rules, $customMessage);
     }
 
     /**
      * @param Request $request
-     * @return Validator
+     * @return \Illuminate\Contracts\Validation\Validator
      */
-    public function resendCodeValidator(Request $request): Validator
+    public function resendCodeValidator(Request $request): \Illuminate\Contracts\Validation\Validator
     {
         $customMessage = [
             "email.exists" => "The email does not exist in the system. [24000]",
@@ -450,15 +450,15 @@ class YouthProfileService
             ],
         ];
 
-        return \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $customMessage);
+        return Validator::make($request->all(), $rules, $customMessage);
     }
 
     /**
      * @param Request $request
      * @param Youth $youth
-     * @return Validator
+     * @return \Illuminate\Contracts\Validation\Validator
      */
-    public function youthUpdateValidation(Request $request, Youth $youth): Validator
+    public function youthUpdateValidation(Request $request, Youth $youth): \Illuminate\Contracts\Validation\Validator
     {
         $data = $request->all();
 
@@ -620,15 +620,15 @@ class YouthProfileService
             ];
         }
 
-        return \Illuminate\Support\Facades\Validator::make($data, $rules);
+        return Validator::make($data, $rules);
     }
 
     /**
      * @param Request $request
      * @param int|null $id
-     * @return Validator
+     * @return \Illuminate\Contracts\Validation\Validator
      */
-    public function youthRegisterValidation(Request $request, int $id = null): Validator
+    public function youthRegisterValidation(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
         $data = $request->all();
 
@@ -766,7 +766,7 @@ class YouthProfileService
             ];
         }
 
-        return \Illuminate\Support\Facades\Validator::make($data, $rules);
+        return Validator::make($data, $rules);
     }
 
     /**
@@ -806,9 +806,9 @@ class YouthProfileService
 
     /**
      * @param Request $request
-     * @return Validator
+     * @return \Illuminate\Contracts\Validation\Validator
      */
-    public function youthEnrollCoursesFilterValidator(Request $request): Validator
+    public function youthEnrollCoursesFilterValidator(Request $request): \Illuminate\Contracts\Validation\Validator
     {
         if ($request->filled('order')) {
             $request->offsetSet('order', strtoupper($request->get('order')));
@@ -837,7 +837,7 @@ class YouthProfileService
             ]
         ];
 
-        return \Illuminate\Support\Facades\Validator::make($requestData, $rules, $customMessage);
+        return Validator::make($requestData, $rules, $customMessage);
     }
 
     /**
@@ -904,5 +904,40 @@ class YouthProfileService
         $instituteRegistrationTemplate = $mailPayload['template'] ?? 'mail.youth-create-default-template';
         $mailService->setTemplate($instituteRegistrationTemplate);
         $mailService->sendMail();
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public function youthCareerInfoUpdateValidator(Request $request): \Illuminate\Contracts\Validation\Validator
+    {
+        $rules = [
+            'expected_salary' => [
+                'integer',
+                'required'
+            ],
+            'job_level' => [
+                'integer',
+                'required',
+                Rule::in(Youth::JOB_LEVELS)
+            ]
+        ];
+
+        return Validator::make($request->all(), $rules);
+
+    }
+
+    /**
+     * @param Youth $youth
+     * @param array $careerInfoData
+     * @return Youth
+     */
+    public function youthCareerInfoUpdate(Youth $youth, array $careerInfoData): Youth
+    {
+        $youth->expected_salary = $careerInfoData['expected_salary'];
+        $youth->job_level = $careerInfoData['job_level'];
+        $youth->save();
+        return $youth;
     }
 }
