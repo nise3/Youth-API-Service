@@ -105,8 +105,11 @@ class YouthProfileService
 
         });
 
-        if (count($youth_ids) > 0) $youthProfileBuilder->whereIn('youths.id', $youth_ids);
-        else $youthProfileBuilder->where('youths.id', '=', Auth::id());
+        if (count($youth_ids) > 0) {
+            $youthProfileBuilder->whereIn('youths.id', $youth_ids);
+        } else {
+            $youthProfileBuilder->where('youths.id', '=', Auth::id());
+        }
         $youthProfileBuilder->with(["physicalDisabilities", "youthLanguagesProficiencies", "skills", "youthEducations", "youthJobExperiences.areaOfExperiences", "youthJobExperiences.areaOfBusinesses", "youthCertifications", "youthPortfolios", "youthAddresses"]);
 
         /** adding additional profile infos */
