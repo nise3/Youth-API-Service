@@ -64,8 +64,4 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
 
 });
 
-$router->get("code", function () {
-    return ExamDegree::where("education_level_id", 2)->pluck('id');
-});
-
 
