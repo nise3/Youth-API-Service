@@ -31,6 +31,8 @@ use PHPUnit\Util\Json;
  * @property string last_name
  * @property string last_name_en
  * @property int gender
+ * @property int expected_salary
+ * @property int job_level
  * @property string mobile
  * @property string email
  * @property Date date_of_birth
@@ -40,6 +42,7 @@ use PHPUnit\Util\Json;
  * @property string | null bio_en
  * @property string | null photo
  * @property string | null cv_path
+ * @property string | null default_cv_template
  * @property string password
  * @property string verification_code
  * @property Carbon verification_code_verified_at
@@ -114,6 +117,17 @@ class Youth extends AuthBaseModel implements
         self::GRAND_CHILD_OF_FREEDOM_FIGHTER
     ];
 
+    public const JOB_LEVEL_ENTRY = 1;
+    public const JOB_LEVEL_MID = 2;
+    public const JOB_LEVEL_TOP = 3;
+
+    /** Youth Job Levels  */
+    public const JOB_LEVELS = [
+        self::JOB_LEVEL_ENTRY,
+        self::JOB_LEVEL_MID,
+        self::JOB_LEVEL_TOP,
+    ];
+
     /**  Identity Number Type  */
     public const NID = 1;
     public const BIRTH_CARD = 2;
@@ -140,6 +154,7 @@ class Youth extends AuthBaseModel implements
         "verification_code",
         "idp_user_id"
     ];
+
 
     /**
      * @return BelongsToMany

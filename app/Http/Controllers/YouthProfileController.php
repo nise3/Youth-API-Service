@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facade\ServiceToServiceCall;
 use App\Models\BaseModel;
 use App\Models\Youth;
 use App\Models\YouthAddress;
@@ -58,6 +59,28 @@ class YouthProfileController extends Controller
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK,
                 "message" => "Youth profile information",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+
+        return Response::json($response, $response['_response_status']['code']);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Throwable
+     */
+    public function youthProfiles(Request $request): JsonResponse
+    {
+        $requestData = $request->all();
+        $youth = $this->youthProfileService->getYouthProfile($requestData['youth_ids']);
+        $response = [
+            "data" => $youth ?: new stdClass(),
+            "_response_status" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Youth profile information from list",
                 "query_time" => $this->startTime->diffInSeconds(Carbon::now())
             ]
         ];
@@ -144,7 +167,7 @@ class YouthProfileController extends Controller
             $payloadField = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? "email" : "mobile";
             $sendVerifyCodePayLoad[$payloadField] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
 
-            //$this->youthProfileService->sendVerifyCode($sendVerifyCodePayLoad, $validated['verification_code']);
+            $this->youthProfileService->sendVerifyCode($sendVerifyCodePayLoad, $validated['verification_code']);
 
             Log::info("Sms send successfully after registration");
 
@@ -232,6 +255,34 @@ class YouthProfileController extends Controller
     }
 
     /**
+     * Remove the specified resource from storage
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Throwable
+     * @throws ValidationException
+     */
+    public function setDefaultCvTemplate(Request $request): JsonResponse
+    {
+        $id = Auth::id();
+
+        /** @var Youth $youth */
+        $youth = Youth::findOrFail($id);
+
+        $validator = $this->youthProfileService->defaultCvTemplateStatusValidator($request)->validate();
+
+        $this->youthProfileService->setDefaultCvTemplateStatus($youth, $validator);
+        $response = [
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Successfully set your cv template",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ]
+        ];
+        return Response::json($response, $response['_response_status']['code']);
+    }
+
+    /**
      * @param Request $request
      * @return JsonResponse
      * @throws Throwable
@@ -296,6 +347,31 @@ class YouthProfileController extends Controller
     }
 
     /**
+     * @throws Throwable
+     */
+    public function youthApplyToJob(Request $request): JsonResponse
+    {
+        $requestData = $request->all();
+
+        throw_if(!is_numeric($requestData['expected_salary']), ValidationException::withMessages([
+            "Expected Salary must be integer.[32000]"
+        ]));
+
+        $data = ServiceToServiceCall::youthApplyToJob($requestData);
+
+        $response = [
+            'data' => $data ?? [],
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Applied to job successfully",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ]
+        ];
+        return Response::json($response, $response['_response_status']['code']);
+    }
+
+    /**
      * @throws RequestException
      */
     public function getYouthFeedStatistics(): JsonResponse
@@ -345,6 +421,30 @@ class YouthProfileController extends Controller
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK,
                 "message" => "Auth Youth Information",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
+
+        return Response::json($response, ResponseAlias::HTTP_OK);
+    }
+
+
+    /**
+     * Update youth career info
+     * @throws ValidationException
+     */
+    public function youthCareerInfoUpdate(Request $request): JsonResponse
+    {
+        $youthId = Auth::id();
+        $youth = Youth::findOrFail($youthId);
+        $validated = $this->youthProfileService->youthCareerInfoUpdateValidator($request)->validate();
+        $youthCareerInfo = $this->youthProfileService->youthCareerInfoUpdate($youth, $validated);
+        $response = [
+            'data' => $youthCareerInfo,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Youth career info updated successfully",
                 "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
             ]
         ];

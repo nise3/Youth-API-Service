@@ -2,12 +2,14 @@
 
 namespace App\Facade;
 
+use http\Encoding\Stream;
 use Illuminate\Support\Facades\Facade;
 
 /**
  * Class AuthUser
  * @package App\Facade
  * @method static array|mixed getAuthUserWithRolePermission(string $idpUserId)
+ * @method static array|mixed youthApplyToJob(array $requestData)
  *
  *
  * @see \App\Helpers\Classes\ServiceToServiceCallHandler

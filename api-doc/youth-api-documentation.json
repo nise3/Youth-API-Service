@@ -7,6 +7,9 @@
     },
     "servers": [
         {
+            "url": "https://youth-phase1.nise.gov.bd/api/v1"
+        },
+        {
             "url": "http://nise-youth.softbd/api/v1"
         },
         {
@@ -30,7 +33,7 @@
     ],
     "security": [
         {
-            "bearerAuth": [
+            "User-Token": [
             ]
         }
     ],
@@ -391,6 +394,8 @@
                                             "upazila_title_en": null,
                                             "email": "enola.skiles@example.net",
                                             "mobile": "01754994292",
+                                            "expected_salary": 50000,
+                                            "job_level": 1,
                                             "nationality": 1,
                                             "identity_number": "6786548906754",
                                             "identity_number_type": 1,
@@ -493,6 +498,8 @@
                                             "upazila_title_en": null,
                                             "gender": 1,
                                             "religion": 1,
+                                            "expected_salary": 50000,
+                                            "job_level": 1,
                                             "marital_status": 1,
                                             "nationality": 1,
                                             "email": "lorena28@example.org",
@@ -917,163 +924,152 @@
                                 "example": {
                                     "data": {
                                         "id": 1,
-                                        "username": "mrau@example.com",
-                                        "user_name_type": 1,
-                                        "first_name": "first_name",
-                                        "first_name_en": null,
-                                        "last_name": "last_name",
-                                        "last_name_en": null,
-                                        "loc_division_id": null,
-                                        "division_title": null,
-                                        "division_title_en": null,
-                                        "loc_district_id": null,
-                                        "district_title": null,
-                                        "district_title_en": null,
-                                        "loc_upazila_id": null,
-                                        "upazila_title": null,
-                                        "upazila_title_en": null,
+                                        "username": "BarbieKing",
+                                        "user_name_type": 0,
+                                        "first_name": "Konahamaru",
+                                        "first_name_en": "Konahamaru",
+                                        "last_name": "Hashirama",
+                                        "last_name_en": "Hashirama",
+                                        "loc_division_id": 1,
+                                        "division_title": "বরিশাল",
+                                        "division_title_en": "Barisal",
+                                        "loc_district_id": 1,
+                                        "district_title": "বরগুনা",
+                                        "district_title_en": "BARGUNA",
+                                        "loc_upazila_id": 1,
+                                        "upazila_title": "বাগেরহাট সদর",
+                                        "upazila_title_en": "BAGERHAT SADAR",
                                         "gender": 1,
-                                        "religion": 1,
+                                        "religion": null,
                                         "is_freelance_profile": 0,
-                                        "marital_status": 1,
+                                        "marital_status": null,
                                         "nationality": 1,
-                                        "email": "dfvc@gmail.com",
-                                        "mobile": "01308899567",
+                                        "email": null,
+                                        "mobile": null,
+                                        "expected_salary": 50000,
+                                        "job_level": 1,
                                         "identity_number_type": null,
-                                        "identity_number": "34r343r3er3",
-                                        "date_of_birth": "2010-08-12T00:00:00.000000Z",
+                                        "identity_number": null,
+                                        "date_of_birth": "2022-01-30T00:00:00.000000Z",
                                         "freedom_fighter_status": 1,
-                                        "physical_disability_status": 1,
-                                        "does_belong_to_ethnic_group": 1,
+                                        "physical_disability_status": 0,
+                                        "does_belong_to_ethnic_group": 0,
                                         "bio": null,
                                         "bio_en": null,
                                         "photo": null,
                                         "cv_path": null,
                                         "signature_image_path": null,
                                         "row_status": 1,
-                                        "created_at": "2021-10-24T12:22:44.000000Z",
-                                        "updated_at": "2021-10-25T17:03:12.000000Z",
-                                        "profile_completed": 100,
-                                        "total_job-experience": {
-                                            "year": 0,
-                                            "month": 2
+                                        "created_at": null,
+                                        "updated_at": "2022-01-30T07:00:13.000000Z",
+                                        "profile_completed": 0,
+                                        "total_job_experience": {
+                                            "year": 6,
+                                            "month": 0
                                         },
                                         "physical_disabilities": [],
-                                        "youth_languages_proficiencies": [
-                                            {
-                                                "id": 1,
-                                                "youth_id": 1,
-                                                "language_id": 3,
-                                                "reading_proficiency_level": 1,
-                                                "writing_proficiency_level": 2,
-                                                "speaking_proficiency_level": 2,
-                                                "understand_proficiency_level": 2,
-                                                "created_at": "2021-10-17T06:23:35.000000Z",
-                                                "updated_at": "2021-10-17T06:23:35.000000Z",
-                                                "deleted_at": null
-                                            }
-                                        ],
+                                        "youth_languages_proficiencies": [],
                                         "skills": [],
-                                        "youth_educations": [
-                                            {
-                                                "id": 21,
-                                                "youth_id": 1,
-                                                "education_level_id": 1,
-                                                "exam_degree_id": 3,
-                                                "exam_degree_name": "5",
-                                                "exam_degree_name_en": null,
-                                                "major_or_concentration": "1",
-                                                "major_or_concentration_en": null,
-                                                "edu_group_id": 1,
-                                                "edu_board_id": 1,
-                                                "institute_name": "sdfvg",
-                                                "institute_name_en": null,
-                                                "is_foreign_institute": 1,
-                                                "foreign_institute_country_id": 1,
-                                                "result": "First Division/Class",
-                                                "marks_in_percentage": 17,
-                                                "cgpa_scale": 5,
-                                                "cgpa": 3,
-                                                "year_of_passing": 2015,
-                                                "duration": null,
-                                                "achievements": null,
-                                                "achievements_en": null,
-                                                "created_at": "2021-10-18T04:02:33.000000Z",
-                                                "updated_at": "2021-10-18T04:02:33.000000Z",
-                                                "deleted_at": null
-                                            }
-                                        ],
+                                        "youth_educations": [],
                                         "youth_job_experiences": [
                                             {
-                                                "id": 21,
+                                                "id": 5,
                                                 "youth_id": 1,
-                                                "employment_type_id": 2,
-                                                "company_name": "sdgvdfh",
+                                                "employment_type_id": 1,
+                                                "company_name": "HurrayMania",
                                                 "company_name_en": null,
-                                                "position": "sdgfdg",
+                                                "position": "Ftv",
                                                 "position_en": null,
-                                                "location": "asdfgh",
+                                                "location": "aaaa",
                                                 "location_en": null,
                                                 "job_responsibilities": null,
                                                 "job_responsibilities_en": null,
-                                                "start_date": "2021-10-04T00:00:00.000000Z",
-                                                "end_date": null,
-                                                "is_currently_working": 0,
-                                                "created_at": "2021-10-17T12:45:45.000000Z",
-                                                "updated_at": "2021-10-17T12:45:45.000000Z",
-                                                "deleted_at": null
-                                            }
-                                        ],
-                                        "youth_certifications": [
+                                                "start_date": "2020-09-09T00:00:00.000000Z",
+                                                "end_date": "2022-09-09T00:00:00.000000Z",
+                                                "is_currently_working": 1,
+                                                "created_at": "2022-01-30T06:20:32.000000Z",
+                                                "updated_at": "2022-01-30T06:20:32.000000Z",
+                                                "deleted_at": null,
+                                                "area_of_experiences": [
+                                                    {
+                                                        "id": 3,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "5",
+                                                        "area_of_experience_id": 1
+                                                    },
+                                                    {
+                                                        "id": 4,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "5",
+                                                        "area_of_experience_id": 2
+                                                    }
+                                                ],
+                                                "area_of_businesses": [
+                                                    {
+                                                        "id": 1,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "5",
+                                                        "area_of_business_id": 1
+                                                    },
+                                                    {
+                                                        "id": 2,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "5",
+                                                        "area_of_business_id": 2
+                                                    }
+                                                ]
+                                            },
                                             {
-                                                "id": 2,
+                                                "id": 7,
                                                 "youth_id": 1,
-                                                "certification_name": "sdfgsdf",
-                                                "certification_name_en": null,
-                                                "institute_name": "sdfsdf",
-                                                "institute_name_en": null,
-                                                "location": "sdfsdf",
+                                                "employment_type_id": 1,
+                                                "company_name": "HurrayMania",
+                                                "company_name_en": null,
+                                                "position": "Ftv",
+                                                "position_en": null,
+                                                "location": "aaaa",
                                                 "location_en": null,
-                                                "start_date": "2021-10-04T00:00:00.000000Z",
-                                                "end_date": "2021-10-06T00:00:00.000000Z",
-                                                "certificate_file_path": "sdfsdf",
-                                                "created_at": "2021-10-17T06:23:35.000000Z",
-                                                "updated_at": "2021-10-17T15:03:04.000000Z",
-                                                "deleted_at": null
+                                                "job_responsibilities": null,
+                                                "job_responsibilities_en": null,
+                                                "start_date": "2020-09-09T00:00:00.000000Z",
+                                                "end_date": "2022-09-09T00:00:00.000000Z",
+                                                "is_currently_working": 1,
+                                                "created_at": "2022-01-30T08:31:46.000000Z",
+                                                "updated_at": "2022-01-30T08:31:46.000000Z",
+                                                "deleted_at": null,
+                                                "area_of_experiences": [
+                                                    {
+                                                        "id": 9,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "7",
+                                                        "area_of_experience_id": 1
+                                                    },
+                                                    {
+                                                        "id": 10,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "7",
+                                                        "area_of_experience_id": 2
+                                                    }
+                                                ],
+                                                "area_of_businesses": [
+                                                    {
+                                                        "id": 7,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "7",
+                                                        "area_of_business_id": 1
+                                                    },
+                                                    {
+                                                        "id": 8,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "7",
+                                                        "area_of_business_id": 2
+                                                    }
+                                                ]
                                             }
                                         ],
-                                        "youth_portfolios": [
-                                            {
-                                                "id": 1,
-                                                "youth_id": 1,
-                                                "title": "Environmental Engineering Technician",
-                                                "title_en": "Environmental Engineering Technician",
-                                                "description": "Quoqui aut et provident minus ea voluptates autem ipsa at beatae nihil iure blanditiis sint qui voluptatibus aliquam.",
-                                                "description_en": "Quod delectus qui voluptatibus aliquam.",
-                                                "file_path": "C:\\Users\\HP\\AppData\\Local\\Temp\\fak1FC9.tmp",
-                                                "created_at": "2021-10-17T06:23:35.000000Z",
-                                                "updated_at": "2021-10-17T06:23:35.000000Z",
-                                                "deleted_at": null
-                                            }
-                                        ],
-                                        "youth_addresses": [
-                                            {
-                                                "id": 1,
-                                                "youth_id": 1,
-                                                "address_type": 1,
-                                                "loc_division_id": 1,
-                                                "loc_district_id": 1,
-                                                "loc_upazila_id": 1,
-                                                "village_or_area": null,
-                                                "village_or_area_en": null,
-                                                "house_n_road": null,
-                                                "house_n_road_en": null,
-                                                "zip_or_postal_code": null,
-                                                "created_at": "2021-10-17T11:04:15.000000Z",
-                                                "updated_at": "2021-10-17T11:04:15.000000Z",
-                                                "deleted_at": null
-                                            }
-                                        ]
+                                        "youth_certifications": [],
+                                        "youth_portfolios": [],
+                                        "youth_addresses": []
                                     },
                                     "_response_status": {
                                         "success": true,
@@ -1368,28 +1364,89 @@
                                     "$ref": "#/components/schemas/jobExperience"
                                 },
                                 "example": {
-                                    "current_page": 1,
-                                    "total_page": 1,
-                                    "page_size": 10,
-                                    "total": 10,
                                     "order": "ASC",
                                     "data": [
                                         {
-                                            "id": 1,
-                                            "company_name": "Gerhold PLC",
-                                            "company_name_en": "Gerhold PLC",
-                                            "position": "Health Technologist",
-                                            "position_en": "Health Technologist",
+                                            "id": 5,
+                                            "company_name": "HurrayMania",
+                                            "company_name_en": null,
+                                            "position": "Ftv",
+                                            "position_en": null,
                                             "youth_id": 1,
-                                            "location": "51696 Amelie Drive Suite 001",
-                                            "location_en": "51696 Amelie Drive Suite 001",
-                                            "job_responsibilities": "Respiratory Therapist",
-                                            "job_responsibilities_en": "Respiratory Therapist",
-                                            "start_date": "1977-09-18T00:00:00.000000Z",
-                                            "end_date": "2011-09-24T00:00:00.000000Z",
-                                            "is_currently_working": 0,
-                                            "created_at": "2021-10-17T06:23:35.000000Z",
-                                            "updated_at": "2021-10-17T06:23:35.000000Z"
+                                            "location": "aaaa",
+                                            "location_en": null,
+                                            "job_responsibilities": null,
+                                            "job_responsibilities_en": null,
+                                            "start_date": "2020-09-09T00:00:00.000000Z",
+                                            "end_date": "2022-09-09T00:00:00.000000Z",
+                                            "is_currently_working": 1,
+                                            "created_at": "2022-01-30T06:20:32.000000Z",
+                                            "updated_at": "2022-01-30T06:20:32.000000Z",
+                                            "area_of_experiences": [
+                                                {
+                                                    "id": 3,
+                                                    "youth_job_experience_id": "5",
+                                                    "area_of_experience_id": 1
+                                                },
+                                                {
+                                                    "id": 4,
+                                                    "youth_job_experience_id": "5",
+                                                    "area_of_experience_id": 2
+                                                }
+                                            ],
+                                            "area_of_businesses": [
+                                                {
+                                                    "id": 1,
+                                                    "youth_job_experience_id": "5",
+                                                    "area_of_business_id": 1
+                                                },
+                                                {
+                                                    "id": 2,
+                                                    "youth_job_experience_id": "5",
+                                                    "area_of_business_id": 2
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": 7,
+                                            "company_name": "HurrayMania",
+                                            "company_name_en": null,
+                                            "position": "Ftv",
+                                            "position_en": null,
+                                            "youth_id": 1,
+                                            "location": "aaaa",
+                                            "location_en": null,
+                                            "job_responsibilities": null,
+                                            "job_responsibilities_en": null,
+                                            "start_date": "2020-09-09T00:00:00.000000Z",
+                                            "end_date": "2022-09-09T00:00:00.000000Z",
+                                            "is_currently_working": 1,
+                                            "created_at": "2022-01-30T08:31:46.000000Z",
+                                            "updated_at": "2022-01-30T08:31:46.000000Z",
+                                            "area_of_experiences": [
+                                                {
+                                                    "id": 9,
+                                                    "youth_job_experience_id": "7",
+                                                    "area_of_experience_id": 1
+                                                },
+                                                {
+                                                    "id": 10,
+                                                    "youth_job_experience_id": "7",
+                                                    "area_of_experience_id": 2
+                                                }
+                                            ],
+                                            "area_of_businesses": [
+                                                {
+                                                    "id": 7,
+                                                    "youth_job_experience_id": "7",
+                                                    "area_of_business_id": 1
+                                                },
+                                                {
+                                                    "id": 8,
+                                                    "youth_job_experience_id": "7",
+                                                    "area_of_business_id": 2
+                                                }
+                                            ]
                                         }
                                     ],
                                     "response_status": {
@@ -1429,26 +1486,21 @@
                                 "example": {
                                     "data": {
                                         "youth_id": 1,
-                                        "employment_type_id": "2",
-                                        "company_name": "sdgvdfh",
-                                        "company_name_en": null,
-                                        "position": "sdgfdg",
-                                        "position_en": null,
-                                        "location": "asdfgh",
-                                        "location_en": null,
-                                        "job_responsibilities": null,
-                                        "job_responsibilities_en": null,
-                                        "start_date": "2021-10-04T00:00:00.000000Z",
-                                        "end_date": null,
-                                        "is_currently_working": "0",
-                                        "updated_at": "2021-10-17T12:45:45.000000Z",
-                                        "created_at": "2021-10-17T12:45:45.000000Z",
-                                        "id": 21
+                                        "employment_type_id": "1",
+                                        "company_name": "HurrayMania",
+                                        "position": "Ftv",
+                                        "location": "aaaa",
+                                        "start_date": "2020-09-09T00:00:00.000000Z",
+                                        "is_currently_working": "1",
+                                        "end_date": "2022-09-09T00:00:00.000000Z",
+                                        "updated_at": "2022-01-30T08:31:46.000000Z",
+                                        "created_at": "2022-01-30T08:31:46.000000Z",
+                                        "id": 7
                                     },
                                     "_response_status": {
                                         "success": true,
                                         "code": 201,
-                                        "message": "Job experience added successfully",
+                                        "message": "Job Experience added successfully",
                                         "query_time": 0
                                     }
                                 }
@@ -1480,24 +1532,48 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 1,
-                                        "company_name": "Gerhold PLC",
-                                        "company_name_en": "Gerhold PLC",
-                                        "position": "Health Technologist",
-                                        "position_en": "Health Technologist",
+                                        "id": 6,
+                                        "company_name": "HurrayMania",
+                                        "company_name_en": null,
+                                        "position": "Ftv",
+                                        "position_en": null,
                                         "youth_id": 1,
-                                        "location": "51696 Amelie Drive Suite 001",
-                                        "location_en": "51696 Amelie Drive Suite 001",
-                                        "job_responsibilities": "Respiratory Therapist",
-                                        "job_responsibilities_en": "Respiratory Therapist",
-                                        "start_date": "1977-09-18T00:00:00.000000Z",
-                                        "end_date": "2011-09-24T00:00:00.000000Z",
+                                        "location": "aaaa",
+                                        "location_en": null,
+                                        "job_responsibilities": null,
+                                        "job_responsibilities_en": null,
+                                        "start_date": "2020-09-09T00:00:00.000000Z",
+                                        "end_date": "2022-09-09T00:00:00.000000Z",
                                         "employment_type_id": 1,
-                                        "is_currently_working": 0,
-                                        "created_at": "2021-10-17T06:23:35.000000Z",
-                                        "updated_at": "2021-10-17T06:23:35.000000Z"
+                                        "is_currently_working": 1,
+                                        "created_at": "2022-01-30T06:31:03.000000Z",
+                                        "updated_at": "2022-01-30T06:31:03.000000Z",
+                                        "area_of_experiences": [
+                                            {
+                                                "id": 7,
+                                                "youth_job_experience_id": "6",
+                                                "area_of_experience_id": 1
+                                            },
+                                            {
+                                                "id": 8,
+                                                "youth_job_experience_id": "6",
+                                                "area_of_experience_id": 2
+                                            }
+                                        ],
+                                        "area_of_businesses": [
+                                            {
+                                                "id": 5,
+                                                "youth_job_experience_id": "6",
+                                                "area_of_business_id": 1
+                                            },
+                                            {
+                                                "id": 6,
+                                                "youth_job_experience_id": "6",
+                                                "area_of_business_id": 2
+                                            }
+                                        ]
                                     },
-                                    "response_status": {
+                                    "_response_status": {
                                         "success": true,
                                         "code": 200,
                                         "query_time": 0
@@ -1538,28 +1614,28 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 1,
+                                        "id": 6,
                                         "youth_id": 1,
                                         "employment_type_id": "1",
-                                        "company_name": "annnnn",
+                                        "company_name": "HurrayMania",
                                         "company_name_en": null,
-                                        "position": "1",
+                                        "position": "Ftv",
                                         "position_en": null,
-                                        "location": "dfgdfghfgh dfgb",
+                                        "location": "aaaa",
                                         "location_en": null,
                                         "job_responsibilities": null,
                                         "job_responsibilities_en": null,
-                                        "start_date": "2021-10-04T00:00:00.000000Z",
-                                        "end_date": null,
-                                        "is_currently_working": "0",
-                                        "created_at": "2021-10-17T06:23:35.000000Z",
-                                        "updated_at": "2021-10-17T12:49:13.000000Z",
+                                        "start_date": "2020-09-09T00:00:00.000000Z",
+                                        "end_date": "2022-09-09T00:00:00.000000Z",
+                                        "is_currently_working": "1",
+                                        "created_at": "2022-01-30T06:31:03.000000Z",
+                                        "updated_at": "2022-01-30T06:31:03.000000Z",
                                         "deleted_at": null
                                     },
                                     "_response_status": {
                                         "success": true,
                                         "code": 200,
-                                        "message": "Job experience updated successfully.",
+                                        "message": "Job Experience updated successfully",
                                         "query_time": 0
                                     }
                                 }
@@ -3915,6 +3991,46 @@
                 ]
             }
         },
+        "/apply-job": {
+            "post": {
+                "tags": ["Apply Job"],
+                "summary": "Apply for job",
+                "description": "An Http method to post Apply for job. Successful request response will return 200 status code",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/jobApply"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "job_id": "qq-qq",
+                                        "youth_id": 1,
+                                        "updated_at": "2022-01-18T06:15:47.000000Z",
+                                        "created_at": "2022-01-18T06:15:47.000000Z",
+                                        "id": 1
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Applied to job successfully",
+                                        "query_time": "1 second before"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/languages": {
             "get": {
                 "summary": "Get All languages",
@@ -3973,17 +4089,121 @@
                     "Languages"
                 ]
             }
+        },
+        "/youth-career-info": {
+            "put": {
+                "summary": "update youth career information",
+                "description": "Api end point to update  get languages. A successful request response will return 200 status code",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/YouthJobInfoUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "id": 1,
+                                        "is_freelance_profile": 0,
+                                        "username": "ADAM",
+                                        "job_level": 1,
+                                        "expected_salary": 5000,
+                                        "user_name_type": 0,
+                                        "first_name": "Dave",
+                                        "first_name_en": "Dave",
+                                        "last_name": "Batista",
+                                        "last_name_en": "Batisata",
+                                        "loc_division_id": 1,
+                                        "loc_district_id": null,
+                                        "loc_upazila_id": 1,
+                                        "date_of_birth": "-000001-11-30T00:00:00.000000Z",
+                                        "gender": 1,
+                                        "religion": null,
+                                        "marital_status": null,
+                                        "nationality": 1,
+                                        "email": null,
+                                        "mobile": null,
+                                        "identity_number_type": null,
+                                        "identity_number": null,
+                                        "freedom_fighter_status": 1,
+                                        "physical_disability_status": 0,
+                                        "does_belong_to_ethnic_group": 0,
+                                        "bio": null,
+                                        "bio_en": null,
+                                        "photo": null,
+                                        "cv_path": null,
+                                        "signature_image_path": null,
+                                        "verification_code_sent_at": null,
+                                        "verification_code_verified_at": null,
+                                        "row_status": 1,
+                                        "created_at": null,
+                                        "updated_at": "2022-01-30T03:55:23.000000Z",
+                                        "deleted_at": null
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Youth career info updated successfully",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Career info"
+                ]
+            }
         }
     },
     "components": {
         "securitySchemes": {
-            "bearerAuth": {
-                "type": "http",
-                "scheme": "bearer",
-                "bearerFormat": "JWT"
+            "User-Token": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "User-Token"
             }
         },
         "schemas": {
+            "YouthJobInfoUpdate": {
+                "type": "object",
+                "properties": {
+                    "expected_salary": {
+                        "type": "integer"
+                    },
+                    "job_level": {
+                        "type": "integer",
+                        "enum": [1,2,3],
+                        "description": "1=>Entry Level 2=>Mid Level 3=>Top Level"
+                    }
+                },
+                "required": [
+                    "expected_salary",
+                    "job_level"
+                ]
+            },
+            "jobApply": {
+                "type": "object",
+                "properties": {
+                    "job_id": {
+                        "type": "string"
+                    },
+                    "expected_salary": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "job_id"
+                ]
+            },
             "resend-verification-code": {
                 "type": "object",
                 "properties": {
