@@ -16,23 +16,23 @@ class PhysicalDisabilitySeeder extends Seeder
     {
         PhysicalDisability::insert([
             [
-                "title" => "Visual Disabilities",
+                "title" => "চাক্ষুষ অক্ষমতা",
                 "title_en" => "Visual Disabilities",
             ],
             [
-                "title" => "Hearing Disabilities",
+                "title" => "শ্রবণ প্রতিবন্ধী",
                 "title_en" => "Hearing Disabilities",
             ],
             [
-                "title" => "Mental Health Disabilities",
+                "title" => "মানসিক স্বাস্থ্য অক্ষমতা",
                 "title_en" => "Mental Health Disabilities",
             ],
             [
-                "title" => "Intellectual Disabilities",
+                "title" => "বুদ্ধিবৃত্তিক অক্ষমতা",
                 "title_en" => "Intellectual Disabilities",
             ],
             [
-                "title" => "Social Disabilities",
+                "title" => "সামাজিক প্রতিবন্ধী",
                 "title_en" => "Social Disabilities",
             ]
         ]);
