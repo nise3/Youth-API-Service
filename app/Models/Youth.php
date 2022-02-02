@@ -68,6 +68,8 @@ class Youth extends AuthBaseModel implements
 
     const YOUTH_NEARBY_FILTER_TRUE = 1;
     const YOUTH_NEARBY_FILTER_FALSE = 0;
+    public const YOUTH_CODE_PREFIX = "Y";
+    public const YOUTH_CODE_SIZE = "17";
 
     /** Marital Statuses */
     public const MARITAL_STATUS_SINGLE = 1;

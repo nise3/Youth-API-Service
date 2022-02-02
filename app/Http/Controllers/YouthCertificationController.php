@@ -108,6 +108,7 @@ class YouthCertificationController extends Controller
 
         $validated = $this->certificationService->validator($request)->validate();
         $certification = $this->certificationService->store($validated);
+
         $response = [
             'data' => $certification,
             '_response_status' => [
