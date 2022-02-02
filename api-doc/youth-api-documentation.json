@@ -1087,6 +1087,41 @@
                 ]
             }
         },
+        "/youth-set-default-cv-template": {
+            "put": {
+                "tags": [
+                    "Youth Profile"
+                ],
+                "summary": "Set default cv-template",
+                "description": "API endpoint to Set default cv-template. A successful request response will show 200 HTTP status code ",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DefaultCvTemplate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successfull",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Successfully set your cv template",
+                                        "query_time": "1 second before"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/youth-portfolios": {
             "get": {
                 "summary": "get_list",
@@ -1614,22 +1649,22 @@
                                 },
                                 "example": {
                                     "data": {
-                                        "id": 6,
+                                        "id": 1,
                                         "youth_id": 1,
                                         "employment_type_id": "1",
-                                        "company_name": "HurrayMania",
+                                        "company_name": "HurrayLand",
                                         "company_name_en": null,
-                                        "position": "Ftv",
+                                        "position": "AnonymousKing",
                                         "position_en": null,
-                                        "location": "aaaa",
+                                        "location": "YourFather'sHouse",
                                         "location_en": null,
                                         "job_responsibilities": null,
                                         "job_responsibilities_en": null,
-                                        "start_date": "2020-09-09T00:00:00.000000Z",
-                                        "end_date": "2022-09-09T00:00:00.000000Z",
+                                        "start_date": "2022-09-09T00:00:00.000000Z",
+                                        "end_date": null,
                                         "is_currently_working": "1",
-                                        "created_at": "2022-01-30T06:31:03.000000Z",
-                                        "updated_at": "2022-01-30T06:31:03.000000Z",
+                                        "created_at": "2022-02-02T04:28:44.000000Z",
+                                        "updated_at": "2022-02-02T04:49:21.000000Z",
                                         "deleted_at": null
                                     },
                                     "_response_status": {
@@ -5216,6 +5251,16 @@
                     "loc_district_id"
                 ]
             },
+            "DefaultCvTemplate": {
+                "type": "object",
+                "description": "Default Cv Template",
+                "properties": {
+                    "default_cv_template": {
+                        "type": "string",
+                        "example": "CLASSIC"
+                    }
+                }
+            },
             "youthProfileUpdateSchema": {
                 "type": "object",
                 "description": "Youth Profile",
@@ -5338,6 +5383,20 @@
                     "job_responsibilities_en": {
                         "type": "string"
                     },
+                    "area_of_experiences": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "description": "Must exist in area_of_experiences table"
+                    },
+                    "area_of_businesses": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "description": "Must exist in area_of_businesses table"
+                    },
                     "start_date": {
                         "type": "string",
                         "format": "date"
@@ -5362,6 +5421,8 @@
                     "employment_type_id",
                     "location",
                     "start_date",
+                    "area_of_experiences",
+                    "area_of_businesses",
                     "is_currently_working"
                 ]
             },
