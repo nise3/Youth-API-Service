@@ -1650,44 +1650,27 @@
                                 "example": {
                                     "data": {
                                         "id": 1,
-                                        "company_name": "SpicyMamba",
-                                        "company_name_en": null,
-                                        "position": "KIng",
-                                        "position_en": null,
                                         "youth_id": 1,
-                                        "location": "dddd",
+                                        "employment_type_id": "1",
+                                        "company_name": "HurrayLand",
+                                        "company_name_en": null,
+                                        "position": "AnonymousKing",
+                                        "position_en": null,
+                                        "location": "YourFather'sHouse",
                                         "location_en": null,
                                         "job_responsibilities": null,
                                         "job_responsibilities_en": null,
-                                        "start_date": "2020-09-09T00:00:00.000000Z",
+                                        "start_date": "2022-09-09T00:00:00.000000Z",
                                         "end_date": null,
-                                        "employment_type_id": 1,
-                                        "is_currently_working": 1,
+                                        "is_currently_working": "1",
                                         "created_at": "2022-02-02T04:28:44.000000Z",
-                                        "updated_at": "2022-02-02T04:30:00.000000Z",
-                                        "area_of_experiences": [
-                                            {
-                                                "id": 3,
-                                                "youth_job_experience_id": "1",
-                                                "area_of_experience_id": 2
-                                            },
-                                            {
-                                                "id": 4,
-                                                "youth_job_experience_id": "1",
-                                                "area_of_experience_id": 3
-                                            }
-                                        ],
-                                        "area_of_businesses": [
-                                            {
-                                                "id": 3,
-                                                "youth_job_experience_id": "1",
-                                                "area_of_business_id": 1
-                                            }
-                                        ]
+                                        "updated_at": "2022-02-02T04:49:21.000000Z",
+                                        "deleted_at": null
                                     },
                                     "_response_status": {
                                         "success": true,
                                         "code": 200,
+                                        "message": "Job Experience updated successfully",
                                         "query_time": 0
                                     }
                                 }
