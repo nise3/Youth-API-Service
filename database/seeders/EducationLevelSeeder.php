@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\BaseModel;
 use App\Models\EducationLevel;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class EducationLevelSeeder extends Seeder
 {
@@ -15,6 +16,10 @@ class EducationLevelSeeder extends Seeder
      */
     public function run()
     {
+        Schema::disableForeignKeyConstraints();
+
+        EducationLevel::query()->truncate();
+
         $educationLevels = [
             [
                 "id" => 1,

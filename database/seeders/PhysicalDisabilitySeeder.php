@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\PhysicalDisability;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class PhysicalDisabilitySeeder extends Seeder
 {
@@ -14,6 +15,10 @@ class PhysicalDisabilitySeeder extends Seeder
      */
     public function run()
     {
+        Schema::disableForeignKeyConstraints();
+
+        PhysicalDisability::query()->truncate();
+
         PhysicalDisability::insert([
             [
                 "title" => "চাক্ষুষ অক্ষমতা",
