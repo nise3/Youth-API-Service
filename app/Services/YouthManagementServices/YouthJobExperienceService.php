@@ -289,7 +289,6 @@ class YouthJobExperienceService
                 "required",
                 "distinct",
                 "integer",
-                "exists:area_of_experiences,id,deleted_at,NULL",
             ],
             "area_of_businesses" => [
                 "required",
@@ -298,8 +297,7 @@ class YouthJobExperienceService
             "area_of_businesses.*" => [
                 "integer",
                 "distinct",
-                "required",
-                "exists:area_of_business,id,deleted_at,NULL",
+                "required"
             ],
             'start_date' => [
                 'required',
