@@ -56,6 +56,7 @@ class YouthProfileService
                 'youths.expected_salary',
                 'youths.job_level',
                 'youths.loc_division_id',
+                'youths.code',
                 'loc_divisions.title as division_title',
                 'loc_divisions.title_en as division_title_en',
                 'youths.loc_district_id',
