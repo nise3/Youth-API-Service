@@ -113,8 +113,8 @@ class YouthJobExperienceService
             'youth_job_experiences.updated_at'
         ]);
         $jobExperienceBuilder->where('youth_job_experiences.id', $id);
-        $jobExperienceBuilder->with('areaOfExperiences:id,youth_job_experience_id,area_of_experience_id');
-        $jobExperienceBuilder->with('areaOfBusinesses:id,youth_job_experience_id,area_of_business_id');
+        $jobExperienceBuilder->with('areaOfExperiences:id,youth_job_experience_id,area_of_experience_id,title,title_en');
+        $jobExperienceBuilder->with('areaOfBusinesses:id,youth_job_experience_id,area_of_business_id,title,title_en');
 
         /** @var YouthJobExperience $jobExperience */
         $jobExperience = $jobExperienceBuilder->firstOrFail();
@@ -289,6 +289,7 @@ class YouthJobExperienceService
                 "required",
                 "distinct",
                 "integer",
+                "exists:area_of_experiences,id,deleted_at,NULL",
             ],
             "area_of_businesses" => [
                 "required",
@@ -297,7 +298,8 @@ class YouthJobExperienceService
             "area_of_businesses.*" => [
                 "integer",
                 "distinct",
-                "required"
+                "required",
+                "exists:area_of_business,id,deleted_at,NULL",
             ],
             'start_date' => [
                 'required',
