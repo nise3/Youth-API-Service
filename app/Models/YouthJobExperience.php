@@ -48,13 +48,28 @@ class YouthJobExperience extends BaseModel
     {
         return $this->belongsTo(Youth::class);
     }
-    public function areaOfExperiences(): hasMany
+
+    public function areaOfExperiences(): HasMany
     {
-        return $this->hasMany(YouthJobExperienceAreaOfExperience::class, 'youth_job_experience_id','id');
+        return $this->hasMany(YouthJobExperienceAreaOfExperience::class, 'youth_job_experience_id','id')
+            ->leftJoin('area_of_experiences', "area_of_experiences.id", '=', 'youth_job_experience_area_of_experiences.area_of_experience_id')
+            ->select([
+                "youth_job_experience_area_of_experiences.*",
+                "area_of_experiences.id as id",
+                "area_of_experiences.title as title",
+                "area_of_experiences.title_en as title_en",
+            ]);
     }
 
-    public function areaOfBusinesses(): hasMany
+    public function areaOfBusinesses(): HasMany
     {
-        return $this->hasMany(YouthJobExperienceAreaOfBusiness::class, 'youth_job_experience_id','id');
+        return $this->hasMany(YouthJobExperienceAreaOfBusiness::class, 'youth_job_experience_id','id')
+            ->leftJoin('area_of_business', "area_of_business.id", '=', 'youth_job_experience_area_of_businesses.area_of_business_id')
+            ->select([
+                "youth_job_experience_area_of_businesses.*",
+                "area_of_business.id as id",
+                "area_of_business.title as title",
+                "area_of_business.title_en as title_en",
+            ]);
     }
 }
