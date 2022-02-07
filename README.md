@@ -6,6 +6,8 @@
 ```shell
 php -S localhost:8005 -t public
 ```
+## For New Release use the following in Merge Request
 ```shell
-RELEASE = 'php artisan migrate:fresh --seed'
+RELEASE = 'php artisan migrate:fresh --seed && php artisan cache:clear'
+RELEASE = 'php artisan cache:clear'
 ```
