@@ -294,7 +294,8 @@ class YouthProfileService
             $idpUserPayload = [
                 'id' => $youth->idp_user_id,
                 'username' => $youth->username,
-                'active' => (string)$youth->row_status
+                'account_disable' => false,
+                'account_lock' => false
             ];
             $this->idpUserUpdate($idpUserPayload);
             //$this->sendYouthUserInfoByMail($youth);
