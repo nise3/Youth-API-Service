@@ -963,7 +963,6 @@ class YouthProfileService
         ];
 
         return Validator::make($request->all(), $rules);
-
     }
 
     /**
