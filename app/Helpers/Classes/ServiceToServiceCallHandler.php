@@ -2,9 +2,11 @@
 
 namespace App\Helpers\Classes;
 
+use App\Exceptions\HttpErrorException;
 use App\Models\BaseModel;
 use App\Services\YouthManagementServices\YouthProfileService;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -39,10 +41,14 @@ class ServiceToServiceCallHandler
             'verify' => config("nise3.should_ssl_verify"),
             'debug' => config('nise3.http_debug'),
             'timeout' => config("nise3.http_timeout")
-        ])->post($url, $postField)->throw(function ($response, $e) use ($url) {
-            Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . json_encode($response));
-            return $e;
-        })->json('data');
+        ])
+            ->post($url, $postField)
+            ->throw(static function (Response $httpResponse, $httpException) use ($url) {
+                Log::debug(get_class($httpResponse) . ' - ' . get_class($httpException));
+                Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . $httpResponse->body());
+                throw new HttpErrorException($httpResponse);
+            })
+            ->json('data');
 
         Log::info("youth info with job data:" . json_encode($youthData));
 
