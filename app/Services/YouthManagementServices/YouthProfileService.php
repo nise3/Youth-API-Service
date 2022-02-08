@@ -295,7 +295,6 @@ class YouthProfileService
                 'active' => (string)$youth->row_status
             ];
             $this->idpUserUpdate($idpUserPayload);
-            //$this->sendYouthUserInfoByMail($youth);
             return true;
         }
         return false;
@@ -329,8 +328,8 @@ class YouthProfileService
             return true;
         }
         if ($mobile_number) {
-            $smsService = new SmsService($mobile_number, $message);
-            $smsService->sendSms();
+            $smsService = new SmsService();
+            $smsService->sendSms($mobile_number, $message);
         }
         return false;
     }

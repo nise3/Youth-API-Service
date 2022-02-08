@@ -7,6 +7,7 @@ use App\Models\BaseModel;
 use App\Models\Youth;
 use App\Models\YouthAddress;
 use App\Services\CommonServices\CodeGeneratorService;
+use App\Services\CommonServices\MailService;
 use App\Services\YouthManagementServices\YouthAddressService;
 use Exception;
 use Illuminate\Http\Client\RequestException;
@@ -170,6 +171,16 @@ class YouthProfileController extends Controller
             $this->youthProfileService->sendVerifyCode($sendVerifyCodePayLoad, $validated['verification_code']);
 
             Log::info("Sms send successfully after registration");
+
+            /** Mail send after user registration */
+            $to = array($youth->email);
+            $from = BaseModel::NISE3_FROM_EMAIL;
+            $subject = "Youth Registration Information";
+            $message = "Congratulation, You are successfully complete your registration . Username: " . $youth->username . " & Password: " . $validated['password'];
+            $messageBody = MailService::templateView($message);
+            $mailService = new MailService($to, $from, $subject, $messageBody);
+            $mailService->sendMail();
+
 
             $response = [
                 'data' => $youth ?? new stdClass(),
@@ -358,6 +369,20 @@ class YouthProfileController extends Controller
         ]));
 
         $data = ServiceToServiceCall::youthApplyToJob($requestData);
+
+        if ($data) {
+            /** Mail send after user registration */
+
+            /** @var Youth $youth */
+            $youth = Youth::findOrFail($data['youth_id']);
+            $to = array($youth->email);
+            $from = BaseModel::NISE3_FROM_EMAIL;
+            $subject = "Youth Registration Information";
+            $message = "Congratulation, You have successfully applied";
+            $messageBody = MailService::templateView($message);
+            $mailService = new MailService($to, $from, $subject, $messageBody);
+            $mailService->sendMail();
+        }
 
         $response = [
             'data' => $data ?? [],
