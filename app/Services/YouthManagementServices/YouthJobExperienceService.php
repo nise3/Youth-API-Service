@@ -60,8 +60,8 @@ class YouthJobExperienceService
             $jobExperienceBuilder->where('youth_job_experiences.company_name_bn', 'like', '%' . $companyNameBn . '%');
         }
 
-        $jobExperienceBuilder->with('areaOfExperiences:id,youth_job_experience_id,area_of_experience_id');
-        $jobExperienceBuilder->with('areaOfBusinesses:id,youth_job_experience_id,area_of_business_id');
+        $jobExperienceBuilder->with('areaOfExperiences');
+        $jobExperienceBuilder->with('areaOfBusinesses');
 
         /** @var Collection $jobExperiences */
 
@@ -113,8 +113,8 @@ class YouthJobExperienceService
             'youth_job_experiences.updated_at'
         ]);
         $jobExperienceBuilder->where('youth_job_experiences.id', $id);
-        $jobExperienceBuilder->with('areaOfExperiences:id,youth_job_experience_id,area_of_experience_id');
-        $jobExperienceBuilder->with('areaOfBusinesses:id,youth_job_experience_id,area_of_business_id');
+        $jobExperienceBuilder->with('areaOfExperiences');
+        $jobExperienceBuilder->with('areaOfBusinesses');
 
         /** @var YouthJobExperience $jobExperience */
         $jobExperience = $jobExperienceBuilder->firstOrFail();

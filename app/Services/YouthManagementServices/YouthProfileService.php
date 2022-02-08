@@ -3,6 +3,7 @@
 
 namespace App\Services\YouthManagementServices;
 
+use App\Exceptions\HttpErrorException;
 use App\Models\AppliedJob;
 use App\Models\BaseModel;
 use App\Models\PhysicalDisability;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +26,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
-use JetBrains\PhpStorm\ArrayShape;
 use Throwable;
 
 
@@ -56,6 +57,7 @@ class YouthProfileService
                 'youths.expected_salary',
                 'youths.job_level',
                 'youths.loc_division_id',
+                'youths.code',
                 'loc_divisions.title as division_title',
                 'loc_divisions.title_en as division_title_en',
                 'youths.loc_district_id',
@@ -292,7 +294,8 @@ class YouthProfileService
             $idpUserPayload = [
                 'id' => $youth->idp_user_id,
                 'username' => $youth->username,
-                'active' => (string)$youth->row_status
+                'account_disable' => false,
+                'account_lock' => false
             ];
             $this->idpUserUpdate($idpUserPayload);
             return true;
@@ -829,9 +832,10 @@ class YouthProfileService
             'timeout' => config("nise3.http_timeout")
         ])
             ->get($urlWithQueryStr)
-            ->throw(function ($response, $e) use ($url) {
-                Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . json_encode($response));
-                return $e;
+            ->throw(static function (Response $httpResponse, $httpException) use ($urlWithQueryStr) {
+                Log::debug(get_class($httpResponse) . ' - ' . get_class($httpException));
+                Log::debug("Http/Curl call error. Destination:: " . $urlWithQueryStr . ' and Response:: ' . $httpResponse->body());
+                throw new HttpErrorException($httpResponse);
             })
             ->json();
     }
@@ -905,15 +909,17 @@ class YouthProfileService
         $skillIds = implode(",", $skillIds);
         $urlWithSkillIds = $url . '?' . "skill_ids=" . $skillIds;
         Log::info($urlWithSkillIds);
+
         return Http::withOptions([
             'verify' => config("nise3.should_ssl_verify"),
             'debug' => config('nise3.http_debug'),
             'timeout' => config("nise3.http_timeout")
         ])
             ->get($urlWithSkillIds)
-            ->throw(function ($response, $e) use ($url) {
-                Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . json_encode($response));
-                return $e;
+            ->throw(static function (Response $httpResponse, $httpException) use ($urlWithSkillIds) {
+                Log::debug(get_class($httpResponse) . ' - ' . get_class($httpException));
+                Log::debug("Http/Curl call error. Destination:: " . $urlWithSkillIds . ' and Response:: ' . $httpResponse->body());
+                throw new HttpErrorException($httpResponse);
             })
             ->json();
     }
@@ -957,7 +963,6 @@ class YouthProfileService
         ];
 
         return Validator::make($request->all(), $rules);
-
     }
 
     /**

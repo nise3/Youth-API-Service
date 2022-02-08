@@ -14,9 +14,7 @@ class CreateYouthCodePessimisticLockingsTable extends Migration
     public function up()
     {
         Schema::create('youth_code_pessimistic_lockings', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('code');
-            $table->timestamps();
+            $table->unsignedInteger('last_incremental_value');
         });
     }
 

@@ -15,36 +15,36 @@ class CodeGeneratorService
      */
     public static function getYouthCode(): string
     {
-        $youthCode = "";
         DB::beginTransaction();
         try {
-            /** @var YouthCodePessimisticLocking $existingCode */
-            $existingCode = YouthCodePessimisticLocking::lockForUpdate()->first();
-            $code = !empty($existingCode) && !empty($existingCode->code) ? $existingCode->code : 0;
-            $code = $code + 1;
-            $padSize = Youth::YOUTH_CODE_SIZE - strlen($code);
+            /** @var YouthCodePessimisticLocking $lastEntity */
+            $lastEntity = YouthCodePessimisticLocking::lockForUpdate()->first();
+            $lastIncrementalVal = !empty($lastEntity) && $lastEntity->last_incremental_value ? $lastEntity->last_incremental_value : 0;
+            $lastIncrementalVal = $lastIncrementalVal + 1;
+            $padSize = Youth::YOUTH_CODE_SIZE - strlen($lastIncrementalVal);
 
             /**
              * Prefix+000000N. Ex: Y+ incremental value
              */
-            $youthCode = str_pad(Youth::YOUTH_CODE_PREFIX, $padSize, '0', STR_PAD_RIGHT) . $code;
+            $youthCode = str_pad(Youth::YOUTH_CODE_PREFIX, $padSize, '0', STR_PAD_RIGHT) . $lastIncrementalVal;
 
             /**
              * Code Update
              */
-            if ($existingCode) {
-                $existingCode->code = $code;
-                $existingCode->save();
+            if ($lastEntity) {
+                $lastEntity->last_incremental_value = $lastIncrementalVal;
+                $lastEntity->save();
             } else {
                 YouthCodePessimisticLocking::create([
-                    "code" => $code
+                    "last_incremental_value" => $lastIncrementalVal
                 ]);
             }
             DB::commit();
+            return $youthCode;
         } catch (Throwable $throwable) {
             DB::rollBack();
             throw $throwable;
         }
-        return $youthCode;
+
     }
 }

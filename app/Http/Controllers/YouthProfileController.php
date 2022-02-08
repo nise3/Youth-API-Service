@@ -115,7 +115,8 @@ class YouthProfileController extends Controller
                 'username' => $validated['username'],
                 'password' => $validated['password'],
                 'user_type' => BaseModel::YOUTH_USER_TYPE,
-                'active' => (string)BaseModel::ROW_STATUS_PENDING,
+                'account_disable' => true,
+                'account_lock' => true
             ];
 
             $idpResponse = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
@@ -221,7 +222,8 @@ class YouthProfileController extends Controller
                 'last_name' => $youth->last_name,
                 'email' => $youth->email,
                 'mobile' => $youth->mobile,
-                'active' => (string)$youth->row_status
+                'account_disable' => $youth->row_status != BaseModel::ROW_STATUS_ACTIVE,
+                'account_lock' => $youth->row_status != BaseModel::ROW_STATUS_ACTIVE
             ];
             $this->youthProfileService->idpUserUpdate($idpUserPayload);
         }
