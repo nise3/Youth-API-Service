@@ -259,5 +259,5 @@ return [
             ],
         ],
     ],
-    'consume' => ''
+    'consume' => 'youth.course.enrollment.q'
 ];
