@@ -40,23 +40,25 @@ return [
             'path' => storage_path('logs/saga-logs/' . date('Y/F/') . 'saga.log'),
             'level' => 'info'
         ],
-
+        'mail_sms' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/mail-sms/' . date('Y/F/') . 'mail-sms.log'),
+            'level' => 'info'
+        ],
         'stack' => [
             'driver' => 'stack',
             'channels' => ['daily'],
         ],
-
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/lumen.log'),
             'level' => 'debug',
         ],
-
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/lumen.log'),
             'level' => 'debug',
-            'days' => 14,
+            'days' => 2,
         ],
         'idp_user' => [
             'driver' => 'single',
@@ -70,7 +72,6 @@ return [
             'emoji' => ':boom:',
             'level' => 'critical',
         ],
-
         'papertrail' => [
             'driver' => 'monolog',
             'level' => 'debug',
@@ -80,7 +81,6 @@ return [
                 'port' => env('PAPERTRAIL_PORT'),
             ],
         ],
-
         'stderr' => [
             'driver' => 'monolog',
             'handler' => StreamHandler::class,
@@ -88,17 +88,14 @@ return [
                 'stream' => 'php://stderr',
             ],
         ],
-
         'syslog' => [
             'driver' => 'syslog',
             'level' => 'debug',
         ],
-
         'errorlog' => [
             'driver' => 'errorlog',
             'level' => 'debug',
         ],
-
         'null' => [
             'driver' => 'monolog',
             'handler' => NullHandler::class,
