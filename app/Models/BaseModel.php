@@ -104,7 +104,7 @@ abstract class BaseModel extends Model
 
     public const SELF_EXCHANGE = 'youth';
 
-    public const NISE3_FROM_EMAIL = "info@nise3.com";
+    public const NISE3_FROM_EMAIL = "noreply@nise.gov.bd";
     public const NISE3_DEFAULT_URL = "http://123.49.47.38/";
 
     /** Saga Status */

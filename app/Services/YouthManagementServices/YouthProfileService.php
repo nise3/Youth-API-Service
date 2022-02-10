@@ -576,9 +576,7 @@ class YouthProfileService
             ],
             'identity_number' => [
                 'nullable',
-                'string',
-                'min:11',
-                'max:50'
+                'string'
             ],
             'freedom_fighter_status' => [
                 'required',
