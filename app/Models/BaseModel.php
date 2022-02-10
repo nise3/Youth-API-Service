@@ -18,10 +18,6 @@ abstract class BaseModel extends Model
     public const COMMON_GUARDED_FIELDS_SOFT_DELETE = ['id', 'created_by', 'updated_by', 'created_at', 'updated_at', 'deleted_at'];
     public const COMMON_GUARDED_FIELDS_NON_SOFT_DELETE = ['id', 'created_by', 'updated_by', 'created_at', 'updated_at'];
 
-    /** Idp User Information */
-    public const IDP_USERNAME = 'admin';
-    public const IDP_USER_PASSWORD = 'admin';
-
     /** Client Url End Point Type*/
     public const ORGANIZATION_CLIENT_URL_TYPE = "ORGANIZATION";
     public const INSTITUTE_URL_CLIENT_TYPE = "INSTITUTE";
