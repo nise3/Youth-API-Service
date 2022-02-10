@@ -31,13 +31,13 @@ class LanguageSeeder extends Seeder
             ],
             [
                 "lang_code" => "es",
-                "title" => "Spanish",
-                "title_en" => "স্পেনীয়"
+                "title" => " স্পেনীয়",
+                "title_en" => "Spanish"
             ],
             [
                 "lang_code" => "ar",
-                "title" => "Arabic",
-                "title_en" => "আরবি"
+                "title" => "আরবি",
+                "title_en" => "Arabic"
             ]
         ];
         Language::insert($languages);
