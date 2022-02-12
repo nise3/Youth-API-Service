@@ -62,6 +62,14 @@ class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
                     $this->youthService->updateYouthEducations($data, $youth);
                     $this->youthService->updateYouthPhysicalDisabilities($data, $youth);
 
+                    DB::commit();
+
+                    /** Trigger EVENT to MailSms Service to send Mail via RabbitMQ */
+                    //$this->youthService->sendMailCourseEnrollmentSuccess($data);
+
+                    /** Trigger EVENT to Institute Service via RabbitMQ */
+                    event(new CourseEnrollmentSuccessEvent($data));
+
                     /** Store the event as a Success event into Database */
                     $this->rabbitMQService->sagaSuccessEvent(
                         BaseModel::SAGA_INSTITUTE_SERVICE,
@@ -69,15 +77,6 @@ class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
                         get_class($this),
                         json_encode($data)
                     );
-
-                    DB::commit();
-
-                    /** Trigger EVENT to Institute Service via RabbitMQ */
-                    event(new CourseEnrollmentSuccessEvent($data));
-
-                    /** Trigger EVENT to MailSms Service to send Mail via RabbitMQ */
-                    //$this->youthService->sendMailCourseEnrollmentSuccess($data);
-
                 } else {
                     throw new Exception("youth_id not provided!");
                 }
