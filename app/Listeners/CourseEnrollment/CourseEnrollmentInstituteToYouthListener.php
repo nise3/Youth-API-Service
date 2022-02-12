@@ -86,6 +86,10 @@ class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
                 /** Technical Recoverable Error Occurred. RETRY mechanism with DLX-DLQ apply now by sending a rejection */
                 throw new Exception("Database Connectivity Error");
             } else {
+                /** Trigger EVENT to Institute Service via RabbitMQ to Rollback */
+                $data['publisher_service'] = BaseModel::SAGA_YOUTH_SERVICE;
+                event(new CourseEnrollmentRollbackEvent($data));
+
                 /** Technical Non-recoverable Error "OR" Business Rule violation Error Occurred. Compensating Transactions apply now */
                 /** Store the event as an Error event into Database */
                 $this->rabbitMQService->sagaErrorEvent(
@@ -95,10 +99,6 @@ class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
                     json_encode($data),
                     $e
                 );
-
-                /** Trigger EVENT to Institute Service via RabbitMQ to Rollback */
-                $data['publisher_service'] = BaseModel::SAGA_YOUTH_SERVICE;
-                event(new CourseEnrollmentRollbackEvent($data));
             }
         }
     }
