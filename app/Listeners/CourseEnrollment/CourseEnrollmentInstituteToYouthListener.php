@@ -76,7 +76,8 @@ class CourseEnrollmentInstituteToYouthListener implements ShouldQueue
                     event(new CourseEnrollmentSuccessEvent($data));
 
                     /** Trigger EVENT to MailSms Service to send Mail via RabbitMQ */
-                    $this->youthService->sendMailCourseEnrollmentSuccess($data);
+                    //$this->youthService->sendMailCourseEnrollmentSuccess($data);
+
                 } else {
                     throw new Exception("youth_id not provided!");
                 }

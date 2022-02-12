@@ -325,14 +325,14 @@ class YouthProfileService
     public function sendVerifyCode(array $data, string $code): bool
     {
         $email = $data["email"] ?? null;
-        $mobile_number = $data["mobile"] ?? null;
-        $message = "Welcome to NISE-3. Your OTP code : " . $code;
+        $mobileNumber = $data["mobile"] ?? null;
+        $message = "Your OTP code : " . $code;
         if ($email) {
             return true;
         }
-        if ($mobile_number) {
+        if ($mobileNumber) {
             $smsService = new SmsService();
-            $smsService->sendSms($mobile_number, $message);
+            $smsService->sendSms($mobileNumber, $message);
         }
         return false;
     }
@@ -920,26 +920,6 @@ class YouthProfileService
                 throw new HttpErrorException($httpResponse);
             })
             ->json();
-    }
-
-    /**
-     * @param Youth $youth
-     * @throws Throwable
-     */
-    private function sendYouthUserInfoByMail(Youth $youth)
-    {
-        $mailService = new MailService();
-        $mailService->setTo([
-            $youth->email
-        ]);
-        $from = $mailPayload['from'] ?? BaseModel::NISE3_FROM_EMAIL;
-        $subject = $mailPayload['subject'] ?? "Youth Registration";
-        $mailService->setForm($from);
-        $mailService->setSubject($subject);
-        $mailService->setMessageBody($youth->toArray());
-        $instituteRegistrationTemplate = $mailPayload['template'] ?? 'mail.youth-create-default-template';
-        $mailService->setTemplate($instituteRegistrationTemplate);
-        $mailService->sendMail();
     }
 
     /**

@@ -136,10 +136,10 @@ class YouthService
         if (!empty($searchText) || (is_array($skillIds) && count($skillIds) > 0)) {
             $youthBuilder->leftJoin('youth_skills', 'youth_skills.youth_id', '=', 'youths.id');
 
-            if(!empty($searchText)){
+            if (!empty($searchText)) {
                 $youthBuilder->leftJoin('skills', 'skills.id', '=', 'youth_skills.skill_id');
 
-                $youthBuilder->where(function ($builder) use ($searchText){
+                $youthBuilder->where(function ($builder) use ($searchText) {
                     $builder->where('youths.first_name', 'like', '%' . $searchText . '%');
                     $builder->orWhere('youths.first_name_en', 'like', '%' . $searchText . '%');
                     $builder->orWhere('youths.last_name', 'like', '%' . $searchText . '%');
@@ -158,7 +158,7 @@ class YouthService
             }
 
             /** Search youth by skill IDs */
-            if(is_array($skillIds) && count($skillIds) > 0){
+            if (is_array($skillIds) && count($skillIds) > 0) {
                 $youthBuilder->whereIn('youth_skills.skill_id', $skillIds);
             }
         }
@@ -397,26 +397,16 @@ class YouthService
      */
     public function sendMailCourseEnrollmentSuccess(array $mailPayload)
     {
-        /** @var Youth $youth */
+        /** Mail send after user registration */
         $youth = Youth::findOrFail($mailPayload['youth_id']);
-
-        $mailService = new MailService();
-        $mailService->setTo([
-            $youth->email
-        ]);
+        $to = array($youth->email);
         $from = BaseModel::NISE3_FROM_EMAIL;
-        $subject = "Course Enrollment Successful";
-
-        $mailService->setForm($from);
-        $mailService->setSubject($subject);
-
-        $mailService->setMessageBody([
-            "course_enrollment_info" => $mailPayload,
-        ]);
-
-        $courseEnrollmentSuccessfulTemplate = 'mail.course-enrollment-successful-template';
-        $mailService->setTemplate($courseEnrollmentSuccessfulTemplate);
+        $subject = "Course Enrollment Confirmation";
+        $message = "Congratulation, You are successfully complete your course enrollment";
+        $messageBody = MailService::templateView($message);
+        $mailService = new MailService($to, $from, $subject, $messageBody);
         $mailService->sendMail();
+
     }
 
     public function updateYouthEducations(array $data, Youth $youth)
