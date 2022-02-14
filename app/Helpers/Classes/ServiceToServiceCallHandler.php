@@ -66,7 +66,7 @@ class ServiceToServiceCallHandler
         $youthId = $requestData['youth_id'];
 
         $url = clientUrl(BaseModel::ORGANIZATION_CLIENT_URL_TYPE) . 'service-to-service-call/youth-jobs';
-        $postField = [
+        $queryField = [
             "youth_id" => $youthId,
         ];
 
@@ -75,7 +75,7 @@ class ServiceToServiceCallHandler
             'debug' => config('nise3.http_debug'),
             'timeout' => config("nise3.http_timeout")
         ])
-            ->post($url, $postField)
+            ->get($url, $queryField)
             ->throw(static function (Response $httpResponse, $httpException) use ($url) {
                 Log::debug(get_class($httpResponse) . ' - ' . get_class($httpException));
                 Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . $httpResponse->body());
