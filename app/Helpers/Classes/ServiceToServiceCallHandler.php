@@ -54,4 +54,37 @@ class ServiceToServiceCallHandler
 
         return $youthData;
     }
+
+    /**
+     * Youth service to organization service call to apply for job
+     * @param array $requestData
+     * @return mixed
+     * @throws RequestException
+     */
+    public function youthJobs(array $requestData): mixed
+    {
+        $youthId = $requestData['youth_id'];
+
+        $url = clientUrl(BaseModel::ORGANIZATION_CLIENT_URL_TYPE) . 'service-to-service-call/youth-jobs';
+        $queryField = [
+            "youth_id" => $youthId,
+        ];
+
+        $youthData = Http::withOptions([
+            'verify' => config("nise3.should_ssl_verify"),
+            'debug' => config('nise3.http_debug'),
+            'timeout' => config("nise3.http_timeout")
+        ])
+            ->get($url, $queryField)
+            ->throw(static function (Response $httpResponse, $httpException) use ($url) {
+                Log::debug(get_class($httpResponse) . ' - ' . get_class($httpException));
+                Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . $httpResponse->body());
+                throw new HttpErrorException($httpResponse);
+            })
+            ->json('data');
+
+        Log::info("youth job list data:" . json_encode($youthData));
+
+        return $youthData;
+    }
 }

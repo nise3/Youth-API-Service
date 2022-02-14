@@ -399,6 +399,27 @@ class YouthProfileController extends Controller
     }
 
     /**
+     * @throws Throwable
+     */
+    public function youthJobs(Request $request): JsonResponse
+    {
+        $requestData = ['youth_id' => Auth::id()];
+
+        $data = ServiceToServiceCall::youthJobs($requestData);
+
+        $response = [
+            'data' => $data ?? [],
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Applied to job successfully",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ]
+        ];
+        return Response::json($response, $response['_response_status']['code']);
+    }
+
+    /**
      * @throws RequestException
      */
     public function getYouthFeedStatistics(): JsonResponse
