@@ -68,6 +68,10 @@ variables:
     DB_USERNAME: core3
     DB_PASSWORD: core3
 
+    LOG_CHANNEL: "stack"
+    ELASTIC_HOST: "http://localhost:9200"
+    ELASTIC_LOGS_INDEX: "youth_file_logs"
+
     CACHE_DRIVER: "redis"
     REDIS_CLIENT: "predis"
     REDIS_HOST: "redis-headless.redis-node"
