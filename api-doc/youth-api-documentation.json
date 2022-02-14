@@ -4047,11 +4047,20 @@
                             "application/json": {
                                 "example": {
                                     "data": {
-                                        "job_id": "qq-qq",
+                                        "id": 1,
+                                        "job_id": "2",
                                         "youth_id": 1,
-                                        "updated_at": "2022-01-18T06:15:47.000000Z",
-                                        "created_at": "2022-01-18T06:15:47.000000Z",
-                                        "id": 1
+                                        "apply_status": 1,
+                                        "current_recruitment_step_id": null,
+                                        "applied_at": "2022-02-10T06:07:36.389582Z",
+                                        "profile_viewed_at": null,
+                                        "expected_salary": "1000",
+                                        "hire_invited_at": null,
+                                        "hired_at": null,
+                                        "hire_invite_type": null,
+                                        "created_at": "2022-02-10T05:18:35.000000Z",
+                                        "updated_at": "2022-02-10T06:07:36.000000Z",
+                                        "deleted_at": null
                                     },
                                     "_response_status": {
                                         "success": true,
