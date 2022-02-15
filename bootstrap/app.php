@@ -66,7 +66,8 @@ $app->configure('httpclientendpoint');
 $app->configure('queue');
 $app->configure('nise3RabbitMq');
 $app->configure('IdpUser');
-
+$app->configure('elasticSearchLogConfig');
+$app->configure('lumenDefaultLogConfig');
 /*
 |--------------------------------------------------------------------------
 | Register Middleware

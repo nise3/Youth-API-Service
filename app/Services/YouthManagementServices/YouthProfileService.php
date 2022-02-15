@@ -43,6 +43,7 @@ class YouthProfileService
     public function getYouthProfile(array $youth_ids = []): Youth|Collection
     {
         /** youth_ids only passed for bulk query */
+
         /** @var Builder|Youth $youthProfileBuilder */
         $youthProfileBuilder = Youth::select(
             [
@@ -84,6 +85,7 @@ class YouthProfileService
                 'youths.photo',
                 'youths.cv_path',
                 'youths.signature_image_path',
+                'youths.default_cv_template',
                 'youths.row_status',
                 'youths.created_at',
                 'youths.updated_at',
