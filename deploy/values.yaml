@@ -18,7 +18,7 @@ variables:
 
   # app version, changing version will auto deploy the app to current version
 
-  imageAppVersion: "2.1.13"
+  imageAppVersion: "2.1.14"
 
   # increase this when you need scale up
   replicaCount: 1
@@ -68,7 +68,7 @@ variables:
     DB_USERNAME: core3
     DB_PASSWORD: core3
 
-    LOG_CHANNEL: "elasticsearch"
+    LOG_CHANNEL: "stack"
     ELASTIC_HOST: "http://elasticsearch.monitoring:9200"
     ELASTIC_LOGS_INDEX: "youth_file_logs"
 

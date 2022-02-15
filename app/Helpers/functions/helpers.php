@@ -120,7 +120,7 @@ if (!function_exists("logSelector")) {
      */
     function logSelector(): array
     {
-        if (env('LOG_CHANNEL') == 'elasticsearch') {
+        if (env('LOG_CHANNEL') === 'elasticsearch') {
             return config('elasticSearchLogConfig');
         }
         return config('lumenDefaultLogConfig');
