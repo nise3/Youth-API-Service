@@ -5437,7 +5437,7 @@
                 "properties": {
                     "default_cv_template": {
                         "type": "string",
-                        "example": "CLASSIC"
+                        "enum": [ "CLASSIC", "MODERN"]
                     }
                 }
             },
