@@ -877,6 +877,41 @@ class YouthProfileService
     }
 
     /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public function youthMyJobsFilterValidator(Request $request): \Illuminate\Contracts\Validation\Validator
+    {
+        if ($request->filled('order')) {
+            $request->offsetSet('order', strtoupper($request->get('order')));
+        }
+
+        $customMessage = [
+            'order.in' => 'Order must be either ASC or DESC. [30000]',
+            'row_status.in' => 'Row status must be either 1 or 0. [30000]'
+        ];
+
+        $requestData = $request->all();
+
+        $rules = [
+            'page_size' => 'int|gt:0',
+            'page' => 'int|gt:0',
+            'order' => [
+                'nullable',
+                'string',
+                Rule::in([BaseModel::ROW_ORDER_ASC, BaseModel::ROW_ORDER_DESC])
+            ],
+            'row_status' => [
+                'nullable',
+                "int",
+                Rule::in([0,1]),
+            ]
+        ];
+
+        return Validator::make($requestData, $rules, $customMessage);
+    }
+
+    /**
      * @param array $data
      * @return array
      */

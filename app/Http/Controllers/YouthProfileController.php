@@ -403,18 +403,18 @@ class YouthProfileController extends Controller
      */
     public function youthJobs(Request $request): JsonResponse
     {
-        $requestData = ['youth_id' => Auth::id()];
+        $validated = $this->youthProfileService->youthMyJobsFilterValidator($request)->validate();
+        $validated['youth_id'] = Auth::id();
 
-        $data = ServiceToServiceCall::youthJobs($requestData);
+        $response = ServiceToServiceCall::youthJobs($validated) ?? [];
 
-        $response = [
-            'data' => $data ?? [],
-            '_response_status' => [
-                "success" => true,
-                "code" => ResponseAlias::HTTP_OK,
-                "message" => "Applied to job successfully",
-                "query_time" => $this->startTime->diffForHumans(Carbon::now())
-            ]
+        if (empty($response)) $response["data"] = [];
+
+        $response['_response_status'] = [
+            "success" => true,
+            "code" => ResponseAlias::HTTP_OK,
+            "message" => "My jobs fetched successfully",
+            "query_time" => $this->startTime->diffForHumans(Carbon::now()),
         ];
         return Response::json($response, $response['_response_status']['code']);
     }
