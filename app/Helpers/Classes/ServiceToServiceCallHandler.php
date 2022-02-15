@@ -7,6 +7,7 @@ use App\Models\BaseModel;
 use App\Services\YouthManagementServices\YouthProfileService;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -86,5 +87,33 @@ class ServiceToServiceCallHandler
         Log::info("youth job list data:" . json_encode($youthData));
 
         return $youthData;
+    }
+
+    /**
+     * @param int $youthId
+     * @param string $serviceName
+     * @return array
+     * @throws RequestException
+     */
+    public function getYouthFeedStatisticsData(int $youthId,string $serviceName): array
+    {
+        $url = clientUrl($serviceName) . 'service-to-service-call/youth-feed-statistics/' . $youthId;
+        $skillIds = DB::table('youth_skills')->where('youth_id', $youthId)->pluck('skill_id')->toArray();
+        $skillIds = implode(",", $skillIds);
+        $urlWithSkillIds = $url . '?' . "skill_ids=" . $skillIds;
+        Log::info($urlWithSkillIds);
+
+        return Http::withOptions([
+            'verify' => config("nise3.should_ssl_verify"),
+            'debug' => config('nise3.http_debug'),
+            'timeout' => config("nise3.http_timeout")
+        ])
+            ->get($urlWithSkillIds)
+            ->throw(static function (Response $httpResponse, $httpException) use ($urlWithSkillIds) {
+                Log::debug(get_class($httpResponse) . ' - ' . get_class($httpException));
+                Log::debug("Http/Curl call error. Destination:: " . $urlWithSkillIds . ' and Response:: ' . $httpResponse->body());
+                throw new HttpErrorException($httpResponse);
+            })
+            ->json();
     }
 }
