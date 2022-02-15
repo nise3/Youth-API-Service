@@ -84,6 +84,7 @@ class YouthProfileService
                 'youths.photo',
                 'youths.cv_path',
                 'youths.signature_image_path',
+                'youths.default_cv_template',
                 'youths.row_status',
                 'youths.created_at',
                 'youths.updated_at',
