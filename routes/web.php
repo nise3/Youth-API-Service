@@ -4,6 +4,7 @@
 
 use App\Helpers\Classes\CustomRouter;
 use App\Models\ExamDegree;
+use Illuminate\Support\Facades\Log;
 use Laravel\Lumen\Routing\Router;
 
 
@@ -13,6 +14,12 @@ $customRouter = function (string $as = '') use ($router) {
 };
 
 $router->get('/', function () use ($router) {
+    Log::info('Info Log');
+    Log::debug('debug Log');
+    Log::channel('saga')->info('saga Log');
+    Log::channel('mail_sms')->info('mail_sms Log');
+    Log::channel('idp_user')->info('idp_user Log');
+    Log::channel('ek_pay')->info('ek_pay Log');
     return $router->app->version();
 });
 

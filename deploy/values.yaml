@@ -34,7 +34,7 @@ variables:
   serviceTargetPort: 80
 
   #app buil image
-  imageRepository: registry.nise3.xyz/nise3-youth-management-api-service
+  imageRepository: registry.nise.gov.bd/nise3-youth-management-api-service
 
   #git hub project id
   githubProjectRepoID: "28710981"
