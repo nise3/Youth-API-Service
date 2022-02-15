@@ -43,6 +43,7 @@ class YouthProfileService
     public function getYouthProfile(array $youth_ids = []): Youth|Collection
     {
         /** youth_ids only passed for bulk query */
+
         /** @var Builder|Youth $youthProfileBuilder */
         $youthProfileBuilder = Youth::select(
             [
