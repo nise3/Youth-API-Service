@@ -77,6 +77,7 @@ class YouthProfileService
                 'youths.identity_number_type',
                 'youths.identity_number',
                 'youths.date_of_birth',
+                DB::raw(" (YEAR(CURDATE()) -YEAR(youths.date_of_birth) ) as Age"),
                 'youths.freedom_fighter_status',
                 'youths.physical_disability_status',
                 'youths.does_belong_to_ethnic_group',
