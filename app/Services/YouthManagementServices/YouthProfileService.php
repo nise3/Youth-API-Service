@@ -702,7 +702,8 @@ class YouthProfileService
             "date_of_birth" => [
                 "required",
                 'date',
-                'date_format:Y-m-d'
+                'date_format:Y-m-d',
+                'before:today'
             ],
             "gender" => [
                 "required",
