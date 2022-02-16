@@ -419,16 +419,16 @@ class YouthProfileController extends Controller
         return Response::json($response, $response['_response_status']['code']);
     }
 
+
     /**
-     * @throws RequestException
+     * @return JsonResponse
      */
     public function getYouthFeedStatistics(): JsonResponse
     {
         $youthId = Auth::id();
-        $data = $this->youthProfileService->getYouthFeedStatisticsData($youthId);
-        $data ['applied_jobs'] = 0;
-        $data ['total_jobs'] = 0;
-        $data['skill_matching_jobs'] = 0;
+        $courseData = ServiceToServiceCall::getYouthFeedStatisticsData($youthId, BaseModel::INSTITUTE_URL_CLIENT_TYPE);
+        $jobData = ServiceToServiceCall::getYouthFeedStatisticsData($youthId, BaseModel::ORGANIZATION_CLIENT_URL_TYPE);
+        $data = array_merge($courseData, $jobData);
         $response = [
             'data' => $data,
             '_response_status' => [

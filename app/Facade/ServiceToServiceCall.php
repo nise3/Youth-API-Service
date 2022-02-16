@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array|mixed getAuthUserWithRolePermission(string $idpUserId)
  * @method static array|mixed youthApplyToJob(array $requestData)
  * @method static array|mixed youthJobs(array $requestData)
+ * @method static array|mixed getYouthFeedStatisticsData(int $youthId,string $serviceName)
  *
  *
  * @see \App\Helpers\Classes\ServiceToServiceCallHandler
