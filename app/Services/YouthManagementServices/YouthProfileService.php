@@ -818,6 +818,18 @@ class YouthProfileService
     }
 
     /**
+     * @param string $username
+     * @return  Youth|null
+     */
+    public function getYouthByUsername(string $username): Youth|null
+    {
+        return Youth::where('username', $username)
+            ->where("row_status", BaseModel::ROW_STATUS_ACTIVE)
+            ->first();
+    }
+
+
+    /**
      * @param array $data
      * @return array
      * @throws RequestException

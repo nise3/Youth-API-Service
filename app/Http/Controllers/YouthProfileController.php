@@ -476,6 +476,22 @@ class YouthProfileController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
+    public function getByUsername(string $username): JsonResponse
+    {
+        $youthInfo = $this->youthProfileService->getYouthByUsername($username);
+        $response = [
+            'data' => $youthInfo,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Information",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
+
+        return Response::json($response, ResponseAlias::HTTP_OK);
+    }
+
 
     /**
      * Update youth career info
