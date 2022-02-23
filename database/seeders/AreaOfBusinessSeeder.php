@@ -20,211 +20,200 @@ class AreaOfBusinessSeeder extends Seeder
         DB::table('area_of_business')->truncate();
 
         $areaOfBusiness = array(
-            0 =>
-                array(
-                    'id' => 13,
-                    'title' => 'Advertising Agency',
-                ),
-            1 =>
-                array(
-                    'id' => 48,
-                    'title' => 'Agro based firms (incl. Agro Processing/Seed/GM)',
-                ),
-            2 =>
-                array(
-                    'id' => 43,
-                    'title' => 'Airline',
-                ),
-            3 =>
-                array(
-                    'id' => 2090,
-                    'title' => 'Amusement Park',
-                ),
-            4 =>
-                array(
-                    'id' => 1100,
-                    'title' => 'Animal/Plant Breeding',
-                ),
-            5 =>
-                array(
-                    'id' => 52,
-                    'title' => 'Architecture Firm',
-                ),
-            6 =>
-                array(
-                    'id' => 38,
-                    'title' => 'Audit Firms /Tax Consultant',
-                ),
-            7 =>
-                array(
-                    'id' => 70,
-                    'title' => 'Automobile',
-                ),
-            8 =>
-                array(
-                    'id' => 2107,
-                    'title' => 'Bakery (Cake, Biscuit, Bread)',
-                ),
-            9 =>
-                array(
-                    'id' => 1,
-                    'title' => 'Banks',
-                ),
-            10 =>
-                array(
-                    'id' => 97,
-                    'title' => 'Bar/Pub',
-                ),
-            11 =>
-                array(
-                    'id' => 111,
-                    'title' => 'Battery, Storage cell',
-                ),
-            12 =>
-                array(
-                    'id' => 2126,
-                    'title' => 'Beauty Parlor/Saloon/Spa',
-                ),
-            13 =>
-                array(
-                    'id' => 2105,
-                    'title' => 'Beverage',
-                ),
-            14 =>
-                array(
-                    'id' => 116,
-                    'title' => 'Bicycle',
-                ),
-            15 =>
-                array(
-                    'id' => 119,
-                    'title' => 'Boutique/ Fashion',
-                ),
-            16 =>
-                array(
-                    'id' => 18,
-                    'title' => 'BPO/ Data Entry Firm',
-                ),
-            17 =>
-                array(
-                    'id' => 87,
-                    'title' => 'Brick',
-                ),
-            18 =>
-                array(
-                    'id' => 37,
-                    'title' => 'Buying House',
-                ),
-            19 =>
-                array(
-                    'id' => 68,
-                    'title' => 'Call Center',
-                ),
-            20 =>
-                array(
-                    'id' => 1120,
-                    'title' => 'Call Center',
-                ),
-            21 =>
-                array(
-                    'id' => 95,
-                    'title' => 'Catering',
-                ),
-            22 =>
-                array(
-                    'id' => 1121,
-                    'title' => 'Cellular Phone Operator',
-                ),
-            23 =>
-                array(
-                    'id' => 106,
-                    'title' => 'Cement',
-                ),
-            24 =>
-                array(
-                    'id' => 75,
-                    'title' => 'Cement Industry',
-                ),
-            25 =>
-                array(
-                    'id' => 1106,
-                    'title' => 'Chain shop',
-                ),
-            26 =>
-                array(
-                    'id' => 2124,
-                    'title' => 'Chamber',
-                ),
-            27 =>
-                array(
-                    'id' => 67,
-                    'title' => 'Chemical Industries',
-                ),
-            28 =>
-                array(
-                    'id' => 2091,
-                    'title' => 'Cinema Hall/Theater',
-                ),
-            29 =>
-                array(
-                    'id' => 27,
-                    'title' => 'Clearing & Forwarding (C&F) Companies',
-                ),
-            30 =>
-                array(
-                    'id' => 91,
-                    'title' => 'Clinic',
-                ),
-            31 =>
-                array(
-                    'id' => 2098,
-                    'title' => 'Club',
-                ),
-            32 =>
-                array(
-                    'id' => 49,
-                    'title' => 'CNG',
-                ),
-            33 =>
-                array(
-                    'id' => 2120,
-                    'title' => 'CNG Conversion',
-                ),
-            34 =>
-                array(
-                    'id' => 1136,
-                    'title' => 'Coaching Center',
-                ),
-            35 =>
-                array(
-                    'id' => 1129,
-                    'title' => 'Coal',
-                ),
-            36 =>
-                array(
-                    'id' => 94,
-                    'title' => 'Coffee Shop',
-                ),
-            37 =>
-                array(
-                    'id' => 11,
-                    'title' => 'College',
-                ),
-            38 =>
-                array(
-                    'id' => 20,
-                    'title' => 'Computer Hardware/Network Companies',
-                ),
-            39 =>
-                array(
-                    'id' => 34,
-                    'title' => 'Consulting Firms',
-                ),
-            40 =>
-                array(
-                    'id' => 2093,
-                    'title' => 'Convention center',
-                ),
+
+            array(
+                'id' => 13,
+                'title' => 'Advertising Agency',
+            ),
+
+            array(
+                'id' => 48,
+                'title' => 'Agro based firms (incl. Agro Processing/Seed/GM)',
+            ),
+
+            array(
+                'id' => 43,
+                'title' => 'Airline',
+            ),
+
+            array(
+                'id' => 2090,
+                'title' => 'Amusement Park',
+            ),
+
+            array(
+                'id' => 1100,
+                'title' => 'Animal/Plant Breeding',
+            ),
+
+            array(
+                'id' => 52,
+                'title' => 'Architecture Firm',
+            ),
+
+            array(
+                'id' => 38,
+                'title' => 'Audit Firms /Tax Consultant',
+            ),
+
+            array(
+                'id' => 70,
+                'title' => 'Automobile',
+            ),
+
+            array(
+                'id' => 2107,
+                'title' => 'Bakery (Cake, Biscuit, Bread)',
+            ),
+
+            array(
+                'id' => 1,
+                'title' => 'Banks',
+            ),
+
+            array(
+                'id' => 97,
+                'title' => 'Bar/Pub',
+            ),
+
+            array(
+                'id' => 111,
+                'title' => 'Battery, Storage cell',
+            ),
+
+            array(
+                'id' => 2126,
+                'title' => 'Beauty Parlor/Saloon/Spa',
+            ),
+
+            array(
+                'id' => 2105,
+                'title' => 'Beverage',
+            ),
+
+            array(
+                'id' => 116,
+                'title' => 'Bicycle',
+            ),
+
+            array(
+                'id' => 119,
+                'title' => 'Boutique/ Fashion',
+            ),
+
+            array(
+                'id' => 18,
+                'title' => 'BPO/ Data Entry Firm',
+            ),
+
+            array(
+                'id' => 87,
+                'title' => 'Brick',
+            ),
+
+            array(
+                'id' => 37,
+                'title' => 'Buying House',
+            ),
+
+            array(
+                'id' => 68,
+                'title' => 'Call Center',
+            ),
+
+            array(
+                'id' => 1120,
+                'title' => 'Call Center',
+            ),
+
+            array(
+                'id' => 95,
+                'title' => 'Catering',
+            ),
+
+            array(
+                'id' => 1121,
+                'title' => 'Cellular Phone Operator',
+            ),
+
+            array(
+                'id' => 106,
+                'title' => 'Cement',
+            ),
+
+            array(
+                'id' => 75,
+                'title' => 'Cement Industry',
+            ),
+
+            array(
+                'id' => 1106,
+                'title' => 'Chain shop',
+            ),
+
+            array(
+                'id' => 2124,
+                'title' => 'Chamber',
+            ),
+
+            array(
+                'id' => 67,
+                'title' => 'Chemical Industries',
+            ),
+
+            array(
+                'id' => 2091,
+                'title' => 'Cinema Hall/Theater',
+            ),
+
+            array(
+                'id' => 27,
+                'title' => 'Clearing & Forwarding (C&F) Companies',
+            ),
+            array(
+                'id' => 91,
+                'title' => 'Clinic',
+            ),
+            array(
+                'id' => 2098,
+                'title' => 'Club',
+            ),
+            array(
+                'id' => 49,
+                'title' => 'CNG',
+            ),
+            array(
+                'id' => 2120,
+                'title' => 'CNG Conversion',
+            ),
+            array(
+                'id' => 1136,
+                'title' => 'Coaching Center',
+            ),
+            array(
+                'id' => 1129,
+                'title' => 'Coal',
+            ),
+            array(
+                'id' => 94,
+                'title' => 'Coffee Shop',
+            ),
+            array(
+                'id' => 11,
+                'title' => 'College',
+            ),
+            array(
+                'id' => 20,
+                'title' => 'Computer Hardware/Network Companies',
+            ),
+            array(
+                'id' => 34,
+                'title' => 'Consulting Firms',
+            ),
+            array(
+                'id' => 2093,
+                'title' => 'Convention center',
+            ),
             41 =>
                 array(
                     'id' => 2115,
@@ -940,101 +929,82 @@ class AreaOfBusinessSeeder extends Seeder
                     'id' => 5,
                     'title' => 'Telecommunication',
                 ),
-            184 =>
-                array(
-                    'id' => 36,
-                    'title' => 'Textile',
-                ),
-            185 =>
-                array(
-                    'id' => 1096,
-                    'title' => 'Third Party Auditor (Quality, Health, Environment, Compliance',
-                ),
-            186 =>
-                array(
-                    'id' => 86,
-                    'title' => 'Tiles/Ceramic',
-                ),
-            187 =>
-                array(
-                    'id' => 69,
-                    'title' => 'Tobacco',
-                ),
-            188 =>
-                array(
-                    'id' => 109,
-                    'title' => 'Toiletries',
-                ),
-            189 =>
-                array(
-                    'id' => 99,
-                    'title' => 'Tour Operator',
-                ),
-            190 =>
-                array(
-                    'id' => 1114,
-                    'title' => 'Toy',
-                ),
-            191 =>
-                array(
-                    'id' => 24,
-                    'title' => 'Trading or Export/Import',
-                ),
-            192 =>
-                array(
-                    'id' => 12,
-                    'title' => 'Training Institutes',
-                ),
-            193 =>
-                array(
-                    'id' => 101,
-                    'title' => 'Transport Service',
-                ),
-            194 =>
-                array(
-                    'id' => 102,
-                    'title' => 'Transportation',
-                ),
-            195 =>
-                array(
-                    'id' => 44,
-                    'title' => 'Travel Agent',
-                ),
-            196 =>
-                array(
-                    'id' => 112,
-                    'title' => 'Tyre manufacturer',
-                ),
-            197 =>
-                array(
-                    'id' => 10,
-                    'title' => 'University',
-                ),
-            198 =>
-                array(
-                    'id' => 1092,
-                    'title' => 'Venture Capital Firm',
-                ),
-            199 =>
-                array(
-                    'id' => 1095,
-                    'title' => 'Washing Factory',
-                ),
-            200 =>
-                array(
-                    'id' => 1113,
-                    'title' => 'Watch',
-                ),
-            201 =>
-                array(
-                    'id' => 1116,
-                    'title' => 'Web Media/Blog',
-                ),
-            202 =>
-                array(
-                    'id' => 8,
-                    'title' => 'Wholesale',
-                ),
+            array(
+                'id' => 36,
+                'title' => 'Textile',
+            ),
+            array(
+                'id' => 1096,
+                'title' => 'Third Party Auditor (Quality, Health, Environment, Compliance',
+            ),
+            array(
+                'id' => 86,
+                'title' => 'Tiles/Ceramic',
+            ),
+            array(
+                'id' => 69,
+                'title' => 'Tobacco',
+            ),
+            array(
+                'id' => 109,
+                'title' => 'Toiletries',
+            ),
+            array(
+                'id' => 99,
+                'title' => 'Tour Operator',
+            ),
+            array(
+                'id' => 1114,
+                'title' => 'Toy',
+            ),
+            array(
+                'id' => 24,
+                'title' => 'Trading or Export/Import',
+            ),
+            array(
+                'id' => 12,
+                'title' => 'Training Institutes',
+            ),
+            array(
+                'id' => 101,
+                'title' => 'Transport Service',
+            ),
+            array(
+                'id' => 102,
+                'title' => 'Transportation',
+            ),
+            array(
+                'id' => 44,
+                'title' => 'Travel Agent',
+            ),
+            array(
+                'id' => 112,
+                'title' => 'Tyre manufacturer',
+            ),
+            array(
+                'id' => 10,
+                'title' => 'University',
+            ),
+            array(
+                'id' => 1092,
+                'title' => 'Venture Capital Firm',
+            ),
+            array(
+                'id' => 1095,
+                'title' => 'Washing Factory',
+            ),
+            array(
+                'id' => 1113,
+                'title' => 'Watch',
+            ),
+            array(
+                'id' => 1116,
+                'title' => 'Web Media/Blog',
+            ),
+            array(
+                'id' => 8,
+                'title' => 'Wholesale',
+            ),
         );
 
         DB::table('area_of_business')->insert($areaOfBusiness);
