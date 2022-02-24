@@ -3,7 +3,6 @@
 /** @var Router $router */
 
 use App\Helpers\Classes\CustomRouter;
-use App\Models\ExamDegree;
 use Illuminate\Support\Facades\Log;
 use Laravel\Lumen\Routing\Router;
 
