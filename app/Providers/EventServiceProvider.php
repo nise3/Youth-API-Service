@@ -2,6 +2,16 @@
 
 namespace App\Providers;
 
+use App\Events\CourseEnrollment\CourseEnrollmentRollbackEvent;
+use App\Events\CourseEnrollment\CourseEnrollmentSuccessEvent;
+use App\Events\DbSync\DbSyncSkillUpdateEvent;
+use App\Events\MailSendEvent;
+use App\Events\SmsSendEvent;
+use App\Listeners\CourseEnrollment\CourseEnrollmentRollbackToInstituteListener;
+use App\Listeners\CourseEnrollment\CourseEnrollmentSuccessYouthToInstituteListener;
+use App\Listeners\DbSync\DbSyncSkillUpdateYouthToTspListener;
+use App\Listeners\MailSendListener;
+use App\Listeners\SmsSendListener;
 use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -12,17 +22,20 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        \App\Events\CourseEnrollment\CourseEnrollmentSuccessEvent::class => [
-            \App\Listeners\CourseEnrollment\CourseEnrollmentSuccessYouthToInstituteListener::class
+        CourseEnrollmentSuccessEvent::class => [
+            CourseEnrollmentSuccessYouthToInstituteListener::class
         ],
-        \App\Events\CourseEnrollment\CourseEnrollmentRollbackEvent::class => [
-            \App\Listeners\CourseEnrollment\CourseEnrollmentRollbackToInstituteListener::class
+        CourseEnrollmentRollbackEvent::class => [
+            CourseEnrollmentRollbackToInstituteListener::class
         ],
-        \App\Events\MailSendEvent::class => [
-            \App\Listeners\MailSendListener::class
+        MailSendEvent::class => [
+            MailSendListener::class
         ],
-        \App\Events\SmsSendEvent::class => [
-            \App\Listeners\SmsSendListener::class
+        SmsSendEvent::class => [
+            SmsSendListener::class
         ],
+        DbSyncSkillUpdateEvent::class => [
+            DbSyncSkillUpdateYouthToTspListener::class
+        ]
     ];
 }

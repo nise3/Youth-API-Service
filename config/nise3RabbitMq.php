@@ -165,6 +165,20 @@ return [
                         'autoDelete' => false,
                         'queueMode' => 'lazy'
                     ],
+                ],
+                'dbSync' => [
+                    'name' => 'youth.db.sync.q',
+                    'binding' => 'youth.db.sync',
+                    'durable' => true,
+                    'autoDelete' => false,
+                    'queueMode' => 'lazy',
+                    'dlq' => [
+                        'name' => 'youth.db.sync.dlq',
+                        'x_message_ttl' => 50000,
+                        'durable' => true,
+                        'autoDelete' => false,
+                        'queueMode' => 'lazy'
+                    ],
                 ]
             ],
         ],
