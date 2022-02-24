@@ -201,6 +201,129 @@ class YouthProfileController extends Controller
     }
 
     /**
+     * @throws ValidationException|Throwable
+     */
+    public function trainerYouthRegistration(Request $request): JsonResponse
+    {
+        $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
+        $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
+        Log::debug('-- TrainerYouth Registration Validation Ok -- ');
+
+        $existYouth = Youth::where('username', $validated['mobile'])->first();
+        if(!empty($youth)){
+            $youth = $existYouth;
+            $previousAdminAccessTypes =  !empty($existYouth->admin_access_type) ?  && count(json_decode($existYouth->admin_access_type, true)) > 0 ? json_decode($existYouth->admin_access_type, true) : [];
+
+            $response = [
+                'data' => $youth,
+                'youth_exist' => $existYouth,
+                '_response_status' => [
+                    "success" => true,
+                    "code" => ResponseAlias::HTTP_CREATED,
+                    "message" => "Youth registration successfully done!",
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                ]
+            ];
+            return Response::json($response, $response['_response_status']['code']);
+        }
+
+        $youth = app(Youth::class);
+        $validated['code'] = CodeGeneratorService::getYouthCode();
+        try {
+            DB::beginTransaction();
+            $idpUserPayLoad = [
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'mobile' => $validated['mobile'],
+                'email' => $validated['email'],
+                'username' => $validated['username'],
+                'password' => $validated['password'],
+                'user_type' => BaseModel::YOUTH_USER_TYPE,
+                'account_disable' => false,
+                'account_lock' => false
+            ];
+
+            $idpResponse = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
+
+            if (!empty($idpResponse['code']) && $idpResponse['code'] == ResponseAlias::HTTP_CONFLICT) {
+                throw new RuntimeException('Idp user already exists', 409);
+            }
+
+            if (empty($idpResponse['data']['id'])) {
+                $response = [
+                    '_response_status' => [
+                        "success" => false,
+                        "code" => ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
+                        "message" => "Youth registration is not done in idp",
+                        "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                    ]
+                ];
+                return Response::json($response, $response['_response_status']['code']);
+            }
+
+            Log::info("Youth create for idp user--->" . $idpResponse['data']['id'] . "----->email-->" . $validated['email']);
+
+            $validated['idp_user_id'] = $idpResponse['data']['id'];
+            $validated['admin_access_type'] = json_encode(BaseModel::ADMIN_ACCESS_TYPES);
+            $validated['row_status'] = BaseModel::ROW_STATUS_ACTIVE;
+            $youth = $this->youthProfileService->store($youth, $validated);
+
+            Log::info("Youth user create in youth db----->email-->" . $validated['email']);
+
+            //TODO:: Need to optimize this code
+            $addressData['youth_id'] = $youth->id;
+            $addressData['address_type'] = YouthAddress::ADDRESS_TYPE_PRESENT;
+            $addressData['loc_division_id'] = $validated['loc_division_id'];
+            $addressData['loc_district_id'] = $validated['loc_district_id'];
+            $addressData['loc_upazila_id'] = $validated['loc_upazila_id'] ?? null;
+            $addressData['village_or_area'] = $validated['village_or_area'] ?? null;
+            $addressData['village_or_area_en'] = $validated['village_or_area_en'] ?? null;
+            $addressData['house_n_road'] = $validated['house_n_road'] ?? null;
+            $addressData['house_n_road_en'] = $validated['house_n_road_en'] ?? null;
+            $addressData['zip_or_postal_code'] = $validated['zip_or_postal_code'] ?? null;
+
+            $this->youthAddressService->store($addressData);
+
+            Log::info("Youth address save in db successfully");
+
+
+            /** @var  $sendVerifyCodePayLoad */
+            $sendVerifyCodePayLoad["code"] = $validated['verification_code'];
+            $payloadField = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? "email" : "mobile";
+            $sendVerifyCodePayLoad[$payloadField] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
+
+            $this->youthProfileService->sendVerifyCode($sendVerifyCodePayLoad, $validated['verification_code']);
+
+            Log::info("Sms send successfully after registration");
+
+            /** Mail send after user registration */
+            $to = array($youth->email);
+            $from = BaseModel::NISE3_FROM_EMAIL;
+            $subject = "Youth Registration Information";
+            $message = "Congratulation, You are successfully complete your registration . Username: " . $youth->username . " & Password: " . $validated['password'];
+            $messageBody = MailService::templateView($message);
+            $mailService = new MailService($to, $from, $subject, $messageBody);
+            $mailService->sendMail();
+
+
+            $response = [
+                'data' => $youth ?? new stdClass(),
+                '_response_status' => [
+                    "success" => true,
+                    "code" => ResponseAlias::HTTP_CREATED,
+                    "message" => "Youth registration successfully done!",
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                ]
+            ];
+            DB::commit();
+            return Response::json($response, $response['_response_status']['code']);
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    /**
      * @param Request $request
      * @return JsonResponse
      * @throws Throwable

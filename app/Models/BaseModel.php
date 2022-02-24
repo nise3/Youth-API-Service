@@ -123,4 +123,10 @@ abstract class BaseModel extends Model
     public const SAGA_MAIL_SMS_SERVICE = 'mail_sms_service';
 
     public const DATABASE_CONNECTION_ERROR_CODE = 2002;
+
+    /** Admin access type */
+    public const ADMIN_ACCESS_TYPE_TRAINER_USER = 1;
+    public const ADMIN_ACCESS_TYPES = [
+        self::ADMIN_ACCESS_TYPE_TRAINER_USER
+    ];
 }
