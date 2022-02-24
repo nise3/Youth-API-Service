@@ -9,13 +9,13 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Connectors\RabbitMQConnector;
 
 
-class DbSyncSkillUpdateYouthToTspListener   implements ShouldQueue
+class DbSyncSkillUpdateYouthToOrgListener   implements ShouldQueue
 {
     private RabbitMQConnector $connector;
     private RabbitMQService $rabbitmqService;
 
     /** Set rabbitmq config where this event is going to publish */
-    private const EXCHANGE_CONFIG_NAME = 'institute';
+    private const EXCHANGE_CONFIG_NAME = 'organization';
     private const QUEUE_CONFIG_NAME = 'dbSync';
     private const RETRY_MECHANISM = true;
 

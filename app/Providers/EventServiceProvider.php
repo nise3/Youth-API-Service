@@ -9,6 +9,7 @@ use App\Events\MailSendEvent;
 use App\Events\SmsSendEvent;
 use App\Listeners\CourseEnrollment\CourseEnrollmentRollbackToInstituteListener;
 use App\Listeners\CourseEnrollment\CourseEnrollmentSuccessYouthToInstituteListener;
+use App\Listeners\DbSync\DbSyncSkillUpdateYouthToOrgListener;
 use App\Listeners\DbSync\DbSyncSkillUpdateYouthToTspListener;
 use App\Listeners\MailSendListener;
 use App\Listeners\SmsSendListener;
@@ -35,7 +36,8 @@ class EventServiceProvider extends ServiceProvider
             SmsSendListener::class
         ],
         DbSyncSkillUpdateEvent::class => [
-            DbSyncSkillUpdateYouthToTspListener::class
+            DbSyncSkillUpdateYouthToTspListener::class,
+            DbSyncSkillUpdateYouthToOrgListener::class,
         ]
     ];
 }
