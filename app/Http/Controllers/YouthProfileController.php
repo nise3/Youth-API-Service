@@ -212,7 +212,7 @@ class YouthProfileController extends Controller
         $existYouth = Youth::where('username', $validated['mobile'])->first();
         if(!empty($youth)){
             $youth = $existYouth;
-            $previousAdminAccessTypes =  !empty($existYouth->admin_access_type) ?  && count(json_decode($existYouth->admin_access_type, true)) > 0 ? json_decode($existYouth->admin_access_type, true) : [];
+            $previousAdminAccessTypes =  !empty($existYouth->admin_access_type) && count(json_decode($existYouth->admin_access_type, true)) > 0 ? json_decode($existYouth->admin_access_type, true) : [];
 
             $response = [
                 'data' => $youth,
