@@ -55,6 +55,9 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
 
         /** Get user by username */
         $router->get("user-by-username/{username}", ["as" => "service-to-service-call.user-by-username", "uses" => "YouthProfileController@getByUsername"]);
+
+        /** create or get trainer youth info */
+        $router->post("create-trainer-youth", ["as" => "service-to-service-call.create-trainer-youth", "uses" => "YouthProfileController@trainerYouthCreate"]);
     });
 
     $router->get("nise-statistics", ["as" => "nise-statistics", "uses" => "StatisticsController@niseStatistics"]);
