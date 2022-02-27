@@ -213,12 +213,15 @@ class YouthProfileController extends Controller
         $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
 
         $existYouth = Youth::where('username', $validated['mobile'])->first();
-        if(!empty($existYouth)){
+        if (!empty($existYouth)) {
             $youth = $existYouth;
-            $adminAccessTypes =  !empty($existYouth->admin_access_type) && count(json_decode($existYouth->admin_access_type, true)) > 0 ? json_decode($existYouth->admin_access_type, true) : [];
-            $adminAccessTypes[] = BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER;
-            $youth->admin_access_type = $adminAccessTypes;
-            $youth->save();
+            $adminAccessTypes = !empty($existYouth->admin_access_type) && count(json_decode($existYouth->admin_access_type, true)) > 0 ? json_decode($existYouth->admin_access_type, true) : [];
+
+            if(!in_array(BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER, $adminAccessTypes)){
+                $adminAccessTypes[] = BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER;
+                $youth->admin_access_type = $adminAccessTypes;
+                $youth->save();
+            }
 
             $youth['youth_exist'] = $existYouth->toArray();
             $response = [
@@ -312,12 +315,12 @@ class YouthProfileController extends Controller
         $youthInfo = $data['youth_info'];
 
         $youth = Youth::findOrFail($youthInfo['id']);
-        if(!empty($youthInfo['youth_exist'])){
-            $this->youthProfileService->idpUserDelete($youth->idp_user_id);
-            $youth->delete();
-        } else {
+        if (!empty($youthInfo['youth_exist'])) {
             $youth->admin_access_type = $youthInfo['youth_exist']['admin_access_type'];
             $youth->save();
+        } else {
+            $this->youthProfileService->idpUserDelete($youth->idp_user_id);
+            $youth->delete();
         }
 
         $response = [

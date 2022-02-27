@@ -57,7 +57,7 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
         $router->get("user-by-username/{username}", ["as" => "service-to-service-call.user-by-username", "uses" => "YouthProfileController@getByUsername"]);
 
         /** create or get trainer youth info */
-        $router->post("trainer-youth-registration", ["as" => "service-to-service-call.trainer-youth-registration", "uses" => "YouthProfileController@trainerYouthRegistration"]);
+        $router->post("create-trainer-youth", ["as" => "service-to-service-call.create-trainer-youth", "uses" => "YouthProfileController@trainerYouthRegistration"]);
 
         /** rollback trainer youth info */
         $router->post("rollback-trainer-youth-user", ["as" => "service-to-service-call.rollback-trainer-youth-user", "uses" => "YouthProfileController@rollbackTrainerYouthRegistration"]);
