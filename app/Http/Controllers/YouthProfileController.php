@@ -99,7 +99,8 @@ class YouthProfileController extends Controller
     function youthRegistration(Request $request): JsonResponse
     {
         $youth = app(Youth::class);
-        $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
+        $requestedData = $request->all();
+        $validated = $this->youthProfileService->youthRegisterValidation($requestedData)->validate();
         $validated['code'] = CodeGeneratorService::getYouthCode();
 
         $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
@@ -205,18 +206,23 @@ class YouthProfileController extends Controller
      */
     public function trainerYouthRegistration(Request $request): JsonResponse
     {
-        $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
+        $data = $request->all();
+        $trainerInfo = $data['trainer_info'] ?? "";
+        $validated = $this->youthProfileService->youthRegisterValidation($trainerInfo)->validate();
         $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
         Log::debug('-- TrainerYouth Registration Validation Ok -- ');
 
         $existYouth = Youth::where('username', $validated['mobile'])->first();
         if(!empty($youth)){
             $youth = $existYouth;
-            $previousAdminAccessTypes =  !empty($existYouth->admin_access_type) && count(json_decode($existYouth->admin_access_type, true)) > 0 ? json_decode($existYouth->admin_access_type, true) : [];
+            $adminAccessTypes =  !empty($existYouth->admin_access_type) && count(json_decode($existYouth->admin_access_type, true)) > 0 ? json_decode($existYouth->admin_access_type, true) : [];
+            $adminAccessTypes[] = BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER;
+            $youth->admin_access_type = $adminAccessTypes;
+            $youth->save();
 
+            $youth['youth_exist'] = $existYouth->toArray();
             $response = [
                 'data' => $youth,
-                'youth_exist' => $existYouth,
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_CREATED,
@@ -246,29 +252,23 @@ class YouthProfileController extends Controller
             $idpResponse = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
 
             if (!empty($idpResponse['code']) && $idpResponse['code'] == ResponseAlias::HTTP_CONFLICT) {
-                throw new RuntimeException('Idp user already exists', 409);
+                throw new RuntimeException('User already exists', 409);
             }
 
             if (empty($idpResponse['data']['id'])) {
-                $response = [
-                    '_response_status' => [
-                        "success" => false,
-                        "code" => ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
-                        "message" => "Youth registration is not done in idp",
-                        "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-                    ]
-                ];
-                return Response::json($response, $response['_response_status']['code']);
+                throw new RuntimeException('Trainer registration is not succeeded', 409);
             }
 
-            Log::info("Youth create for idp user--->" . $idpResponse['data']['id'] . "----->email-->" . $validated['email']);
+            Log::info("Trainer youth create for idp user--->" . $idpResponse['data']['id'] . "----->email-->" . $validated['email']);
 
             $validated['idp_user_id'] = $idpResponse['data']['id'];
-            $validated['admin_access_type'] = json_encode(BaseModel::ADMIN_ACCESS_TYPES);
+            $validated['admin_access_type'] = json_encode([
+                BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER
+            ]);
             $validated['row_status'] = BaseModel::ROW_STATUS_ACTIVE;
             $youth = $this->youthProfileService->store($youth, $validated);
 
-            Log::info("Youth user create in youth db----->email-->" . $validated['email']);
+            Log::info("Trainer Youth user create in youth db----->email-->" . $validated['email']);
 
             //TODO:: Need to optimize this code
             $addressData['youth_id'] = $youth->id;
@@ -284,30 +284,10 @@ class YouthProfileController extends Controller
 
             $this->youthAddressService->store($addressData);
 
-            Log::info("Youth address save in db successfully");
-
-
-            /** @var  $sendVerifyCodePayLoad */
-            $sendVerifyCodePayLoad["code"] = $validated['verification_code'];
-            $payloadField = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? "email" : "mobile";
-            $sendVerifyCodePayLoad[$payloadField] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
-
-            $this->youthProfileService->sendVerifyCode($sendVerifyCodePayLoad, $validated['verification_code']);
-
-            Log::info("Sms send successfully after registration");
-
-            /** Mail send after user registration */
-            $to = array($youth->email);
-            $from = BaseModel::NISE3_FROM_EMAIL;
-            $subject = "Youth Registration Information";
-            $message = "Congratulation, You are successfully complete your registration . Username: " . $youth->username . " & Password: " . $validated['password'];
-            $messageBody = MailService::templateView($message);
-            $mailService = new MailService($to, $from, $subject, $messageBody);
-            $mailService->sendMail();
-
+            Log::info("Trainer Youth address save in db successfully");
 
             $response = [
-                'data' => $youth ?? new stdClass(),
+                'data' => $youth,
                 '_response_status' => [
                     "success" => true,
                     "code" => ResponseAlias::HTTP_CREATED,
@@ -321,6 +301,35 @@ class YouthProfileController extends Controller
             DB::rollBack();
             throw $e;
         }
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function rollbackTrainerYouthRegistration(Request $request): JsonResponse
+    {
+        $data = $request->all();
+
+        $youth = Youth::findOrFail($data['id']);
+        if(!empty($data['youth_exist'])){
+            $this->youthProfileService->idpUserDelete($youth->idp_user_id);
+            $youth->delete();
+        } else {
+            $youth->admin_access_type = $data['youth_exist']['admin_access_type'];
+            $youth->save();
+        }
+
+        $response = [
+            'data' => $youth,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_CREATED,
+                "message" => "Youth successfully rollback!",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
+        DB::commit();
+        return Response::json($response, $response['_response_status']['code']);
     }
 
     /**
