@@ -4027,6 +4027,52 @@
                 ]
             }
         },
+        "/respond-to-job": {
+            "post": {
+                "tags": ["Apply Job"],
+                "summary": "Respond to job",
+                "description":  "An Http method to Respond to job. Successful request response will return 200 status code",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RespondToJob"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "id": 41,
+                                        "applied_job_id": "3",
+                                        "job_id": 3,
+                                        "recruitment_step_id": 2,
+                                        "interview_schedule_id": 4,
+                                        "invited_at": null,
+                                        "confirmation_status": 2,
+                                        "is_candidate_present": null,
+                                        "interview_score": null,
+                                        "created_at": "2022-02-22T10:47:33.000000Z",
+                                        "updated_at": "2022-02-27T09:50:13.000000Z"
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Responded to job successfully",
+                                        "query_time": "1 second before"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/apply-job": {
             "post": {
                 "tags": ["Apply Job"],
@@ -4389,6 +4435,23 @@
             }
         },
         "schemas": {
+            "RespondToJob": {
+                "type": "object",
+                "properties": {
+                    "youth_id": {
+                        "type": "integer",
+                        "description": "Must exist in youths table"
+                    },
+                    "job_id": {
+                        "type": "string"
+                    },
+                    "confirmation_status": {
+                        "type": "integer",
+                        "enum": [2,3,4],
+                        "description": "2=> Confirm 3=>Abort 4=>Request reschedule"
+                    }
+                }
+            },
             "YouthJobInfoUpdate": {
                 "type": "object",
                 "properties": {
@@ -5283,6 +5346,10 @@
                         "type": "string",
                         "format": "password",
                         "description": "Must contain uppercase ,lowercase letter and number.Min Len: 8, Max len: 50"
+                    },
+                    "zip_or_postal_code": {
+                        "type": "string",
+                        "description": "Must be 4 digits"
                     }
                 },
                 "required": [

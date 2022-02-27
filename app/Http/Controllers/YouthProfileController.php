@@ -505,7 +505,7 @@ class YouthProfileController extends Controller
         $data = ServiceToServiceCall::youthApplyToJob($requestData);
 
         if ($data) {
-            /** Mail send after user registration */
+            /** Mail send after job applied */
 
             /** @var Youth $youth */
             $youth = Youth::findOrFail($data['youth_id']);
@@ -524,6 +524,33 @@ class YouthProfileController extends Controller
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK,
                 "message" => "Applied to job successfully",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ]
+        ];
+        return Response::json($response, $response['_response_status']['code']);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function youthRespondToJob(Request $request): JsonResponse
+    {
+        $requestData = $request->all();
+        $requestData['youth_id'] = Auth::id();
+        $confirmationStatus = $requestData['confirmation_status'];
+
+        throw_if(!is_numeric($confirmationStatus) || $confirmationStatus < 2 || $confirmationStatus > 4, ValidationException::withMessages([
+            "Confirmation status must be integer between 2-4.[32000]"
+        ]));
+
+        $data = ServiceToServiceCall::youthRespondToJob($requestData);
+
+        $response = [
+            'data' => $data ?? [],
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Responded to job successfully",
                 "query_time" => $this->startTime->diffForHumans(Carbon::now())
             ]
         ];
