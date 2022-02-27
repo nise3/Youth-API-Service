@@ -539,8 +539,8 @@ class YouthProfileController extends Controller
         $requestData['youth_id'] = Auth::id();
         $confirmationStatus = $requestData['confirmation_status'];
 
-        throw_if(!is_numeric($confirmationStatus) || $confirmationStatus < 1 || $confirmationStatus > 3, ValidationException::withMessages([
-            "Confirmation status must be integer between 1-3.[32000]"
+        throw_if(!is_numeric($confirmationStatus) || $confirmationStatus < 2 || $confirmationStatus > 4, ValidationException::withMessages([
+            "Confirmation status must be integer between 2-4.[32000]"
         ]));
 
         $data = ServiceToServiceCall::youthRespondToJob($requestData);

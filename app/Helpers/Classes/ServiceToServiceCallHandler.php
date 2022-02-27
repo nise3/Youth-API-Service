@@ -66,7 +66,7 @@ class ServiceToServiceCallHandler
     {
         $jobId = $requestData['job_id'];
         $youthId = $requestData['youth_id'];
-        $confirmationStatus = $requestData['confirmation_status'] + 1;
+        $confirmationStatus = $requestData['confirmation_status'];
 
         $url = clientUrl(BaseModel::ORGANIZATION_CLIENT_URL_TYPE) . 'service-to-service-call/respond-to-job';
         $postField = [
