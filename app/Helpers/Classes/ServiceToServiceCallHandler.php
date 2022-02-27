@@ -38,7 +38,7 @@ class ServiceToServiceCallHandler
             "youth_data" => $this->youthProfileService->getYouthProfile()->toArray()
         ];
 
-        $youthData = Http::withOptions([
+        $responseData = Http::withOptions([
             'verify' => config("nise3.should_ssl_verify"),
             'debug' => config('nise3.http_debug'),
             'timeout' => config("nise3.http_timeout")
@@ -51,9 +51,46 @@ class ServiceToServiceCallHandler
             })
             ->json('data');
 
-        Log::info("youth info with job data:" . json_encode($youthData));
+        Log::info("youth apply to job data:" . json_encode($responseData));
 
-        return $youthData;
+        return $responseData;
+    }
+
+    /**
+     * Youth service to organization service call to apply for job
+     * @param array $requestData
+     * @return mixed
+     * @throws RequestException
+     */
+    public function youthRespondToJob(array $requestData): mixed
+    {
+        $jobId = $requestData['job_id'];
+        $youthId = $requestData['youth_id'];
+        $confirmationStatus = $requestData['confirmation_status'] + 1;
+
+        $url = clientUrl(BaseModel::ORGANIZATION_CLIENT_URL_TYPE) . 'service-to-service-call/respond-to-job';
+        $postField = [
+            "job_id" => $jobId,
+            "youth_id" => $youthId,
+            "confirmation_status" => $confirmationStatus,
+        ];
+
+        $responseData = Http::withOptions([
+            'verify' => config("nise3.should_ssl_verify"),
+            'debug' => config('nise3.http_debug'),
+            'timeout' => config("nise3.http_timeout")
+        ])
+            ->post($url, $postField)
+            ->throw(static function (Response $httpResponse, $httpException) use ($url) {
+                Log::debug(get_class($httpResponse) . ' - ' . get_class($httpException));
+                Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . $httpResponse->body());
+                throw new HttpErrorException($httpResponse);
+            })
+            ->json('data');
+
+        Log::info("youth respond to job data:" . json_encode($responseData));
+
+        return $responseData;
     }
 
     /**
@@ -66,7 +103,7 @@ class ServiceToServiceCallHandler
     {
         $url = clientUrl(BaseModel::ORGANIZATION_CLIENT_URL_TYPE) . 'service-to-service-call/youth-jobs';
 
-        $youthData = Http::withOptions([
+        $responseData = Http::withOptions([
             'verify' => config("nise3.should_ssl_verify"),
             'debug' => config('nise3.http_debug'),
             'timeout' => config("nise3.http_timeout")
@@ -79,9 +116,9 @@ class ServiceToServiceCallHandler
             })
             ->json('data');
 
-        Log::info("youth job list data:" . json_encode($youthData));
+        Log::info("youth job list data:" . json_encode($responseData));
 
-        return $youthData;
+        return $responseData;
     }
 
     /**
