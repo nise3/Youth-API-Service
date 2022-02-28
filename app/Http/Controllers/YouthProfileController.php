@@ -208,17 +208,20 @@ class YouthProfileController extends Controller
     {
         $data = $request->all();
         $trainerInfo = $data['trainer_info'] ?? "";
+
         $validated = $this->youthProfileService->youthRegisterValidation($trainerInfo)->validate();
         $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
-        Log::debug('-- TrainerYouth Registration Validation Ok -- ');
 
         $existYouth = Youth::where('username', $validated['mobile'])->first();
-        if(!empty($youth)){
+        if (!empty($existYouth)) {
             $youth = $existYouth;
-            $adminAccessTypes =  !empty($existYouth->admin_access_type) && count(json_decode($existYouth->admin_access_type, true)) > 0 ? json_decode($existYouth->admin_access_type, true) : [];
-            $adminAccessTypes[] = BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER;
-            $youth->admin_access_type = $adminAccessTypes;
-            $youth->save();
+            $adminAccessTypes = !empty($existYouth->admin_access_type) && count(json_decode($existYouth->admin_access_type, true)) > 0 ? json_decode($existYouth->admin_access_type, true) : [];
+
+            if(!in_array(BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER, $adminAccessTypes)){
+                $adminAccessTypes[] = BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER;
+                $youth->admin_access_type = $adminAccessTypes;
+                $youth->save();
+            }
 
             $youth['youth_exist'] = $existYouth->toArray();
             $response = [
@@ -309,14 +312,15 @@ class YouthProfileController extends Controller
     public function rollbackTrainerYouthRegistration(Request $request): JsonResponse
     {
         $data = $request->all();
+        $youthInfo = $data['youth_info'];
 
-        $youth = Youth::findOrFail($data['id']);
-        if(!empty($data['youth_exist'])){
+        $youth = Youth::findOrFail($youthInfo['id']);
+        if (!empty($youthInfo['youth_exist'])) {
+            $youth->admin_access_type = $youthInfo['youth_exist']['admin_access_type'];
+            $youth->save();
+        } else {
             $this->youthProfileService->idpUserDelete($youth->idp_user_id);
             $youth->delete();
-        } else {
-            $youth->admin_access_type = $data['youth_exist']['admin_access_type'];
-            $youth->save();
         }
 
         $response = [
