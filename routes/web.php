@@ -90,6 +90,8 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
     $router->put('youth-career-info', ["as" => "youth-career-info-update", "uses" => "YouthProfileController@youthCareerInfoUpdate"]);
     $router->put('youth-set-default-cv-template', ['as' => 'youth-profile.set-default-cv-template', 'uses' => 'YouthProfileController@setDefaultCvTemplate']);
 
+    /** Get youth feed courses & jobs */
+    $router->get('youth-feed', ["as" => "youth-feed", "uses" => "YouthController@getYouthFeed"]);
 });
 
 

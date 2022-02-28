@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Facade\ServiceToServiceCall;
 use App\Services\YouthManagementServices\YouthService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -102,5 +104,26 @@ class  YouthController extends Controller
         return Response::json($response, $code);
 
     }*/
+
+    /**
+     * @return JsonResponse
+     */
+    public function getYouthFeed(): JsonResponse
+    {
+        $authUser = Auth::user();
+        $courses = ServiceToServiceCall::getRecentCoursesForYouthFeed($authUser->id);
+        $jobs = ServiceToServiceCall::getRecentJobsForYouthFeed($authUser->id);
+
+        $youthFeeds = array_merge($courses, $jobs);
+
+        $response['data'] = $youthFeeds;
+        $response['response_status'] = [
+            "success" => true,
+            "code" => ResponseAlias::HTTP_OK,
+            "message" => "Youth feed successfully fetched",
+            "query_time" => $this->startTime->diffForHumans(Carbon::now())
+        ];
+        return Response::json($response, ResponseAlias::HTTP_OK);
+    }
 
 }
