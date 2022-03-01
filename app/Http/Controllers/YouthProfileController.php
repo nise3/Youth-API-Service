@@ -566,7 +566,7 @@ class YouthProfileController extends Controller
      */
     public function youthJobs(Request $request): JsonResponse
     {
-        $validated = $this->youthProfileService->youthMyJobsFilterValidator($request)->validate();
+        $validated = $request->all(); // $this->youthProfileService->youthMyJobsFilterValidator($request)->validate();
         $validated['youth_id'] = Auth::id();
 
         $response = ServiceToServiceCall::youthJobs($validated) ?? [];
