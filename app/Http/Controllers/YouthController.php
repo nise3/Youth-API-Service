@@ -116,7 +116,11 @@ class  YouthController extends Controller
 
         $youthFeeds = array_merge($courses, $jobs);
 
-        $response['data'] = $youthFeeds;
+        $youthFeedCollection = collect($youthFeeds);
+
+        $youthFeedCollectionSorted = $youthFeedCollection->sortByDesc('feed_sort_date')->values();
+
+        $response['data'] = $youthFeedCollectionSorted;
         $response['response_status'] = [
             "success" => true,
             "code" => ResponseAlias::HTTP_OK,
