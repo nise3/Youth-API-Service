@@ -207,12 +207,18 @@ class YouthProfileController extends Controller
     public function trainerYouthRegistration(Request $request): JsonResponse
     {
         $data = $request->all();
+
+        throw_if(empty($data['trainer_info']), ValidationException::withMessages([
+            "Data not provided correctly!"
+        ]));
+
         $trainerInfo = $data['trainer_info'] ?? "";
 
-        $validated = $this->youthProfileService->youthRegisterValidation($trainerInfo)->validate();
-        $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
+        throw_if(empty($trainerInfo['mobile']), ValidationException::withMessages([
+            "Mobile number not provided!"
+        ]));
 
-        $existYouth = Youth::where('username', $validated['mobile'])->first();
+        $existYouth = Youth::where('username', $trainerInfo['mobile'])->first();
         if (!empty($existYouth)) {
             $youth = $existYouth;
             $adminAccessTypes = !empty($existYouth->admin_access_type) && count(json_decode($existYouth->admin_access_type, true)) > 0 ? json_decode($existYouth->admin_access_type, true) : [];
@@ -235,6 +241,9 @@ class YouthProfileController extends Controller
             ];
             return Response::json($response, $response['_response_status']['code']);
         }
+
+        $validated = $this->youthProfileService->youthRegisterValidation($trainerInfo)->validate();
+        $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
 
         $youth = app(Youth::class);
         $validated['code'] = CodeGeneratorService::getYouthCode();
