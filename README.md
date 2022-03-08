@@ -16,3 +16,4 @@ RELEASE = 'php artisan cache:clear'
 ```shell
 php artisan queue:work --queue=youth.course.enrollment.q
 ```
+
