@@ -319,6 +319,15 @@ class YouthProfileService
             ->get();
     }
 
+    public function idpUserDelete(string $idpUserId): mixed
+    {
+        return IdpUser()
+            ->use('wso2idp')
+            ->setPayload($idpUserId)
+            ->delete()
+            ->get();
+    }
+
     /**
      * @param array $data
      * @param string $code
@@ -660,14 +669,12 @@ class YouthProfileService
     }
 
     /**
-     * @param Request $request
+     * @param array $data
      * @param int|null $id
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    public function youthRegisterValidation(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
+    public function youthRegisterValidation(array $data, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
-        $data = $request->all();
-
         if (!empty($data["skills"])) {
             $data["skills"] = isset($data['skills']) && is_array($data['skills']) ? $data['skills'] : explode(',', $data['skills']);
         }
@@ -782,7 +789,7 @@ class YouthProfileService
             ]
         ];
 
-        if (isset($request['physical_disability_status']) && $request['physical_disability_status'] == BaseModel::TRUE) {
+        if (isset($data['physical_disability_status']) && $data['physical_disability_status'] == BaseModel::TRUE) {
             $rules['physical_disabilities'] = [
                 Rule::requiredIf(function () use ($data) {
                     return $data['physical_disability_status'] == BaseModel::TRUE;

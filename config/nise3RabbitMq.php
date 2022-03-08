@@ -89,6 +89,20 @@ return [
                         'autoDelete' => false,
                         'queueMode' => 'lazy'
                     ],
+                ],
+                'dbSync' => [
+                    'name' => 'institute.db.sync.q',
+                    'binding' => 'institute.db.sync',
+                    'durable' => true,
+                    'autoDelete' => false,
+                    'queueMode' => 'lazy',
+                    'dlq' => [
+                        'name' => 'institute.db.sync.dlq',
+                        'x_message_ttl' => 50000,
+                        'durable' => true,
+                        'autoDelete' => false,
+                        'queueMode' => 'lazy'
+                    ],
                 ]
             ],
         ],
@@ -114,14 +128,14 @@ return [
                 'autoDelete' => false
             ],
             'queue' => [
-                'demo' => [
-                    'name' => 'organization.demo.q',
-                    'binding' => 'organization.demo',
+                'dbSync' => [
+                    'name' => 'organization.db.sync.q',
+                    'binding' => 'organization.db.sync',
                     'durable' => true,
                     'autoDelete' => false,
                     'queueMode' => 'lazy',
                     'dlq' => [
-                        'name' => 'organization.demo.dlq',
+                        'name' => 'organization.db.sync.dlq',
                         'x_message_ttl' => 50000,
                         'durable' => true,
                         'autoDelete' => false,

@@ -99,7 +99,8 @@ class YouthProfileController extends Controller
     function youthRegistration(Request $request): JsonResponse
     {
         $youth = app(Youth::class);
-        $validated = $this->youthProfileService->youthRegisterValidation($request)->validate();
+        $requestedData = $request->all();
+        $validated = $this->youthProfileService->youthRegisterValidation($requestedData)->validate();
         $validated['code'] = CodeGeneratorService::getYouthCode();
 
         $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
@@ -198,6 +199,150 @@ class YouthProfileController extends Controller
             DB::rollBack();
             throw $e;
         }
+    }
+
+    /**
+     * @throws ValidationException|Throwable
+     */
+    public function trainerYouthRegistration(Request $request): JsonResponse
+    {
+        $data = $request->all();
+
+        throw_if(empty($data['trainer_info']), ValidationException::withMessages([
+            "Data not provided correctly!"
+        ]));
+
+        $trainerInfo = $data['trainer_info'] ?? "";
+
+        throw_if(empty($trainerInfo['mobile']), ValidationException::withMessages([
+            "Mobile number not provided!"
+        ]));
+
+        $existYouth = Youth::where('username', $trainerInfo['mobile'])->first();
+        if (!empty($existYouth)) {
+            $youth = $existYouth;
+            $adminAccessTypes = !empty($existYouth->admin_access_type) && count(json_decode($existYouth->admin_access_type, true)) > 0 ? json_decode($existYouth->admin_access_type, true) : [];
+
+            if(!in_array(BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER, $adminAccessTypes)){
+                $adminAccessTypes[] = BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER;
+                $youth->admin_access_type = $adminAccessTypes;
+                $youth->save();
+            }
+
+            $youth['youth_exist'] = $existYouth->toArray();
+            $response = [
+                'data' => $youth,
+                '_response_status' => [
+                    "success" => true,
+                    "code" => ResponseAlias::HTTP_CREATED,
+                    "message" => "Youth registration successfully done!",
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                ]
+            ];
+            return Response::json($response, $response['_response_status']['code']);
+        }
+
+        $validated = $this->youthProfileService->youthRegisterValidation($trainerInfo)->validate();
+        $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
+
+        $youth = app(Youth::class);
+        $validated['code'] = CodeGeneratorService::getYouthCode();
+        try {
+            DB::beginTransaction();
+            $idpUserPayLoad = [
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'mobile' => $validated['mobile'],
+                'email' => $validated['email'],
+                'username' => $validated['username'],
+                'password' => $validated['password'],
+                'user_type' => BaseModel::YOUTH_USER_TYPE,
+                'account_disable' => false,
+                'account_lock' => false
+            ];
+
+            $idpResponse = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
+
+            if (!empty($idpResponse['code']) && $idpResponse['code'] == ResponseAlias::HTTP_CONFLICT) {
+                throw new RuntimeException('User already exists', 409);
+            }
+
+            if (empty($idpResponse['data']['id'])) {
+                throw new RuntimeException('Trainer registration is not succeeded', 409);
+            }
+
+            Log::info("Trainer youth create for idp user--->" . $idpResponse['data']['id'] . "----->email-->" . $validated['email']);
+
+            $validated['idp_user_id'] = $idpResponse['data']['id'];
+            $validated['admin_access_type'] = json_encode([
+                BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER
+            ]);
+            $validated['row_status'] = BaseModel::ROW_STATUS_ACTIVE;
+            $youth = $this->youthProfileService->store($youth, $validated);
+
+            Log::info("Trainer Youth user create in youth db----->email-->" . $validated['email']);
+
+            //TODO:: Need to optimize this code
+            $addressData['youth_id'] = $youth->id;
+            $addressData['address_type'] = YouthAddress::ADDRESS_TYPE_PRESENT;
+            $addressData['loc_division_id'] = $validated['loc_division_id'];
+            $addressData['loc_district_id'] = $validated['loc_district_id'];
+            $addressData['loc_upazila_id'] = $validated['loc_upazila_id'] ?? null;
+            $addressData['village_or_area'] = $validated['village_or_area'] ?? null;
+            $addressData['village_or_area_en'] = $validated['village_or_area_en'] ?? null;
+            $addressData['house_n_road'] = $validated['house_n_road'] ?? null;
+            $addressData['house_n_road_en'] = $validated['house_n_road_en'] ?? null;
+            $addressData['zip_or_postal_code'] = $validated['zip_or_postal_code'] ?? null;
+
+            $this->youthAddressService->store($addressData);
+
+            Log::info("Trainer Youth address save in db successfully");
+
+            $response = [
+                'data' => $youth,
+                '_response_status' => [
+                    "success" => true,
+                    "code" => ResponseAlias::HTTP_CREATED,
+                    "message" => "Youth registration successfully done!",
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                ]
+            ];
+            DB::commit();
+            return Response::json($response, $response['_response_status']['code']);
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function rollbackTrainerYouthRegistration(Request $request): JsonResponse
+    {
+        $data = $request->all();
+        $youthInfo = $data['youth_info'];
+
+        $youth = Youth::findOrFail($youthInfo['id']);
+        if (!empty($youthInfo['youth_exist'])) {
+            $youth->admin_access_type = $youthInfo['youth_exist']['admin_access_type'];
+            $youth->save();
+        } else {
+            $this->youthProfileService->idpUserDelete($youth->idp_user_id);
+            $youth->delete();
+        }
+
+        $response = [
+            'data' => $youth,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_CREATED,
+                "message" => "Youth successfully rollback!",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
+        DB::commit();
+        return Response::json($response, $response['_response_status']['code']);
     }
 
     /**
@@ -373,7 +518,7 @@ class YouthProfileController extends Controller
         $data = ServiceToServiceCall::youthApplyToJob($requestData);
 
         if ($data) {
-            /** Mail send after user registration */
+            /** Mail send after job applied */
 
             /** @var Youth $youth */
             $youth = Youth::findOrFail($data['youth_id']);
@@ -401,9 +546,36 @@ class YouthProfileController extends Controller
     /**
      * @throws Throwable
      */
+    public function youthRespondToJob(Request $request): JsonResponse
+    {
+        $requestData = $request->all();
+        $requestData['youth_id'] = Auth::id();
+        $confirmationStatus = $requestData['confirmation_status'];
+
+        throw_if(!is_numeric($confirmationStatus) || $confirmationStatus < 2 || $confirmationStatus > 4, ValidationException::withMessages([
+            "Confirmation status must be integer between 2-4.[32000]"
+        ]));
+
+        $data = ServiceToServiceCall::youthRespondToJob($requestData);
+
+        $response = [
+            'data' => $data ?? [],
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Responded to job successfully",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ]
+        ];
+        return Response::json($response, $response['_response_status']['code']);
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function youthJobs(Request $request): JsonResponse
     {
-        $validated = $this->youthProfileService->youthMyJobsFilterValidator($request)->validate();
+        $validated = $request->all(); // $this->youthProfileService->youthMyJobsFilterValidator($request)->validate();
         $validated['youth_id'] = Auth::id();
 
         $response = ServiceToServiceCall::youthJobs($validated) ?? [];

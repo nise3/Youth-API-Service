@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Events\DbSync\DbSyncSkillUpdateEvent;
 use App\Models\Skill;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -100,9 +101,12 @@ class SkillController extends Controller
     function store(Request $request): JsonResponse
     {
         $validated = $this->skillService->validator($request)->validate();
-        $created = $this->skillService->store($validated);
+        $createdSkill = $this->skillService->store($validated);
+
+        event(new DbSyncSkillUpdateEvent(['operation' => 'add', 'skill_data' => $createdSkill->toArray()]));
+
         $response = [
-            'data' => $created,
+            'data' => $createdSkill,
             '_response_status' => [
                 "success" => true,
                 "code" => ResponseAlias::HTTP_CREATED,
@@ -128,9 +132,12 @@ class SkillController extends Controller
 
         $validated = $this->skillService->validator($request, $id)->validate();
 
-        $updated = $this->skillService->update($skill, $validated);
+        $updatedSkill = $this->skillService->update($skill, $validated);
+
+        event(new DbSyncSkillUpdateEvent(['operation' => 'update', 'skill_data' => $updatedSkill->toArray()]));
+
         $response = [
-            'data' => $updated,
+            'data' => $updatedSkill,
             '_response_status' => [
                 "success" => true,
                 "code" => ResponseAlias::HTTP_OK,
@@ -152,6 +159,9 @@ class SkillController extends Controller
         $skill = Skill::findOrFail($id);
 
         $this->skillService->destroy($skill);
+
+        event(new DbSyncSkillUpdateEvent(['operation' => 'delete', 'skill_data' => $skill->toArray()]));
+
         $response = [
             '_response_status' => [
                 "success" => true,

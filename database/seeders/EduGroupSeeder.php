@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\EduGroup;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class EduGroupSeeder extends Seeder
 {
@@ -14,26 +15,15 @@ class EduGroupSeeder extends Seeder
      */
     public function run()
     {
+        Schema::disableForeignKeyConstraints();
+        DB::table('edu_groups')->truncate();
         $groups = [
-            [
-                "title_en" => "Science",
-                'code' => 'Science',
-                "title" => "বিজ্ঞান"
-
-            ],
-            [
-                "title_en" => "Arts and Humanities",
-                'code' => 'Humanities',
-                "title" => "মানবিক"
-
-            ],
-            [
-                "title_en" => "Commerce or Business Studies",
-                'code' => 'Commerce',
-                "title" => "ব্যবসায় শিক্ষা"
-            ]
+            array('id' => '1','title_en' => 'Science','title' => 'বিজ্ঞান','code' => 'Science','deleted_at' => NULL),
+            array('id' => '2','title_en' => 'Arts and Humanities','title' => 'মানবিক','code' => 'Humanities','deleted_at' => NULL),
+            array('id' => '3','title_en' => 'Commerce or Business Studies','title' => 'ব্যবসায় শিক্ষা','code' => 'Commerce','deleted_at' => NULL)
         ];
 
-        EduGroup::insert($groups);
+        DB::table('edu_groups')->insert($groups);
+        Schema::enableForeignKeyConstraints();
     }
 }

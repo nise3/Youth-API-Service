@@ -3,7 +3,6 @@
 /** @var Router $router */
 
 use App\Helpers\Classes\CustomRouter;
-use App\Models\ExamDegree;
 use Illuminate\Support\Facades\Log;
 use Laravel\Lumen\Routing\Router;
 
@@ -56,6 +55,12 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
 
         /** Get user by username */
         $router->get("user-by-username/{username}", ["as" => "service-to-service-call.user-by-username", "uses" => "YouthProfileController@getByUsername"]);
+
+        /** create or get trainer youth info */
+        $router->post("create-trainer-youth", ["as" => "service-to-service-call.create-trainer-youth", "uses" => "YouthProfileController@trainerYouthRegistration"]);
+
+        /** rollback trainer youth info */
+        $router->post("rollback-trainer-youth-user", ["as" => "service-to-service-call.rollback-trainer-youth-user", "uses" => "YouthProfileController@rollbackTrainerYouthRegistration"]);
     });
 
     $router->get("nise-statistics", ["as" => "nise-statistics", "uses" => "StatisticsController@niseStatistics"]);
@@ -80,6 +85,7 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
     $router->put('youth-change-freelance-status', ["as" => "youth-profile.youth-change-freelance-status", "uses" => "YouthProfileController@setFreelanceStatus"]);
     $router->get('youth-feed-statistics', ["as" => "youth-profile.feed-statistics", "uses" => "YouthProfileController@getYouthFeedStatistics"]);
     $router->post('apply-job', ["as" => "youth-profile.youth-apply-to-job", "uses" => "YouthProfileController@youthApplyToJob"]);
+    $router->post('respond-to-job', ["as" => "youth-profile.youth-respond-to-job", "uses" => "YouthProfileController@youthRespondToJob"]);
     $router->get('my-jobs', ["as" => "youth-profile.youth-my-jobs", "uses" => "YouthProfileController@youthJobs"]);
     $router->put('youth-career-info', ["as" => "youth-career-info-update", "uses" => "YouthProfileController@youthCareerInfoUpdate"]);
     $router->put('youth-set-default-cv-template', ['as' => 'youth-profile.set-default-cv-template', 'uses' => 'YouthProfileController@setDefaultCvTemplate']);
