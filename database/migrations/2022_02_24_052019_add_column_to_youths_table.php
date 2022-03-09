@@ -26,7 +26,7 @@ class AddColumnToYouthsTable extends Migration
     public function down()
     {
         Schema::table('youths', function (Blueprint $table) {
-            //
+            $table->dropColumn('admin_access_type');
         });
     }
 }

@@ -1370,6 +1370,173 @@
                 ]
             }
         },
+        "/youth-feed": {
+            "get": {
+                "tags": [
+                    "Youth Feed"
+                ],
+                "summary": "Get all youth feed",
+                "description": "API endpoint to Get all youth feed. A successful request response will show 200 HTTP status code",
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 15,
+                                            "job_id": "IDSA-b0bac222-cec4-41bb-af8f-0ba53db738c9",
+                                            "service_type": 1,
+                                            "job_title": "Technical Manager",
+                                            "job_title_en": "Technical Manager",
+                                            "no_of_vacancies": 1,
+                                            "occupation_id": 59,
+                                            "job_sector_id": 6,
+                                            "industry_association_id": 1,
+                                            "organization_id": 36,
+                                            "institute_id": null,
+                                            "application_deadline": "2022-03-12",
+                                            "published_at": "2022-02-28 13:13:08",
+                                            "archived_at": null,
+                                            "is_apply_online": 0,
+                                            "minimum_year_of_experience": 3,
+                                            "maximum_year_of_experience": null,
+                                            "industry_association_title": "মেট্রোপলিটন চেম্বার অব কমার্স অ্যান্ড ইন্ড্রাস্ট্রি, ঢাকা",
+                                            "industry_association_title_en": "Metropolitan Chamber of Commerce & Industry, Dhaka (MCCI)",
+                                            "industry_association_logo": "https://file-phase1.nise.gov.bd/uploads/NO9ej7KoCanCgF2bz85lgEp7610pYj1644482778.png",
+                                            "industry_association_address": "Chamber Building (4th Floor), 122-124, Motijheel CA, Dhaka-1000, Bangladesh",
+                                            "industry_association_address_en": "Chamber Building (4th Floor), 122-124, Motijheel CA, Dhaka-1000, Bangladesh",
+                                            "organization_title": "Rahul's Textiles",
+                                            "organization_title_en": "Rahul's Textiles",
+                                            "organization_logo": null,
+                                            "organization_address": "Chairman goli, Noyatola",
+                                            "organization_address_en": "Chairman goli, Noyatola",
+                                            "row_status": 1,
+                                            "applications": "0",
+                                            "shortlisted": "0",
+                                            "interviewed": "0",
+                                            "has_applied": "0",
+                                            "feed_item_type": "2",
+                                            "feed_sort_date": "2022-02-28 13:13:08",
+                                            "company_info_visibility": {
+                                                "id": 15,
+                                                "job_id": "IDSA-b0bac222-cec4-41bb-af8f-0ba53db738c9",
+                                                "is_company_name_visible": 1,
+                                                "company_name": null,
+                                                "company_name_en": null,
+                                                "is_company_address_visible": 1,
+                                                "company_industry_type": 2,
+                                                "is_company_business_visible": 0,
+                                                "deleted_at": null,
+                                                "created_at": "2022-02-28T13:06:37.000000Z",
+                                                "updated_at": "2022-02-28T13:06:37.000000Z"
+                                            },
+                                            "additional_job_information": {
+                                                "id": 15,
+                                                "job_id": "IDSA-b0bac222-cec4-41bb-af8f-0ba53db738c9",
+                                                "job_responsibilities": "Should be experienced in Sub-Station Automation System ( SCADA )\nShould be experienced in Remote Terminal Unit ( RTU )\nShould have proper knowledge about PLCC, SDH, & PDH\nMinimum 2 years experience in primary & secondary testing\nManaging and co-ordination of Erection Testing & Commissioning\nShould have proper knowledge about solar & renewable energy\nShould be able to design and solve substation problems",
+                                                "job_responsibilities_en": "Should be experienced in Sub-Station Automation System ( SCADA )\nShould be experienced in Remote Terminal Unit ( RTU )\nShould have proper knowledge about PLCC, SDH, & PDH\nMinimum 2 years experience in primary & secondary testing\nManaging and co-ordination of Erection Testing & Commissioning\nShould have proper knowledge about solar & renewable energy\nShould be able to design and solve substation problems",
+                                                "job_context": "Technical Manager",
+                                                "job_context_en": "Technical Manager",
+                                                "job_place_type": 1,
+                                                "salary_min": 50000,
+                                                "salary_max": 80000,
+                                                "is_salary_info_show": 3,
+                                                "is_salary_compare_to_expected_salary": 1,
+                                                "is_salary_alert_excessive_than_given_salary_range": 1,
+                                                "salary_review": null,
+                                                "festival_bonus": 1,
+                                                "additional_salary_info": null,
+                                                "additional_salary_info_en": null,
+                                                "is_other_benefits": 1,
+                                                "lunch_facilities": null,
+                                                "others": null,
+                                                "others_en": null,
+                                                "created_at": "2022-02-28T13:02:02.000000Z",
+                                                "updated_at": "2022-02-28T13:02:02.000000Z",
+                                                "deleted_at": null,
+                                                "job_locations": [
+                                                    {
+                                                        "id": 35,
+                                                        "job_id": "IDSA-b0bac222-cec4-41bb-af8f-0ba53db738c9",
+                                                        "additional_job_information_id": 15,
+                                                        "loc_division_id": 3,
+                                                        "loc_district_id": null,
+                                                        "loc_upazila_id": null,
+                                                        "loc_union_id": null,
+                                                        "loc_city_corporation_id": null,
+                                                        "loc_city_corporation_ward_id": null,
+                                                        "loc_area_id": null,
+                                                        "loc_division_title": "ঢাকা",
+                                                        "loc_division_title_en": "Dhaka",
+                                                        "loc_district_title": null,
+                                                        "loc_district_title_en": null,
+                                                        "loc_area_title": null,
+                                                        "loc_area_title_en": null,
+                                                        "location_id": 3,
+                                                        "title": "ঢাকা",
+                                                        "title_en": "DHAKA"
+                                                    }
+                                                ],
+                                                "job_levels": [
+                                                    {
+                                                        "id": 26,
+                                                        "job_id": "IDSA-b0bac222-cec4-41bb-af8f-0ba53db738c9",
+                                                        "additional_job_information_id": 15,
+                                                        "job_level_id": 2,
+                                                        "job_level_title": "Outside Bangladesh"
+                                                    }
+                                                ]
+                                            },
+                                            "candidate_requirement": {
+                                                "id": 15,
+                                                "job_id": "IDSA-b0bac222-cec4-41bb-af8f-0ba53db738c9",
+                                                "other_educational_qualification": "test",
+                                                "other_educational_qualification_en": "test",
+                                                "is_experience_needed": 1,
+                                                "is_freshers_encouraged": 1,
+                                                "minimum_year_of_experience": 3,
+                                                "maximum_year_of_experience": null,
+                                                "additional_requirements": "ttest",
+                                                "additional_requirements_en": "testtt",
+                                                "age_minimum": 30,
+                                                "age_maximum": 50,
+                                                "person_with_disability": 0,
+                                                "preferred_retired_army_officer": 0,
+                                                "created_at": "2022-02-28T13:05:20.000000Z",
+                                                "updated_at": "2022-02-28T13:06:26.000000Z",
+                                                "deleted_at": null,
+                                                "skills": [
+                                                    {
+                                                        "id": 3,
+                                                        "title": "কম্পিউটার প্রোগ্রামিং",
+                                                        "title_en": "Computer Programming",
+                                                        "deleted_at": null
+                                                    },
+                                                    {
+                                                        "id": 1,
+                                                        "title": "টেকনিকাল রাইটিং",
+                                                        "title_en": "Technical Writing",
+                                                        "deleted_at": null
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ],
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Youth feed successfully fetched",
+                                        "query_time": "1 second before"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/youth-job-experiences": {
             "get": {
                 "summary": "get_list",
@@ -4027,6 +4194,52 @@
                 ]
             }
         },
+        "/respond-to-job": {
+            "post": {
+                "tags": ["Apply Job"],
+                "summary": "Respond to job",
+                "description":  "An Http method to Respond to job. Successful request response will return 200 status code",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RespondToJob"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "id": 41,
+                                        "applied_job_id": "3",
+                                        "job_id": 3,
+                                        "recruitment_step_id": 2,
+                                        "interview_schedule_id": 4,
+                                        "invited_at": null,
+                                        "confirmation_status": 2,
+                                        "is_candidate_present": null,
+                                        "interview_score": null,
+                                        "created_at": "2022-02-22T10:47:33.000000Z",
+                                        "updated_at": "2022-02-27T09:50:13.000000Z"
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Responded to job successfully",
+                                        "query_time": "1 second before"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/apply-job": {
             "post": {
                 "tags": ["Apply Job"],
@@ -4389,6 +4602,23 @@
             }
         },
         "schemas": {
+            "RespondToJob": {
+                "type": "object",
+                "properties": {
+                    "youth_id": {
+                        "type": "integer",
+                        "description": "Must exist in youths table"
+                    },
+                    "job_id": {
+                        "type": "string"
+                    },
+                    "confirmation_status": {
+                        "type": "integer",
+                        "enum": [2,3,4],
+                        "description": "2=> Confirm 3=>Abort 4=>Request reschedule"
+                    }
+                }
+            },
             "YouthJobInfoUpdate": {
                 "type": "object",
                 "properties": {
@@ -5283,6 +5513,10 @@
                         "type": "string",
                         "format": "password",
                         "description": "Must contain uppercase ,lowercase letter and number.Min Len: 8, Max len: 50"
+                    },
+                    "zip_or_postal_code": {
+                        "type": "string",
+                        "description": "Must be 4 digits"
                     }
                 },
                 "required": [

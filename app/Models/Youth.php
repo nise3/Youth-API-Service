@@ -149,10 +149,11 @@ class Youth extends AuthBaseModel implements
 
     protected $dates = ['date_of_birth', 'verification_code_sent_at', 'verification_code_verified_at'];
 
+    // "idp_user_id" is removed from hidden array when implementing "Trainer User Profile". This "idp_user_id" needed to store in Core service "users" table
     protected $hidden = [
         "pivot",
         "verification_code",
-        "idp_user_id"
+//        "idp_user_id"
     ];
 
 

@@ -10,8 +10,11 @@ use Illuminate\Support\Facades\Facade;
  * @package App\Facade
  * @method static array|mixed getAuthUserWithRolePermission(string $idpUserId)
  * @method static array|mixed youthApplyToJob(array $requestData)
+ * @method static array|mixed youthRespondToJob(array $requestData)
  * @method static array|mixed youthJobs(array $requestData)
  * @method static array|mixed getYouthFeedStatisticsData(int $youthId,string $serviceName)
+ * @method static array|mixed getRecentCoursesForYouthFeed(int $youthId)
+ * @method static array|mixed getRecentJobsForYouthFeed(int $youthId)
  *
  *
  * @see \App\Helpers\Classes\ServiceToServiceCallHandler
