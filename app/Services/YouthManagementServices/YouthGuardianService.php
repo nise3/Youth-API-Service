@@ -206,7 +206,12 @@ class YouthGuardianService
             'date_of_birth' => [
                 'nullable',
                 'date',
-                'date_format:Y-m-d'
+                'date_format:Y-m-d',
+                function ($attr, $value, $failed) {
+                    if (Carbon::parse($value)->greaterThan(Carbon::now()->subYear(25))) {
+                        $failed('Age should be greater than 25 years.');
+                    }
+                }
             ],
             'relationship_type' => [
                 'required',
