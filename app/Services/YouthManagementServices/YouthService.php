@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -43,6 +44,7 @@ class YouthService
         $pageSize = $request['page_size'] ?? "";
         $rowStatus = $request['row_status'] ?? "";
         $order = $request['order'] ?? "ASC";
+        $youth = Auth::User();
 
         /** @var Builder $youthBuilder */
         $youthBuilder = Youth::select(
@@ -107,6 +109,8 @@ class YouthService
         });
 
         $youthBuilder->with(['skills', 'physicalDisabilities']);
+
+        $youthBuilder->where('youths.id', '!=', $youth['id']);
 
         if (!empty($firstName)) {
             $youthBuilder->where('youths.first_name', 'like', '%' . $firstName . '%');
