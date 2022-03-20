@@ -227,7 +227,12 @@ class YouthCertificationService
             'start_date' => [
                 'nullable',
                 'date',
-                'date_format:Y-m-d'
+                'date_format:Y-m-d',
+                function ($attr, $value, $failed) {
+                    if (Carbon::parse($value)->lessThanOrEqualTo(Carbon::now())) {
+                        $failed('End date must be less then or equal today.');
+                    }
+                }
             ],
             'end_date' => [
                 Rule::requiredIf(function () use ($request) {
@@ -237,6 +242,11 @@ class YouthCertificationService
                 'date',
                 'date_format:Y-m-d',
                 'after:start_date',
+                function ($attr, $value, $failed) {
+                    if (Carbon::parse($value)->lessThanOrEqualTo(Carbon::now())) {
+                        $failed('Start date must be less then or equal today.');
+                    }
+                },
             ],
             'certificate_file_path' => [
                 'required',

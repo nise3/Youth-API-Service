@@ -540,7 +540,12 @@ class YouthProfileService
             "date_of_birth" => [
                 'nullable',
                 'date',
-                'date_format:Y-m-d'
+                'date_format:Y-m-d',
+                function ($attr, $value, $failed) {
+                    if (Carbon::parse($value)->greaterThan(Carbon::now()->subYear(5))) {
+                        $failed('Age should be greater than 5 years.');
+                    }
+                }
             ],
             "gender" => [
                 'nullable',
@@ -710,7 +715,11 @@ class YouthProfileService
                 "required",
                 'date',
                 'date_format:Y-m-d',
-                'before:today'
+                function ($attr, $value, $failed) {
+                    if (Carbon::parse($value)->greaterThan(Carbon::now()->subYear(5))) {
+                        $failed('Age should be greater than 5 years.');
+                    }
+                }
             ],
             "gender" => [
                 "required",
