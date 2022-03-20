@@ -110,7 +110,7 @@ class YouthService
 
         $youthBuilder->with(['skills', 'physicalDisabilities']);
 
-        $youthBuilder->where('youths.id', '!=', $youth['id']);
+        if (!empty($youth) && !empty($youth['id'])) $youthBuilder->where('youths.id', '!=', $youth['id']);
 
         if (!empty($firstName)) {
             $youthBuilder->where('youths.first_name', 'like', '%' . $firstName . '%');
