@@ -431,12 +431,61 @@ class YouthService
         }
     }
 
+    /**
+     * @param array $data
+     * @param Youth $youth
+     */
+    public function updateRplApplicationYouthEducations(array $data, Youth $youth)
+    {
+        if (!empty($data['youth_details']['education_info'])) {
+            foreach ($data['youth_details']['education_info'] as $educationInfo) {
+                $youthEducation = YouthEducation::where('youth_id', $youth->id)->where('education_level_id', $educationInfo['education_level_id'])->first();
+                if (empty($youthEducation)) {
+                    $youthEducation = app(YouthEducation::class);
+                    $values['youth_id'] = $youth->id;
+                }
+                $youthEducation->fill($values);
+                $youthEducation->save();
+            }
+        }
+    }
+
+    /**
+     * @param array $data
+     * @param Youth $youth
+     */
     public function updateYouthGuardian(array $data, Youth $youth): void
     {
         if (!empty($data['guardian_info'])) {
             $youthFather = YouthGuardian::where('youth_id', $youth->id)->where('relationship_type', YouthGuardian::RELATIONSHIP_TYPE_FATHER)->first();
             $youthMother = YouthGuardian::where('youth_id', $youth->id)->where('relationship_type', YouthGuardian::RELATIONSHIP_TYPE_MOTHER)->first();
             $guardian = $data['guardian_info'];
+            if (empty($youthFather)) {
+                $youthFather = app(YouthGuardian::class);
+            }
+            if (empty($youthMother)) {
+                $youthMother = app(YouthGuardian::class);
+            }
+            $this->saveYouthGuardian($youthFather, $guardian, YouthGuardian::RELATIONSHIP_TYPE_FATHER, $youth->id);
+            $this->saveYouthGuardian($youthMother, $guardian, YouthGuardian::RELATIONSHIP_TYPE_MOTHER, $youth->id);
+
+        }
+    }
+    /**
+     * @param array $data
+     * @param Youth $youth
+     */
+    public function updateRplApplicationYouthGuardian(array $data, Youth $youth): void
+    {
+        if (!empty($data['youth_details'])) {
+            $youthFather = YouthGuardian::where('youth_id', $youth->id)->where('relationship_type', YouthGuardian::RELATIONSHIP_TYPE_FATHER)->first();
+            $youthMother = YouthGuardian::where('youth_id', $youth->id)->where('relationship_type', YouthGuardian::RELATIONSHIP_TYPE_MOTHER)->first();
+            $guardian = [
+                //TODO : complete guardian update;
+                'father_name'=>$data['youth_details']['first_name'],
+                'father_name_en'=>$data['youth_details']['first_name'],
+                'father_name'=>$data['youth_details']['first_name'],
+            ];
             if (empty($youthFather)) {
                 $youthFather = app(YouthGuardian::class);
             }
@@ -476,6 +525,34 @@ class YouthService
                 $youthPermanentAddress->save();
             }
         }
+    }
+
+    public function updateRplApplicationYouthAddresses(array $data, Youth $youth): void
+    {
+        if (!empty($data['youth_details']['present_address'])) {
+            $youthPresentAddress = YouthAddress::where('youth_id', $youth->id)->where('address_type', YouthAddress::ADDRESS_TYPE_PRESENT)->first();
+            $addressValues = $data['youth_details']['present_address'];
+            if (empty($youthPresentAddress)) {
+                $youthPresentAddress = app(YouthAddress::class);
+                $addressValues['youth_id'] = $youth->id;
+                $addressValues['address_type'] = YouthAddress::ADDRESS_TYPE_PRESENT;
+            }
+            $youthPresentAddress->fill($addressValues);
+            $youthPresentAddress->save();
+
+        }
+        if (!empty($data['youth_details']['is_permanent_address'])) {
+            $youthPermanentAddress = YouthAddress::where('youth_id', $youth->id)->where('address_type', YouthAddress::ADDRESS_TYPE_PERMANENT)->first();
+            $addressValues = $data['youth_details']['permanent_address'];
+            if (empty($youthPermanentAddress)) {
+                $youthPermanentAddress = app(YouthAddress::class);
+                $addressValues['youth_id'] = $youth->id;
+                $addressValues['address_type'] = YouthAddress::ADDRESS_TYPE_PERMANENT;
+            }
+            $youthPermanentAddress->fill($addressValues);
+            $youthPermanentAddress->save();
+        }
+
     }
 
     public function updateYouthPhysicalDisabilities(array $data, Youth $youth)
