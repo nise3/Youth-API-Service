@@ -471,6 +471,7 @@ class YouthService
 
         }
     }
+
     /**
      * @param array $data
      * @param Youth $youth
@@ -480,20 +481,26 @@ class YouthService
         if (!empty($data['youth_details'])) {
             $youthFather = YouthGuardian::where('youth_id', $youth->id)->where('relationship_type', YouthGuardian::RELATIONSHIP_TYPE_FATHER)->first();
             $youthMother = YouthGuardian::where('youth_id', $youth->id)->where('relationship_type', YouthGuardian::RELATIONSHIP_TYPE_MOTHER)->first();
-            $guardian = [
-                //TODO : complete guardian update;
-                'father_name'=>$data['youth_details']['first_name'],
-                'father_name_en'=>$data['youth_details']['first_name'],
-                'father_name'=>$data['youth_details']['first_name'],
-            ];
+
             if (empty($youthFather)) {
                 $youthFather = app(YouthGuardian::class);
             }
             if (empty($youthMother)) {
                 $youthMother = app(YouthGuardian::class);
             }
-            $this->saveYouthGuardian($youthFather, $guardian, YouthGuardian::RELATIONSHIP_TYPE_FATHER, $youth->id);
-            $this->saveYouthGuardian($youthMother, $guardian, YouthGuardian::RELATIONSHIP_TYPE_MOTHER, $youth->id);
+
+            $youthFather->name = $youthFather->name ?? $data['youth_details']['mother_name'];
+            $youthFather->name_en = $youthFather->name_en ?? $data['youth_details']['mother_name_en'];
+            $youthFather->relationship_type = $youthFather->relationship_type ?? YouthGuardian::RELATIONSHIP_TYPE_FATHER;
+            $youthFather->youth_id = $youth->id;
+
+            $youthMother->name = $youthMother->name ?? $data['youth_details']['mother_name'];
+            $youthMother->name_en = $youthMother->name_en ?? $data['youth_details']['mother_name_en'];
+            $youthMother->relationship_type = $youthMother->relationship_type ?? YouthGuardian::RELATIONSHIP_TYPE_MOTHER;
+            $youthMother->youth_id = $youth->id;
+
+            $youthFather->save();
+            $youthMother->save();
 
         }
     }
