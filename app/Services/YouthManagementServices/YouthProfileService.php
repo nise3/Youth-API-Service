@@ -329,6 +329,42 @@ class YouthProfileService
             ->get();
     }
 
+
+    /**
+     * @param array $idpPasswordUpdatePayload
+     * @return mixed
+     * @throws Exception
+     */
+    public function idpUserPasswordUpdate(array $idpPasswordUpdatePayload): mixed
+    {
+        return IdpUser()->setPayload($idpPasswordUpdatePayload)->userResetPassword()->get();
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public function passwordUpdatedValidator(Request $request): \Illuminate\Contracts\Validation\Validator
+    {
+        $rules = [
+            'current_password' => [
+                'required',
+                'min:' . BaseModel::PASSWORD_MIN_LENGTH,
+            ],
+            'new_password' => [
+                'required',
+                'min:' . BaseModel::PASSWORD_MIN_LENGTH,
+                BaseModel::PASSWORD_REGEX
+            ],
+            'new_password_confirmation' => [
+                'required_with:new_password'
+            ]
+
+        ];
+        return Validator::make($request->all(), $rules);
+    }
+
+
     /**
      * @param array $data
      * @param string $code
@@ -935,7 +971,7 @@ class YouthProfileService
             'row_status' => [
                 'nullable',
                 "int",
-                Rule::in([0,1]),
+                Rule::in([0, 1]),
             ]
         ];
 

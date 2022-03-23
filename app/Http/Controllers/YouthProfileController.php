@@ -384,6 +384,41 @@ class YouthProfileController extends Controller
         return Response::json($response, $response['_response_status']['code']);
     }
 
+
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     * @throws Throwable
+     */
+    public function youthUpdatePassword(Request $request, int $id): JsonResponse
+    {
+        $youth = Youth::findOrFail(Auth::id());
+
+        $validated = $this->youthProfileService->passwordUpdatedValidator($request)->validate();
+        if ($youth) {
+            $idpPasswordUpdatePayload = [
+                'username' => $youth->username,
+                'current_password' => $validated['current_password'],
+                'new_password' => $validated['new_password'],
+            ];
+            $idpResponse = $this->youthProfileService->idpUserPasswordUpdate($idpPasswordUpdatePayload);
+            throw_if(!empty($idpResponse['status']) && $idpResponse['status'] == false, "Password not updated in Idp");
+        }
+
+        $response = [
+            'data' => $youth,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Youth Password updated successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
+
+        return Response::json($response, ResponseAlias::HTTP_CREATED);
+    }
+
     /**
      * Remove the specified resource from storage
      * @param Request $request
