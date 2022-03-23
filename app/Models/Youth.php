@@ -156,6 +156,10 @@ class Youth extends AuthBaseModel implements
 //        "idp_user_id"
     ];
 
+    protected $casts = [
+        'admin_access_type' => 'array'
+    ];
+
 
     /**
      * @return BelongsToMany
