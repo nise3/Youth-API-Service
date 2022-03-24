@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class RplApplicationInstituteToYouthListener implements ShouldQueue
@@ -51,17 +52,15 @@ class RplApplicationInstituteToYouthListener implements ShouldQueue
             if (!$alreadyConsumed) {
                 DB::beginTransaction();
                 if (!empty($data['youth_id'])) {
-                    $youth = Youth::findOrFail($data['youth_id']);
-                    $youth->fill($data);
-                    $youth->save();
 
+                    $youth = Youth::findOrFail($data['youth_id']);
+
+                    $this->youthService->storeRplApplicationYouthInfo($data, $youth);
                     $this->youthService->updateRplApplicationYouthAddresses($data, $youth);
                     $this->youthService->updateRplApplicationYouthEducations($data, $youth);
                     $this->youthService->updateRplApplicationYouthGuardian($data, $youth);
 
                     DB::commit();
-
-
 
                     /** Trigger EVENT to Institute Service via RabbitMQ */
                     event(new RplApplicationSuccessEvent($data));

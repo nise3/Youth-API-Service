@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
@@ -503,6 +504,24 @@ class YouthService
             $youthMother->save();
 
         }
+    }
+
+    public function storeRplApplicationYouthInfo(array $data, Youth $youth)
+    {
+        $youth->first_name = empty($youth->first_name) ? $data['first_name'] : $youth->first_name;
+        $youth->first_name_en = empty($youth->first_name_en) ? $data['first_name_en'] : $youth->first_name_en;
+        $youth->last_name = empty($youth->last_name) ? $data['last_name'] : $youth->last_name;
+        $youth->last_name_en = empty($youth->last_name_en) ? $data['last_name_en'] : $youth->last_name_en;
+        $youth->identity_number_type = empty($youth->identity_number_type) ? $data['identity_number_type'] : $youth->identity_number_type;
+        $youth->identity_number = empty($youth->identity_number) ? $data['identity_number'] : $youth->identity_number;
+        $youth->photo = empty($youth->photo) ? $data['photo'] : $youth->photo;
+        $youth->nationality = empty($youth->nationality) ? $data['nationality'] : $youth->nationality;
+        $youth->religion = empty($youth->religion) ? $data['religion'] : $youth->religion;
+
+        $youth->save();
+
+        Log::info("youth", $youth->toArray());
+
     }
 
     public function updateYouthAddresses(array $data, Youth $youth): void
