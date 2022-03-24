@@ -951,7 +951,7 @@
                                         "identity_number_type": null,
                                         "identity_number": null,
                                         "date_of_birth": "2022-01-30T00:00:00.000000Z",
-                                        "Age":10,
+                                        "Age": 10,
                                         "freedom_fighter_status": 1,
                                         "physical_disability_status": 0,
                                         "does_belong_to_ethnic_group": 0,
@@ -2147,6 +2147,38 @@
                     "Youth Profile"
                 ]
             }
+        },
+        "/youth-password-update": {
+            "put": {
+                "summary": "Update An User Password",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/youthPasswordUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Youth"
+                                },
+                                "example": {
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Profile"
+                ]
+            }
+
         },
         "/youth-profile-verification": {
             "post": {
@@ -4196,9 +4228,11 @@
         },
         "/respond-to-job": {
             "post": {
-                "tags": ["Apply Job"],
+                "tags": [
+                    "Apply Job"
+                ],
                 "summary": "Respond to job",
-                "description":  "An Http method to Respond to job. Successful request response will return 200 status code",
+                "description": "An Http method to Respond to job. Successful request response will return 200 status code",
                 "requestBody": {
                     "content": {
                         "application/x-www-form-urlencoded": {
@@ -4242,7 +4276,9 @@
         },
         "/apply-job": {
             "post": {
-                "tags": ["Apply Job"],
+                "tags": [
+                    "Apply Job"
+                ],
                 "summary": "Apply for job",
                 "description": "An Http method to post Apply for job. Successful request response will return 200 status code",
                 "requestBody": {
@@ -4291,7 +4327,9 @@
         },
         "/my-jobs": {
             "get": {
-                "tags": ["My Jobs"],
+                "tags": [
+                    "My Jobs"
+                ],
                 "summary": "See my jobs",
                 "description": "An Http method to See my jobs. Successful request response will return 200 status code",
                 "responses": {
@@ -4299,7 +4337,7 @@
                         "description": "successfull",
                         "content": {
                             "application/json": {
-                                "example":{
+                                "example": {
                                     "order": "ASC",
                                     "data": [
                                         {
@@ -4614,7 +4652,11 @@
                     },
                     "confirmation_status": {
                         "type": "integer",
-                        "enum": [2,3,4],
+                        "enum": [
+                            2,
+                            3,
+                            4
+                        ],
                         "description": "2=> Confirm 3=>Abort 4=>Request reschedule"
                     }
                 }
@@ -4627,7 +4669,11 @@
                     },
                     "job_level": {
                         "type": "integer",
-                        "enum": [1,2,3],
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
                         "description": "1=>Entry Level 2=>Mid Level 3=>Top Level"
                     }
                 },
@@ -4980,6 +5026,35 @@
                     "date_of_birth"
                 ]
             },
+            "youthPasswordUpdate": {
+                "type": "object",
+                "description": "Update User password",
+                "properties": {
+                    "current_password": {
+                        "type": "string",
+                        "minLength": 8,
+                        "format": "password"
+                    },
+                    "new_password": {
+                        "type": "string",
+                        "description": "Must contain upper case lower and case letters and letter.Minimum length 8",
+                        "minLength": 8,
+                        "format": "password"
+                    },
+                    "new_password_confirmation": {
+                        "type": "string",
+                        "description": "Must contain upper case lower and case letters and letter.Minimum length 8",
+                        "maxLength": 8,
+                        "format": "password"
+                    }
+                },
+                "required": [
+                    "current_password",
+                    "new_password",
+                    "new_password_confirmation"
+                ]
+            },
+
             "youthResponse": {
                 "type": "object",
                 "description": "Youth List response structure",
@@ -5672,7 +5747,10 @@
                 "properties": {
                     "default_cv_template": {
                         "type": "string",
-                        "enum": [ "CLASSIC", "MODERN"]
+                        "enum": [
+                            "CLASSIC",
+                            "MODERN"
+                        ]
                     }
                 }
             },

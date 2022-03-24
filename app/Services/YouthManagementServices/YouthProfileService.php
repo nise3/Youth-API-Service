@@ -77,7 +77,7 @@ class YouthProfileService
                 'youths.identity_number_type',
                 'youths.identity_number',
                 'youths.date_of_birth',
-                DB::raw(" (YEAR(CURDATE()) -YEAR(youths.date_of_birth) ) as Age"),
+                DB::raw(" (YEAR(CURDATE()) -YEAR(youths.date_of_birth) ) as age"),
                 'youths.freedom_fighter_status',
                 'youths.physical_disability_status',
                 'youths.does_belong_to_ethnic_group',
@@ -87,6 +87,7 @@ class YouthProfileService
                 'youths.cv_path',
                 'youths.signature_image_path',
                 'youths.default_cv_template',
+                'youths.admin_access_type',
                 'youths.row_status',
                 'youths.created_at',
                 'youths.updated_at',
@@ -327,6 +328,44 @@ class YouthProfileService
             ->delete()
             ->get();
     }
+
+
+    /**
+     * @param array $idpPasswordUpdatePayload
+     * @return mixed
+     * @throws Exception
+     */
+    public function idpUserPasswordUpdate(array $idpPasswordUpdatePayload): mixed
+    {
+        return IdpUser()->setPayload($idpPasswordUpdatePayload)->userResetPassword()->get();
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public function passwordUpdatedValidator(Request $request): \Illuminate\Contracts\Validation\Validator
+    {
+        $rules = [
+            'current_password' => [
+                'required',
+                BaseModel::PASSWORD_MIN_LENGTH,
+            ],
+            'new_password' => [
+                'required',
+                Password::min(BaseModel::PASSWORD_MIN_LENGTH_V1)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+            ],
+            'new_password_confirmation' => [
+                'required_with:new_password'
+            ]
+
+        ];
+        return Validator::make($request->all(), $rules);
+    }
+
 
     /**
      * @param array $data
@@ -934,7 +973,7 @@ class YouthProfileService
             'row_status' => [
                 'nullable',
                 "int",
-                Rule::in([0,1]),
+                Rule::in([0, 1]),
             ]
         ];
 

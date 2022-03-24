@@ -82,6 +82,7 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
     $router->get('youth-profile', ["as" => "youth-profile.get-profile", "uses" => "YouthProfileController@getYouthProfile"]);
     $router->get('youth-my-courses', ["as" => "youth-profile.get-my-courses", "uses" => "YouthProfileController@getYouthEnrollCourses"]);
     $router->put('youth-personal-info-update', ["as" => "youth-profile.update", "uses" => "YouthProfileController@youthProfileInfoUpdate"]);
+    $router->put('youth-password-update', ["as" => "youth-password.update", "uses" => "YouthProfileController@youthUpdatePassword"]);
     $router->put('youth-change-freelance-status', ["as" => "youth-profile.youth-change-freelance-status", "uses" => "YouthProfileController@setFreelanceStatus"]);
     $router->get('youth-feed-statistics', ["as" => "youth-profile.feed-statistics", "uses" => "YouthProfileController@getYouthFeedStatistics"]);
     $router->post('apply-job', ["as" => "youth-profile.youth-apply-to-job", "uses" => "YouthProfileController@youthApplyToJob"]);

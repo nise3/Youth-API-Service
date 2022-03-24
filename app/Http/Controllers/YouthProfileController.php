@@ -223,7 +223,7 @@ class YouthProfileController extends Controller
             $youth = $existYouth;
             $adminAccessTypes = !empty($existYouth->admin_access_type) && count(json_decode($existYouth->admin_access_type, true)) > 0 ? json_decode($existYouth->admin_access_type, true) : [];
 
-            if(!in_array(BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER, $adminAccessTypes)){
+            if (!in_array(BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER, $adminAccessTypes)) {
                 $adminAccessTypes[] = BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER;
                 $youth->admin_access_type = $adminAccessTypes;
                 $youth->save();
@@ -382,6 +382,52 @@ class YouthProfileController extends Controller
             ]
         ];
         return Response::json($response, $response['_response_status']['code']);
+    }
+
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Throwable
+     */
+    public function youthUpdatePassword(Request $request): JsonResponse
+    {
+        $youth = Youth::findOrFail(Auth::id());
+
+        $httpStatusCode = ResponseAlias::HTTP_CREATED;
+        $validated = $this->youthProfileService->passwordUpdatedValidator($request)->validate();
+        if ($youth) {
+            $idpPasswordUpdatePayload = [
+                'username' => $youth->username,
+                'current_password' => $validated['current_password'],
+                'new_password' => $validated['new_password'],
+            ];
+            $idpResponse = $this->youthProfileService->idpUserPasswordUpdate($idpPasswordUpdatePayload);
+        }
+
+        if (isset($idpResponse['status']) && $idpResponse['status'] == false) {
+            $httpStatusCode = ResponseAlias::HTTP_UNPROCESSABLE_ENTITY;
+            $response = [
+                '_response_status' => [
+                    "success" => false,
+                    "code" => ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
+                    "message" => 'Password is incorrect. Please try with correct password',
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                ]
+            ];
+        } else {
+            $response = [
+                '_response_status' => [
+                    "success" => true,
+                    "code" => ResponseAlias::HTTP_OK,
+                    "message" => "Password updated successfully",
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                ]
+            ];
+        }
+
+
+        return Response::json($response, $httpStatusCode);
     }
 
     /**
