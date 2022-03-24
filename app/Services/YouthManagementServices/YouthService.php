@@ -443,12 +443,14 @@ class YouthService
                 $youthEducation = YouthEducation::where('youth_id', $youth->id)->where('education_level_id', $educationInfo['education_level_id'])->first();
                 if (empty($youthEducation)) {
                     $youthEducation = app(YouthEducation::class);
-                    $values['youth_id'] = $youth->id;
+                    $educationInfo['youth_id'] = $youth->id;
                 }
-                $youthEducation->fill($values);
+                $youthEducation->fill($educationInfo);
                 $youthEducation->save();
             }
         }
+
+        Log::info("education");
     }
 
     /**
@@ -479,6 +481,7 @@ class YouthService
      */
     public function updateRplApplicationYouthGuardian(array $data, Youth $youth): void
     {
+
         if (!empty($data['youth_details'])) {
             $youthFather = YouthGuardian::where('youth_id', $youth->id)->where('relationship_type', YouthGuardian::RELATIONSHIP_TYPE_FATHER)->first();
             $youthMother = YouthGuardian::where('youth_id', $youth->id)->where('relationship_type', YouthGuardian::RELATIONSHIP_TYPE_MOTHER)->first();
@@ -490,17 +493,19 @@ class YouthService
                 $youthMother = app(YouthGuardian::class);
             }
 
+
+
             $youthFather->name = $youthFather->name ?? $data['youth_details']['mother_name'];
             $youthFather->name_en = $youthFather->name_en ?? $data['youth_details']['mother_name_en'];
             $youthFather->relationship_type = $youthFather->relationship_type ?? YouthGuardian::RELATIONSHIP_TYPE_FATHER;
             $youthFather->youth_id = $youth->id;
+            $youthFather->save();
+
 
             $youthMother->name = $youthMother->name ?? $data['youth_details']['mother_name'];
             $youthMother->name_en = $youthMother->name_en ?? $data['youth_details']['mother_name_en'];
             $youthMother->relationship_type = $youthMother->relationship_type ?? YouthGuardian::RELATIONSHIP_TYPE_MOTHER;
             $youthMother->youth_id = $youth->id;
-
-            $youthFather->save();
             $youthMother->save();
 
         }
@@ -508,19 +513,17 @@ class YouthService
 
     public function storeRplApplicationYouthInfo(array $data, Youth $youth)
     {
+
         $youth->first_name = empty($youth->first_name) ? $data['first_name'] : $youth->first_name;
-        $youth->first_name_en = empty($youth->first_name_en) ? $data['first_name_en'] : $youth->first_name_en;
+        $youth->first_name_en = empty($youth->first_name_en) ? (!empty($data['first_name_en']) ? $data['first_name_en'] : null) : $youth->first_name_en;
         $youth->last_name = empty($youth->last_name) ? $data['last_name'] : $youth->last_name;
-        $youth->last_name_en = empty($youth->last_name_en) ? $data['last_name_en'] : $youth->last_name_en;
         $youth->identity_number_type = empty($youth->identity_number_type) ? $data['identity_number_type'] : $youth->identity_number_type;
         $youth->identity_number = empty($youth->identity_number) ? $data['identity_number'] : $youth->identity_number;
-        $youth->photo = empty($youth->photo) ? $data['photo'] : $youth->photo;
+        $youth->photo = empty($youth->photo) ? (!empty($data['photo']) ? $data['photo'] : null) : $youth->photo;
         $youth->nationality = empty($youth->nationality) ? $data['nationality'] : $youth->nationality;
         $youth->religion = empty($youth->religion) ? $data['religion'] : $youth->religion;
-
         $youth->save();
 
-        Log::info("youth", $youth->toArray());
 
     }
 
@@ -578,7 +581,7 @@ class YouthService
             $youthPermanentAddress->fill($addressValues);
             $youthPermanentAddress->save();
         }
-
+        Log::info("Address");
     }
 
     public function updateYouthPhysicalDisabilities(array $data, Youth $youth)

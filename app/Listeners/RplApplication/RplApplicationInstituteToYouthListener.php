@@ -48,22 +48,23 @@ class RplApplicationInstituteToYouthListener implements ShouldQueue
                 json_encode($event)
             );
 
+
             $alreadyConsumed = $this->rabbitMQService->checkEventAlreadyConsumed();
             if (!$alreadyConsumed) {
+
                 DB::beginTransaction();
                 if (!empty($data['youth_id'])) {
-
                     $youth = Youth::findOrFail($data['youth_id']);
-
-                    $this->youthService->storeRplApplicationYouthInfo($data, $youth);
+                    $this->youthService->storeRplApplicationYouthInfo($data['youth_details'], $youth);
                     $this->youthService->updateRplApplicationYouthAddresses($data, $youth);
                     $this->youthService->updateRplApplicationYouthEducations($data, $youth);
                     $this->youthService->updateRplApplicationYouthGuardian($data, $youth);
 
                     DB::commit();
-
                     /** Trigger EVENT to Institute Service via RabbitMQ */
                     event(new RplApplicationSuccessEvent($data));
+                    Log::info("AAAAAAAAAAAAAAA 6");
+
 
                     /** Store the event as a Success event into Database */
                     $this->rabbitMQService->sagaSuccessEvent(
@@ -73,6 +74,8 @@ class RplApplicationInstituteToYouthListener implements ShouldQueue
                         json_encode($data)
                     );
                 } else {
+                    Log::info("AAAAAAAAAAAAAAA 7");
+
                     throw new Exception("youth_id not provided!");
                 }
             }
