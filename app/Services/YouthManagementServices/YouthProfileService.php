@@ -349,7 +349,7 @@ class YouthProfileService
         $rules = [
             'current_password' => [
                 'required',
-                'min:' . BaseModel::PASSWORD_MIN_LENGTH,
+                BaseModel::PASSWORD_MIN_LENGTH,
             ],
             'new_password' => [
                 'required',
