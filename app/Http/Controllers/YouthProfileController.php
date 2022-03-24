@@ -387,11 +387,10 @@ class YouthProfileController extends Controller
 
     /**
      * @param Request $request
-     * @param int $id
      * @return JsonResponse
      * @throws Throwable
      */
-    public function youthUpdatePassword(Request $request, int $id): JsonResponse
+    public function youthUpdatePassword(Request $request): JsonResponse
     {
         $youth = Youth::findOrFail(Auth::id());
 
