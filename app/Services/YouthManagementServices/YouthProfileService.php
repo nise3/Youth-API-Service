@@ -353,8 +353,10 @@ class YouthProfileService
             ],
             'new_password' => [
                 'required',
-                'min:' . BaseModel::PASSWORD_MIN_LENGTH,
-                BaseModel::PASSWORD_REGEX
+                Password::min(BaseModel::PASSWORD_MIN_LENGTH_V1)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
             ],
             'new_password_confirmation' => [
                 'required_with:new_password'
