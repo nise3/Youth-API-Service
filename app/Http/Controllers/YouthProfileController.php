@@ -407,7 +407,7 @@ class YouthProfileController extends Controller
         }
 
         if (isset($idpResponse['status']) && $idpResponse['status'] == false) {
-            $httpStatusCode = ResponseAlias::HTTP_BAD_REQUEST;
+            $httpStatusCode = ResponseAlias::HTTP_UNPROCESSABLE_ENTITY;
             $response = [
                 '_response_status' => [
                     "success" => false,
