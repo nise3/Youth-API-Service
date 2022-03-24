@@ -223,7 +223,7 @@ class YouthProfileController extends Controller
             $youth = $existYouth;
             $adminAccessTypes = !empty($existYouth->admin_access_type) && count(json_decode($existYouth->admin_access_type, true)) > 0 ? json_decode($existYouth->admin_access_type, true) : [];
 
-            if(!in_array(BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER, $adminAccessTypes)){
+            if (!in_array(BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER, $adminAccessTypes)) {
                 $adminAccessTypes[] = BaseModel::ADMIN_ACCESS_TYPE_TRAINER_USER;
                 $youth->admin_access_type = $adminAccessTypes;
                 $youth->save();
@@ -395,6 +395,7 @@ class YouthProfileController extends Controller
     {
         $youth = Youth::findOrFail(Auth::id());
 
+        $httpStatusCode = ResponseAlias::HTTP_CREATED;
         $validated = $this->youthProfileService->passwordUpdatedValidator($request)->validate();
         if ($youth) {
             $idpPasswordUpdatePayload = [
@@ -403,20 +404,31 @@ class YouthProfileController extends Controller
                 'new_password' => $validated['new_password'],
             ];
             $idpResponse = $this->youthProfileService->idpUserPasswordUpdate($idpPasswordUpdatePayload);
-            throw_if(!empty($idpResponse['status']) && $idpResponse['status'] == false, "Password not updated in Idp");
         }
 
-        $response = [
-            'data' => $youth,
-            '_response_status' => [
-                "success" => true,
-                "code" => ResponseAlias::HTTP_OK,
-                "message" => "Youth Password updated successfully",
-                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-            ]
-        ];
+        if (isset($idpResponse['status']) && $idpResponse['status'] == false) {
+            $httpStatusCode = ResponseAlias::HTTP_BAD_REQUEST;
+            $response = [
+                '_response_status' => [
+                    "success" => false,
+                    "code" => ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
+                    "message" => 'Password is incorrect. Please try with correct password',
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                ]
+            ];
+        } else {
+            $response = [
+                '_response_status' => [
+                    "success" => true,
+                    "code" => ResponseAlias::HTTP_OK,
+                    "message" => "Password updated successfully",
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                ]
+            ];
+        }
 
-        return Response::json($response, ResponseAlias::HTTP_CREATED);
+
+        return Response::json($response, $httpStatusCode);
     }
 
     /**
