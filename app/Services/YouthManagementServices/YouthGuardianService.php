@@ -208,8 +208,8 @@ class YouthGuardianService
                 'date',
                 'date_format:Y-m-d',
                 function ($attr, $value, $failed) {
-                    if (Carbon::parse($value)->greaterThan(Carbon::now()->subYear(25))) {
-                        $failed('Age should be greater than 25 years.');
+                    if (Carbon::parse($value)->greaterThan(Carbon::now()->subYear(20))) {
+                        $failed('Age should be greater than 20 years.');
                     }
                 }
             ],
