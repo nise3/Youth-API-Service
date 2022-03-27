@@ -30,7 +30,11 @@ use PHPUnit\Util\Json;
  * @property string first_name_en
  * @property string last_name
  * @property string last_name_en
+ * @property int identity_number_type
+ * @property string identity_number
  * @property int gender
+ * @property int nationality
+ * @property int religion
  * @property int expected_salary
  * @property int job_level
  * @property string mobile
