@@ -307,7 +307,7 @@ class YouthJobExperienceService
                 'date_format:Y-m-d',
                 function ($attr, $value, $failed) {
                     if (Carbon::parse($value)->greaterThan(Carbon::now())) {
-                        $failed('Start date must be less then or equal today.');
+                        $failed('Start date must be less then or equal today.[100000]');
                     }
                 }
             ],
@@ -325,7 +325,7 @@ class YouthJobExperienceService
                 'date_format:Y-m-d',
                 function ($attr, $value, $failed) use ($data) {
                     if (Carbon::parse($value)->lessThan($data['start_date'])) {
-                        $failed('End date must be greater than or equal start date.');
+                        $failed('End date must be greater than or equal start date.[200000]');
                     }
                 },
             ],
