@@ -371,39 +371,42 @@ class YouthProfileService
      * @param array $data
      * @param string $code
      * @return bool
-     * @throws Exception
+     * @throws Exception|Throwable
      */
     public function sendVerifyCode(array $data, string $code): bool
     {
-        $email = $data["email"] ?? null;
-        $mobileNumber = $data["mobile"] ?? null;
-        $message = "Your OTP code : " . $code;
+        $email = $data["email"];
+        $mobileNumber = $data["mobile"];
+        $message = "Your OTP code is : " . $code;
         if ($email) {
-            return true;
+            $subject = "Youth Verification Code";
+            $from = BaseModel::NISE3_FROM_EMAIL;
+            $messageBody = MailService::templateView($message);
+            $mailService = new MailService($email, $from, $subject, $messageBody);
+            $mailService->sendMail();
         }
         if ($mobileNumber) {
             $smsService = new SmsService();
             $smsService->sendSms($mobileNumber, $message);
         }
-        return false;
+        return true;
     }
 
     /**
      * @param array $data
      * @return bool
      * @throws Exception
+     * @throws Throwable
      */
     public function resendCode(array $data): bool
     {
-        $email = $data["email"] ?? null;
-        $mobile = $data["mobile"] ?? null;
-        $attributeField = $email ? "email" : "mobile";
-        $payLoad[$attributeField] = $email ?: $mobile;
-
+        $email = $data["email"];
+        $mobile = $data["mobile"];
         $code = generateOtp(4);
 
         /** @var Youth $youth */
-        $youth = Youth::where($attributeField, $payLoad[$attributeField])
+        $youth = Youth::where("mobile", $mobile)
+            ->orWhere("email", $email)
             ->where("row_status", BaseModel::ROW_STATUS_PENDING)
             ->first();
 
@@ -411,8 +414,8 @@ class YouthProfileService
             $youth->verification_code = $code;
             $youth->verification_code_sent_at = Carbon::now();
             $youth->save();
-            $payLoad["verification_code"] = $code;
-            return $this->sendVerifyCode($payLoad, $code);
+            $data["verification_code"] = $code;
+            return $this->sendVerifyCode($data, $code);
         }
         return false;
     }
@@ -521,17 +524,11 @@ class YouthProfileService
 
         $rules = [
             "email" => [
-                Rule::requiredIf(function () use ($request) {
-                    return !$request->exists('mobile');
-                }),
-                'nullable',
+                'required',
                 "exists:youths,email,deleted_at,NULL"
             ],
             "mobile" => [
-                Rule::requiredIf(function () use ($request) {
-                    return !$request->exists('email');
-                }),
-                'nullable',
+                'required',
                 "exists:youths,mobile,deleted_at,NULL"
             ],
         ];
