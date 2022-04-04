@@ -382,7 +382,7 @@ class YouthProfileService
             $subject = "Youth Verification Code";
             $from = BaseModel::NISE3_FROM_EMAIL;
             $messageBody = MailService::templateView($message);
-            $mailService = new MailService($email, $from, $subject, $messageBody);
+            $mailService = new MailService([$email], $from, $subject, $messageBody);
             $mailService->sendMail();
         }
         if ($mobileNumber) {
