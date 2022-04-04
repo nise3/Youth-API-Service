@@ -521,7 +521,6 @@ class YouthProfileController extends Controller
     public function resendVerificationCode(Request $request): JsonResponse
     {
         $validated = $this->youthProfileService->resendCodeValidator($request)->validate();
-
         $status = $this->youthProfileService->resendCode($validated);
         $response = [
             '_response_status' => [
@@ -531,7 +530,6 @@ class YouthProfileController extends Controller
                 "query_time" => $this->startTime->diffForHumans(Carbon::now())
             ]
         ];
-
         return Response::json($response, $response['_response_status']['code']);
     }
 
