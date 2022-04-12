@@ -142,6 +142,9 @@ class Youth extends AuthBaseModel implements
         self::PASSPORT
     ];
 
+    /** Youth user type */
+    public const YOUTH_USER_SOURCE_CDAP = 1;
+
     /** Profile Complete Fields */
     public const PROFILE_COMPLETE_FIELDS = ['email', 'mobile', 'identity_number', 'youthLanguagesProficiencies', 'youthPortfolios', 'youthEducations'];
 
@@ -161,7 +164,8 @@ class Youth extends AuthBaseModel implements
     ];
 
     protected $casts = [
-        'admin_access_type' => 'array'
+        'admin_access_type' => 'array',
+        ''
     ];
 
 

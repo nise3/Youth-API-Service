@@ -33,6 +33,10 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     /** youth registration */
     $router->post('youth-registration', ["as" => "youth.registration", "uses" => "YouthProfileController@youthRegistration"]);
 
+    /** CDAP integration */
+    $router->get('youth-exist-check', ["as" => "youth.exist.check", "uses" => "YouthProfileController@checkYouthExist"]);
+    $router->post('cdap-youth-create', ["as" => "cdap.youth.create", "uses" => "YouthProfileController@cdapYouthRegistration"]);
+
     /** youth verification */
     $router->post('youth-profile-verification', ["as" => "youth-profile.verify", "uses" => "YouthProfileController@youthVerification"]);
     $router->post('youth-resend-verification-code', ["as" => "youth-profile.youth-resend-verify-code", "uses" => "YouthProfileController@resendVerificationCode"]);
