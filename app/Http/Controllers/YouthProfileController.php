@@ -254,7 +254,7 @@ class YouthProfileController extends Controller
             $idpServerUserId = $this->youthProfileService->parseSubFromUserToken($request);
 
             $validated['idp_user_id'] = $idpServerUserId;
-            $validated['youth_source'] = Youth::YOUTH_USER_SOURCE_CDAP;
+            $validated['youth_auth_source'] = Youth::YOUTH_USER_SOURCE_CDAP;
             $validated['verification_code_sent_at'] = Carbon::now();
             $validated["verification_code_verified_at"] = Carbon::now();
             $validated['row_status'] = BaseModel::ROW_STATUS_ACTIVE;
