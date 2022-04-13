@@ -880,6 +880,145 @@ class YouthProfileService
         return Validator::make($data, $rules);
     }
 
+
+    /**
+     * @param array $data
+     * @param int|null $id
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public function cdapYouthRegisterValidation(array $data, int $id = null): \Illuminate\Contracts\Validation\Validator
+    {
+        if (!empty($data["skills"])) {
+            $data["skills"] = isset($data['skills']) && is_array($data['skills']) ? $data['skills'] : explode(',', $data['skills']);
+        }
+
+        if (!empty($data["physical_disabilities"])) {
+            $data["physical_disabilities"] = isset($data['physical_disabilities']) && is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
+        }
+
+        $rules = [
+            'user_name_type' => [
+                Rule::in(BaseModel::USER_NAME_TYPES)
+            ],
+            "first_name" => "required|string|min:2|max:500",
+            "first_name_en" => "nullable|string|min:2|max:250",
+            "last_name" => "required|string|min:2|max:500",
+            "last_name_en" => "nullable|string|min:2|max:250",
+            "loc_division_id" => [
+                "required",
+                "int",
+                "exists:loc_divisions,id,deleted_at,NULL",
+            ],
+            "loc_district_id" => [
+                "required",
+                "int",
+                "exists:loc_districts,id,deleted_at,NULL",
+            ],
+            "loc_upazila_id" => [
+                "nullable",
+                "int",
+                "exists:loc_upazilas,id,deleted_at,NULL",
+            ],
+            "date_of_birth" => [
+                "required",
+                'date',
+                'date_format:Y-m-d',
+                function ($attr, $value, $failed) {
+                    if (Carbon::parse($value)->greaterThan(Carbon::now()->subYear(5))) {
+                        $failed('Age should be greater than 5 years.');
+                    }
+                }
+            ],
+            "gender" => [
+                "required",
+                Rule::in(BaseModel::GENDERS),
+                "int"
+            ],
+            "email" => [
+                Rule::requiredIf(function () use ($data) {
+                    return isset($data["user_name_type"]) && $data["user_name_type"] == BaseModel::USER_NAME_TYPE_EMAIL;
+                }),
+                "email",
+                Rule::unique('youths', 'email')
+                    ->where(function (\Illuminate\Database\Query\Builder $query) {
+                        return $query->whereNull('deleted_at');
+                    })
+            ],
+            "mobile" => [
+                Rule::requiredIf(function () use ($data) {
+                    return isset($data["user_name_type"]) && $data["user_name_type"] == BaseModel::USER_NAME_TYPE_MOBILE_NUMBER;
+                }),
+                "max:11",
+                BaseModel::MOBILE_REGEX,
+                Rule::unique('youths', 'mobile')
+                    ->where(function (\Illuminate\Database\Query\Builder $query) {
+                        return $query->whereNull('deleted_at');
+                    }),
+            ],
+            "physical_disability_status" => [
+                "required",
+                "int",
+                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUSES)
+            ],
+            "skills" => [
+                "required",
+                "array",
+                "min:1",
+                "max:10"
+            ],
+            "skills.*" => [
+                "required",
+                'integer',
+                "distinct",
+                "min:1"
+            ],
+            "village_or_area" => [
+                "nullable",
+                "string"
+            ],
+            "village_or_area_en" => [
+                "nullable",
+                "string"
+            ],
+            "house_n_road" => [
+                "nullable",
+                "string"
+            ],
+            "house_n_road_en" => [
+                "nullable",
+                "string"
+            ],
+            "zip_or_postal_code" => [
+                "nullable",
+                "string",
+                "size:4"
+            ]
+        ];
+
+        if (isset($data['physical_disability_status']) && $data['physical_disability_status'] == BaseModel::TRUE) {
+            $rules['physical_disabilities'] = [
+                Rule::requiredIf(function () use ($data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
+                }),
+                'nullable',
+                "array",
+                "min:1"
+            ];
+            $rules['physical_disabilities.*'] = [
+                Rule::requiredIf(function () use ($data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
+                }),
+                'nullable',
+                "int",
+                "distinct",
+                "min:1",
+                "exists:physical_disabilities,id,deleted_at,NULL",
+            ];
+        }
+
+        return Validator::make($data, $rules);
+    }
+
     /**
      * @param string $id
      * @return  Youth|null
