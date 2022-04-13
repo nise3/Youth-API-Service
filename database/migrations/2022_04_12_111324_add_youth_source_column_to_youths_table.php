@@ -14,7 +14,7 @@ class AddYouthSourceColumnToYouthsTable extends Migration
     public function up()
     {
         Schema::table('youths', function (Blueprint $table) {
-            $table->unsignedInteger('youth_source')->nullable()->comment('1 => CDAP');
+            $table->unsignedInteger('youth_auth_source')->nullable()->comment('1 => CDAP')->after('user_name_type');
         });
     }
 

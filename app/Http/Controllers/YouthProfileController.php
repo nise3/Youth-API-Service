@@ -242,7 +242,7 @@ class YouthProfileController extends Controller
     {
         $youth = app(Youth::class);
         $requestedData = $request->all();
-        $validated = $this->youthProfileService->youthRegisterValidation($requestedData)->validate();
+        $validated = $this->youthProfileService->cdapYouthRegisterValidation($requestedData)->validate();
         $validated['code'] = CodeGeneratorService::getYouthCode();
 
         $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
