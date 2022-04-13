@@ -851,6 +851,35 @@
                 ]
             }
         },
+        "/youth-exist-check": {
+            "get": {
+                "summary": "Check youth exist or not by User-Token",
+                "description": "API endpoint to check weather youth exist or not. A successful request response will show 200 HTTP status code",
+                "responses": {
+                    "200": {
+                        "description": "Check youth exist or not",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "youth_exist": true
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Youth existence checked by User-Token!",
+                                        "query_time": "1 second before"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "youth"
+                ]
+            }
+        },
         "/youth-registration": {
             "post": {
                 "summary": "Youth registration",
@@ -892,6 +921,65 @@
                                         "row_status": 2,
                                         "updated_at": "2021-10-17T16:02:27.000000Z",
                                         "created_at": "2021-10-17T16:02:27.000000Z",
+                                        "id": 24
+                                    },
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Registration"
+                ]
+            }
+        },
+        "/cdap-youth-create": {
+            "post": {
+                "summary": "CDAP Youth registration",
+                "description": "API endpoint to register a cdap youth. A successful request response will show 200 HTTP status code ",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/youthRegistration"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "register_cdap_youth",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthRegistration"
+                                },
+                                "example": {
+                                    "data": {
+                                        "user_name_type": "2",
+                                        "first_name": "asdfcsdfv",
+                                        "first_name_en": null,
+                                        "last_name": "wsdgfdfg",
+                                        "last_name_en": null,
+                                        "loc_division_id": "1",
+                                        "loc_district_id": "1",
+                                        "loc_upazila_id": "1",
+                                        "date_of_birth": "1990-12-12T00:00:00.000000Z",
+                                        "gender": "1",
+                                        "email": "fffffff@gmail.com",
+                                        "mobile": "01308866287",
+                                        "physical_disability_status": "1",
+                                        "username": "01308866287",
+                                        "verification_code_sent_at": "2021-10-17T16:02:27.000000Z",
+                                        "row_status": 2,
+                                        "updated_at": "2021-10-17T16:02:27.000000Z",
+                                        "created_at": "2021-10-17T16:02:27.000000Z",
+                                        "youth_source": 1,
                                         "id": 24
                                     },
                                     "response_status": {

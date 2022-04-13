@@ -4,6 +4,7 @@
 namespace App\Services\YouthManagementServices;
 
 use App\Exceptions\HttpErrorException;
+use App\Facade\AuthTokenUtility;
 use App\Models\AppliedJob;
 use App\Models\BaseModel;
 use App\Models\PhysicalDisability;
@@ -26,6 +27,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 
@@ -194,6 +196,26 @@ class YouthProfileService
             $this->assignPhysicalDisabilities($youth, $data['physical_disabilities']);
         }
         return $youth;
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     * @throws Throwable
+     */
+    public function parseSubFromUserToken(Request $request): string
+    {
+        throw_if(!$request->headers->has('User-Token'), ValidationException::withMessages([
+            "User-Token not found!"
+        ]));
+
+        $token = bearerUserToken($request);
+
+        throw_if(empty($token), ValidationException::withMessages([
+            "User-Token not provided correctly!"
+        ]));
+
+        return AuthTokenUtility::getIdpServerIdFromToken($token);
     }
 
     /**
