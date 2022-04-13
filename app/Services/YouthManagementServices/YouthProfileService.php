@@ -53,6 +53,7 @@ class YouthProfileService
                 'youths.idp_user_id',
                 'youths.username',
                 'youths.user_name_type',
+                'youths.youth_auth_source',
                 'youths.first_name',
                 'youths.first_name_en',
                 'youths.last_name',
