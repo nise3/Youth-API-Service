@@ -13,12 +13,6 @@ $customRouter = function (string $as = '') use ($router) {
 };
 
 $router->get('/', function () use ($router) {
-    Log::info('Info Log');
-    Log::debug('debug Log');
-    Log::channel('saga')->info('saga Log');
-    Log::channel('mail_sms')->info('mail_sms Log');
-    Log::channel('idp_user')->info('idp_user Log');
-    Log::channel('ek_pay')->info('ek_pay Log');
     return $router->app->version();
 });
 
@@ -32,6 +26,10 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
 
     /** youth registration */
     $router->post('youth-registration', ["as" => "youth.registration", "uses" => "YouthProfileController@youthRegistration"]);
+
+    /** CDAP integration */
+    $router->get('youth-exist-check', ["as" => "youth.exist.check", "uses" => "YouthProfileController@checkYouthExist"]);
+    $router->post('cdap-youth-create', ["as" => "cdap.youth.create", "uses" => "YouthProfileController@cdapYouthRegistration"]);
 
     /** youth verification */
     $router->post('youth-profile-verification', ["as" => "youth-profile.verify", "uses" => "YouthProfileController@youthVerification"]);

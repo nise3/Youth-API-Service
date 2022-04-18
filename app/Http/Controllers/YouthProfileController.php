@@ -205,6 +205,97 @@ class YouthProfileController extends Controller
     }
 
     /**
+     * Check a youth exist or not from User-Token
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Throwable
+     */
+    function checkYouthExist(Request $request): JsonResponse
+    {
+        $idpServerUserId = $this->youthProfileService->parseSubFromUserToken($request);
+
+        $youthUser = $this->youthProfileService->getAuthYouth($idpServerUserId);
+
+        $youth['youth_exist'] = !!$youthUser;
+        $response = [
+            'data' => $youth,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Youth existence checked by User-Token!",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, $response['_response_status']['code']);
+    }
+
+    /**
+     * CDAP youth registration
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Throwable
+     * @throws ValidationException
+     */
+    function cdapYouthRegistration(Request $request): JsonResponse
+    {
+        $youth = app(Youth::class);
+        $requestedData = $request->all();
+        $validated = $this->youthProfileService->cdapYouthRegisterValidation($requestedData)->validate();
+        $validated['code'] = CodeGeneratorService::getYouthCode();
+
+        $validated['username'] = $validated['user_name_type'] == BaseModel::USER_NAME_TYPE_EMAIL ? $validated["email"] : $validated['mobile'];
+        Log::debug('-- Youth Registration Validation Ok -- ');
+
+        try {
+            DB::beginTransaction();
+
+            $idpServerUserId = $this->youthProfileService->parseSubFromUserToken($request);
+
+            $validated['idp_user_id'] = $idpServerUserId;
+            $validated['youth_auth_source'] = Youth::YOUTH_USER_SOURCE_CDAP;
+            $validated['verification_code_sent_at'] = Carbon::now();
+            $validated["verification_code_verified_at"] = Carbon::now();
+            $validated['row_status'] = BaseModel::ROW_STATUS_ACTIVE;
+            $youth = $this->youthProfileService->store($youth, $validated);
+
+            Log::info("Youth user create in youth db----->email-->" . $validated['email']);
+
+            //TODO:: Need to optimize this code
+            $addressData['youth_id'] = $youth->id;
+            $addressData['address_type'] = YouthAddress::ADDRESS_TYPE_PRESENT;
+            $addressData['loc_division_id'] = $validated['loc_division_id'];
+            $addressData['loc_district_id'] = $validated['loc_district_id'];
+            $addressData['loc_upazila_id'] = $validated['loc_upazila_id'] ?? null;
+            $addressData['village_or_area'] = $validated['village_or_area'] ?? null;
+            $addressData['village_or_area_en'] = $validated['village_or_area_en'] ?? null;
+            $addressData['house_n_road'] = $validated['house_n_road'] ?? null;
+            $addressData['house_n_road_en'] = $validated['house_n_road_en'] ?? null;
+            $addressData['zip_or_postal_code'] = $validated['zip_or_postal_code'] ?? null;
+
+            $this->youthAddressService->store($addressData);
+
+            Log::info("Youth address save in db successfully");
+
+            $response = [
+                'data' => $youth ?? new stdClass(),
+                '_response_status' => [
+                    "success" => true,
+                    "code" => ResponseAlias::HTTP_CREATED,
+                    "message" => "Youth registration successfully done!",
+                    "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                ]
+            ];
+            DB::commit();
+            return Response::json($response, $response['_response_status']['code']);
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    /**
      * @throws ValidationException|Throwable
      */
     public function trainerYouthRegistration(Request $request): JsonResponse
