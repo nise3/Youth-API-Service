@@ -25,9 +25,9 @@
         }
     ],
     "paths": {
-        "/youth-profile": {
+        "/youth-public-profile": {
             "get": {
-                "summary": "Get youth profile",
+                "summary": "Get youth public profile",
                 "description": "API endpoint to get the youth profile. A successful request response will show 200 HTTP status code ",
                 "security": [
                     {
