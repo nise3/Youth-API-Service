@@ -1001,6 +1001,19 @@
             "get": {
                 "summary": "Get youth profile",
                 "description": "API endpoint to get the youth profile. A successful request response will show 200 HTTP status code ",
+                "security": [
+                    {
+                        "default": []
+                    }
+                ],
+                "x-auth-type": "None",
+                "x-throttling-tier": null,
+                "x-wso2-disable-security": true,
+                "x-wso2-application-security": {
+                    "security-types": [
+                    ],
+                    "optional": true
+                },
                 "responses": {
                     "200": {
                         "description": "get youth profile",
