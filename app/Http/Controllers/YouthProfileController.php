@@ -296,6 +296,35 @@ class YouthProfileController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Throwable
+     */
+    public function getYouthPublicProfile(Request $request): JsonResponse
+    {
+        $idpYouth = $this->youthProfileService->getYouthFromIDPServer($request);
+
+        if(!empty($idpYouth['mobile'])){
+            $youthInfo = $this->youthProfileService->getYouthPublicProfile($idpYouth['mobile']);
+
+            $status = !!$youthInfo;
+
+            $response = [
+                'data' => $youthInfo,
+                '_response_status' => [
+                    "success" => $status,
+                    "code" => $status ? ResponseAlias::HTTP_OK : ResponseAlias::HTTP_NOT_FOUND,
+                    "message" => $status ? "Profile Fetch Successfully" : "Unauthenticated Action",
+                    "query_time" => $this->startTime->diffForHumans(Carbon::now())
+                ]
+            ];
+
+            return Response::json($response, $response['_response_status']['code']);
+        }
+
+    }
+
+    /**
      * @throws ValidationException|Throwable
      */
     public function trainerYouthRegistration(Request $request): JsonResponse
