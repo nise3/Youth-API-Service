@@ -134,6 +134,86 @@ class YouthProfileService
         }
     }
 
+
+    /**
+     * @param string $username
+     * @return Youth|null
+     */
+    public function getYouthPublicProfile(string $username): Youth | null
+    {
+        /** @var Builder|Youth $youthProfileBuilder */
+        $youthProfileBuilder = Youth::select(
+            [
+                'youths.first_name',
+                'youths.first_name_en',
+                'youths.last_name',
+                'youths.last_name_en',
+                'youths.expected_salary',
+                'youths.loc_division_id',
+                'loc_divisions.title as division_title',
+                'loc_divisions.title_en as division_title_en',
+                'youths.loc_district_id',
+                'loc_districts.title as district_title',
+                'loc_districts.title_en as district_title_en',
+                'youths.loc_upazila_id',
+                'loc_upazilas.title as upazila_title',
+                'loc_upazilas.title_en as upazila_title_en',
+                'youths.gender',
+                'youths.religion',
+                'youths.nationality',
+                'youths.email',
+                'youths.mobile',
+                'youths.date_of_birth',
+                DB::raw(" (YEAR(CURDATE()) -YEAR(youths.date_of_birth) ) as age"),
+                'youths.bio',
+                'youths.bio_en',
+                'youths.photo',
+                'youths.cv_path',
+                'youths.signature_image_path'
+            ]
+        )->where('username', $username);
+
+        $youthProfileBuilder->leftJoin('loc_divisions', function ($join) {
+            $join->on('loc_divisions.id', '=', 'youths.loc_division_id')
+                ->whereNull('loc_divisions.deleted_at');
+        });
+
+        $youthProfileBuilder->leftJoin('loc_districts', function ($join) {
+            $join->on('loc_districts.id', '=', 'youths.loc_district_id')
+                ->whereNull('loc_districts.deleted_at');
+
+        });
+
+        $youthProfileBuilder->leftJoin('loc_upazilas', function ($join) {
+            $join->on('loc_upazilas.id', '=', 'youths.loc_upazila_id')
+                ->whereNull('loc_upazilas.deleted_at');
+
+        });
+
+        return $youthProfileBuilder->first();
+    }
+
+    public function getYouthFromIDPServer(Request $request) :array
+    {
+        $url = 'https://identity.nise.gov.bd/oauth2/userinfo?schema=openid';
+        $token = $token = bearerUserToken($request);
+
+        return Http::withOptions([
+            'verify' => config("nise3.should_ssl_verify"),
+            'debug' => config('nise3.http_debug'),
+            'timeout' => config("nise3.http_timeout")
+        ])->withHeaders([
+            'Authorization' => 'Bearer '.$token
+        ])
+            ->get($url)
+            ->throw(static function (Response $httpResponse, $httpException) use ($url) {
+                Log::debug(get_class($httpResponse) . ' - ' . get_class($httpException));
+                Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . $httpResponse->body());
+                throw new HttpErrorException($httpResponse);
+            })
+            ->json();
+    }
+
     public function additionalProfileInfo($profileInfo)
     {
         /** Calculate profile complete in percentage */
