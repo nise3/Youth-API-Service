@@ -30,7 +30,7 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     /** CDAP integration */
     $router->get('youth-exist-check', ["as" => "youth.exist.check", "uses" => "YouthProfileController@checkYouthExist"]);
     $router->post('cdap-youth-create', ["as" => "cdap.youth.create", "uses" => "YouthProfileController@cdapYouthRegistration"]);
-    $router->get('public/profile', ["as" => "youth-public-profile.get-public-profile", "uses" => "YouthProfileController@getYouthPublicProfile"]);
+    $router->get('youth-public-profile', ["as" => "youth-public-profile.get-public-profile", "uses" => "YouthProfileController@getYouthPublicProfile"]);
 
     /** youth verification */
     $router->post('youth-profile-verification', ["as" => "youth-profile.verify", "uses" => "YouthProfileController@youthVerification"]);
