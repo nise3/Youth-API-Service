@@ -3,13 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Facade\ServiceToServiceCall;
+use App\Models\BaseModel;
+use App\Models\Youth;
+use App\Services\CommonServices\CodeGeneratorService;
+use App\Services\CommonServices\MailService;
+use App\Services\YouthManagementServices\YouthProfileService;
 use App\Services\YouthManagementServices\YouthService;
+use Exception;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
@@ -128,6 +137,122 @@ class  YouthController extends Controller
             "query_time" => $this->startTime->diffForHumans(Carbon::now())
         ];
         return Response::json($response, ResponseAlias::HTTP_OK);
+    }
+
+
+    /**
+     * @throws Throwable
+     * @throws ValidationException
+     */
+    public function youthCreateOrUpdateForCourseEnrollment(Request $request): JsonResponse
+    {
+        Log::info("Course Enrollment Bulk Data" . json_encode($request->all()));
+
+        /** @var Youth $youth */
+        $youth = Youth::where("username", $request->get("mobile"))->first();
+        $id = $youth->id ?? null;
+        DB::beginTransaction();
+        $httpStatusCode = ResponseAlias::HTTP_OK;
+        $validated = $this->youthService->youthUpdateValidationForCourseEnrollmentBulkImport($request, $id)->validate();
+        $validated['password'] = $this->youthService->getPassword();
+        $validated['code'] = CodeGeneratorService::getYouthCode();
+        $youthIdpId = null;
+        try {
+            $idpUserPayLoad = [
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'mobile' => $validated['mobile'],
+                'email' => $validated['email'],
+                'username' => $validated['mobile'],
+                'password' => $validated['password'],
+                'user_type' => BaseModel::YOUTH_USER_TYPE,
+                'account_disable' => true,
+                'account_lock' => true
+            ];
+
+            if (!empty($id)) {
+                $idpUserPayLoad['id'] = $youth->idp_user_id;
+            }
+
+            Log::info("IDP" . json_encode($idpUserPayLoad));
+            $idpResponse = !empty($id) ? app(YouthProfileService::class)->idpUserUpdate($idpUserPayLoad) : app(YouthProfileService::class)->idpUserCreate($idpUserPayLoad);
+
+            if (!empty($idpResponse['code']) && $idpResponse['code'] == ResponseAlias::HTTP_CONFLICT) {
+                throw new RuntimeException('Idp user already exists', 409);
+            }
+
+            if (empty($idpResponse['data']['id'])) {
+                $response = [
+                    '_response_status' => [
+                        "success" => false,
+                        "code" => ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
+                        "message" => "Youth registration is not done in idp",
+                        "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                    ]
+                ];
+                return Response::json($response, $response['_response_status']['code']);
+            }
+
+            Log::info("Youth create for idp user--->" . $idpResponse['data']['id'] . "----->email-->" . $validated['email']);
+
+            $validated['idp_user_id'] = $youthIdpId = $idpResponse['data']['id'];
+            $validated['row_status'] = BaseModel::ROW_STATUS_ACTIVE;
+            $youth = $this->youthService->updateOrCreateYouth($validated);
+            $this->youthService->updateYouthAddresses($validated, $youth);
+            $this->youthService->updateYouthGuardian($validated, $youth);
+            $this->youthService->updateYouthEducations($validated, $youth);
+            $this->youthService->updateYouthPhysicalDisabilities($validated, $youth);
+
+            /** Mail send after user registration */
+            $to = array($youth->email);
+            $from = BaseModel::NISE3_FROM_EMAIL;
+            $subject = "Youth Registration Information";
+            $message = "Congratulation, You are successfully complete your registration . Username: " . $youth->username . " & Password: " . $validated['password'];
+            $messageBody = MailService::templateView($message);
+            $mailService = new MailService($to, $from, $subject, $messageBody);
+            $mailService->sendMail();
+
+            $response['data'] =
+            $response['response_status'] = [
+                "success" => true,
+                "code" => $httpStatusCode,
+                "message" => "Youth Successfully Create/Updated",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ];
+            DB::commit();
+        } catch (Throwable $exception) {
+            DB::rollBack();
+            if ($youthIdpId) {
+                app(YouthProfileService::class)->idpUserDelete($youthIdpId);
+            }
+            throw $exception;
+        }
+        return Response::json($response, $httpStatusCode);
+
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function rollbackYouthById(Request $request): JsonResponse
+    {
+        $youth = Youth::findOrFail($request->get("id"));
+        DB::beginTransaction();
+        $httpStatusCode = ResponseAlias::HTTP_OK;
+        try {
+            $this->youthService->rollbackYouthById($youth);
+            $response['response_status'] = [
+                "success" => true,
+                "code" => $httpStatusCode,
+                "message" => "Youth feed successfully fetched",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ];
+            DB::commit();
+        } catch (Throwable $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
+        return Response::json($response, $httpStatusCode);
     }
 
 }

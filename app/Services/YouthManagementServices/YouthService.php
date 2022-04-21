@@ -416,18 +416,30 @@ class YouthService
 
     }
 
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function updateOrCreateYouth(array $data): mixed
+    {
+        return YouthAddress::updateOrCreate([
+            "username" => $data['mobile'],
+        ], $data);
+    }
+
     public function updateYouthEducations(array $data, Youth $youth)
     {
         if (!empty($data['education_info'])) {
             foreach ($data['education_info'] as $eduLabelId => $values) {
-                $youthEducation = YouthEducation::where('youth_id', $youth->id)->where('education_level_id', $eduLabelId)->first();
                 if (empty($youthEducation)) {
-                    $youthEducation = app(YouthEducation::class);
                     $values['youth_id'] = $youth->id;
                     $values['education_level_id'] = $eduLabelId;
                 }
-                $youthEducation->fill($values);
-                $youthEducation->save();
+                //TODO:Checking For Saga and Youth Bulk Import
+                YouthAddress::updateOrCreate([
+                    "youth_id" => $youth->id,
+                    "education_level_id" => $eduLabelId
+                ], $values);
             }
         }
     }
@@ -535,27 +547,32 @@ class YouthService
     {
         if (!empty($data['address_info'])) {
             if (!empty($data['address_info']['present_address'])) {
-                $youthPresentAddress = YouthAddress::where('youth_id', $youth->id)->where('address_type', YouthAddress::ADDRESS_TYPE_PRESENT)->first();
                 $addressValues = $data['address_info']['present_address'];
                 if (empty($youthPresentAddress)) {
                     $youthPresentAddress = app(YouthAddress::class);
                     $addressValues['youth_id'] = $youth->id;
                     $addressValues['address_type'] = YouthAddress::ADDRESS_TYPE_PRESENT;
                 }
-                $youthPresentAddress->fill($addressValues);
-                $youthPresentAddress->save();
 
+                //TODO:Checking For Saga and Youth Bulk Import
+                YouthAddress::updateOrCreate([
+                    "youth_id" => $youth->id,
+                    "address_type" => YouthAddress::ADDRESS_TYPE_PRESENT
+                ], $addressValues);
             }
             if (!empty($data['address_info']['is_permanent_address'])) {
-                $youthPermanentAddress = YouthAddress::where('youth_id', $youth->id)->where('address_type', YouthAddress::ADDRESS_TYPE_PERMANENT)->first();
                 $addressValues = $data['address_info']['permanent_address'];
                 if (empty($youthPermanentAddress)) {
-                    $youthPermanentAddress = app(YouthAddress::class);
                     $addressValues['youth_id'] = $youth->id;
                     $addressValues['address_type'] = YouthAddress::ADDRESS_TYPE_PERMANENT;
                 }
-                $youthPermanentAddress->fill($addressValues);
-                $youthPermanentAddress->save();
+
+                //TODO:Checking For Saga and Youth Bulk Import
+                YouthAddress::updateOrCreate([
+                    "youth_id" => $youth->id,
+                    "address_type" => YouthAddress::ADDRESS_TYPE_PERMANENT
+                ], $addressValues);
+
             }
         }
     }
@@ -634,7 +651,173 @@ class YouthService
         $youthGuardian->date_of_birth = !empty($guardian[$relationshipStr . '_date_of_birth']) ? $guardian[$relationshipStr . '_date_of_birth'] : $youthGuardian->date_of_birth;
         $youthGuardian->relationship_type = $relationshipType;
         $youthGuardian->youth_id = $youthId;
-
         $youthGuardian->save();
+    }
+
+    public function youthUpdateValidationForCourseEnrollmentBulkImport(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
+    {
+        $data = $request->all();
+        Log::info(json_encode($data,JSON_PRETTY_PRINT));
+
+        if (!empty($data["skills"])) {
+            $data["skills"] = is_array($data['skills']) ? $data['skills'] : explode(',', $data['skills']);
+        }
+        if (!empty($data["physical_disabilities"])) {
+            $data["physical_disabilities"] = is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
+        }
+
+        $rules = [
+            "first_name" => "required|string|min:2|max:500",
+            "last_name" => "required|string|min:2|max:500",
+            "loc_division_id" => [
+                "required",
+                "exists:loc_divisions,id,deleted_at,NULL",
+                "int"
+            ],
+            "loc_district_id" => [
+                "required",
+                "exists:loc_districts,id,deleted_at,NULL",
+                "int"
+            ],
+            "loc_upazila_id" => [
+                "nullable",
+                "exists:loc_upazilas,id,deleted_at,NULL",
+                "int"
+            ],
+            "date_of_birth" => [
+                'nullable',
+                'date',
+                'date_format:Y-m-d',
+                function ($attr, $value, $failed) {
+                    if (Carbon::parse($value)->greaterThan(Carbon::now()->subYear(5))) {
+                        $failed('Age should be greater than 5 years.');
+                    }
+                }
+            ],
+            "gender" => [
+                'nullable',
+                Rule::in(BaseModel::GENDERS),
+                "int"
+            ],
+            'religion' => [
+                'nullable',
+                'int',
+                Rule::in(Youth::RELIGIONS)
+            ],
+            'marital_status' => [
+                'nullable',
+                'int',
+                Rule::in(Youth::MARITAL_STATUSES)
+            ],
+            'nationality' => [
+                'required',
+                'int',
+            ],
+            "email" => [
+                Rule::unique('youths', 'email')
+                    ->ignore($id)
+                    ->where(function (\Illuminate\Database\Query\Builder $query) {
+                        return $query->whereNull('deleted_at');
+                    })
+            ],
+            "mobile" => [
+                Rule::unique('youths', 'mobile')
+                    ->ignore($id)
+                    ->where(function (\Illuminate\Database\Query\Builder $query) {
+                        return $query->whereNull('deleted_at');
+                    })
+            ],
+            'identity_number_type' => [
+                'nullable',
+                'int',
+                Rule::in(Youth::IDENTITY_TYPES)
+            ],
+            'identity_number' => [
+                'nullable'
+            ],
+            'freedom_fighter_status' => [
+                'required',
+                'int',
+                Rule::in(Youth::FREEDOM_FIGHTER_STATUSES)
+            ],
+            "physical_disability_status" => [
+                "required",
+                "int",
+                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUSES)
+            ],
+            'does_belong_to_ethnic_group' => [
+                'required',
+                'int'
+            ],
+            "skills" => [
+                "required",
+                "array",
+                "min:1",
+                "max:10"
+            ],
+            "skills.*" => [
+                "required",
+                'integer',
+                "distinct",
+                "min:1"
+            ],
+            "village_or_area" => [
+                "nullable",
+                "string"
+            ],
+            "village_or_area_en" => [
+                "nullable",
+                "string"
+            ],
+            "house_n_road" => [
+                "nullable",
+                "string"
+            ],
+            "house_n_road_en" => [
+                "nullable",
+                "string"
+            ],
+            "zip_or_postal_code" => [
+                "nullable",
+                "size:4"
+            ]
+        ];
+
+        if (isset($request['physical_disability_status']) && $request['physical_disability_status'] == BaseModel::TRUE) {
+            $rules['physical_disabilities'] = [
+                Rule::requiredIf(function () use ($data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
+                }),
+                'nullable',
+                "array",
+                "min:1"
+            ];
+            $rules['physical_disabilities.*'] = [
+                Rule::requiredIf(function () use ($data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
+                }),
+                'nullable',
+                "exists:physical_disabilities,id,deleted_at,NULL",
+                "int",
+                "distinct",
+                "min:1",
+            ];
+        }
+        return Validator::make($data, $rules);
+    }
+
+    public function rollbackYouthById(Youth $youth): void
+    {
+        YouthAddress::where("youth_id", $youth->id)->delete();
+        YouthGuardian::where("youth_id", $youth->id)->delete();
+        YouthEducation::where("youth_id", $youth->id)->delete();
+        app(YouthService::class)->updateYouthPhysicalDisabilities([], $youth);
+        app(YouthProfileService::class)->idpUserDelete($youth->idp_user_id);
+        $youth->delete();
+    }
+
+    public function getPassword(): string
+    {
+        return Youth::YOUTH_DEFAULT_PASSWORD;
     }
 }
