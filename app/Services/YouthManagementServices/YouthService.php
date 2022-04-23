@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
@@ -416,57 +415,22 @@ class YouthService
 
     }
 
-    /**
-     * @param array $data
-     * @return mixed
-     */
-    public function updateOrCreateYouth(array $data): mixed
-    {
-        return Youth::updateOrCreate([
-            "username" => $data['mobile'],
-        ], $data);
-    }
-
     public function updateYouthEducations(array $data, Youth $youth)
     {
         if (!empty($data['education_info'])) {
             foreach ($data['education_info'] as $eduLabelId => $values) {
-                $values['youth_id'] = $youth->id;
-                $values['education_level_id'] = $eduLabelId;
-                Log::info("Youth Education:" . json_encode($values, JSON_PRETTY_PRINT));
-                YouthAddress::updateOrCreate([
-                    "youth_id" => $youth->id,
-                    "education_level_id" => $eduLabelId
-                ], $values);
-            }
-        }
-    }
-
-    /**
-     * @param array $data
-     * @param Youth $youth
-     */
-    public function updateRplApplicationYouthEducations(array $data, Youth $youth)
-    {
-        if (!empty($data['education_info'])) {
-            foreach ($data['education_info'] as $educationInfo) {
-                $youthEducation = YouthEducation::where('youth_id', $youth->id)->where('education_level_id', $educationInfo['education_level_id'])->first();
+                $youthEducation = YouthEducation::where('youth_id', $youth->id)->where('education_level_id', $eduLabelId)->first();
                 if (empty($youthEducation)) {
                     $youthEducation = app(YouthEducation::class);
-                    $educationInfo['youth_id'] = $youth->id;
+                    $values['youth_id'] = $youth->id;
+                    $values['education_level_id'] = $eduLabelId;
                 }
-                $youthEducation->fill($educationInfo);
+                $youthEducation->fill($values);
                 $youthEducation->save();
             }
         }
-
-        Log::info("education saved");
     }
 
-    /**
-     * @param array $data
-     * @param Youth $youth
-     */
     public function updateYouthGuardian(array $data, Youth $youth): void
     {
         if (!empty($data['guardian_info'])) {
@@ -485,129 +449,37 @@ class YouthService
         }
     }
 
-    /**
-     * @param array $data
-     * @param Youth $youth
-     */
-    public function updateRplApplicationYouthGuardian(array $data, Youth $youth): void
-    {
-
-        if (!empty($data)) {
-            $youthFather = YouthGuardian::where('youth_id', $youth->id)->where('relationship_type', YouthGuardian::RELATIONSHIP_TYPE_FATHER)->first();
-            $youthMother = YouthGuardian::where('youth_id', $youth->id)->where('relationship_type', YouthGuardian::RELATIONSHIP_TYPE_MOTHER)->first();
-
-            if (empty($youthFather)) {
-                $youthFather = app(YouthGuardian::class);
-            }
-            if (empty($youthMother)) {
-                $youthMother = app(YouthGuardian::class);
-            }
-
-
-            $youthFather->name = $youthFather->name ?? $data['father_name'];
-            $youthFather->name_en = !empty($youthFather->name_en) ? $youthFather->name_en : (!empty($data['father_name_en']) ? $data['father_name_en'] : null);
-            $youthFather->relationship_type = $youthFather->relationship_type ?? YouthGuardian::RELATIONSHIP_TYPE_FATHER;
-            $youthFather->youth_id = $youth->id;
-            $youthFather->save();
-
-
-            $youthMother->name = $youthMother->name ?? $data['mother_name'];
-            $youthMother->name_en = !empty($youthFather->name_en) ? $youthFather->name_en : (!empty($data['mother_name_en']) ? $data['mother_name_en'] : null);
-            $youthMother->relationship_type = $youthMother->relationship_type ?? YouthGuardian::RELATIONSHIP_TYPE_MOTHER;
-            $youthMother->youth_id = $youth->id;
-            $youthMother->save();
-            Log::info("guardian data saved");
-
-        }
-    }
-
-    /**
-     * @param array $data
-     * @param Youth $youth
-     */
-    public function storeRplApplicationYouthInfo(array $data, Youth $youth)
-    {
-
-        $youth->first_name = !empty($youth->first_name) ? $youth->first_name : $data['first_name'];
-        $youth->first_name_en = !empty($youth->first_name_en) ? $youth->first_name_en : (!empty($data['first_name_en']) ? $data['first_name_en'] : null);
-        $youth->last_name = !empty($youth->last_name) ? $youth->last_name : $data['last_name'];
-        $youth->identity_number_type = !empty($youth->identity_number_type) ? $youth->identity_number_type : $data['identity_number_type'];
-        $youth->identity_number = !empty($youth->identity_number) ? $youth->identity_number : $data['identity_number'];
-        $youth->photo = !empty($youth->photo) ? $youth->photo : (!empty($data['photo']) ? $data['photo'] : null);
-        $youth->nationality = !empty($youth->nationality) ? $youth->nationality : $data['nationality'];
-        $youth->religion = !empty($youth->religion) ? $youth->religion : $data['religion'];
-        $youth->save();
-        Log::info("youth data saved");
-
-    }
-
     public function updateYouthAddresses(array $data, Youth $youth): void
     {
         if (!empty($data['address_info'])) {
             if (!empty($data['address_info']['present_address'])) {
+                $youthPresentAddress = YouthAddress::where('youth_id', $youth->id)->where('address_type', YouthAddress::ADDRESS_TYPE_PRESENT)->first();
                 $addressValues = $data['address_info']['present_address'];
-                if (empty($addressValues)) {
+                if (empty($youthPresentAddress)) {
+                    $youthPresentAddress = app(YouthAddress::class);
                     $addressValues['youth_id'] = $youth->id;
                     $addressValues['address_type'] = YouthAddress::ADDRESS_TYPE_PRESENT;
                 }
-                YouthAddress::updateOrCreate([
-                    "youth_id" => $youth->id,
-                    "address_type" => YouthAddress::ADDRESS_TYPE_PRESENT
-                ], $addressValues);
+                $youthPresentAddress->fill($addressValues);
+                $youthPresentAddress->save();
+
             }
-            if (!empty($data['address_info']['present_address'])) {
+            if (!empty($data['address_info']['is_permanent_address'])) {
+                $youthPermanentAddress = YouthAddress::where('youth_id', $youth->id)->where('address_type', YouthAddress::ADDRESS_TYPE_PERMANENT)->first();
                 $addressValues = $data['address_info']['permanent_address'];
-                if (empty($addressValues)) {
+                if (empty($youthPermanentAddress)) {
+                    $youthPermanentAddress = app(YouthAddress::class);
                     $addressValues['youth_id'] = $youth->id;
                     $addressValues['address_type'] = YouthAddress::ADDRESS_TYPE_PERMANENT;
                 }
-
-                YouthAddress::updateOrCreate([
-                    "youth_id" => $youth->id,
-                    "address_type" => YouthAddress::ADDRESS_TYPE_PERMANENT
-                ], $addressValues);
-
+                $youthPermanentAddress->fill($addressValues);
+                $youthPermanentAddress->save();
             }
         }
     }
-
-
-    /**
-     * @param array $data
-     * @param Youth $youth
-     */
-    public function updateRplApplicationYouthAddresses(array $data, Youth $youth): void
-    {
-        if (!empty($data['present_address'])) {
-            $youthPresentAddress = YouthAddress::where('youth_id', $youth->id)->where('address_type', YouthAddress::ADDRESS_TYPE_PRESENT)->first();
-            $addressValues = $data['present_address'];
-            if (empty($youthPresentAddress)) {
-                $youthPresentAddress = app(YouthAddress::class);
-                $addressValues['youth_id'] = $youth->id;
-                $addressValues['address_type'] = YouthAddress::ADDRESS_TYPE_PRESENT;
-            }
-            $youthPresentAddress->fill($addressValues);
-            $youthPresentAddress->save();
-
-        }
-        if (!empty($data['permanent_address'])) {
-            $youthPermanentAddress = YouthAddress::where('youth_id', $youth->id)->where('address_type', YouthAddress::ADDRESS_TYPE_PERMANENT)->first();
-            $addressValues = $data['permanent_address'];
-            if (empty($youthPermanentAddress)) {
-                $youthPermanentAddress = app(YouthAddress::class);
-                $addressValues['youth_id'] = $youth->id;
-                $addressValues['address_type'] = YouthAddress::ADDRESS_TYPE_PERMANENT;
-            }
-            $youthPermanentAddress->fill($addressValues);
-            $youthPermanentAddress->save();
-        }
-        Log::info("Address saved");
-    }
-
 
     public function updateYouthPhysicalDisabilities(array $data, Youth $youth)
     {
-        Log::info(json_encode($data['physical_disability_status'], JSON_PRETTY_PRINT));
         if ($data['physical_disability_status'] == BaseModel::FALSE) {
             $this->detachPhysicalDisabilities($youth);
         } else if ($data['physical_disability_status'] == BaseModel::TRUE) {
@@ -646,169 +518,8 @@ class YouthService
         $youthGuardian->date_of_birth = !empty($guardian[$relationshipStr . '_date_of_birth']) ? $guardian[$relationshipStr . '_date_of_birth'] : $youthGuardian->date_of_birth;
         $youthGuardian->relationship_type = $relationshipType;
         $youthGuardian->youth_id = $youthId;
-        Log::info("Youth Education:" . json_encode($youthGuardian, JSON_PRETTY_PRINT));
+
         $youthGuardian->save();
-    }
-
-    public function youthUpdateValidationForCourseEnrollmentBulkImport(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
-    {
-        $data = $request->all();
-
-        if (!empty($data["skills"])) {
-            $data["skills"] = is_array($data['skills']) ? $data['skills'] : explode(',', $data['skills']);
-        }
-        if (!empty($data["physical_disabilities"])) {
-            $data["physical_disabilities"] = is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
-        }
-
-        $rules = [
-            "first_name" => "required|string|min:2|max:500",
-            "last_name" => "required|string|min:2|max:500",
-            "loc_division_id" => [
-                "required",
-                "exists:loc_divisions,id,deleted_at,NULL",
-                "int"
-            ],
-            "loc_district_id" => [
-                "required",
-                "exists:loc_districts,id,deleted_at,NULL",
-                "int"
-            ],
-            "loc_upazila_id" => [
-                "nullable",
-                "exists:loc_upazilas,id,deleted_at,NULL",
-                "int"
-            ],
-            "date_of_birth" => [
-                'nullable',
-                'date',
-                'date_format:Y-m-d',
-                function ($attr, $value, $failed) {
-                    if (Carbon::parse($value)->greaterThan(Carbon::now()->subYear(5))) {
-                        $failed('Age should be greater than 5 years.');
-                    }
-                }
-            ],
-            "gender" => [
-                'nullable',
-                Rule::in(BaseModel::GENDERS),
-                "int"
-            ],
-            'religion' => [
-                'nullable',
-                'int',
-                Rule::in(Youth::RELIGIONS)
-            ],
-            'marital_status' => [
-                'nullable',
-                'int',
-                Rule::in(Youth::MARITAL_STATUSES)
-            ],
-            'nationality' => [
-                'required',
-                'int',
-            ],
-            "email" => [
-                Rule::unique('youths', 'email')
-                    ->ignore($id)
-                    ->where(function (\Illuminate\Database\Query\Builder $query) {
-                        return $query->whereNull('deleted_at');
-                    })
-            ],
-            "mobile" => [
-                Rule::unique('youths', 'mobile')
-                    ->ignore($id)
-                    ->where(function (\Illuminate\Database\Query\Builder $query) {
-                        return $query->whereNull('deleted_at');
-                    })
-            ],
-            'identity_number_type' => [
-                'nullable',
-                'int',
-                Rule::in(Youth::IDENTITY_TYPES)
-            ],
-            'identity_number' => [
-                'nullable'
-            ],
-            'freedom_fighter_status' => [
-                'required',
-                'int',
-                Rule::in(Youth::FREEDOM_FIGHTER_STATUSES)
-            ],
-            "physical_disability_status" => [
-                "required",
-                "int",
-                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUSES)
-            ],
-            'does_belong_to_ethnic_group' => [
-                'required',
-                'int'
-            ],
-            "skills" => [
-                "required",
-                "array",
-                "min:1",
-                "max:10"
-            ],
-            "skills.*" => [
-                "required",
-                'integer',
-                "distinct",
-                "min:1"
-            ],
-            "village_or_area" => [
-                "nullable",
-                "string"
-            ],
-            "village_or_area_en" => [
-                "nullable",
-                "string"
-            ],
-            "house_n_road" => [
-                "nullable",
-                "string"
-            ],
-            "house_n_road_en" => [
-                "nullable",
-                "string"
-            ],
-            "zip_or_postal_code" => [
-                "nullable",
-                "size:4"
-            ]
-        ];
-
-        if (isset($request['physical_disability_status']) && $request['physical_disability_status'] == BaseModel::TRUE) {
-            $rules['physical_disabilities'] = [
-                Rule::requiredIf(function () use ($data) {
-                    return $data['physical_disability_status'] == BaseModel::TRUE;
-                }),
-                'nullable',
-                "array",
-                "min:1"
-            ];
-            $rules['physical_disabilities.*'] = [
-                Rule::requiredIf(function () use ($data) {
-                    return $data['physical_disability_status'] == BaseModel::TRUE;
-                }),
-                'nullable',
-                "exists:physical_disabilities,id,deleted_at,NULL",
-                "int",
-                "distinct",
-                "min:1",
-            ];
-        }
-        return Validator::make($data, $rules);
-    }
-
-    public function rollbackYouthById(Youth $youth): void
-    {
-        YouthAddress::where("youth_id", $youth->id)->delete();
-        YouthGuardian::where("youth_id", $youth->id)->delete();
-        YouthEducation::where("youth_id", $youth->id)->delete();
-        app(YouthService::class)->updateYouthPhysicalDisabilities([], $youth);
-        app(YouthProfileService::class)->idpUserDelete($youth->idp_user_id);
-        $youth->delete();
     }
 
     public function getPassword(): string
