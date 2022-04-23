@@ -422,7 +422,7 @@ class YouthService
      */
     public function updateOrCreateYouth(array $data): mixed
     {
-        return YouthAddress::updateOrCreate([
+        return Youth::updateOrCreate([
             "username" => $data['mobile'],
         ], $data);
     }
@@ -431,11 +431,9 @@ class YouthService
     {
         if (!empty($data['education_info'])) {
             foreach ($data['education_info'] as $eduLabelId => $values) {
-                if (empty($youthEducation)) {
-                    $values['youth_id'] = $youth->id;
-                    $values['education_level_id'] = $eduLabelId;
-                }
-                //TODO:Checking For Saga and Youth Bulk Import
+                $values['youth_id'] = $youth->id;
+                $values['education_level_id'] = $eduLabelId;
+                Log::info("Youth Education:" . json_encode($values, JSON_PRETTY_PRINT));
                 YouthAddress::updateOrCreate([
                     "youth_id" => $youth->id,
                     "education_level_id" => $eduLabelId
@@ -548,26 +546,22 @@ class YouthService
         if (!empty($data['address_info'])) {
             if (!empty($data['address_info']['present_address'])) {
                 $addressValues = $data['address_info']['present_address'];
-                if (empty($youthPresentAddress)) {
-                    $youthPresentAddress = app(YouthAddress::class);
+                if (empty($addressValues)) {
                     $addressValues['youth_id'] = $youth->id;
                     $addressValues['address_type'] = YouthAddress::ADDRESS_TYPE_PRESENT;
                 }
-
-                //TODO:Checking For Saga and Youth Bulk Import
                 YouthAddress::updateOrCreate([
                     "youth_id" => $youth->id,
                     "address_type" => YouthAddress::ADDRESS_TYPE_PRESENT
                 ], $addressValues);
             }
-            if (!empty($data['address_info']['is_permanent_address'])) {
+            if (!empty($data['address_info']['present_address'])) {
                 $addressValues = $data['address_info']['permanent_address'];
-                if (empty($youthPermanentAddress)) {
+                if (empty($addressValues)) {
                     $addressValues['youth_id'] = $youth->id;
                     $addressValues['address_type'] = YouthAddress::ADDRESS_TYPE_PERMANENT;
                 }
 
-                //TODO:Checking For Saga and Youth Bulk Import
                 YouthAddress::updateOrCreate([
                     "youth_id" => $youth->id,
                     "address_type" => YouthAddress::ADDRESS_TYPE_PERMANENT
@@ -613,6 +607,7 @@ class YouthService
 
     public function updateYouthPhysicalDisabilities(array $data, Youth $youth)
     {
+        Log::info(json_encode($data['physical_disability_status'], JSON_PRETTY_PRINT));
         if ($data['physical_disability_status'] == BaseModel::FALSE) {
             $this->detachPhysicalDisabilities($youth);
         } else if ($data['physical_disability_status'] == BaseModel::TRUE) {
@@ -651,13 +646,13 @@ class YouthService
         $youthGuardian->date_of_birth = !empty($guardian[$relationshipStr . '_date_of_birth']) ? $guardian[$relationshipStr . '_date_of_birth'] : $youthGuardian->date_of_birth;
         $youthGuardian->relationship_type = $relationshipType;
         $youthGuardian->youth_id = $youthId;
+        Log::info("Youth Education:" . json_encode($youthGuardian, JSON_PRETTY_PRINT));
         $youthGuardian->save();
     }
 
     public function youthUpdateValidationForCourseEnrollmentBulkImport(Request $request, int $id = null): \Illuminate\Contracts\Validation\Validator
     {
         $data = $request->all();
-        Log::info(json_encode($data,JSON_PRETTY_PRINT));
 
         if (!empty($data["skills"])) {
             $data["skills"] = is_array($data['skills']) ? $data['skills'] : explode(',', $data['skills']);
