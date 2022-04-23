@@ -3,6 +3,8 @@
 /** @var Router $router */
 
 use App\Helpers\Classes\CustomRouter;
+use App\Models\BaseModel;
+use App\Services\YouthManagementServices\YouthProfileService;
 use Illuminate\Support\Facades\Log;
 use Laravel\Lumen\Routing\Router;
 
@@ -96,6 +98,29 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
 
     /** Get youth feed courses & jobs */
     $router->get('youth-feed', ["as" => "youth-feed", "uses" => "YouthController@getYouthFeed"]);
+});
+$router->get("idp-test", function () {
+    $idpUserPayLoad = [
+        'first_name' => "Piyal",
+        'last_name' => "Hasan",
+        'mobile' => "01760100100",
+        'email' => "test@gmail.com",
+        'username' => "01760100100",
+        'password' => "123456",
+        'user_type' => BaseModel::YOUTH_USER_TYPE,
+        'account_disable' => true,
+        'account_lock' => true
+    ];
+    Log::info("IDP" . json_encode($idpUserPayLoad));
+    /** Create New IDP User */
+    /**
+     * WSO2_IDP_BASE_URL=https://192.168.13.206:9448
+     * WSO2_IDP_USERNAME=admin
+     * WSO2_IDP_PASSWORD=admin
+     */
+
+    $idpResponse = app(YouthProfileService::class)->idpUserCreate($idpUserPayLoad);
+    dd($idpResponse);
 });
 
 

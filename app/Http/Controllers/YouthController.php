@@ -146,7 +146,7 @@ class  YouthController extends Controller
      */
     public function youthCreateOrUpdateForCourseEnrollment(Request $request): JsonResponse
     {
-        Log::info("Course Enrollment Bulk Data" . json_encode($request->all()));
+        //Log::info("Course Enrollment Bulk Data" . json_encode($request->all()));
 
         /** @var Youth $youth */
         $youth = Youth::where("username", $request->get("mobile"))->first();
@@ -169,36 +169,31 @@ class  YouthController extends Controller
                 'account_disable' => true,
                 'account_lock' => true
             ];
-
-            if (!empty($id)) {
-                $idpUserPayLoad['id'] = $youth->idp_user_id;
-            }
-            Log::info("IDP" . json_encode($idpUserPayLoad));
-
+            Log::info("IDP" . json_encode($idpUserPayLoad, JSON_PRETTY_PRINT));
             /** Create New IDP User */
-            if (!empty($id)) {
+            if (empty($id)) {
                 $idpResponse = app(YouthProfileService::class)->idpUserCreate($idpUserPayLoad);
+                Log::info(json_encode($idpResponse, JSON_PRETTY_PRINT));
+
+                if (!empty($idpResponse['code']) && $idpResponse['code'] == ResponseAlias::HTTP_CONFLICT) {
+                    throw new RuntimeException('Idp user already exists', 409);
+                }
+
+                if (empty($idpResponse['data']['id'])) {
+                    $response = [
+                        '_response_status' => [
+                            "success" => false,
+                            "code" => ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
+                            "message" => "Youth registration is not done in idp",
+                            "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+                        ]
+                    ];
+                    return Response::json($response, $response['_response_status']['code']);
+                }
+
+                $validated['idp_user_id'] = $youthIdpId = $idpResponse['data']['id'];
             }
 
-            if (!empty($idpResponse['code']) && $idpResponse['code'] == ResponseAlias::HTTP_CONFLICT) {
-                throw new RuntimeException('Idp user already exists', 409);
-            }
-
-            if (empty($idpResponse['data']['id'])) {
-                $response = [
-                    '_response_status' => [
-                        "success" => false,
-                        "code" => ResponseAlias::HTTP_UNPROCESSABLE_ENTITY,
-                        "message" => "Youth registration is not done in idp",
-                        "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
-                    ]
-                ];
-                return Response::json($response, $response['_response_status']['code']);
-            }
-
-            Log::info("Youth create for idp user--->" . $idpResponse['data']['id'] . "----->email-->" . $validated['email']);
-
-            $validated['idp_user_id'] = $youthIdpId = $idpResponse['data']['id'];
             $validated['row_status'] = BaseModel::ROW_STATUS_ACTIVE;
             $youth = $this->youthService->updateOrCreateYouth($validated);
             $this->youthService->updateYouthAddresses($validated, $youth);
@@ -215,7 +210,7 @@ class  YouthController extends Controller
             $mailService = new MailService($to, $from, $subject, $messageBody);
             $mailService->sendMail();
 
-            $response['data'] =
+            $response['data'] = $youth;
             $response['response_status'] = [
                 "success" => true,
                 "code" => $httpStatusCode,
@@ -239,7 +234,8 @@ class  YouthController extends Controller
      */
     public function rollbackYouthById(Request $request): JsonResponse
     {
-        $youth = Youth::findOrFail($request->get("id"));
+        Log::info("Youth Rollback Data for CourseEnrollment".json_encode($request->all()));
+        $youth = Youth::findOrFail($request->get("youth_id"));
         DB::beginTransaction();
         $httpStatusCode = ResponseAlias::HTTP_OK;
         try {

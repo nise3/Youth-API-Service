@@ -54,9 +54,9 @@ return [
 
     'gateways' => [
         'wso2idp' => [
-            'base_url' => env('WSO2_IDP_BASE_URL', 'https://192.168.13.206:9448'),
+            'base_url' => env('WSO2_IDP_BASE_URL', 'https://identity-dev.nise3.xyz'),
             'username' => env('WSO2_IDP_USERNAME', 'admin'),
-            'password' => env('WSO2_IDP_PASSWORD', 'admin')
+            'password' => env('WSO2_IDP_PASSWORD', 'Iadmin')
         ],
     ],
 
@@ -75,6 +75,5 @@ return [
 
     'map' => [
         'wso2idp' => \Khbd\LaravelWso2IdentityApiUser\Idps\Wso2idp::class
-
     ],
 ];
