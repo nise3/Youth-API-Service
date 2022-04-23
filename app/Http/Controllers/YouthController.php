@@ -173,9 +173,12 @@ class  YouthController extends Controller
             if (!empty($id)) {
                 $idpUserPayLoad['id'] = $youth->idp_user_id;
             }
-
             Log::info("IDP" . json_encode($idpUserPayLoad));
-            $idpResponse = !empty($id) ? app(YouthProfileService::class)->idpUserUpdate($idpUserPayLoad) : app(YouthProfileService::class)->idpUserCreate($idpUserPayLoad);
+
+            /** Create New IDP User */
+            if (!empty($id)) {
+                $idpResponse = app(YouthProfileService::class)->idpUserCreate($idpUserPayLoad);
+            }
 
             if (!empty($idpResponse['code']) && $idpResponse['code'] == ResponseAlias::HTTP_CONFLICT) {
                 throw new RuntimeException('Idp user already exists', 409);
