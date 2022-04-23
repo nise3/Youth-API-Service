@@ -7,6 +7,7 @@ use App\Models\BaseModel;
 use App\Models\Youth;
 use App\Services\CommonServices\CodeGeneratorService;
 use App\Services\CommonServices\MailService;
+use App\Services\YouthManagementServices\YouthBulkImportForCourseEnrollmentService;
 use App\Services\YouthManagementServices\YouthProfileService;
 use App\Services\YouthManagementServices\YouthService;
 use Exception;
@@ -26,12 +27,14 @@ use Throwable;
 class  YouthController extends Controller
 {
     public YouthService $youthService;
+    public YouthBulkImportForCourseEnrollmentService $youthBulkImportForCourseEnrollmentService;
     public Carbon $startTime;
 
 
-    public function __construct(YouthService $youthService)
+    public function __construct(YouthService $youthService, YouthBulkImportForCourseEnrollmentService $youthBulkImportForCourseEnrollmentService)
     {
         $this->youthService = $youthService;
+        $this->youthBulkImportForCourseEnrollmentService = $youthBulkImportForCourseEnrollmentService;
         $this->startTime = Carbon::now();
     }
 
@@ -146,14 +149,12 @@ class  YouthController extends Controller
      */
     public function youthCreateOrUpdateForCourseEnrollment(Request $request): JsonResponse
     {
-        //Log::info("Course Enrollment Bulk Data" . json_encode($request->all()));
-
         /** @var Youth $youth */
         $youth = Youth::where("username", $request->get("mobile"))->first();
         $id = $youth->id ?? null;
         DB::beginTransaction();
         $httpStatusCode = ResponseAlias::HTTP_OK;
-        $validated = $this->youthService->youthUpdateValidationForCourseEnrollmentBulkImport($request, $id)->validate();
+        $validated = $this->youthBulkImportForCourseEnrollmentService->youthUpdateValidationForCourseEnrollmentBulkImport($request, $id)->validate();
         $validated['password'] = $this->youthService->getPassword();
         $validated['code'] = CodeGeneratorService::getYouthCode();
         $youthIdpId = null;
@@ -195,11 +196,11 @@ class  YouthController extends Controller
             }
 
             $validated['row_status'] = BaseModel::ROW_STATUS_ACTIVE;
-            $youth = $this->youthService->updateOrCreateYouth($validated);
-            $this->youthService->updateYouthAddresses($validated, $youth);
-            $this->youthService->updateYouthGuardian($validated, $youth);
-            $this->youthService->updateYouthEducations($validated, $youth);
-            $this->youthService->updateYouthPhysicalDisabilities($validated, $youth);
+            $youth = $this->youthBulkImportForCourseEnrollmentService->updateOrCreateYouth($validated);
+            $this->youthBulkImportForCourseEnrollmentService->updateYouthAddresses($validated, $youth);
+            $this->youthBulkImportForCourseEnrollmentService->updateYouthGuardian($validated, $youth);
+            $this->youthBulkImportForCourseEnrollmentService->updateYouthEducations($validated, $youth);
+            $this->youthBulkImportForCourseEnrollmentService->updateYouthPhysicalDisabilities($validated, $youth);
 
             /** Mail send after user registration */
             $to = array($youth->email);
@@ -234,12 +235,10 @@ class  YouthController extends Controller
      */
     public function rollbackYouthById(Request $request): JsonResponse
     {
-        Log::info("Youth Rollback Data for CourseEnrollment".json_encode($request->all()));
-        $youth = Youth::findOrFail($request->get("youth_id"));
         DB::beginTransaction();
         $httpStatusCode = ResponseAlias::HTTP_OK;
         try {
-            $this->youthService->rollbackYouthById($youth);
+            $this->youthBulkImportForCourseEnrollmentService->rollbackYouthById( $request->get("username"));
             $response['response_status'] = [
                 "success" => true,
                 "code" => $httpStatusCode,
