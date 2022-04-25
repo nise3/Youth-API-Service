@@ -167,8 +167,8 @@ class  YouthController extends Controller
                 'username' => $validated['mobile'],
                 'password' => $validated['password'],
                 'user_type' => BaseModel::YOUTH_USER_TYPE,
-                'account_disable' => true,
-                'account_lock' => true
+                'account_disable' => false,
+                'account_lock' => false
             ];
             Log::info("IDP" . json_encode($idpUserPayLoad, JSON_PRETTY_PRINT));
             /** Create New IDP User */
@@ -239,7 +239,7 @@ class  YouthController extends Controller
         DB::beginTransaction();
         $httpStatusCode = ResponseAlias::HTTP_OK;
         try {
-            $this->youthBulkImportForCourseEnrollmentService->rollbackYouthById( $request->get("username"));
+            $this->youthBulkImportForCourseEnrollmentService->rollbackYouthById($request->get("username"));
             $response['response_status'] = [
                 "success" => true,
                 "code" => $httpStatusCode,
