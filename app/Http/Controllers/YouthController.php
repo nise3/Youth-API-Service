@@ -196,6 +196,7 @@ class  YouthController extends Controller
             }
 
             $validated['row_status'] = BaseModel::ROW_STATUS_ACTIVE;
+            $validated['user_name_type'] = BaseModel::USER_NAME_TYPE_MOBILE_NUMBER;
             $youth = $this->youthBulkImportForCourseEnrollmentService->updateOrCreateYouth($validated);
             $this->youthBulkImportForCourseEnrollmentService->updateYouthAddresses($validated, $youth);
             $this->youthBulkImportForCourseEnrollmentService->updateYouthGuardian($validated, $youth);

@@ -518,7 +518,6 @@ class YouthService
         $youthGuardian->date_of_birth = !empty($guardian[$relationshipStr . '_date_of_birth']) ? $guardian[$relationshipStr . '_date_of_birth'] : $youthGuardian->date_of_birth;
         $youthGuardian->relationship_type = $relationshipType;
         $youthGuardian->youth_id = $youthId;
-
         $youthGuardian->save();
     }
 
