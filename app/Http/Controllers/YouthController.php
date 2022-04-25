@@ -155,7 +155,7 @@ class  YouthController extends Controller
         DB::beginTransaction();
         $httpStatusCode = ResponseAlias::HTTP_OK;
         $validated = $this->youthBulkImportForCourseEnrollmentService->youthUpdateValidationForCourseEnrollmentBulkImport($request, $id)->validate();
-        $validated['password'] = $this->youthService->getPassword();
+        $validated['password'] = $this->youthBulkImportForCourseEnrollmentService->getPassword();
         $validated['code'] = CodeGeneratorService::getYouthCode();
         $youthIdpId = null;
         try {
