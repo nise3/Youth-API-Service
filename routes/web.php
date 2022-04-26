@@ -30,6 +30,7 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     /** CDAP integration */
     $router->get('youth-exist-check', ["as" => "youth.exist.check", "uses" => "YouthProfileController@checkYouthExist"]);
     $router->post('cdap-youth-create', ["as" => "cdap.youth.create", "uses" => "YouthProfileController@cdapYouthRegistration"]);
+    $router->get('youth-public-profile', ["as" => "youth-public-profile.get-public-profile", "uses" => "YouthProfileController@getYouthPublicProfile"]);
 
     /** youth verification */
     $router->post('youth-profile-verification', ["as" => "youth-profile.verify", "uses" => "YouthProfileController@youthVerification"]);
@@ -64,7 +65,6 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
     $router->get("nise-statistics", ["as" => "nise-statistics", "uses" => "StatisticsController@niseStatistics"]);
 
 });
-
 
 //youth profile info/update group
 $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"], function () use ($router, $customRouter) {
