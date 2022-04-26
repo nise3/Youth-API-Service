@@ -30,7 +30,11 @@ use PHPUnit\Util\Json;
  * @property string first_name_en
  * @property string last_name
  * @property string last_name_en
+ * @property int identity_number_type
+ * @property string identity_number
  * @property int gender
+ * @property int nationality
+ * @property int religion
  * @property int expected_salary
  * @property int job_level
  * @property string mobile
@@ -138,6 +142,9 @@ class Youth extends AuthBaseModel implements
         self::PASSPORT
     ];
 
+    /** Youth user type */
+    public const YOUTH_USER_SOURCE_CDAP = 1;
+
     /** Profile Complete Fields */
     public const PROFILE_COMPLETE_FIELDS = ['email', 'mobile', 'identity_number', 'youthLanguagesProficiencies', 'youthPortfolios', 'youthEducations'];
 
@@ -157,7 +164,8 @@ class Youth extends AuthBaseModel implements
     ];
 
     protected $casts = [
-        'admin_access_type' => 'array'
+        'admin_access_type' => 'array',
+        ''
     ];
 
 

@@ -14,6 +14,7 @@ RELEASE = 'php artisan cache:clear'
 
 ## RabbitMQ consume command
 ```shell
-php artisan queue:work --queue=youth.course.enrollment.q
+php artisan queue:work --queue=youth.course.enrollment.q,youth.rpl.application.q
 ```
+
 

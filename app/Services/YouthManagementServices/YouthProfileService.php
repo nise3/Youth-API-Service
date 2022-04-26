@@ -4,6 +4,7 @@
 namespace App\Services\YouthManagementServices;
 
 use App\Exceptions\HttpErrorException;
+use App\Facade\AuthTokenUtility;
 use App\Models\AppliedJob;
 use App\Models\BaseModel;
 use App\Models\PhysicalDisability;
@@ -26,6 +27,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 
@@ -51,6 +53,7 @@ class YouthProfileService
                 'youths.idp_user_id',
                 'youths.username',
                 'youths.user_name_type',
+                'youths.youth_auth_source',
                 'youths.first_name',
                 'youths.first_name_en',
                 'youths.last_name',
@@ -131,6 +134,86 @@ class YouthProfileService
         }
     }
 
+
+    /**
+     * @param string $username
+     * @return Youth|null
+     */
+    public function getYouthPublicProfile(string $username): Youth | null
+    {
+        /** @var Builder|Youth $youthProfileBuilder */
+        $youthProfileBuilder = Youth::select(
+            [
+                'youths.first_name',
+                'youths.first_name_en',
+                'youths.last_name',
+                'youths.last_name_en',
+                'youths.expected_salary',
+                'youths.loc_division_id',
+                'loc_divisions.title as division_title',
+                'loc_divisions.title_en as division_title_en',
+                'youths.loc_district_id',
+                'loc_districts.title as district_title',
+                'loc_districts.title_en as district_title_en',
+                'youths.loc_upazila_id',
+                'loc_upazilas.title as upazila_title',
+                'loc_upazilas.title_en as upazila_title_en',
+                'youths.gender',
+                'youths.religion',
+                'youths.nationality',
+                'youths.email',
+                'youths.mobile',
+                'youths.date_of_birth',
+                DB::raw(" (YEAR(CURDATE()) -YEAR(youths.date_of_birth) ) as age"),
+                'youths.bio',
+                'youths.bio_en',
+                'youths.photo',
+                'youths.cv_path',
+                'youths.signature_image_path'
+            ]
+        )->where('username', $username);
+
+        $youthProfileBuilder->leftJoin('loc_divisions', function ($join) {
+            $join->on('loc_divisions.id', '=', 'youths.loc_division_id')
+                ->whereNull('loc_divisions.deleted_at');
+        });
+
+        $youthProfileBuilder->leftJoin('loc_districts', function ($join) {
+            $join->on('loc_districts.id', '=', 'youths.loc_district_id')
+                ->whereNull('loc_districts.deleted_at');
+
+        });
+
+        $youthProfileBuilder->leftJoin('loc_upazilas', function ($join) {
+            $join->on('loc_upazilas.id', '=', 'youths.loc_upazila_id')
+                ->whereNull('loc_upazilas.deleted_at');
+
+        });
+
+        return $youthProfileBuilder->first();
+    }
+
+    public function getYouthFromIDPServer(Request $request) :array
+    {
+        $url = 'https://identity.nise.gov.bd/oauth2/userinfo?schema=openid';
+        $token = $token = bearerUserToken($request);
+
+        return Http::withOptions([
+            'verify' => config("nise3.should_ssl_verify"),
+            'debug' => config('nise3.http_debug'),
+            'timeout' => config("nise3.http_timeout")
+        ])->withHeaders([
+            'Authorization' => 'Bearer '.$token
+        ])
+            ->get($url)
+            ->throw(static function (Response $httpResponse, $httpException) use ($url) {
+                Log::debug(get_class($httpResponse) . ' - ' . get_class($httpException));
+                Log::debug("Http/Curl call error. Destination:: " . $url . ' and Response:: ' . $httpResponse->body());
+                throw new HttpErrorException($httpResponse);
+            })
+            ->json();
+    }
+
     public function additionalProfileInfo($profileInfo)
     {
         /** Calculate profile complete in percentage */
@@ -194,6 +277,26 @@ class YouthProfileService
             $this->assignPhysicalDisabilities($youth, $data['physical_disabilities']);
         }
         return $youth;
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     * @throws Throwable
+     */
+    public function parseSubFromUserToken(Request $request): string
+    {
+        throw_if(!$request->headers->has('User-Token'), ValidationException::withMessages([
+            "User-Token not found!"
+        ]));
+
+        $token = bearerUserToken($request);
+
+        throw_if(empty($token), ValidationException::withMessages([
+            "User-Token not provided correctly!"
+        ]));
+
+        return AuthTokenUtility::getIdpServerIdFromToken($token);
     }
 
     /**
@@ -810,6 +913,145 @@ class YouthProfileService
             ],
             "password_confirmation" => [
                 "required_with:password"
+            ],
+            "village_or_area" => [
+                "nullable",
+                "string"
+            ],
+            "village_or_area_en" => [
+                "nullable",
+                "string"
+            ],
+            "house_n_road" => [
+                "nullable",
+                "string"
+            ],
+            "house_n_road_en" => [
+                "nullable",
+                "string"
+            ],
+            "zip_or_postal_code" => [
+                "nullable",
+                "string",
+                "size:4"
+            ]
+        ];
+
+        if (isset($data['physical_disability_status']) && $data['physical_disability_status'] == BaseModel::TRUE) {
+            $rules['physical_disabilities'] = [
+                Rule::requiredIf(function () use ($data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
+                }),
+                'nullable',
+                "array",
+                "min:1"
+            ];
+            $rules['physical_disabilities.*'] = [
+                Rule::requiredIf(function () use ($data) {
+                    return $data['physical_disability_status'] == BaseModel::TRUE;
+                }),
+                'nullable',
+                "int",
+                "distinct",
+                "min:1",
+                "exists:physical_disabilities,id,deleted_at,NULL",
+            ];
+        }
+
+        return Validator::make($data, $rules);
+    }
+
+
+    /**
+     * @param array $data
+     * @param int|null $id
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public function cdapYouthRegisterValidation(array $data, int $id = null): \Illuminate\Contracts\Validation\Validator
+    {
+        if (!empty($data["skills"])) {
+            $data["skills"] = isset($data['skills']) && is_array($data['skills']) ? $data['skills'] : explode(',', $data['skills']);
+        }
+
+        if (!empty($data["physical_disabilities"])) {
+            $data["physical_disabilities"] = isset($data['physical_disabilities']) && is_array($data['physical_disabilities']) ? $data['physical_disabilities'] : explode(',', $data['physical_disabilities']);
+        }
+
+        $rules = [
+            'user_name_type' => [
+                Rule::in(BaseModel::USER_NAME_TYPES)
+            ],
+            "first_name" => "required|string|min:2|max:500",
+            "first_name_en" => "nullable|string|min:2|max:250",
+            "last_name" => "required|string|min:2|max:500",
+            "last_name_en" => "nullable|string|min:2|max:250",
+            "loc_division_id" => [
+                "required",
+                "int",
+                "exists:loc_divisions,id,deleted_at,NULL",
+            ],
+            "loc_district_id" => [
+                "required",
+                "int",
+                "exists:loc_districts,id,deleted_at,NULL",
+            ],
+            "loc_upazila_id" => [
+                "nullable",
+                "int",
+                "exists:loc_upazilas,id,deleted_at,NULL",
+            ],
+            "date_of_birth" => [
+                "required",
+                'date',
+                'date_format:Y-m-d',
+                function ($attr, $value, $failed) {
+                    if (Carbon::parse($value)->greaterThan(Carbon::now()->subYear(5))) {
+                        $failed('Age should be greater than 5 years.');
+                    }
+                }
+            ],
+            "gender" => [
+                "required",
+                Rule::in(BaseModel::GENDERS),
+                "int"
+            ],
+            "email" => [
+                Rule::requiredIf(function () use ($data) {
+                    return isset($data["user_name_type"]) && $data["user_name_type"] == BaseModel::USER_NAME_TYPE_EMAIL;
+                }),
+                "email",
+                Rule::unique('youths', 'email')
+                    ->where(function (\Illuminate\Database\Query\Builder $query) {
+                        return $query->whereNull('deleted_at');
+                    })
+            ],
+            "mobile" => [
+                Rule::requiredIf(function () use ($data) {
+                    return isset($data["user_name_type"]) && $data["user_name_type"] == BaseModel::USER_NAME_TYPE_MOBILE_NUMBER;
+                }),
+                "max:11",
+                BaseModel::MOBILE_REGEX,
+                Rule::unique('youths', 'mobile')
+                    ->where(function (\Illuminate\Database\Query\Builder $query) {
+                        return $query->whereNull('deleted_at');
+                    }),
+            ],
+            "physical_disability_status" => [
+                "required",
+                "int",
+                Rule::in(BaseModel::PHYSICAL_DISABILITIES_STATUSES)
+            ],
+            "skills" => [
+                "required",
+                "array",
+                "min:1",
+                "max:10"
+            ],
+            "skills.*" => [
+                "required",
+                'integer',
+                "distinct",
+                "min:1"
             ],
             "village_or_area" => [
                 "nullable",

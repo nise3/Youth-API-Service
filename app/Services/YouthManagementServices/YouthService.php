@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
@@ -431,6 +432,31 @@ class YouthService
         }
     }
 
+    /**
+     * @param array $data
+     * @param Youth $youth
+     */
+    public function updateRplApplicationYouthEducations(array $data, Youth $youth)
+    {
+        if (!empty($data['education_info'])) {
+            foreach ($data['education_info'] as $educationInfo) {
+                $youthEducation = YouthEducation::where('youth_id', $youth->id)->where('education_level_id', $educationInfo['education_level_id'])->first();
+                if (empty($youthEducation)) {
+                    $youthEducation = app(YouthEducation::class);
+                    $educationInfo['youth_id'] = $youth->id;
+                }
+                $youthEducation->fill($educationInfo);
+                $youthEducation->save();
+            }
+        }
+
+        Log::info("education saved");
+    }
+
+    /**
+     * @param array $data
+     * @param Youth $youth
+     */
     public function updateYouthGuardian(array $data, Youth $youth): void
     {
         if (!empty($data['guardian_info'])) {
@@ -447,6 +473,62 @@ class YouthService
             $this->saveYouthGuardian($youthMother, $guardian, YouthGuardian::RELATIONSHIP_TYPE_MOTHER, $youth->id);
 
         }
+    }
+
+    /**
+     * @param array $data
+     * @param Youth $youth
+     */
+    public function updateRplApplicationYouthGuardian(array $data, Youth $youth): void
+    {
+
+        if (!empty($data)) {
+            $youthFather = YouthGuardian::where('youth_id', $youth->id)->where('relationship_type', YouthGuardian::RELATIONSHIP_TYPE_FATHER)->first();
+            $youthMother = YouthGuardian::where('youth_id', $youth->id)->where('relationship_type', YouthGuardian::RELATIONSHIP_TYPE_MOTHER)->first();
+
+            if (empty($youthFather)) {
+                $youthFather = app(YouthGuardian::class);
+            }
+            if (empty($youthMother)) {
+                $youthMother = app(YouthGuardian::class);
+            }
+
+
+            $youthFather->name = $youthFather->name ?? $data['father_name'];
+            $youthFather->name_en = !empty($youthFather->name_en) ? $youthFather->name_en : (!empty($data['father_name_en']) ? $data['father_name_en'] : null);
+            $youthFather->relationship_type = $youthFather->relationship_type ?? YouthGuardian::RELATIONSHIP_TYPE_FATHER;
+            $youthFather->youth_id = $youth->id;
+            $youthFather->save();
+
+
+            $youthMother->name = $youthMother->name ?? $data['mother_name'];
+            $youthMother->name_en = !empty($youthFather->name_en) ? $youthFather->name_en : (!empty($data['mother_name_en']) ? $data['mother_name_en'] : null);
+            $youthMother->relationship_type = $youthMother->relationship_type ?? YouthGuardian::RELATIONSHIP_TYPE_MOTHER;
+            $youthMother->youth_id = $youth->id;
+            $youthMother->save();
+            Log::info("guardian data saved");
+
+        }
+    }
+
+    /**
+     * @param array $data
+     * @param Youth $youth
+     */
+    public function storeRplApplicationYouthInfo(array $data, Youth $youth)
+    {
+
+        $youth->first_name = !empty($youth->first_name) ? $youth->first_name : $data['first_name'];
+        $youth->first_name_en = !empty($youth->first_name_en) ? $youth->first_name_en : (!empty($data['first_name_en']) ? $data['first_name_en'] : null);
+        $youth->last_name = !empty($youth->last_name) ? $youth->last_name : $data['last_name'];
+        $youth->identity_number_type = !empty($youth->identity_number_type) ? $youth->identity_number_type : $data['identity_number_type'];
+        $youth->identity_number = !empty($youth->identity_number) ? $youth->identity_number : $data['identity_number'];
+        $youth->photo = !empty($youth->photo) ? $youth->photo : (!empty($data['photo']) ? $data['photo'] : null);
+        $youth->nationality = !empty($youth->nationality) ? $youth->nationality : $data['nationality'];
+        $youth->religion = !empty($youth->religion) ? $youth->religion : $data['religion'];
+        $youth->save();
+        Log::info("youth data saved");
+
     }
 
     public function updateYouthAddresses(array $data, Youth $youth): void
@@ -477,6 +559,40 @@ class YouthService
             }
         }
     }
+
+
+    /**
+     * @param array $data
+     * @param Youth $youth
+     */
+    public function updateRplApplicationYouthAddresses(array $data, Youth $youth): void
+    {
+        if (!empty($data['present_address'])) {
+            $youthPresentAddress = YouthAddress::where('youth_id', $youth->id)->where('address_type', YouthAddress::ADDRESS_TYPE_PRESENT)->first();
+            $addressValues = $data['present_address'];
+            if (empty($youthPresentAddress)) {
+                $youthPresentAddress = app(YouthAddress::class);
+                $addressValues['youth_id'] = $youth->id;
+                $addressValues['address_type'] = YouthAddress::ADDRESS_TYPE_PRESENT;
+            }
+            $youthPresentAddress->fill($addressValues);
+            $youthPresentAddress->save();
+
+        }
+        if (!empty($data['permanent_address'])) {
+            $youthPermanentAddress = YouthAddress::where('youth_id', $youth->id)->where('address_type', YouthAddress::ADDRESS_TYPE_PERMANENT)->first();
+            $addressValues = $data['permanent_address'];
+            if (empty($youthPermanentAddress)) {
+                $youthPermanentAddress = app(YouthAddress::class);
+                $addressValues['youth_id'] = $youth->id;
+                $addressValues['address_type'] = YouthAddress::ADDRESS_TYPE_PERMANENT;
+            }
+            $youthPermanentAddress->fill($addressValues);
+            $youthPermanentAddress->save();
+        }
+        Log::info("Address saved");
+    }
+
 
     public function updateYouthPhysicalDisabilities(array $data, Youth $youth)
     {
