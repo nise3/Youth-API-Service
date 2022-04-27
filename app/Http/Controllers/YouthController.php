@@ -235,24 +235,6 @@ class  YouthController extends Controller
     /**
      * @throws Throwable
      */
-    public function youthImportFromOldSystem(Request $request)
-    {
-
-        $extension = $request->file('youth_list')->extension();
-        throw_if($extension != "json", new Exception("Only json file is allowed", ResponseAlias::HTTP_UNPROCESSABLE_ENTITY));
-
-        try {
-            $data = json_decode(file_get_contents($request->file('youth_list')), true);
-            throw_if(empty($data), new Exception("The file is empty", ResponseAlias::HTTP_UNPROCESSABLE_ENTITY));
-            app(youthBulkImportFromOldSystemService::class)->youthBulkImportFromOldSystem($data);
-        } catch (Throwable $exception) {
-
-        }
-    }
-
-    /**
-     * @throws Throwable
-     */
     public function rollbackYouthById(Request $request): JsonResponse
     {
         DB::beginTransaction();

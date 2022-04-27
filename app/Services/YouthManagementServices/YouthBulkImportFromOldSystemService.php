@@ -4,21 +4,32 @@ namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
 use App\Models\Youth;
+use App\Models\YouthGuardian;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use JetBrains\PhpStorm\NoReturn;
 
-class youthBulkImportFromOldSystemService
+class YouthBulkImportFromOldSystemService
 {
-    public function youthBulkImportFromOldSystem(array $data)
+    public function youthBulkImportFromOldSystem(): void
     {
+        $json = Storage::get('youth-data.json');
+        $data = json_decode($json, true);
         $youthInformation = [];
-        $guardianInfo = [];
-        $key = 1;
         foreach ($data as $datum) {
             $this->youthBasicInformation($youthInformation, $datum);
-            $this->getGuardianInfo($guardianInfo, $datum);
+            $validatedData = $this->youthValidation($youthInformation);
+            if (!$this->youthExist($validatedData['username'])) {
+                $youthId = DB::table('youth_temp')->insertGetId($youthInformation);
+                $this->getGuardianInfo($datum, $youthId);
+            } else {
+                Log::channel('youth_bulk_import')->info("Youth is Exist: " . json_encode($datum));
+            }
         }
     }
 
@@ -62,13 +73,11 @@ class youthBulkImportFromOldSystemService
 
     public function youthExist(string $username): bool
     {
-        return (bool)Youth::where("username", $username)->count("id");
+        return (bool)DB::table('youth_temp')->where("username", $username)->count("id");
     }
 
-    public function youthValidation(Request $request, Youth $youth): \Illuminate\Contracts\Validation\Validator
+    public function youthValidation(array $data): \Illuminate\Contracts\Validation\Validator
     {
-        $data = $request->all();
-
         $rules = [
             "first_name" => "required|string|min:2|max:500",
             "last_name" => "required|string|min:2|max:500",
@@ -136,8 +145,24 @@ class youthBulkImportFromOldSystemService
         return Validator::make($data, $rules);
     }
 
-    private function getGuardianInfo(array &$guardianInfo, array $data)
+    private function getGuardianInfo(array $data, int $youthId): void
     {
+        $guardianInfo = [];
+        if (!empty($data['father_name'])) {
+            $guardianInfo[] = [
+                "youth_id" => $youthId,
+                "name" => $data['father_name'],
+                "relationship_type" => YouthGuardian::RELATIONSHIP_TYPE_FATHER
+            ];
+        }
 
+        if (!empty($data['mother_name'])) {
+            $guardianInfo[] = [
+                "youth_id" => $youthId,
+                "name" => $data['mother_name'],
+                "relationship_type" => YouthGuardian::RELATIONSHIP_TYPE_MOTHER
+            ];
+        }
+        DB::table('youth_guardian_temp')->insert($guardianInfo);
     }
 }
