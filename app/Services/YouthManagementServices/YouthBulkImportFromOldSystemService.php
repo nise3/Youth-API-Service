@@ -6,13 +6,11 @@ use App\Models\BaseModel;
 use App\Models\Youth;
 use App\Models\YouthGuardian;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use JetBrains\PhpStorm\NoReturn;
 
 class YouthBulkImportFromOldSystemService
 {
@@ -23,10 +21,11 @@ class YouthBulkImportFromOldSystemService
         $youthInformation = [];
         foreach ($data as $datum) {
             $this->youthBasicInformation($youthInformation, $datum);
-            $validatedData = $this->youthValidation($youthInformation);
+            $validatedData = $this->youthValidation($youthInformation)->validate();
             if (!$this->youthExist($validatedData['username'])) {
                 $youthId = DB::table('youth_temp')->insertGetId($youthInformation);
-                $this->getGuardianInfo($datum, $youthId);
+                $this->storeGuardianInfo($datum, $youthId);
+                $this->storeAddress($datum, $youthId);
             } else {
                 Log::channel('youth_bulk_import')->info("Youth is Exist: " . json_encode($datum));
             }
@@ -112,15 +111,13 @@ class YouthBulkImportFromOldSystemService
                 "int"
             ],
             "email" => [
-                Rule::unique('youths', 'email')
-                    ->ignore($youth->id)
+                Rule::unique('youth_temp', 'email')
                     ->where(function (\Illuminate\Database\Query\Builder $query) {
                         return $query->whereNull('deleted_at');
                     })
             ],
             "mobile" => [
-                Rule::unique('youths', 'mobile')
-                    ->ignore($youth->id)
+                Rule::unique('youth_temp', 'mobile')
                     ->where(function (\Illuminate\Database\Query\Builder $query) {
                         return $query->whereNull('deleted_at');
                     })
@@ -145,7 +142,7 @@ class YouthBulkImportFromOldSystemService
         return Validator::make($data, $rules);
     }
 
-    private function getGuardianInfo(array $data, int $youthId): void
+    private function storeGuardianInfo(array $data, int $youthId): void
     {
         $guardianInfo = [];
         if (!empty($data['father_name'])) {
@@ -164,5 +161,10 @@ class YouthBulkImportFromOldSystemService
             ];
         }
         DB::table('youth_guardian_temp')->insert($guardianInfo);
+    }
+
+    private function storeAddress(array $datum, int $youthId)
+    {
+
     }
 }
