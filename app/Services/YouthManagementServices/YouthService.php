@@ -525,4 +525,5 @@ class YouthService
     {
         return Youth::YOUTH_DEFAULT_PASSWORD;
     }
+
 }

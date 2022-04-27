@@ -71,6 +71,9 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
 
     $router->get("nise-statistics", ["as" => "nise-statistics", "uses" => "StatisticsController@niseStatistics"]);
 
+    /** Youth bulk Import */
+    $router->post('youth-import-from-old-system', ['as' => "youth-import-from-old-system", "uses" => "YouthController@youthImportFromOldSystem"]);
+
 });
 
 //youth profile info/update group

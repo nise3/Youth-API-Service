@@ -8,6 +8,7 @@ use App\Models\Youth;
 use App\Services\CommonServices\CodeGeneratorService;
 use App\Services\CommonServices\MailService;
 use App\Services\YouthManagementServices\YouthBulkImportForCourseEnrollmentService;
+use App\Services\YouthManagementServices\youthBulkImportFromOldSystemService;
 use App\Services\YouthManagementServices\YouthProfileService;
 use App\Services\YouthManagementServices\YouthService;
 use Exception;
@@ -229,6 +230,24 @@ class  YouthController extends Controller
         }
         return Response::json($response, $httpStatusCode);
 
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function youthImportFromOldSystem(Request $request)
+    {
+
+        $extension = $request->file('youth_list')->extension();
+        throw_if($extension != "json", new Exception("Only json file is allowed", ResponseAlias::HTTP_UNPROCESSABLE_ENTITY));
+
+        try {
+            $data = json_decode(file_get_contents($request->file('youth_list')), true);
+            throw_if(empty($data), new Exception("The file is empty", ResponseAlias::HTTP_UNPROCESSABLE_ENTITY));
+            app(youthBulkImportFromOldSystemService::class)->youthBulkImportFromOldSystem($data);
+        } catch (Throwable $exception) {
+
+        }
     }
 
     /**
