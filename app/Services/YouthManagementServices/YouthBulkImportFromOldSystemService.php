@@ -3,7 +3,10 @@
 namespace App\Services\YouthManagementServices;
 
 use App\Models\BaseModel;
+use App\Models\LocDistrict;
+use App\Models\LocDivision;
 use App\Models\Youth;
+use App\Models\YouthAddress;
 use App\Models\YouthGuardian;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -22,10 +25,14 @@ class YouthBulkImportFromOldSystemService
         foreach ($data as $datum) {
             $this->youthBasicInformation($youthInformation, $datum);
             $validatedData = $this->youthValidation($youthInformation)->validate();
+            $validatedData['username'] = $validatedData['mobile'];
             if (!$this->youthExist($validatedData['username'])) {
-                $youthId = DB::table('youth_temp')->insertGetId($youthInformation);
-                $this->storeGuardianInfo($datum, $youthId);
-                $this->storeAddress($datum, $youthId);
+                $youth = new Youth();
+                $youth->setTable("youth_temp");
+                $youth->fill($validatedData);
+                $youth->save();
+                $this->storeGuardianInfo($datum, $youth->id);
+                $this->storeAddress($datum, $youth->id);
             } else {
                 Log::channel('youth_bulk_import')->info("Youth is Exist: " . json_encode($datum));
             }
@@ -43,20 +50,17 @@ class YouthBulkImportFromOldSystemService
         $basicInfo['gender'] = $data['gender'];
 
         if ($data['loc_division_id']) {
-            $basicInfo['loc_division_id'] = $data['loc_division_id'];
+            $basicInfo['loc_division_id'] = $this->getLocationId($data['loc_division_id'], 1);
         }
         if ($data['loc_division_id']) {
-            $basicInfo['loc_district_id'] = $data['loc_division_id'];
-        }
-        if ($data['loc_upazila_id']) {
-            $basicInfo['loc_upazila_id'] = $data['loc_upazila_id'];
+            $basicInfo['loc_district_id'] = $this->getLocationId($data['loc_district_id'], 2);
         }
 
         if (!empty($data['nid_no'])) {
-            $basicInfo['identity_type'] = Youth::NID;
+            $basicInfo['identity_number_type'] = Youth::NID;
             $basicInfo['identity_number'] = bn2en($data['nid_no']);
         } elseif (!empty($data['birth_registration'])) {
-            $basicInfo['identity_type'] = Youth::BIRTH_CARD;
+            $basicInfo['identity_number_type'] = Youth::BIRTH_CARD;
             $basicInfo['identity_number'] = bn2en($data['birth_registration']);
         }
 
@@ -79,7 +83,7 @@ class YouthBulkImportFromOldSystemService
     {
         $rules = [
             "first_name" => "required|string|min:2|max:500",
-            "last_name" => "required|string|min:2|max:500",
+            "last_name" => "nullable|string|min:2|max:500",
             "loc_division_id" => [
                 "required",
                 "exists:loc_divisions,id,deleted_at,NULL",
@@ -111,16 +115,11 @@ class YouthBulkImportFromOldSystemService
                 "int"
             ],
             "email" => [
-                Rule::unique('youth_temp', 'email')
-                    ->where(function (\Illuminate\Database\Query\Builder $query) {
-                        return $query->whereNull('deleted_at');
-                    })
+                "required",
+                "email"
             ],
             "mobile" => [
-                Rule::unique('youth_temp', 'mobile')
-                    ->where(function (\Illuminate\Database\Query\Builder $query) {
-                        return $query->whereNull('deleted_at');
-                    })
+                "required",
             ],
             'identity_number_type' => [
                 'nullable',
@@ -134,7 +133,6 @@ class YouthBulkImportFromOldSystemService
             "bio" => "nullable|string",
             "zip_or_postal_code" => [
                 "nullable",
-                "string",
                 "size:4"
             ]
         ];
@@ -163,8 +161,32 @@ class YouthBulkImportFromOldSystemService
         DB::table('youth_guardian_temp')->insert($guardianInfo);
     }
 
-    private function storeAddress(array $datum, int $youthId)
+    private function storeAddress(array $data, int $youthId)
     {
+        if ($data['present_loc_division_id'] && $data['present_loc_district_id']) {
+            $address['loc_division_id'] = $this->getLocationId($data['present_loc_division_id'], 1);
+            $address['loc_district_id'] = $this->getLocationId($data['present_loc_district_id'], 2);
+            $address['zip_or_postal_code'] = $data['present_postal_code'];
+            $address['youth_id'] = $youthId;
+            DB::table("youth_address_temp")->insert($address);
+        }
 
+    }
+
+    private function getLocationId(int $id, int $type): int|null
+    {
+        $jsonfilePath = [
+            1 => Storage::get("division-bbs-code.json"),
+            2 => Storage::get("district-bbs-code.json")
+        ];
+
+        $locationId = null;
+        $bbsCode = json_decode($jsonfilePath[$type], true);
+        if ($type == 1 && !empty($bbsCode[$id])) {
+            $locationId = LocDivision::where("bbs_code", $bbsCode[$id])->first()->id;
+        } elseif ($type == 2 && !empty($bbsCode[$id])) {
+            $locationId = LocDistrict::where("bbs_code", $bbsCode[$id])->first()->id;
+        }
+        return $locationId;
     }
 }

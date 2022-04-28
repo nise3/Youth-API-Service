@@ -74,7 +74,7 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
 
     /** Youth bulk Import */
     $router->post('youth-import-from-old-system',function (){
-        app(YouthBulkImportFromOldSystemService::class)->youthBulkImportFromOldSystem();
+       return app(YouthBulkImportFromOldSystemService::class)->youthBulkImportFromOldSystem();
     });
 
 });
