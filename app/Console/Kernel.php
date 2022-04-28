@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\YouthBulkImport;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Log;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
@@ -14,7 +15,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        YouthBulkImport::class
     ];
 
     /**

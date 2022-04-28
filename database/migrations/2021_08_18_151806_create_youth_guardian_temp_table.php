@@ -29,11 +29,6 @@ class CreateYouthGuardianTempTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('youth_id')
-                ->references('id')
-                ->on('youths')
-                ->onDelete("CASCADE")
-                ->onUpdate("CASCADE");
 
         });
     }

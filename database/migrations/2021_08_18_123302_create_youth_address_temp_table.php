@@ -35,23 +35,6 @@ class CreateYouthAddressTempTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('youth_id')
-                ->references('id')
-                ->on('youths')
-                ->onDelete("CASCADE")
-                ->onUpdate("CASCADE");
-
-            $table->foreign('loc_division_id')
-                ->references('id')
-                ->on('loc_divisions')
-                ->onDelete("CASCADE")
-                ->onUpdate("CASCADE");
-
-            $table->foreign('loc_district_id')
-                ->references('id')
-                ->on('loc_districts')
-                ->onDelete("CASCADE")
-                ->onUpdate("CASCADE");
         });
     }
 
