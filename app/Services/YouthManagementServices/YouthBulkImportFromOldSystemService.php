@@ -15,17 +15,18 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class YouthBulkImportFromOldSystemService
 {
     /**
-     * @throws ValidationException|\Throwable
+     * @throws ValidationException|Throwable
      */
     public function youthBulkImportFromOldSystem(): void
     {
         DB::beginTransaction();
         try {
-            $jsonFileName = env("IMPORTED_FILE_NAME", "");
+            $jsonFileName = config("nise3.youth_imported_file_name");
             throw_if(empty($jsonFileName), new Exception("Imported file is invalid", Response::HTTP_UNPROCESSABLE_ENTITY));
             $json = Storage::get($jsonFileName);
             $data = json_decode($json, true);
@@ -48,7 +49,7 @@ class YouthBulkImportFromOldSystemService
                 }
             }
             DB::commit();
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             DB::rollBack();
             throw $exception;
         }
@@ -57,7 +58,7 @@ class YouthBulkImportFromOldSystemService
 
     private function youthBasicInformation(array &$basicInfo, $data): void
     {
-        if(!empty($data['first_name'])&&!empty($data['phone'])){
+        if (!empty($data['first_name']) && !empty($data['phone'])) {
             $basicInfo['username'] = bn2en($data['phone']);
             $basicInfo['first_name'] = $data['first_name'];
             $basicInfo['last_name'] = $data['last_name'] ?? "";
@@ -85,10 +86,10 @@ class YouthBulkImportFromOldSystemService
                 $basicInfo['bio'] = $data['biography'];
             }
 
-            if (!empty($data['postal_code'])) {
+            if (!empty($data['postal_code']) && strlen($data['postal_code']) == 4) {
                 $basicInfo['zip_or_postal_code'] = $data['postal_code'];
             }
-        }else{
+        } else {
             Log::channel('youth_bulk_import')->info("Youth required field is valid: " . json_encode($data));
         }
     }
@@ -119,7 +120,9 @@ class YouthBulkImportFromOldSystemService
         if (!empty($data['present_loc_division_id']) && !empty($data['present_loc_district_id'])) {
             $address['loc_division_id'] = $this->getLocationId($data['present_loc_division_id'], 1);
             $address['loc_district_id'] = $this->getLocationId($data['present_loc_district_id'], 2);
-            $address['zip_or_postal_code'] = $data['present_postal_code'];
+            if (!empty($data['present_postal_code']) && strlen($data['present_postal_code']) == 4) {
+                $address['zip_or_postal_code'] = $data['present_postal_code'];
+            }
             $address['youth_id'] = $youthId;
             DB::table("youth_address_temp")->insert($address);
         }
