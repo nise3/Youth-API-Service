@@ -3,6 +3,8 @@
 /** @var Router $router */
 
 use App\Helpers\Classes\CustomRouter;
+use App\Models\BaseModel;
+use App\Services\YouthManagementServices\YouthProfileService;
 use Illuminate\Support\Facades\Log;
 use Laravel\Lumen\Routing\Router;
 
@@ -60,6 +62,11 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
 
         /** rollback trainer youth info */
         $router->post("rollback-trainer-youth-user", ["as" => "service-to-service-call.rollback-trainer-youth-user", "uses" => "YouthProfileController@rollbackTrainerYouthRegistration"]);
+
+        /** Youth Update Or Create */
+        $router->post("youth-create-or-update-for-course-enrollment", ["as" => "youth-create-or-update-for-course-enrollment", "uses" => "YouthController@youthCreateOrUpdateForCourseEnrollment"]);
+        $router->post("rollback-youth-user-by-id", ["as" => "rollback-youth-user-by-id", "uses" => "YouthController@rollbackYouthById"]);
+
     });
 
     $router->get("nise-statistics", ["as" => "nise-statistics", "uses" => "StatisticsController@niseStatistics"]);
@@ -92,6 +99,7 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
     /** Get youth feed courses & jobs */
     $router->get('youth-feed', ["as" => "youth-feed", "uses" => "YouthController@getYouthFeed"]);
 });
+
 
 
 

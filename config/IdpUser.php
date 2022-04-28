@@ -54,9 +54,9 @@ return [
 
     'gateways' => [
         'wso2idp' => [
-            'base_url' => env('WSO2_IDP_BASE_URL','https://identity.bus-staging.softbdltd.com'),
-            'username' => env('WSO2_IDP_USERNAME','admin'),
-            'password'  => env('WSO2_IDP_PASSWORD','Iadmin')
+            'base_url' => env('WSO2_IDP_BASE_URL', 'https://identity-dev.nise3.xyz'),
+            'username' => env('WSO2_IDP_USERNAME', 'admin'),
+            'password' => env('WSO2_IDP_PASSWORD', 'Iadmin')
         ],
     ],
 
@@ -75,6 +75,5 @@ return [
 
     'map' => [
         'wso2idp' => \Khbd\LaravelWso2IdentityApiUser\Idps\Wso2idp::class
-
     ],
 ];
