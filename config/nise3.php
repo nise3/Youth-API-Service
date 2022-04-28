@@ -3,7 +3,7 @@
 use App\Models\EducationLevel;
 
 return [
-    "youth_imported_file_name"=>"youth-small-data.json",
+    "youth_imported_file_name" => "youth-small-data.json",
     "is_dev_mode" => env("IS_DEVELOPMENT_MODE", false),
     'http_debug' => env("HTTP_DEBUG_MODE", false),
     "should_ssl_verify" => env("IS_SSL_VERIFY", false),
@@ -93,12 +93,12 @@ return [
         'CLASSIC' => [
             'code' => 'CLASSIC',
             'title' => 'Classic Cv',
-            'description'=>"it's a classic type cv"
+            'description' => "it's a classic type cv"
         ],
-        'MODERN'=>[
+        'MODERN' => [
             'code' => 'MODERN',
             'title' => 'Modern Cv',
-            'description'=>"it's a modern type cv"
+            'description' => "it's a modern type cv"
         ]
     ]
 ];
