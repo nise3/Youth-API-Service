@@ -8,6 +8,7 @@ use App\Models\LocDivision;
 use App\Models\Youth;
 use App\Models\YouthGuardian;
 use Doctrine\DBAL\Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -19,6 +20,44 @@ use Throwable;
 
 class YouthBulkImportFromOldSystemService
 {
+    protected mixed $divisionBbsCodeByOldId = [];
+    protected array $divisionIdByBbsCode = [];
+
+    protected mixed $districtBbsCodeByOldId = [];
+    protected array $districtIdByBbsCode = [];
+
+    public function __construct()
+    {
+        $rawData = Storage::get("division-bbs-code.json");
+        $this->divisionBbsCodeByOldId = json_decode($rawData, true);
+
+        $rawData = Storage::get("district-bbs-code.json");
+        $this->districtBbsCodeByOldId = json_decode($rawData, true);
+
+        $rows = LocDivision::select("bbs_code", 'id')->get();
+        /** @var Collection $rows */
+        $this->divisionIdByBbsCode = $rows->keyBy('bbs_code')->toArray();
+
+        $rows = LocDistrict::select("bbs_code", 'id')->get();
+        $this->districtIdByBbsCode = $rows->keyBy('bbs_code')->toArray();
+    }
+
+    private function getLocationId(mixed $oldId, int $type): int|null
+    {
+        if ($type == 1) {
+            if (!empty($this->divisionBbsCodeByOldId[$oldId]) && !empty($this->divisionIdByBbsCode[$this->divisionBbsCodeByOldId[$oldId]])) {
+                return $this->divisionIdByBbsCode[$this->divisionBbsCodeByOldId[$oldId]];
+            }
+
+        } elseif ($type == 2) {
+            if (!empty($this->districtBbsCodeByOldId[$oldId]) && !empty($this->districtIdByBbsCode[$this->districtBbsCodeByOldId[$oldId]])) {
+                return $this->districtIdByBbsCode[$this->districtBbsCodeByOldId[$oldId]];
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @throws ValidationException|Throwable
      */
@@ -128,22 +167,6 @@ class YouthBulkImportFromOldSystemService
         }
     }
 
-    private function getLocationId(mixed $id, int $type): int|null
-    {
-        $jsonfilePath = [
-            1 => Storage::get("division-bbs-code.json"),
-            2 => Storage::get("district-bbs-code.json")
-        ];
-
-        $locationId = null;
-        $bbsCode = json_decode($jsonfilePath[$type], true);
-        if ($type == 1 && !empty($bbsCode[$id])) {
-            $locationId = LocDivision::where("bbs_code", $bbsCode[$id])->first()->id;
-        } elseif ($type == 2 && !empty($bbsCode[$id])) {
-            $locationId = LocDistrict::where("bbs_code", $bbsCode[$id])->first()->id;
-        }
-        return $locationId;
-    }
 
     public function youthExist(string $username): bool
     {
