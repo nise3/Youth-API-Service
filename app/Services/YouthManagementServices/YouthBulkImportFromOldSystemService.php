@@ -7,6 +7,8 @@ use App\Models\LocDistrict;
 use App\Models\LocDivision;
 use App\Models\Youth;
 use App\Models\YouthGuardian;
+use App\Models\YouthTemp;
+use App\Services\CommonServices\CodeGeneratorService;
 use Doctrine\DBAL\Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -34,27 +36,23 @@ class YouthBulkImportFromOldSystemService
         $rawData = Storage::get("district-bbs-code.json");
         $this->districtBbsCodeByOldId = json_decode($rawData, true);
 
-        $rows = LocDivision::select("bbs_code", 'id')->get();
-        /** @var Collection $rows */
-        $this->divisionIdByBbsCode = $rows->keyBy('bbs_code')->toArray();
+        $this->divisionIdByBbsCode = LocDivision::pluck('id', DB::raw("CAST(bbs_code AS UNSIGNED) as bbs_code"))->toArray();
+        $this->districtIdByBbsCode = LocDistrict::pluck('id', DB::raw("CAST(bbs_code AS UNSIGNED) as bbs_code"))->toArray();
 
-        $rows = LocDistrict::select("bbs_code", 'id')->get();
-        $this->districtIdByBbsCode = $rows->keyBy('bbs_code')->toArray();
     }
 
     private function getLocationId(mixed $oldId, int $type): int|null
     {
+
         if ($type == 1) {
             if (!empty($this->divisionBbsCodeByOldId[$oldId]) && !empty($this->divisionIdByBbsCode[$this->divisionBbsCodeByOldId[$oldId]])) {
-                return $this->divisionIdByBbsCode[$this->divisionBbsCodeByOldId[$oldId]];
+                return $this->divisionIdByBbsCode[(int)$this->divisionBbsCodeByOldId[$oldId]];
             }
-
         } elseif ($type == 2) {
             if (!empty($this->districtBbsCodeByOldId[$oldId]) && !empty($this->districtIdByBbsCode[$this->districtBbsCodeByOldId[$oldId]])) {
-                return $this->districtIdByBbsCode[$this->districtBbsCodeByOldId[$oldId]];
+                return $this->districtIdByBbsCode[(int)$this->districtBbsCodeByOldId[$oldId]];
             }
         }
-
         return null;
     }
 
@@ -65,30 +63,37 @@ class YouthBulkImportFromOldSystemService
     {
         DB::beginTransaction();
         try {
-            $jsonFileName = config("nise3.youth_imported_file_name");
-            throw_if(empty($jsonFileName), new Exception("Imported file is invalid", Response::HTTP_UNPROCESSABLE_ENTITY));
-            $json = Storage::get($jsonFileName);
-            $data = json_decode($json, true);
-            throw_if(empty($data[2]["data"]), new Exception("The data set is empty / Json data is not formatted", Response::HTTP_UNPROCESSABLE_ENTITY));
-            $youthInformation = [];
-            $data = $data[2]["data"];
-            foreach ($data as $datum) {
-                $this->youthBasicInformation($youthInformation, $datum);
-                $validatedData = $this->youthValidation($youthInformation)->validate();
-                $validatedData['username'] = $validatedData['mobile'];
-                if (!$this->youthExist($validatedData['username'])) {
-                    $youth = new Youth();
-                    $youth->setTable("youth_temp");
-                    $youth->fill($validatedData);
-                    $youth->save();
-                    $this->storeGuardianInfo($datum, $youth->id);
-                    $this->storeAddress($datum, $youth->id);
-                } else {
-                    Log::channel('youth_bulk_import')->info("Youth is Exist: " . json_encode($datum));
+            $youthOldTable = config("nise3.youth_old_data_imported_table_name");
+            $youthOldChunkSize = config("nise3.youth_imported_chunk_size");
+            throw_if(empty($youthOldTable), new Exception("Imported Table Name is invalid", Response::HTTP_UNPROCESSABLE_ENTITY));
+            DB::table($youthOldTable)->orderBy('id')->chunk($youthOldChunkSize, function ($data) {
+                foreach ($data as $datum) {
+                    $datum = (array)$datum;
+                    $youthInformation = [];
+                    $this->youthBasicInformation($youthInformation, $datum);
+                    if (!empty($youthInformation)) {
+                        Log::channel('youth_bulk_import')->info("Youth Basic info: " . json_encode($youthInformation));
+                        $validatedData = $this->youthValidation($youthInformation)->validate();
+                        $validatedData['username'] = $validatedData['mobile'];
+                        if (!$this->youthExist($validatedData['username'])) {
+                            $validatedData['code'] = CodeGeneratorService::getYouthCode();
+                            $youth = new YouthTemp();
+                            $youth->fill($validatedData);
+                            $youth->save();
+                            $this->storeGuardianInfo($datum, $youth->id);
+                            $this->storeAddress($datum, $youth->id);
+                        } else {
+                           // Log::channel('youth_bulk_import')->info("Youth is Exist: " . json_encode($youthInformation));
+                        }
+                    } else {
+                       // Log::channel('youth_bulk_import')->info("Invalid Data Set: " . json_encode($youthInformation));
+                    }
+
                 }
-            }
+            });
             DB::commit();
         } catch (Throwable $exception) {
+            Log::channel('youth_bulk_import')->info("Youth Import Exception " . json_encode($exception->getMessage()));
             DB::rollBack();
             throw $exception;
         }
@@ -97,39 +102,55 @@ class YouthBulkImportFromOldSystemService
 
     private function youthBasicInformation(array &$basicInfo, $data): void
     {
-        if (!empty($data['first_name']) && !empty($data['phone'])) {
-            $basicInfo['username'] = bn2en($data['phone']);
-            $basicInfo['first_name'] = $data['first_name'];
-            $basicInfo['last_name'] = $data['last_name'] ?? "";
-            $basicInfo['email'] = strtolower($data['email']);
-            $basicInfo['mobile'] = bn2en($data['phone']);
-            $basicInfo['date_of_birth'] = bn2en($data['dob']);
-            $basicInfo['gender'] = $data['gender'];
+        if (!empty(trim($data['first_name'])) && !empty(trim($data['phone']))) {
+            $basicInfo['username'] = bn2en(trim($data['phone']));
+            $basicInfo['first_name'] = trim($data['first_name']);
+            $basicInfo['last_name'] = trim($data['last_name']) ?? "";
+            $basicInfo['mobile'] = bn2en(trim($data['phone']));
 
-            if ($data['loc_division_id']) {
-                $basicInfo['loc_division_id'] = $this->getLocationId($data['loc_division_id'], 1);
-            }
-            if ($data['loc_division_id']) {
-                $basicInfo['loc_district_id'] = $this->getLocationId($data['loc_district_id'], 2);
+            if (!empty(trim($data['gender']))) {
+                $basicInfo['gender'] = (int)trim($data['gender']);
             }
 
-            if (!empty($data['nid_no'])) {
+            if (!empty(trim($data['loc_division_id']))) {
+                if (!empty($this->getLocationId(trim($data['loc_division_id']), 1))) {
+                    $basicInfo['loc_division_id'] = $this->getLocationId(trim($data['loc_division_id']), 1);
+                }
+
+            }
+            if (!empty(trim($data['loc_division_id']))) {
+                if (!empty($this->getLocationId(trim($data['loc_district_id']), 2))) {
+                    $basicInfo['loc_district_id'] = $this->getLocationId(trim($data['loc_district_id']), 2);
+                }
+
+            }
+
+            if (!empty(trim($data['nid_no']))) {
                 $basicInfo['identity_number_type'] = Youth::NID;
-                $basicInfo['identity_number'] = bn2en($data['nid_no']);
-            } elseif (!empty($data['birth_registration'])) {
+                $basicInfo['identity_number'] = bn2en(trim($data['nid_no']));
+            } elseif (!empty(trim($data['birth_registration']))) {
                 $basicInfo['identity_number_type'] = Youth::BIRTH_CARD;
-                $basicInfo['identity_number'] = bn2en($data['birth_registration']);
+                $basicInfo['identity_number'] = bn2en(trim($data['birth_registration']));
             }
 
-            if (!empty($data['biography'])) {
-                $basicInfo['bio'] = $data['biography'];
+            if (!empty(trim($data['biography']))) {
+                $basicInfo['bio'] = trim($data['biography']);
             }
 
-            if (!empty($data['postal_code']) && strlen($data['postal_code']) == 4) {
-                $basicInfo['zip_or_postal_code'] = $data['postal_code'];
+            if (!empty(trim($data['postal_code'])) && strlen(trim($data['postal_code'])) == 4) {
+                $basicInfo['zip_or_postal_code'] = trim($data['postal_code']);
             }
+
+            if (!empty(trim($data['email'])) && filter_var(trim($data['email']), FILTER_VALIDATE_EMAIL)) {
+                $basicInfo['email'] = strtolower(trim($data['email']));
+            }
+
+            if (!empty(trim($data['dob']))) {
+                $basicInfo['date_of_birth'] = bn2en(trim($data['dob']));
+            }
+
         } else {
-            Log::channel('youth_bulk_import')->info("Youth required field is valid: " . json_encode($data));
+            Log::channel('youth_bulk_import')->info("Youth required field firstName and Phone number is invalid: " . json_encode($data));
         }
     }
 
@@ -157,8 +178,11 @@ class YouthBulkImportFromOldSystemService
     private function storeAddress(array $data, int $youthId): void
     {
         if (!empty($data['present_loc_division_id']) && !empty($data['present_loc_district_id'])) {
-            $address['loc_division_id'] = $this->getLocationId($data['present_loc_division_id'], 1);
-            $address['loc_district_id'] = $this->getLocationId($data['present_loc_district_id'], 2);
+            if (!empty($this->getLocationId(trim($data['present_loc_division_id']), 1)) && !empty($this->getLocationId(trim($data['present_loc_district_id']), 2))) {
+                $address['loc_division_id'] = $this->getLocationId($data['present_loc_division_id'], 1);
+                $address['loc_district_id'] = $this->getLocationId($data['present_loc_district_id'], 2);
+            }
+
             if (!empty($data['present_postal_code']) && strlen($data['present_postal_code']) == 4) {
                 $address['zip_or_postal_code'] = $data['present_postal_code'];
             }
@@ -170,44 +194,32 @@ class YouthBulkImportFromOldSystemService
 
     public function youthExist(string $username): bool
     {
-        return (bool)DB::table('youth_temp')->where("username", $username)->count("id");
+        return (bool)YouthTemp::where("username", $username)->count("id");
     }
 
     public function youthValidation(array $data): \Illuminate\Contracts\Validation\Validator
     {
         $rules = [
-            "first_name" => "required|string|min:2|max:500",
-            "last_name" => "nullable|string|min:2|max:500",
+            "first_name" => "required",
+            "last_name" => "nullable",
             "loc_division_id" => [
-                "nullable",
-                "exists:loc_divisions,id,deleted_at,NULL",
-                "int"
+                "nullable"
             ],
             "loc_district_id" => [
-                "nullable",
-                "exists:loc_districts,id,deleted_at,NULL",
-                "int"
-            ],
-            "loc_upazila_id" => [
-                "nullable",
-                "exists:loc_upazilas,id,deleted_at,NULL",
-                "int"
+                "nullable"
             ],
             "date_of_birth" => [
                 'nullable',
-                'date',
             ],
             "gender" => [
                 'nullable',
                 Rule::in(BaseModel::GENDERS),
-                "int"
             ],
             "email" => [
-                "nullable",
-                "email"
+                "nullable"
             ],
             "mobile" => [
-                "nullable",
+                "required",
             ],
             'identity_number_type' => [
                 'nullable',
@@ -215,10 +227,9 @@ class YouthBulkImportFromOldSystemService
                 Rule::in(Youth::IDENTITY_TYPES)
             ],
             'identity_number' => [
-                'nullable',
-                'string'
+                'nullable'
             ],
-            "bio" => "nullable|string",
+            "bio" => "nullable",
             "zip_or_postal_code" => [
                 "nullable",
                 "size:4"

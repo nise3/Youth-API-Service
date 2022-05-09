@@ -3,7 +3,8 @@
 use App\Models\EducationLevel;
 
 return [
-    "youth_imported_file_name" => "youth-small-data.json",
+    "youth_old_data_imported_table_name" => "youth_olds",
+    "youth_imported_chunk_size" => 1000,
     "is_dev_mode" => env("IS_DEVELOPMENT_MODE", false),
     'http_debug' => env("HTTP_DEBUG_MODE", false),
     "should_ssl_verify" => env("IS_SSL_VERIFY", false),

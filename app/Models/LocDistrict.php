@@ -29,6 +29,10 @@ class LocDistrict extends BaseModel
     public $timestamps = false;
     protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SOFT_DELETE;
 
+    protected $casts = [
+        "bbs_code" => "integer"
+    ];
+
     public function locDivision(): BelongsTo
     {
         return $this->belongsTo(LocDivision::class, 'loc_division_id');
