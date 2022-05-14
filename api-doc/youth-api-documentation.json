@@ -3935,6 +3935,160 @@
                 ]
             }
         },
+        "/youth-guardians-by-youth/{youthId}": {
+            "get": {
+                "summary": "get_one",
+                "description": "API endpoint to get a specified youth guardians.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "name": "youthId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The Id of the youth",
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthGuardian"
+                                },
+                                "example": {
+                                    "data": [{
+                                        "id": 12,
+                                        "name": "Janiya Rolfson",
+                                        "name_en": "Antoinette McGlynn II",
+                                        "nid": 1212121,
+                                        "mobile": "01776539732",
+                                        "date_of_birth": "12/12/1987",
+                                        "relationship_type": 1,
+                                        "relationship_title": "uncle",
+                                        "relationship_title_en": "uncle",
+                                        "created_at": "12/12/1987",
+                                        "updated_at": "12/12/1987"
+                                    }],
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 201,
+                                        "message": "guardian added successfully",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Guardians"
+                ]
+            },
+            "put": {
+                "summary": "update",
+                "description": "API endpoint to update the specified youth guardian. A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "name": "guardiansId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "int64",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Creating a new guardian",
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/youthGuardian"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "id": 12,
+                                        "youth_id": 23,
+                                        "name": "Janiya Rolfson",
+                                        "name_en": "Antoinette McGlynn II",
+                                        "nid": 1212121,
+                                        "mobile": "01776539732",
+                                        "date_of_birth": "12/12/1987",
+                                        "relationship_type": 1,
+                                        "relationship_title": "uncle",
+                                        "relationship_title_en": "uncle",
+                                        "created_at": "12/12/1987",
+                                        "updated_at": "12/12/1987",
+                                        "deleted_at": "12/12/1987"
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 201,
+                                        "message": "guardian updated successfully",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Guardians"
+                ]
+            },
+            "delete": {
+                "summary": "delete",
+                "description": "API endpoint to delete the specified guardian record.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "name": "guardiansId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "int64",
+                            "example": 12
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "delete",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthGuardian"
+                                },
+                                "example": {
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "guardian record deleted successfully.",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Guardians"
+                ]
+            }
+        },
         "/youth-addresses": {
             "get": {
                 "summary": "get_list",

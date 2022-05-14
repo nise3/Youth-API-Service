@@ -108,6 +108,30 @@ class YouthGuardianService
         return $guardianBuilder->firstOrFail();
     }
 
+    public function getGuardiansByYouthId(int $id): array
+    {
+        /** @var YouthGuardian|Builder $guardianBuilder */
+        $guardianBuilder = YouthGuardian::select(
+            [
+                'youth_guardians.id',
+                'youth_guardians.name',
+                'youth_guardians.name_en',
+                'youth_guardians.nid',
+                'youth_guardians.mobile',
+                'youth_guardians.date_of_birth',
+                'youth_guardians.relationship_type',
+                'youth_guardians.relationship_title',
+                'youth_guardians.relationship_title_en',
+                'youth_guardians.created_at',
+                'youth_guardians.updated_at'
+            ]
+        );
+
+        $guardianBuilder->where('youth_guardians.youth_id', $id);
+
+        return $guardianBuilder->get()->toArray();
+    }
+
     /**
      * @param array $data
      * @return YouthGuardian

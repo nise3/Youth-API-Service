@@ -68,9 +68,8 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
         $router->post("rollback-youth-user-by-id", ["as" => "rollback-youth-user-by-id", "uses" => "YouthController@rollbackYouthById"]);
 
     });
-
+    $customRouter()->resourceRoute('youth-guardians-by-youth', 'YouthGuardianController@readByYouthId')->render();
     $router->get("nise-statistics", ["as" => "nise-statistics", "uses" => "StatisticsController@niseStatistics"]);
-
 });
 
 //youth profile info/update group
