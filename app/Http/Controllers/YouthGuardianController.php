@@ -59,9 +59,9 @@ class YouthGuardianController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
-    public function readByYouthId(int $id): JsonResponse
+    public function getGuardiansByYouthId(int $youthId): JsonResponse
     {
-        $guardian = $this->youthGuardianService->getGuardiansByYouthId($id);
+        $guardian = $this->youthGuardianService->getGuardiansByYouthId($youthId);
 //        $this->authorize('view', $guardian);
         $response = [
             "data" => $guardian,
