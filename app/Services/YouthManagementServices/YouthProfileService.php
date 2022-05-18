@@ -832,9 +832,9 @@ class YouthProfileService
                 Rule::in(BaseModel::USER_NAME_TYPES)
             ],
             "first_name" => "required|string|min:2|max:500",
-            "first_name_en" => "nullable|string|min:2|max:250",
+            "first_name_en" => "required|string|min:2|max:250",
             "last_name" => "required|string|min:2|max:500",
-            "last_name_en" => "nullable|string|min:2|max:250",
+            "last_name_en" => "required|string|min:2|max:250",
             "loc_division_id" => [
                 "required",
                 "int",
