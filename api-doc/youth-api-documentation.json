@@ -4815,6 +4815,40 @@
                     "Youth Career info"
                 ]
             }
+        },
+        "/youth-issued-certificate": {
+            "get": {
+                "summary": "Get youth course enrollment for certificate issue",
+                "description": "An Http method to get course enrollment. Successful request response will return 200 status code",
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "total_courses": 12,
+                                        "enrolled_courses": 8,
+                                        "skill_matching_courses": 2,
+                                        "applied_jobs": 0,
+                                        "total_jobs": 0,
+                                        "skill_matching_jobs": 0
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Youth statistics fetch successfully",
+                                        "query_time": "1 second before"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "youth feed course enrollment"
+                ]
+            }
         }
     },
     "components": {
