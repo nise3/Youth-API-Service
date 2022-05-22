@@ -855,11 +855,11 @@ class YouthProfileController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
-    public function getYouthIssuedCertificate(int $batchId): JsonResponse
+    public function getYouthIssuedCertificate(int $courseId): JsonResponse
     {
         $youthId = Auth::id();
-        $issuedCertificate = ServiceToServiceCall::getYouthIssuedCertificate($youthId, $batchId);
-//        dd($issuedCertificate);
+        $issuedCertificate = ServiceToServiceCall::getYouthIssuedCertificate($youthId, $courseId);
+
         $response = [
             'data' => $issuedCertificate,
             '_response_status' => [
