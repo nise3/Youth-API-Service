@@ -4816,13 +4816,13 @@
                 ]
             }
         },
-        "/youth-issued-certificate/{batchId}": {
+        "/youth-issued-certificate/{courseId}": {
             "get": {
                 "summary": "Get youth course enrollment for certificate issue",
                 "description": "An Http method to get course enrollment. Successful request response will return 200 status code",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/batchId"
+                        "$ref": "#/components/parameters/courseId"
                     }
                 ],
                 "responses": {
@@ -6612,8 +6612,8 @@
                     "type": "integer"
                 }
             },
-            "batchId": {
-                "name": "batchId",
+            "courseId": {
+                "name": "courseId",
                 "in": "path",
                 "required": true,
                 "schema": {

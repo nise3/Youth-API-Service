@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array|mixed youthRespondToJob(array $requestData)
  * @method static array|mixed youthJobs(array $requestData)
  * @method static array|mixed getYouthFeedStatisticsData(int $youthId,string $serviceName)
- * @method static array|mixed getYouthIssuedCertificate(int $youthId, int $batchId)
+ * @method static array|mixed getYouthIssuedCertificate(int $youthId, int $courseId)
  * @method static array|mixed getRecentCoursesForYouthFeed(int $youthId)
  * @method static array|mixed getRecentJobsForYouthFeed(int $youthId)
  *

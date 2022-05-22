@@ -94,7 +94,7 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
     $router->get('my-jobs', ["as" => "youth-profile.youth-my-jobs", "uses" => "YouthProfileController@youthJobs"]);
     $router->put('youth-career-info', ["as" => "youth-career-info-update", "uses" => "YouthProfileController@youthCareerInfoUpdate"]);
     $router->put('youth-set-default-cv-template', ['as' => 'youth-profile.set-default-cv-template', 'uses' => 'YouthProfileController@setDefaultCvTemplate']);
-    $router->get('youth-issued-certificate/{batchId}', ['as' => 'youth-profile.youth-issued-certificate', 'uses' => 'YouthProfileController@getYouthIssuedCertificate']);
+    $router->get('youth-issued-certificate/{courseId}', ['as' => 'youth-profile.youth-issued-certificate', 'uses' => 'YouthProfileController@getYouthIssuedCertificate']);
 
     /** Get youth feed courses & jobs */
     $router->get('youth-feed', ["as" => "youth-feed", "uses" => "YouthController@getYouthFeed"]);
