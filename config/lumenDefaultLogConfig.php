@@ -35,6 +35,11 @@ return [
     */
 
     'channels' => [
+        'youth_bulk_import' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/youth_bulk.log'),
+            'level' => 'info'
+        ],
         'idp_user' => [
             'driver' => 'single',
             'path' => storage_path('logs/idp_user.log'),

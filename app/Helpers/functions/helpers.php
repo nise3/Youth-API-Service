@@ -127,3 +127,30 @@ if (!function_exists("logSelector")) {
     }
 }
 
+if (!function_exists("bn2en")) {
+
+    /**
+     * @param $number
+     * @return array|string
+     */
+    function bn2en($number): array|string
+    {
+        $bn = array("১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "০");
+        $en = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
+        return str_replace($bn, $en, $number);
+    }
+}
+
+if (!function_exists("en2bn")) {
+
+    /**
+     * @param $number
+     */
+    function en2bn($number): array|string
+    {
+        $bn = array("১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "০");
+        $en = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
+        return str_replace($en, $bn, $number);
+    }
+}
+

@@ -35,6 +35,10 @@ return [
     */
 
     'channels' => [
+        'youth_bulk_import' => [
+            'driver' => 'stack',
+            'channels' => ['elastic_info_log'],
+        ],
         /** start Custom channel */
         'idp_user' => [
             'driver' => 'stack',

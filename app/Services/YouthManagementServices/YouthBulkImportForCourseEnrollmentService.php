@@ -75,13 +75,14 @@ class YouthBulkImportForCourseEnrollmentService
                                 $guardianInfo
                             ], JSON_PRETTY_PRINT));
 
-//                        YouthGuardian::updateOrCreate(
-//                            [
-//                                "relationship_type" => $relationshipType,
-//                                "youth_id" => $youth->id
-//                            ],
-//                            $guardianInfo
-//                        );
+                        YouthGuardian::updateOrCreate(
+                            [
+                                "relationship_type" => $relationshipType,
+                                "youth_id" => $youth->id
+                            ],
+                            $guardianInfo
+                        );
+
                         $guardianInfo = [];
                     }
                 }

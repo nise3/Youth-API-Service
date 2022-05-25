@@ -15,6 +15,7 @@ use Illuminate\Http\Client\RequestException as IlluminateRequestException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use ParseError;
@@ -59,6 +60,8 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e): JsonResponse
     {
 
+        Log::info(json_encode($request));
+
         $errors = [
             '_response_status' => [
                 'success' => false,
@@ -84,6 +87,7 @@ class Handler extends ExceptionHandler
             $errors['_response_status']['code'] = ResponseAlias::HTTP_UNPROCESSABLE_ENTITY;
             $errors['_response_status']['message'] = "Validation Error";
             $errors['errors'] = $e->errors();
+            Log::channel('youth_bulk_import')->info("Validation error message: " . $errors['errors']);
         } elseif ($e instanceof BindingResolutionException) {
             $errors['_response_status']['code'] = ResponseAlias::HTTP_INTERNAL_SERVER_ERROR;
             $errors['_response_status']['message'] = "Binding Resolution Error";
@@ -119,6 +123,8 @@ class Handler extends ExceptionHandler
             $errors['_response_status']['message'] = $e->getMessage();
         } elseif ($e instanceof Exception) {
             $errors['_response_status']['message'] = $e->getMessage();
+            $errors['_response_status']['code'] = $e->getCode();
+            Log::channel('youth_bulk_import')->info("Validation error message: " . json_encode($e->errors()));
         }
         return response()->json($errors, $errors['_response_status']['code']);
     }

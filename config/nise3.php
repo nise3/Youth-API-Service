@@ -3,6 +3,8 @@
 use App\Models\EducationLevel;
 
 return [
+    "youth_old_data_imported_table_name" => "youth_olds",
+    "youth_imported_chunk_size" => 1000,
     "is_dev_mode" => env("IS_DEVELOPMENT_MODE", false),
     'http_debug' => env("HTTP_DEBUG_MODE", false),
     "should_ssl_verify" => env("IS_SSL_VERIFY", false),
@@ -92,12 +94,12 @@ return [
         'CLASSIC' => [
             'code' => 'CLASSIC',
             'title' => 'Classic Cv',
-            'description'=>"it's a classic type cv"
+            'description' => "it's a classic type cv"
         ],
-        'MODERN'=>[
+        'MODERN' => [
             'code' => 'MODERN',
             'title' => 'Modern Cv',
-            'description'=>"it's a modern type cv"
+            'description' => "it's a modern type cv"
         ]
     ]
 ];
