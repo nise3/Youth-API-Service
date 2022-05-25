@@ -66,7 +66,7 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
         /** Youth Update Or Create */
         $router->post("youth-create-or-update-for-course-enrollment", ["as" => "youth-create-or-update-for-course-enrollment", "uses" => "YouthController@youthCreateOrUpdateForCourseEnrollment"]);
         $router->post("rollback-youth-user-by-id", ["as" => "rollback-youth-user-by-id", "uses" => "YouthController@rollbackYouthById"]);
-
+        $router->post("update-trainer-youth", ["as" => "update-trainer-youth", "uses" => "YouthController@updateTrainerYouth"]);
     });
     $router->get("youth-guardians-by-youth/{youthId}", ["as" => "youth-guardian-by-youth-id", "uses" => "YouthGuardianController@getGuardiansByYouthId"]);
     $router->get("nise-statistics", ["as" => "nise-statistics", "uses" => "StatisticsController@niseStatistics"]);
