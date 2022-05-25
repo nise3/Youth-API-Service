@@ -14,6 +14,7 @@ use Doctrine\DBAL\Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -80,17 +81,11 @@ class YouthBulkImportFromOldSystemService
                         if (!$this->youthExist($validatedData['username'])) {
                             $validatedData['code'] = CodeGeneratorService::getYouthCode();
                             $validatedData['password'] = Youth::YOUTH_DEFAULT_PASSWORD;
-                            $idpUserId = $this->idUserCreate($validatedData);
-                            if (!empty($idpUserId)) {
-                                $validatedData['idp_user_id'] = $idpUserId;
-                                $youth = new YouthTemp();
-                                $youth->fill($validatedData);
-                                $youth->save();
-                                $this->storeGuardianInfo($datum, $youth->id);
-                                $this->storeAddress($datum, $youth->id);
-                            } else {
-                                Log::channel('youth_bulk_import')->info("IDP USER IS NOT CREATED FOR USERNAME = " . $validatedData['username']);
-                            }
+                            $youth = new YouthTemp();
+                            $youth->fill($validatedData);
+                            $youth->save();
+                            $this->storeGuardianInfo($datum, $youth->id);
+                            $this->storeAddress($datum, $youth->id);
                         } else {
                             // Log::channel('youth_bulk_import')->info("Youth is Exist: " . json_encode($youthInformation));
                         }
@@ -109,6 +104,30 @@ class YouthBulkImportFromOldSystemService
 
     }
 
+    /**
+     * @throws Throwable
+     */
+    public function createIdpUser(int $limit): void
+    {
+        throw_if(!Schema::hasColumn((new YouthTemp())->getTable(), 'idp_user_id'),
+            new Exception("The column name idp_user_id is not exist in " . (new YouthTemp())->getTable(),
+                Response::HTTP_INTERNAL_SERVER_ERROR));
+
+        $youths = YouthTemp::whereNull('idp_user_id')->limit($limit)->get();
+
+        /** @var YouthTemp $youth */
+        foreach ($youths as $youth) {
+            $youthData = $youth->toArray();
+            $youthData['password'] = Youth::YOUTH_DEFAULT_PASSWORD;
+            $idpUserId = $this->idUserCreate($youthData);
+            if (!empty($idpUserId)) {
+                $youth->idp_user_id = $idpUserId;
+                $youth->save();
+            }
+        }
+
+    }
+
     private function youthBasicInformation(array &$basicInfo, $data): void
     {
         if (!empty(trim($data['first_name'])) && !empty(trim($data['phone']))) {
@@ -116,7 +135,6 @@ class YouthBulkImportFromOldSystemService
             $basicInfo['first_name'] = trim($data['first_name']);
             $basicInfo['last_name'] = trim($data['last_name']) ?? "";
             $basicInfo['mobile'] = bn2en(trim($data['phone']));
-
 
             if (!empty(trim($data['gender']))) {
                 $basicInfo['gender'] = (int)trim($data['gender']);
@@ -262,7 +280,6 @@ class YouthBulkImportFromOldSystemService
             'account_disable' => true,
             'account_lock' => true
         ];
-
         $username = $validated['username'];
 
         $idpFilteredUser = IdpUser()->setPayload([

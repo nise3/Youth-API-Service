@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\YouthBulkIdpUserCreate;
 use App\Console\Commands\YouthBulkImport;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Log;
@@ -15,7 +16,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        YouthBulkImport::class
+        YouthBulkImport::class,
+        YouthBulkIdpUserCreate::class
     ];
 
     /**
