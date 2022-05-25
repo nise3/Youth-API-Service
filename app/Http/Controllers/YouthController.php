@@ -254,4 +254,8 @@ class  YouthController extends Controller
         return Response::json($response, $httpStatusCode);
     }
 
+    public function  updateTrainerYouth(){
+        Log::info('hello');
+    }
+
 }

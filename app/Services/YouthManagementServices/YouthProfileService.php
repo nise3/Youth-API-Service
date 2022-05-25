@@ -115,6 +115,9 @@ class YouthProfileService
         });
 
         if (count($youth_ids) > 0) {
+            Log::info(
+                'Youth ids '.json_encode($youth_ids)
+            );
             $youthProfileBuilder->whereIn('youths.id', $youth_ids);
         } else {
             $youthProfileBuilder->where('youths.id', '=', Auth::id());
