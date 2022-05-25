@@ -115,7 +115,7 @@ class Handler extends ExceptionHandler
             $errors['_response_status']['code'] = ResponseAlias::HTTP_INTERNAL_SERVER_ERROR;
             $errors['_response_status']['message'] = "PDO Error";
         } elseif ($e instanceof \RuntimeException) {
-            $errors['_response_status']['code'] = ResponseAlias::HTTP_INTERNAL_SERVER_ERROR;
+            $errors['_response_status']['code'] =$e->getCode() ?? ResponseAlias::HTTP_INTERNAL_SERVER_ERROR;
             $errors['_response_status']['message'] = $e->getMessage();
         } elseif ($e instanceof Exception) {
             $errors['_response_status']['message'] = $e->getMessage();
