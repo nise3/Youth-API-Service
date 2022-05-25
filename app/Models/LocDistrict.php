@@ -28,7 +28,7 @@ class LocDistrict extends BaseModel
     public $timestamps = false;
 
     protected $table = 'loc_districts';
-    protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_ONLY_SOFT_DELETE;
+    protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE;
 
     public function locDivision(): BelongsTo
     {

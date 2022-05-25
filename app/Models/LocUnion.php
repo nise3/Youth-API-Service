@@ -11,7 +11,7 @@ class LocUnion extends BaseModel
     use SoftDeletes, HasFactory;
 
     protected $table = 'loc_unions';
-    protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_ONLY_SOFT_DELETE;
+    protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE;
     public $timestamps = false;
 
     public function locDistrict(): BelongsTo
