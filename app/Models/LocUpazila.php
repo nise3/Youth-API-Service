@@ -24,7 +24,7 @@ class LocUpazila extends BaseModel
     use SoftDeletes, HasFactory;
 
     protected $table = 'loc_upazilas';
-    protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE;
+    protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_ONLY_SOFT_DELETE;
     public $timestamps = false;
 
     public function locDistrict(): BelongsTo

@@ -11,7 +11,7 @@ class LocCityCorporationWard extends BaseModel
     use SoftDeletes, HasFactory;
 
     protected $table = 'loc_city_corporation_wards';
-    protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE;
+    protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_ONLY_SOFT_DELETE;
     public $timestamps = false;
 
     public function locDistrict(): BelongsTo

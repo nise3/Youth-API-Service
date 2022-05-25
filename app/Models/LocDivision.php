@@ -27,7 +27,7 @@ class LocDivision extends BaseModel
     public $timestamps = false;
 
     protected $table = 'loc_divisions';
-    protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_SIMPLE;
+    protected $guarded = BaseModel::COMMON_GUARDED_FIELDS_ONLY_SOFT_DELETE;
 
     public function locUpazilas(): HasMany
     {
