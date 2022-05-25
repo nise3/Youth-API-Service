@@ -319,8 +319,19 @@ class YouthProfileController extends Controller
                 ]
             ];
 
-            return Response::json($response, $response['_response_status']['code']);
+        }else{
+            $response = [
+                'data' => null,
+                '_response_status' => [
+                    "success" => false,
+                    "code" => ResponseAlias::HTTP_NOT_FOUND,
+                    "message" => "Mobile number not found",
+                    "query_time" => $this->startTime->diffForHumans(Carbon::now())
+                ]
+            ];
         }
+        return Response::json($response, $response['_response_status']['code']);
+
 
     }
 
@@ -386,9 +397,8 @@ class YouthProfileController extends Controller
 
             $idpResponse = $this->youthProfileService->idpUserCreate($idpUserPayLoad);
 
-            if (!empty($idpResponse['code']) && $idpResponse['code'] == ResponseAlias::HTTP_CONFLICT) {
-                throw new RuntimeException('User already exists', 409);
-            }
+            throw_if(!empty($idpResponse['code']) && $idpResponse['code'] == ResponseAlias::HTTP_CONFLICT,
+                ValidationException::withMessages(["User already exists[62000]"]));
 
             if (empty($idpResponse['data']['id'])) {
                 throw new RuntimeException('Trainer registration is not succeeded', 409);
