@@ -127,6 +127,7 @@ abstract class BaseModel extends Model
 
     /** Admin access type */
     public const ADMIN_ACCESS_TYPE_TRAINER_USER = 1;
+
     public const ADMIN_ACCESS_TYPES = [
         self::ADMIN_ACCESS_TYPE_TRAINER_USER
     ];
