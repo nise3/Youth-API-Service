@@ -5,6 +5,7 @@ namespace App\Services\YouthManagementServices;
 use App\Models\BaseModel;
 use App\Models\LocDistrict;
 use App\Models\LocDivision;
+use App\Models\User;
 use App\Models\Youth;
 use App\Models\YouthGuardian;
 use App\Models\YouthTemp;
@@ -66,6 +67,7 @@ class YouthBulkImportFromOldSystemService
             $youthOldTable = config("nise3.youth_old_data_imported_table_name");
             $youthOldChunkSize = config("nise3.youth_imported_chunk_size");
             throw_if(empty($youthOldTable), new Exception("Imported Table Name is invalid", Response::HTTP_UNPROCESSABLE_ENTITY));
+
             DB::table($youthOldTable)->orderBy('id')->chunk($youthOldChunkSize, function ($data) {
                 foreach ($data as $datum) {
                     $datum = (array)$datum;
@@ -77,16 +79,23 @@ class YouthBulkImportFromOldSystemService
                         $validatedData['username'] = $validatedData['mobile'];
                         if (!$this->youthExist($validatedData['username'])) {
                             $validatedData['code'] = CodeGeneratorService::getYouthCode();
-                            $youth = new YouthTemp();
-                            $youth->fill($validatedData);
-                            $youth->save();
-                            $this->storeGuardianInfo($datum, $youth->id);
-                            $this->storeAddress($datum, $youth->id);
+                            $validatedData['password'] = Youth::YOUTH_DEFAULT_PASSWORD;
+                            $idpUserId = $this->idUserCreate($validatedData);
+                            if (!empty($idpUserId)) {
+                                $validatedData['idp_user_id'] = $idpUserId;
+                                $youth = new YouthTemp();
+                                $youth->fill($validatedData);
+                                $youth->save();
+                                $this->storeGuardianInfo($datum, $youth->id);
+                                $this->storeAddress($datum, $youth->id);
+                            } else {
+                                Log::channel('youth_bulk_import')->info("IDP USER IS NOT CREATED FOR USERNAME = " . $validatedData['username']);
+                            }
                         } else {
-                           // Log::channel('youth_bulk_import')->info("Youth is Exist: " . json_encode($youthInformation));
+                            // Log::channel('youth_bulk_import')->info("Youth is Exist: " . json_encode($youthInformation));
                         }
                     } else {
-                       // Log::channel('youth_bulk_import')->info("Invalid Data Set: " . json_encode($youthInformation));
+                        // Log::channel('youth_bulk_import')->info("Invalid Data Set: " . json_encode($youthInformation));
                     }
 
                 }
@@ -107,6 +116,7 @@ class YouthBulkImportFromOldSystemService
             $basicInfo['first_name'] = trim($data['first_name']);
             $basicInfo['last_name'] = trim($data['last_name']) ?? "";
             $basicInfo['mobile'] = bn2en(trim($data['phone']));
+
 
             if (!empty(trim($data['gender']))) {
                 $basicInfo['gender'] = (int)trim($data['gender']);
@@ -237,5 +247,36 @@ class YouthBulkImportFromOldSystemService
         ];
 
         return Validator::make($data, $rules);
+    }
+
+    private function idUserCreate(array $validated): string|null
+    {
+        $idpUserPayLoad = [
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'mobile' => $validated['mobile'],
+            'email' => $validated['email'] ?? "dummy." . $validated['mobile'] . "@nise.gov.bd",
+            'username' => $validated['username'],
+            'password' => $validated['password'],
+            'user_type' => BaseModel::YOUTH_USER_TYPE,
+            'account_disable' => true,
+            'account_lock' => true
+        ];
+
+        $username = $validated['username'];
+
+        $idpFilteredUser = IdpUser()->setPayload([
+            'filter' => "userName eq $username",
+        ])->findUsers()->get();
+
+        $idpFilteredUser = $idpFilteredUser['data'];
+
+        if (!empty($idpFilteredUser['totalResults']) && $idpFilteredUser['totalResults'] == 1 && !empty($idpFilteredUser['Resources'][0]['phoneNumbers'][0]['value'])) {
+            return $idpFilteredUser['Resources'][0]['id'] ?? null;
+        } else {
+            $response = app(YouthProfileService::class)->idpUserCreate($idpUserPayLoad);
+            return $response['data']['id'] ?? null;
+        }
+
     }
 }
