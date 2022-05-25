@@ -59,6 +59,21 @@ class YouthGuardianController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
+    public function getGuardiansByYouthId(int $youthId): JsonResponse
+    {
+        $guardian = $this->youthGuardianService->getGuardiansByYouthId($youthId);
+//        $this->authorize('view', $guardian);
+        $response = [
+            "data" => $guardian,
+            "_response_status" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
+            ]
+        ];
+        return Response::json($response, ResponseAlias::HTTP_OK);
+    }
+
     /**
      * Store a newly created resource in storage.
      * @param Request $request
