@@ -1,4 +1,4 @@
-# NISE3 Industry And Industry Association API Service
+# NISE3 Youth API Service
 
 ## Official Documentation
 
