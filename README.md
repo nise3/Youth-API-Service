@@ -1,28 +1,16 @@
-# NISE3 Industry And Industry Association API Service
+# NISE3 Youth API Service
 
 ## Official Documentation
 
 #### Following 3 branches are protected:
 ```shell
-<<<<<<< HEAD
 master
 staging
 develop
-=======
-php -S localhost:8005 -t public
-```
-## For New Release use the following in Merge Request
-```shell
-RELEASE = 'php artisan migrate:fresh --seed && php artisan cache:clear'
-RELEASE = 'php artisan cache:clear'
-RELEASE = 'php artisan list'
->>>>>>> origin/develop
 ```
 ```master``` branch is only being used for production release.
 Code of master branch has not been used. We are using container image from staging branch to deploy to production.
 Common configurations should be placed in the ```.env.example``` file.
-
-
 
 #### Development Environment
 Sensitive information like different type of credentials for development environment have to be configured in the file named ```deploy/values.dev.yaml```.
