@@ -43,6 +43,10 @@ class YouthGuardian extends BaseModel
         self::RELATIONSHIP_TYPE_AUNT,
         self::RELATIONSHIP_TYPE_OTHER,
     ];
+    public const RELATIONSHIP_TYPE = [
+        "father" => self::RELATIONSHIP_TYPE_FATHER,
+        "mother" => self::RELATIONSHIP_TYPE_MOTHER
+    ];
 
     use SoftDeletes, HasFactory;
 

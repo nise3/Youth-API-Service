@@ -851,6 +851,35 @@
                 ]
             }
         },
+        "/youth-exist-check": {
+            "get": {
+                "summary": "Check youth exist or not by User-Token",
+                "description": "API endpoint to check weather youth exist or not. A successful request response will show 200 HTTP status code",
+                "responses": {
+                    "200": {
+                        "description": "Check youth exist or not",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "youth_exist": true
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Youth existence checked by User-Token!",
+                                        "query_time": "1 second before"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "youth"
+                ]
+            }
+        },
         "/youth-registration": {
             "post": {
                 "summary": "Youth registration",
@@ -909,10 +938,82 @@
                 ]
             }
         },
+        "/cdap-youth-create": {
+            "post": {
+                "summary": "CDAP Youth registration",
+                "description": "API endpoint to register a cdap youth. A successful request response will show 200 HTTP status code ",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/youthRegistration"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "register_cdap_youth",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthRegistration"
+                                },
+                                "example": {
+                                    "data": {
+                                        "user_name_type": "2",
+                                        "first_name": "asdfcsdfv",
+                                        "first_name_en": null,
+                                        "last_name": "wsdgfdfg",
+                                        "last_name_en": null,
+                                        "loc_division_id": "1",
+                                        "loc_district_id": "1",
+                                        "loc_upazila_id": "1",
+                                        "date_of_birth": "1990-12-12T00:00:00.000000Z",
+                                        "gender": "1",
+                                        "email": "fffffff@gmail.com",
+                                        "mobile": "01308866287",
+                                        "physical_disability_status": "1",
+                                        "username": "01308866287",
+                                        "verification_code_sent_at": "2021-10-17T16:02:27.000000Z",
+                                        "row_status": 2,
+                                        "updated_at": "2021-10-17T16:02:27.000000Z",
+                                        "created_at": "2021-10-17T16:02:27.000000Z",
+                                        "youth_source": 1,
+                                        "id": 24
+                                    },
+                                    "response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Registration"
+                ]
+            }
+        },
         "/youth-profile": {
             "get": {
                 "summary": "Get youth profile",
                 "description": "API endpoint to get the youth profile. A successful request response will show 200 HTTP status code ",
+                "security": [
+                    {
+                        "default": []
+                    }
+                ],
+                "x-auth-type": "None",
+                "x-throttling-tier": null,
+                "x-wso2-disable-security": true,
+                "x-wso2-application-security": {
+                    "security-types": [
+                    ],
+                    "optional": true
+                },
                 "responses": {
                     "200": {
                         "description": "get youth profile",
@@ -951,7 +1052,7 @@
                                         "identity_number_type": null,
                                         "identity_number": null,
                                         "date_of_birth": "2022-01-30T00:00:00.000000Z",
-                                        "Age":10,
+                                        "Age": 10,
                                         "freedom_fighter_status": 1,
                                         "physical_disability_status": 0,
                                         "does_belong_to_ethnic_group": 0,
@@ -2147,6 +2248,38 @@
                     "Youth Profile"
                 ]
             }
+        },
+        "/youth-password-update": {
+            "put": {
+                "summary": "Update An User Password",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/youthPasswordUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Youth"
+                                },
+                                "example": {
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Profile"
+                ]
+            }
+
         },
         "/youth-profile-verification": {
             "post": {
@@ -4117,32 +4250,63 @@
                                     "order": "ASC",
                                     "data": [
                                         {
-                                            "id": 1,
-                                            "youth_id": 1,
-                                            "course_code": "et-minimacorporis-sed-",
-                                            "course_level": 3,
-                                            "course_language_medium": 2,
-                                            "course_title": "Rickie Weissnat",
-                                            "course_title_en": "Dolores Jast",
-                                            "course_fee": 19877,
-                                            "course_duration": 70,
-                                            "row_status": 0,
-                                            "created_at": "2021-10-21T13:14:08.000000Z",
-                                            "updated_at": "2021-10-21T13:14:08.000000Z"
-                                        },
-                                        {
-                                            "id": 401,
-                                            "youth_id": 1,
-                                            "course_code": "et-beatae-rem-assumenda-voluptate-ill",
-                                            "course_level": 3,
+                                            "id": 23,
+                                            "youth_id": 8,
+                                            "batch_id": 4,
+                                            "course_id": 4,
+                                            "cover_image": "SntUTQfmsLuzSRYxQUTXpeOOQ6XuI11644487457.jpg",
+                                            "course_code": "C000000000000000001",
+                                            "course_level": 1,
                                             "course_language_medium": 1,
-                                            "course_title": "Gavin Daniel",
-                                            "course_title_en": "Kassandra Ward",
-                                            "course_fee": 8578,
-                                            "course_duration": 69,
-                                            "row_status": 0,
-                                            "created_at": "2021-10-21T13:14:10.000000Z",
-                                            "updated_at": "2021-10-21T13:14:10.000000Z"
+                                            "course_title": "গবাদিপশু, হাঁস-মুরগী পালন, প্রাথমিক চিকিৎসা, মৎস্য চাষ ও কৃষি” বিষয়ক প্রশিক্ষণ",
+                                            "course_title_en": null,
+                                            "course_fee": 50,
+                                            "duration": 60,
+                                            "course_created_at": "2022-02-10 15:17:15",
+                                            "institute_id": 1,
+                                            "institute_title": "যুব উন্নয়ন অধিদপ্তর - গণপ্রজাতন্ত্রী বাংলাদেশ সরকার",
+                                            "institute_title_en": "Department of Youth Development - Government of the People's Republic of Bangladesh",
+                                            "row_status": 1,
+                                            "created_at": "2022-02-14T19:05:09.000000Z",
+                                            "updated_at": "2022-02-15T09:46:59.000000Z",
+                                            "exams": [
+                                                {
+                                                    "batch_id": 4,
+                                                    "title": "dfdg",
+                                                    "title_en": "dfsd",
+                                                    "batch_title": "Batch-01",
+                                                    "batch_title_en": null,
+                                                    "exam_id": 1,
+                                                    "exam_date": "2022-04-11 14:54:53",
+                                                    "duration": 100,
+                                                    "subject_title": "math",
+                                                    "subject_title_en": "math"
+                                                },
+                                                {
+                                                    "batch_id": 4,
+                                                    "title": "dfdg",
+                                                    "title_en": "dfsd",
+                                                    "batch_title": "Batch-01",
+                                                    "batch_title_en": null,
+                                                    "exam_id": 22,
+                                                    "exam_date": "2008-09-09 00:00:00",
+                                                    "duration": 120,
+                                                    "subject_title": "math",
+                                                    "subject_title_en": "math"
+                                                },
+                                                {
+                                                    "batch_id": 4,
+                                                    "title": "dfdg",
+                                                    "title_en": "dfsd",
+                                                    "batch_title": "Batch-01",
+                                                    "batch_title_en": null,
+                                                    "exam_id": 23,
+                                                    "exam_date": "2008-09-09 00:00:00",
+                                                    "duration": 120,
+                                                    "subject_title": "math",
+                                                    "subject_title_en": "math"
+                                                }
+                                            ]
                                         }
                                     ],
                                     "_response_status": {
@@ -4196,9 +4360,11 @@
         },
         "/respond-to-job": {
             "post": {
-                "tags": ["Apply Job"],
+                "tags": [
+                    "Apply Job"
+                ],
                 "summary": "Respond to job",
-                "description":  "An Http method to Respond to job. Successful request response will return 200 status code",
+                "description": "An Http method to Respond to job. Successful request response will return 200 status code",
                 "requestBody": {
                     "content": {
                         "application/x-www-form-urlencoded": {
@@ -4242,7 +4408,9 @@
         },
         "/apply-job": {
             "post": {
-                "tags": ["Apply Job"],
+                "tags": [
+                    "Apply Job"
+                ],
                 "summary": "Apply for job",
                 "description": "An Http method to post Apply for job. Successful request response will return 200 status code",
                 "requestBody": {
@@ -4291,7 +4459,9 @@
         },
         "/my-jobs": {
             "get": {
-                "tags": ["My Jobs"],
+                "tags": [
+                    "My Jobs"
+                ],
                 "summary": "See my jobs",
                 "description": "An Http method to See my jobs. Successful request response will return 200 status code",
                 "responses": {
@@ -4299,7 +4469,7 @@
                         "description": "successfull",
                         "content": {
                             "application/json": {
-                                "example":{
+                                "example": {
                                     "order": "ASC",
                                     "data": [
                                         {
@@ -4614,7 +4784,11 @@
                     },
                     "confirmation_status": {
                         "type": "integer",
-                        "enum": [2,3,4],
+                        "enum": [
+                            2,
+                            3,
+                            4
+                        ],
                         "description": "2=> Confirm 3=>Abort 4=>Request reschedule"
                     }
                 }
@@ -4627,7 +4801,11 @@
                     },
                     "job_level": {
                         "type": "integer",
-                        "enum": [1,2,3],
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
                         "description": "1=>Entry Level 2=>Mid Level 3=>Top Level"
                     }
                 },
@@ -4980,6 +5158,35 @@
                     "date_of_birth"
                 ]
             },
+            "youthPasswordUpdate": {
+                "type": "object",
+                "description": "Update User password",
+                "properties": {
+                    "current_password": {
+                        "type": "string",
+                        "minLength": 8,
+                        "format": "password"
+                    },
+                    "new_password": {
+                        "type": "string",
+                        "description": "Must contain upper case lower and case letters and letter.Minimum length 8",
+                        "minLength": 8,
+                        "format": "password"
+                    },
+                    "new_password_confirmation": {
+                        "type": "string",
+                        "description": "Must contain upper case lower and case letters and letter.Minimum length 8",
+                        "maxLength": 8,
+                        "format": "password"
+                    }
+                },
+                "required": [
+                    "current_password",
+                    "new_password",
+                    "new_password_confirmation"
+                ]
+            },
+
             "youthResponse": {
                 "type": "object",
                 "description": "Youth List response structure",
@@ -5672,7 +5879,10 @@
                 "properties": {
                     "default_cv_template": {
                         "type": "string",
-                        "enum": [ "CLASSIC", "MODERN"]
+                        "enum": [
+                            "CLASSIC",
+                            "MODERN"
+                        ]
                     }
                 }
             },

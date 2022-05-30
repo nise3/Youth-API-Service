@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 /**
  * Class FileHandler
  * @package App\Helpers\Classes
+ * @deprecated
  */
 class FileHandler
 {

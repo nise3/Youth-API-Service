@@ -1,0 +1,416 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Public Youth Endpoints",
+        "description": "Public Youth Endpoints",
+        "license": {
+            "name": "MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://192.168.13.206:8001/api/v1"
+        },
+        {
+            "url": "http://localhost:8001"
+        },
+        {
+            "url": "http://nise3-youth.default/api/v1"
+        }
+    ],
+    "security": [
+        {
+            "default": []
+        }
+    ],
+    "paths": {
+        "/youth-public-profile": {
+            "get": {
+                "summary": "Get youth public profile",
+                "description": "API endpoint to get the youth profile. A successful request response will show 200 HTTP status code ",
+                "security": [
+                    {
+                        "default": []
+                    }
+                ],
+                "x-auth-type": "None",
+                "x-throttling-tier": null,
+                "x-wso2-disable-security": true,
+                "x-wso2-application-security": {
+                    "security-types": [
+                    ],
+                    "optional": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "get youth profile",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthProfile"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 1,
+                                        "username": "BarbieKing",
+                                        "user_name_type": 0,
+                                        "first_name": "Konahamaru",
+                                        "first_name_en": "Konahamaru",
+                                        "last_name": "Hashirama",
+                                        "last_name_en": "Hashirama",
+                                        "loc_division_id": 1,
+                                        "division_title": "বরিশাল",
+                                        "division_title_en": "Barisal",
+                                        "loc_district_id": 1,
+                                        "district_title": "বরগুনা",
+                                        "district_title_en": "BARGUNA",
+                                        "loc_upazila_id": 1,
+                                        "upazila_title": "বাগেরহাট সদর",
+                                        "upazila_title_en": "BAGERHAT SADAR",
+                                        "gender": 1,
+                                        "religion": null,
+                                        "is_freelance_profile": 0,
+                                        "marital_status": null,
+                                        "nationality": 1,
+                                        "email": null,
+                                        "mobile": null,
+                                        "expected_salary": 50000,
+                                        "job_level": 1,
+                                        "identity_number_type": null,
+                                        "identity_number": null,
+                                        "date_of_birth": "2022-01-30T00:00:00.000000Z",
+                                        "Age": 10,
+                                        "freedom_fighter_status": 1,
+                                        "physical_disability_status": 0,
+                                        "does_belong_to_ethnic_group": 0,
+                                        "bio": null,
+                                        "bio_en": null,
+                                        "photo": null,
+                                        "cv_path": null,
+                                        "signature_image_path": null,
+                                        "row_status": 1,
+                                        "created_at": null,
+                                        "updated_at": "2022-01-30T07:00:13.000000Z",
+                                        "profile_completed": 0,
+                                        "total_job_experience": {
+                                            "year": 6,
+                                            "month": 0
+                                        },
+                                        "physical_disabilities": [],
+                                        "youth_languages_proficiencies": [],
+                                        "skills": [],
+                                        "youth_educations": [],
+                                        "youth_job_experiences": [
+                                            {
+                                                "id": 5,
+                                                "youth_id": 1,
+                                                "employment_type_id": 1,
+                                                "company_name": "HurrayMania",
+                                                "company_name_en": null,
+                                                "position": "Ftv",
+                                                "position_en": null,
+                                                "location": "aaaa",
+                                                "location_en": null,
+                                                "job_responsibilities": null,
+                                                "job_responsibilities_en": null,
+                                                "start_date": "2020-09-09T00:00:00.000000Z",
+                                                "end_date": "2022-09-09T00:00:00.000000Z",
+                                                "is_currently_working": 1,
+                                                "created_at": "2022-01-30T06:20:32.000000Z",
+                                                "updated_at": "2022-01-30T06:20:32.000000Z",
+                                                "deleted_at": null,
+                                                "area_of_experiences": [
+                                                    {
+                                                        "id": 3,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "5",
+                                                        "area_of_experience_id": 1
+                                                    },
+                                                    {
+                                                        "id": 4,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "5",
+                                                        "area_of_experience_id": 2
+                                                    }
+                                                ],
+                                                "area_of_businesses": [
+                                                    {
+                                                        "id": 1,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "5",
+                                                        "area_of_business_id": 1
+                                                    },
+                                                    {
+                                                        "id": 2,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "5",
+                                                        "area_of_business_id": 2
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": 7,
+                                                "youth_id": 1,
+                                                "employment_type_id": 1,
+                                                "company_name": "HurrayMania",
+                                                "company_name_en": null,
+                                                "position": "Ftv",
+                                                "position_en": null,
+                                                "location": "aaaa",
+                                                "location_en": null,
+                                                "job_responsibilities": null,
+                                                "job_responsibilities_en": null,
+                                                "start_date": "2020-09-09T00:00:00.000000Z",
+                                                "end_date": "2022-09-09T00:00:00.000000Z",
+                                                "is_currently_working": 1,
+                                                "created_at": "2022-01-30T08:31:46.000000Z",
+                                                "updated_at": "2022-01-30T08:31:46.000000Z",
+                                                "deleted_at": null,
+                                                "area_of_experiences": [
+                                                    {
+                                                        "id": 9,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "7",
+                                                        "area_of_experience_id": 1
+                                                    },
+                                                    {
+                                                        "id": 10,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "7",
+                                                        "area_of_experience_id": 2
+                                                    }
+                                                ],
+                                                "area_of_businesses": [
+                                                    {
+                                                        "id": 7,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "7",
+                                                        "area_of_business_id": 1
+                                                    },
+                                                    {
+                                                        "id": 8,
+                                                        "youth_id": "1",
+                                                        "youth_job_experience_id": "7",
+                                                        "area_of_business_id": 2
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        "youth_certifications": [],
+                                        "youth_portfolios": [],
+                                        "youth_addresses": []
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Youth profile information",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Youth Profile"
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "youthProfile": {
+                "type": "object",
+                "description": "Youth Profile",
+                "properties": {
+                    "idp_user_id": {
+                        "type": "string",
+                        "example": "yt7idt698adugiiausj"
+                    },
+                    "is_freelance_profile": {
+                        "type": "integer",
+                        "default": 0
+                    },
+                    "username": {
+                        "type": "string",
+                        "uniqueItems": true
+                    },
+                    "user_name_type": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2
+                        ],
+                        "description": "1=>Email Type,2=>Mobile Number"
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "first_name_en": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "last_name_en": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "gender": {
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
+                        "description": "1=>male,2=>female,3=>others"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "mobile": {
+                        "type": "string"
+                    },
+                    "date_of_birth": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "physical_disability_status": {
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "description": "0=>No,1=>Yes",
+                        "default": 0
+                    },
+                    "loc_division_id": {
+                        "type": "integer"
+                    },
+                    "loc_district_id": {
+                        "type": "integer"
+                    },
+                    "loc_upazila_id": {
+                        "type": "integer"
+                    },
+                    "village_or_area": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "village_or_area_en": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "house_n_road": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "house_n_road_en": {
+                        "type": "string",
+                        "maximum": 500
+                    },
+                    "zip_or_postal_code": {
+                        "type": "string",
+                        "maximum": 10
+                    },
+                    "bio": {
+                        "type": "string"
+                    },
+                    "bio_en": {
+                        "type": "string"
+                    },
+                    "photo": {
+                        "type": "string",
+                        "maximum": 300
+                    },
+                    "cv_path": {
+                        "type": "string",
+                        "maximum": 300
+                    },
+                    "row_status": {
+                        "type": "integer",
+                        "description": "Youth activation status",
+                        "enum": [
+                            1,
+                            0
+                        ]
+                    }
+                },
+                "required": [
+                    "username",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "mobile",
+                    "loc_division_id",
+                    "loc_district_id"
+                ]
+            }
+        },
+        "parameters": {},
+        "securitySchemes": {
+            "default": {
+                "type": "oauth2",
+                "flows": {
+                    "implicit": {
+                        "authorizationUrl": "https://test.com",
+                        "scopes": {}
+                    }
+                }
+            }
+        }
+    },
+    "x-wso2-disable-security": true,
+    "x-wso2-auth-header": "Authorization",
+    "x-wso2-cors": {
+        "corsConfigurationEnabled": false,
+        "accessControlAllowOrigins": [
+            "*"
+        ],
+        "accessControlAllowCredentials": false,
+        "accessControlAllowHeaders": [
+            "authorization",
+            "token",
+            "User-Token",
+            "Domain",
+            "Access-Control-Allow-Origin",
+            "Content-Type",
+            "SOAPAction",
+            "apikey",
+            "Internal-Key"
+        ],
+        "accessControlAllowMethods": [
+            "GET",
+            "PUT",
+            "POST",
+            "DELETE",
+            "PATCH",
+            "OPTIONS"
+        ]
+    },
+    "x-wso2-production-endpoints": {
+        "urls": [
+            "http://nise3-youth.default/api/v1"
+        ],
+        "type": "http"
+    },
+    "x-wso2-sandbox-endpoints": {
+        "urls": [
+            "http://nise3-youth.default/api/v1"
+        ],
+        "type": "http"
+    },
+    "x-wso2-transports": [
+        "http",
+        "https"
+    ],
+    "x-wso2-response-cache": {
+        "enabled": false,
+        "cacheTimeoutInSeconds": 300
+    }
+}

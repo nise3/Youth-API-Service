@@ -3,6 +3,8 @@
 /** @var Router $router */
 
 use App\Helpers\Classes\CustomRouter;
+use App\Models\BaseModel;
+use App\Services\YouthManagementServices\YouthProfileService;
 use Illuminate\Support\Facades\Log;
 use Laravel\Lumen\Routing\Router;
 
@@ -13,12 +15,6 @@ $customRouter = function (string $as = '') use ($router) {
 };
 
 $router->get('/', function () use ($router) {
-    Log::info('Info Log');
-    Log::debug('debug Log');
-    Log::channel('saga')->info('saga Log');
-    Log::channel('mail_sms')->info('mail_sms Log');
-    Log::channel('idp_user')->info('idp_user Log');
-    Log::channel('ek_pay')->info('ek_pay Log');
     return $router->app->version();
 });
 
@@ -32,6 +28,11 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
 
     /** youth registration */
     $router->post('youth-registration', ["as" => "youth.registration", "uses" => "YouthProfileController@youthRegistration"]);
+
+    /** CDAP integration */
+    $router->get('youth-exist-check', ["as" => "youth.exist.check", "uses" => "YouthProfileController@checkYouthExist"]);
+    $router->post('cdap-youth-create', ["as" => "cdap.youth.create", "uses" => "YouthProfileController@cdapYouthRegistration"]);
+    $router->get('youth-public-profile', ["as" => "youth-public-profile.get-public-profile", "uses" => "YouthProfileController@getYouthPublicProfile"]);
 
     /** youth verification */
     $router->post('youth-profile-verification', ["as" => "youth-profile.verify", "uses" => "YouthProfileController@youthVerification"]);
@@ -61,12 +62,16 @@ $router->group(['prefix' => 'api/v1', 'as' => 'api.v1'], function () use ($route
 
         /** rollback trainer youth info */
         $router->post("rollback-trainer-youth-user", ["as" => "service-to-service-call.rollback-trainer-youth-user", "uses" => "YouthProfileController@rollbackTrainerYouthRegistration"]);
+
+        /** Youth Update Or Create */
+        $router->post("youth-create-or-update-for-course-enrollment", ["as" => "youth-create-or-update-for-course-enrollment", "uses" => "YouthController@youthCreateOrUpdateForCourseEnrollment"]);
+        $router->post("rollback-youth-user-by-id", ["as" => "rollback-youth-user-by-id", "uses" => "YouthController@rollbackYouthById"]);
+
     });
 
     $router->get("nise-statistics", ["as" => "nise-statistics", "uses" => "StatisticsController@niseStatistics"]);
 
 });
-
 
 //youth profile info/update group
 $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"], function () use ($router, $customRouter) {
@@ -82,6 +87,7 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
     $router->get('youth-profile', ["as" => "youth-profile.get-profile", "uses" => "YouthProfileController@getYouthProfile"]);
     $router->get('youth-my-courses', ["as" => "youth-profile.get-my-courses", "uses" => "YouthProfileController@getYouthEnrollCourses"]);
     $router->put('youth-personal-info-update', ["as" => "youth-profile.update", "uses" => "YouthProfileController@youthProfileInfoUpdate"]);
+    $router->put('youth-password-update', ["as" => "youth-password.update", "uses" => "YouthProfileController@youthUpdatePassword"]);
     $router->put('youth-change-freelance-status', ["as" => "youth-profile.youth-change-freelance-status", "uses" => "YouthProfileController@setFreelanceStatus"]);
     $router->get('youth-feed-statistics', ["as" => "youth-profile.feed-statistics", "uses" => "YouthProfileController@getYouthFeedStatistics"]);
     $router->post('apply-job', ["as" => "youth-profile.youth-apply-to-job", "uses" => "YouthProfileController@youthApplyToJob"]);
@@ -93,6 +99,7 @@ $router->group(['prefix' => 'api/v1/', 'as' => 'api.v1', 'middleware' => "auth"]
     /** Get youth feed courses & jobs */
     $router->get('youth-feed', ["as" => "youth-feed", "uses" => "YouthController@getYouthFeed"]);
 });
+
 
 
 
