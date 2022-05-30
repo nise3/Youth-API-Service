@@ -195,9 +195,10 @@ class ServiceToServiceCallHandler
             ->json('data');
     }
 
-    public function getYouthIssuedCertificate(int $youthId, int $courseId): mixed
+    public function getYouthIssuedCertificate(int $youthId, int $issueId): mixed
     {
-        $url = clientUrl(BaseModel::INSTITUTE_URL_CLIENT_TYPE) . 'service-to-service-call/get-youth-certificate-issued/' . $youthId . '/course-id/' . $courseId;
+
+        $url = clientUrl(BaseModel::INSTITUTE_URL_CLIENT_TYPE) . 'service-to-service-call/get-youth-certificate-issued/' . $youthId . '/issue-id/' . $issueId;
 
         return Http::withOptions([
             'verify' => config("nise3.should_ssl_verify"),
