@@ -1125,6 +1125,18 @@ class YouthProfileService
             ->first();
     }
 
+    /**
+     * @param string $username
+     * @return  Youth|null
+     */
+    public function getYouthAuthSourceByUsername(string $username): Youth|null
+    {
+        return Youth::where('username', $username)
+            ->select('youth_auth_source')
+            ->where("row_status", BaseModel::ROW_STATUS_ACTIVE)
+            ->firstOrFail();
+    }
+
 
     /**
      * @param array $data

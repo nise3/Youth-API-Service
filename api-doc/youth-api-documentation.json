@@ -851,6 +851,49 @@
                 ]
             }
         },
+        "/youth-auth-source": {
+            "get": {
+                "summary": "get one",
+                "description": "API endpoint to get the specified Youth profile Auth Source.A successful request response will show 200 HTTP status code",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get One Youth",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/youthResponse"
+                                },
+                                "example": {
+                                    "data": {
+                                        "youth_auth_source": 1
+                                    },
+                                    "_response_status": {
+                                        "success": true,
+                                        "code": 200,
+                                        "message": "Youth fetch successfully",
+                                        "query_time": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                },
+                "tags": [
+                    "youth"
+                ]
+            }
+        },
         "/youth-exist-check": {
             "get": {
                 "summary": "Check youth exist or not by User-Token",

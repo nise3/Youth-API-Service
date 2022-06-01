@@ -884,4 +884,23 @@ class YouthProfileController extends Controller
     }
 
 
+    public function getYouthAuthSource(Request $request): JsonResponse
+    {
+        throw_if(empty($request->username), ValidationException::withMessages(["username"=>"username field is required"]));
+
+        $youthInfo = $this->youthProfileService->getYouthAuthSourceByUsername($request->username);
+        $response = [
+            'data' => $youthInfo,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Youth fetch successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
+
+        return Response::json($response, ResponseAlias::HTTP_OK);
+    }
+
+
 }
