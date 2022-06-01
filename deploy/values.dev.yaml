@@ -83,7 +83,7 @@ serviceTargetPort: 80
 developBranch: "develop"
 
 #git hub project id
-githubProjectRepoID: "28218781"
+githubProjectRepoID: ""
 
 #fetch laravel php artisan or bash command and run on run
 enableGitCommitCommandFetch: true
