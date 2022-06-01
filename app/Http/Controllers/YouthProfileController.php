@@ -865,5 +865,42 @@ class YouthProfileController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
+    public function getYouthIssuedCertificate(int $issueId): JsonResponse
+    {
+        $youthId = Auth::id();
+        $issuedCertificate = ServiceToServiceCall::getYouthIssuedCertificate($youthId, $issueId);
+
+        $response = [
+            'data' => $issuedCertificate,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Youth statistics fetch successfully",
+                "query_time" => $this->startTime->diffForHumans(Carbon::now())
+            ]
+        ];
+
+        return Response::json($response, ResponseAlias::HTTP_OK);
+    }
+
+
+    public function getYouthAuthSource(Request $request): JsonResponse
+    {
+        throw_if(empty($request->username), ValidationException::withMessages(["username"=>"username field is required"]));
+
+        $youthInfo = $this->youthProfileService->getYouthAuthSourceByUsername($request->username);
+        $response = [
+            'data' => $youthInfo,
+            '_response_status' => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Youth fetch successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ]
+        ];
+
+        return Response::json($response, ResponseAlias::HTTP_OK);
+    }
+
 
 }
